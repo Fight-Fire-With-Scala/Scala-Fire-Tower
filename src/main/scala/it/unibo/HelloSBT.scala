@@ -1,4 +1,4 @@
-package org.example
+package it.unibo
 
 import scalafx.application.JFXApp3
 import scalafx.application.JFXApp3.PrimaryStage
