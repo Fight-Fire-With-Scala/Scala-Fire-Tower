@@ -2,6 +2,7 @@ plugins {
     scala
     application
     id("org.openjfx.javafxplugin") version "0.0.13"
+    id("cz.augi.gradle.wartremover") version "3.1.6"
 }
 
 repositories {
@@ -15,6 +16,8 @@ dependencies {
     implementation("io.monix:monix_3:3.4.1")
     implementation("org.jfree:jfreechart:1.5.3")
 }
+
+
 
 javafx {
     version = "19"

@@ -3,7 +3,7 @@ package it.unibo.launcher
 import it.unibo.controller.ControllerModule
 import it.unibo.engine.SimulationEngineModule
 import it.unibo.launcher.Launcher.{ControllerImpl, ModelImpl, SimulationEngineImpl, ViewImpl}
-import it.unibo.ViewModule
+import it.unibo.view.ViewModule
 import it.unibo.model.ModelModule
 
 object Launcher

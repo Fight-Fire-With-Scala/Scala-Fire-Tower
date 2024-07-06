@@ -1,9 +1,9 @@
-package it.unibo
+package it.unibo.view
 
-import javax.swing.{JButton, JFrame, JLabel, JPanel, SwingUtilities}
-import java.awt.{BorderLayout, Canvas, Color, Component, Dimension, Graphics}
-import java.awt.event.{ActionEvent, ActionListener}
-import monix.eval.{Task, TaskApp}
+import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
+import java.awt.{BorderLayout, Color, Dimension, Graphics}
+import java.awt.event.ActionListener
+import monix.eval.Task
 
 import javax.swing.WindowConstants
 import monix.execution.Scheduler.Implicits.global
