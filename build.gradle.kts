@@ -1,6 +1,7 @@
 plugins {
     scala
     application
+    id("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 repositories {
@@ -11,6 +12,11 @@ dependencies {
     implementation(libs.scala.library)
     implementation("org.scala-lang:scala3-library_3:3.3.1")
     implementation("org.scalafx:scalafx_3:21.0.0-R32")
+}
+
+javafx {
+    version = "19"
+    modules = listOf("javafx.controls", "javafx.media")
 }
 
 java {
