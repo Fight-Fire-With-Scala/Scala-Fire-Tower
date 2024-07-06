@@ -2,7 +2,7 @@ plugins {
     scala
     application
     id("org.openjfx.javafxplugin") version "0.0.13"
-    id("cz.augi.gradle.wartremover") version "3.1.6"
+    id("com.github.eugenesy.scapegoat") version "0.2.0"
 }
 
 repositories {
@@ -17,7 +17,20 @@ dependencies {
     implementation("org.jfree:jfreechart:1.5.3")
 }
 
-
+configure<com.github.eugenesy.scapegoat.ScapegoatExtension>  {
+    scapegoatVersion = "1.4.8"
+    scalaVersion = "2.12.13"
+    dataDir = "${buildDir}/reports/scapegoat"
+    disabledInspections = arrayListOf("ArrayEquals", "AvoidToMinusOne")
+    ignoredFiles = emptyArray<String>().toList()
+    consoleOutput = true
+    verbose = true
+    reports = arrayListOf<String>("html", "xml")
+    sourcePrefix = "src/main/scala"
+    minimalWarnLevel = "info"
+    enable = true
+    testEnable = true
+}
 
 javafx {
     version = "19"
