@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="Gradle 1" modules="Scala-Fire-Tower.app.main,Scala-Fire-Tower.app.test">
+    <profile name="Gradle 1" modules="Scala-Fire-Tower.app.main,Scala-Fire-Tower.app.test,Scala-Fire-Tower.main,Scala-Fire-Tower.test">
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
-    </profile>
-    <profile name="Gradle 3" modules="Scala-Fire-Tower.main,Scala-Fire-Tower.test">
-      <option name="deprecationWarnings" value="true" />
-      <option name="uncheckedWarnings" value="true" />
-      <parameters>
-        <parameter value="-P:scapegoat:verbose:true" />
-        <parameter value="-P:scapegoat:consoleOutput:true" />
-        <parameter value="-P:scapegoat:dataDir:/var/home/richard/IdeaProjects/Scala-Fire-Tower/build/reports/scapegoat" />
-        <parameter value="-P:scapegoat:disabledInspections:ArrayEquals:AvoidToMinusOne" />
-        <parameter value="-P:scapegoat:reports:html:xml" />
-        <parameter value="-P:scapegoat:sourcePrefix:src/main/scala" />
-        <parameter value="-P:scapegoat:minimalWarnLevel:info" />
-      </parameters>
-      <plugins>
-        <plugin path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.sksamuel.scapegoat/scalac-scapegoat-plugin_2.12.13/1.4.8/9f7fd4b14c2ff22460b4a4c020332bb8879d7331/scalac-scapegoat-plugin_2.12.13-1.4.8.jar:/var/home/richard/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.12/1.3.0/5cdab3bcad5b44264947436c2f428d1cc69c4423/scala-xml_2.12-1.3.0.jar:/var/home/richard/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-collection-compat_2.12/2.4.2/b1cc4a8b69e4c08ff77869858030beffb5a2c04b/scala-collection-compat_2.12-2.4.2.jar" />
-      </plugins>
     </profile>
   </component>
 </project>
