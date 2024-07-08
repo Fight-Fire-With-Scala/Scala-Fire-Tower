@@ -1,9 +1,10 @@
 package it.unibo.view
 
+import javax.swing.JButton
+import javax.swing.JFrame
+
 import monix.eval.Task
 import org.jfree.chart.ChartPanel
-
-import javax.swing.{JButton, JFrame}
 
 object GivenConversion:
 

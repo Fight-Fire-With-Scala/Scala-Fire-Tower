@@ -1,11 +1,13 @@
 package it.unibo.engine
 
-import it.unibo.view.ViewModule
-import it.unibo.model.ModelModule
-import monix.eval.Task
+import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.FiniteDuration
+import scala.language.implicitConversions
+import scala.language.postfixOps
 
-import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.language.{implicitConversions, postfixOps}
+import it.unibo.model.ModelModule
+import it.unibo.view.ViewModule
+import monix.eval.Task
 
 object SimulationEngineModule:
   

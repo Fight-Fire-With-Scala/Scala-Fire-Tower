@@ -6,8 +6,6 @@ import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control.Label
 import scalafx.scene.layout.BorderPane
-import scalafx.scene.paint.Color
-import scalafx.scene.shape.{Arc, Circle, Rectangle}
 
 object HelloSBT extends JFXApp3 {
   override def start(): Unit = {

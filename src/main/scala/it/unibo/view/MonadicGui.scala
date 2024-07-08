@@ -1,16 +1,23 @@
 package it.unibo.view
 
-import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
-import java.awt.{BorderLayout, Color, Dimension, Graphics}
+import java.awt.BorderLayout
+import java.awt.Color
+import java.awt.Dimension
+import java.awt.Graphics
 import java.awt.event.ActionListener
-import monix.eval.Task
-
+import javax.swing.JButton
+import javax.swing.JFrame
+import javax.swing.JPanel
+import javax.swing.SwingUtilities
 import javax.swing.WindowConstants
-import monix.execution.Scheduler.Implicits.global
-import GivenConversion.GuiConversion.given
+
 import it.unibo.controller.ControllerModule
 import it.unibo.view.charts.ChartManager
+import monix.eval.Task
+import monix.execution.Scheduler.Implicits.global
 import org.jfree.chart.ChartPanel
+
+import GivenConversion.GuiConversion.given
 
 class MonadicGui(val width: Int, val height: Int, controller: ControllerModule.Controller):
 
