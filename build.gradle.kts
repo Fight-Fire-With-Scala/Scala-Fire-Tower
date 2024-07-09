@@ -1,6 +1,5 @@
 plugins {
     scala
-    application
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("io.github.cosmicsilence.scalafix") version "0.2.2"
 }
@@ -26,8 +25,4 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
-}
-
-application {
-    mainClass = "org.example.App"
 }
