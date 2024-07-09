@@ -15,8 +15,9 @@ object ViewModule:
   trait Component:
     context: Requirements =>
     class ViewImpl extends View:
-      private val gui = MonadicGui(800, 500, context.controller)
-      def show(virtualTime: Int): Unit = gui `render` virtualTime
+      private val gui = MonadicGuiFX(800, 500, context.controller)
+      gui.main(Array.empty)
+      def show(virtualTime: Int): Unit = print("")
 
   trait Interface extends Provider with Component:
     self: Requirements =>

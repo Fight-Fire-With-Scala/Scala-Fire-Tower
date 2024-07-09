@@ -14,5 +14,4 @@ object GivenConversion:
   object GuiConversion extends CommonConversion:
     given Conversion[JFrame, Task[JFrame]] = Task(_)
     given Conversion[JButton, Task[JButton]] = Task(_)
-    given Conversion[Environment, Task[Environment]] = Task(_)
     given Conversion[ChartPanel, Task[ChartPanel]] = Task(_)
