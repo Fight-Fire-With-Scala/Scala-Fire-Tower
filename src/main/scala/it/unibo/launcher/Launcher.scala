@@ -17,4 +17,4 @@ object Launcher
   override val view = new ViewImpl()
 
   @main def Main(): Unit =
-    println("starting simulation.....")
+    controller.notifyStart()

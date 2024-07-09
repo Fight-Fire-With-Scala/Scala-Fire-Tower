@@ -5,7 +5,7 @@ import it.unibo.controller.ControllerModule
 object ViewModule:
 
   trait View:
-    def show(virtualTime: Int): Unit
+    def show(): Unit
 
   trait Provider:
     val view: View
@@ -16,8 +16,8 @@ object ViewModule:
     context: Requirements =>
     class ViewImpl extends View:
       private val gui = MonadicGuiFX(800, 500, context.controller)
-      gui.main(Array.empty)
-      def show(virtualTime: Int): Unit = print("")
+      
+      def show(): Unit = gui.main(Array.empty)
 
   trait Interface extends Provider with Component:
     self: Requirements =>
