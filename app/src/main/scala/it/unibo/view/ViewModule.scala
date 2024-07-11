@@ -14,7 +14,6 @@ object ViewModule:
 
   trait Component:
     context: Requirements =>
-
     class ViewImpl extends View:
 
       private val gui = MonadicGuiFX(800, 500, context.controller)
