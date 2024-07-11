@@ -8,9 +8,7 @@ import scalafx.application.{JFXApp3, Platform}
 import scalafx.scene.Scene
 import scalafx.scene.control.Button
 import scalafx.scene.canvas.Canvas
-import scalafx.scene.control.Button
 import scalafx.scene.layout.{BorderPane, Pane}
-import monix.execution.Scheduler.Implicits.global
 
 class MonadicGuiFX(val w: Int, val h: Int, controller: ControllerModule.Controller)
     extends JFXApp3 {
@@ -37,14 +35,10 @@ class MonadicGuiFX(val w: Int, val h: Int, controller: ControllerModule.Controll
     pane
   }
 
-  private def setupScene(pane: Pane): Unit = {
-    stage = new PrimaryStage {
-      scene = new Scene {
-        root = pane
-      }
-      minHeight = 600
-      minWidth = 900
-    }
+  private def setupScene(pane: Pane): Unit = stage = new PrimaryStage {
+    scene = new Scene { root = pane }
+    minHeight = 600
+    minWidth = 900
   }
 
 }
