@@ -8,11 +8,15 @@ trait Cell:
   def name: String
   def cellStatus: CellState
 
-trait Flammable extends Cell:
+trait Flammable:
   def ignite(): Cell
 
-trait Lockable extends Cell:
+trait FlammableCell extends Cell with Flammable
+
+trait Lockable:
   def placeFirebreak(): Cell
+
+trait LockableCell extends Cell with Lockable
 
 object CellConstraints:
   extension (cell: Cell)
@@ -24,15 +28,15 @@ object CellConstraints:
     def placeFirebreak(): Option[Cell] = cell match
       case lockable: Lockable => Option(lockable.placeFirebreak())
       case _ => Option.empty
-        
+
 case class EternalFire(cellStatus: CellState) extends Cell:
   val name = "Eternal Fire"
 
-case class Woods(cellStatus: CellState) extends Flammable, Lockable:
+case class Woods(cellStatus: CellState) extends FlammableCell, LockableCell:
   val name = "Woods"
   override def ignite(): Cell = Woods(Fire)
   override def placeFirebreak(): Cell = Woods(Firebreaker)
 
-case class Tower(cellStatus: CellState) extends Flammable:
+case class Tower(cellStatus: CellState) extends FlammableCell:
   val name = "Tower"
   override def ignite(): Cell = Tower(Fire)
