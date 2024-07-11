@@ -4,3 +4,4 @@ plugins {
 }
 
 rootProject.name = "Scala-Fire-Tower"
+include("app")

@@ -1,12 +1,11 @@
 plugins {
     scala
+    application
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("io.github.cosmicsilence.scalafix") version "0.2.2"
 }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
     implementation(libs.scala.library)
@@ -21,8 +20,6 @@ javafx {
     modules = listOf("javafx.controls", "javafx.media")
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+application {
+    mainClass.set("it.unibo.launcher.Launcher")
 }
