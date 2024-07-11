@@ -1,8 +1,9 @@
 plugins {
     scala
     application
-    id("org.openjfx.javafxplugin") version "0.0.13"
-    id("io.github.cosmicsilence.scalafix") version "0.2.2"
+    alias(libs.plugins.javafx)
+    alias(libs.plugins.scalafix)
+    alias(libs.plugins.scoverage)
 }
 
 repositories { mavenCentral() }
@@ -15,6 +16,9 @@ dependencies {
     implementation(libs.scala.logging)
     implementation(libs.logback)
     testImplementation(libs.scalatest)
+    testImplementation(libs.junit)
+    testImplementation(libs.scalatest.plusjunit)
+//    testRuntimeOnly("org.scala-lang.modules:scala-xml_3:2.0.1")
 }
 
 javafx {
