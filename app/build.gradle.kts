@@ -9,10 +9,12 @@ repositories { mavenCentral() }
 
 dependencies {
     implementation(libs.scala.library)
-    implementation("org.scala-lang:scala3-library_3:3.3.1")
-    implementation("org.scalafx:scalafx_3:21.0.0-R32")
-    implementation("io.monix:monix_3:3.4.1")
-    implementation("org.jfree:jfreechart:1.5.3")
+    implementation(libs.tuprolog)
+    implementation(libs.scalafx)
+    implementation(libs.monix)
+    implementation(libs.scala.logging)
+    implementation(libs.logback)
+    testImplementation(libs.scalatest)
 }
 
 javafx {

@@ -1,5 +1,18 @@
 [versions]
 scala-library = "3.4.2"
+scalatest-version = "3.2.15"
+monix-version = "3.4.1"
+scalafx-version = "21.0.0-R32"
+tuprolog-version = "4.1.1"
+logback-version = "1.2.10"
+scala-logging-version = "3.9.4"
 
 [libraries]
+scala-logging = { module = "com.typesafe.scala-logging:scala-logging_3", version.ref = "scala-logging-version" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback-version"}
+scalafx = { module = "org.scalafx:scalafx_3", version.ref = "scalafx-version" }
+monix = { module = "io.monix:monix_3", version.ref = "monix-version"}
+scalatest = { module = "org.scalatest:scalatest_3", version.ref = "scalatest-version" }
 scala-library = { module = "org.scala-lang:scala3-library_3", version.ref = "scala-library" }
+tuprolog = { module = "it.unibo.alice.tuprolog:2p-core", version.ref = "tuprolog-version" }
+
