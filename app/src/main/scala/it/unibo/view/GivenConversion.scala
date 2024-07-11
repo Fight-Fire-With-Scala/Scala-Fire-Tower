@@ -1,7 +1,6 @@
 package it.unibo.view
 
 import monix.eval.Task
-import org.jfree.chart.ChartPanel
 
 import javax.swing.{JButton, JFrame}
 
@@ -16,5 +15,3 @@ object GivenConversion:
     given Conversion[JFrame, Task[JFrame]] = Task(_)
 
     given Conversion[JButton, Task[JButton]] = Task(_)
-
-    given Conversion[ChartPanel, Task[ChartPanel]] = Task(_)
