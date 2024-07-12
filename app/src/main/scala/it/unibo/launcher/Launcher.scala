@@ -16,3 +16,4 @@ object Launcher
 
   @main
   def Main(): Unit = controller.notifyStart()
+  
