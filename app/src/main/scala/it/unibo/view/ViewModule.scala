@@ -16,7 +16,9 @@ object ViewModule:
     context: Requirements =>
     class ViewImpl extends View:
 
-      private val gui = MonadicGuiFX(800, 500, context.controller)
+      private val gui = MonadicGuiFX(800, 600, context.controller, new FXMLViewLoader)
+
+
 
       def show(): Unit = gui.main(Array.empty)
 

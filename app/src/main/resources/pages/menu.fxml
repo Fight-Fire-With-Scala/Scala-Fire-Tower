@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.controller.ControllerMenuImpl" minWidth="900" minHeight="600">
+    <HBox spacing="20.0" alignment="CENTER">
+        <VBox fx:id="leftSpacer" HBox.hgrow="ALWAYS"/>
+        <VBox alignment="CENTER" spacing="20.0">
+            <Text text="Scala Fire Tower">
+                <font>
+                    <Font size="24.0" />
+                </font>
+            </Text>
+            <Button fx:id="startButton" text="START" prefWidth="200"/>
+            <VBox spacing="10">
+                <fx:define>
+                    <ToggleGroup fx:id="gameModeToggleGroup"/>
+                </fx:define>
+                <RadioButton fx:id="humanVsHuman" text="HUMAN vs HUMAN" toggleGroup="$gameModeToggleGroup" selected="true"/>
+                <RadioButton fx:id="humanVsBot" text="HUMAN vs BOT" toggleGroup="$gameModeToggleGroup"/>
+            </VBox>
+            <VBox spacing="10">
+                <Text text="Player1"/>
+                <TextField fx:id="player1Input" promptText="INPUT NAME"/>
+                <Text text="Player2"/>
+                <TextField fx:id="player2Input" promptText="INPUT NAME"/>
+            </VBox>
+            <ComboBox fx:id="setOfCardsDropdown" prefWidth="200" promptText="SET OF CARDS">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Base"/>
+                        <String fx:value="Expanded"/>
+                        <String fx:value="Full"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <ComboBox fx:id="botBehaviourDropdown" prefWidth="200" promptText="BOT BEHAVIOUR">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Aggressive"/>
+                        <String fx:value="Balanced"/>
+                        <String fx:value="Defensive"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <Button fx:id="exitButton" text="EXIT" prefWidth="200"/>
+        </VBox>
+        <VBox fx:id="rightSpacer" HBox.hgrow="ALWAYS"/>
+    </HBox>
+</StackPane>
