@@ -7,16 +7,18 @@ import javafx.scene.control.{Button, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
 import scalafx.application.Platform
 
+import scala.compiletime.uninitialized
+
 class ControllerMenuImpl {
 
   @FXML
-  private var humanVsHuman: RadioButton = _
+  private var humanVsHuman: RadioButton = uninitialized
 
   @FXML
-  private var player2Input: TextField = _
+  private var player2Input: TextField = uninitialized
 
   @FXML
-  private var gameModeToggleGroup: ToggleGroup = _
+  private var gameModeToggleGroup: ToggleGroup = uninitialized
 
   @FXML
   def initialize(): Unit = gameModeToggleGroup.selectedToggleProperty()
