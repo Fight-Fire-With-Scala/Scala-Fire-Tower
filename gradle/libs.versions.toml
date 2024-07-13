@@ -11,6 +11,8 @@ junit-version = "4.13.2"
 scoverage-plugin-version = "8.1"
 scalafix-plugin-version = "0.2.2"
 javafx-plugin-version = "0.0.13"
+circe-yaml-version = "1.15.0"
+circe-generic-version = "0.14.9"
 
 [libraries]
 scala-logging = { module = "com.typesafe.scala-logging:scala-logging_3", version.ref = "scala-logging-version" }
@@ -22,6 +24,8 @@ scala-library = { module = "org.scala-lang:scala3-library_3", version.ref = "sca
 tuprolog = { module = "it.unibo.alice.tuprolog:2p-core", version.ref = "tuprolog-version" }
 junit = { module = "junit:junit", version.ref = "junit-version" }
 scalatest-plusjunit = { module = "org.scalatestplus:junit-4-13_3", version.ref = "scalatest-plusjunit-version" }
+circe-yaml = { module = "io.circe:circe-yaml_3", version.ref = "circe-yaml-version" }
+circe-generic = { module = "io.circe:circe-generic_3", version.ref = "circe-generic-version" }
 
 [plugins]
 javafx = { id = "org.openjfx.javafxplugin", version.ref = "javafx-plugin-version" }

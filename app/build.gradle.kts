@@ -15,6 +15,9 @@ dependencies {
     implementation(libs.monix)
     implementation(libs.scala.logging)
     implementation(libs.logback)
+    implementation(libs.circe.yaml)
+    implementation(libs.circe.generic)
+
     testImplementation(libs.scalatest)
     testImplementation(libs.junit)
     testImplementation(libs.scalatest.plusjunit)
