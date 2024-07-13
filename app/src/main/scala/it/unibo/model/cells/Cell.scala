@@ -2,7 +2,7 @@ package it.unibo.model.cells
 
 import com.typesafe.scalalogging.Logger
 
-val logger = Logger("name")
+val logger = Logger("cells")
 
 trait Cell:
   def name: String
@@ -22,12 +22,12 @@ object CellConstraints:
   extension (cell: Cell)
     def ignite(): Option[Cell] = cell match
       case flammable: Flammable => Option(flammable.ignite())
-      case _ => Option.empty
+      case _ => None
 
   extension (cell: Cell)
     def placeFirebreak(): Option[Cell] = cell match
       case lockable: Lockable => Option(lockable.placeFirebreak())
-      case _ => Option.empty
+      case _ => None
 
 case class EternalFire(cellStatus: CellState) extends Cell:
   val name = "Eternal Fire"
