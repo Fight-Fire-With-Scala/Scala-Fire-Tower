@@ -35,7 +35,7 @@ case class EternalFire(cellStatus: CellState) extends Cell:
 case class Woods(cellStatus: CellState) extends FlammableCell, LockableCell:
   val name = "Woods"
   override def ignite(): Cell = Woods(Fire)
-  override def placeFirebreak(): Cell = Woods(Firebreaker)
+  override def placeFirebreak(): Cell = Woods(Firebreak)
 
 case class Tower(cellStatus: CellState) extends FlammableCell:
   val name = "Tower"

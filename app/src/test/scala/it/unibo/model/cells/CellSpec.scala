@@ -18,7 +18,7 @@ class CellSpec extends AnyWordSpecLike with Matchers:
     "place firebreak and become protected" in:
       val woods = Woods(Empty)
       val protectedWoods = woods.placeFirebreak()
-      protectedWoods shouldBe Woods(Firebreaker)
+      protectedWoods shouldBe Woods(Firebreak)
   
   "A Tower cell" should:
     "ignite and become on fire" in:
