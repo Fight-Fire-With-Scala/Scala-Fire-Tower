@@ -1,4 +1,4 @@
-package it.unibo.model.cards.resolver
+package it.unibo.model.cards.resolvers
 
 import scala.util.Random
 

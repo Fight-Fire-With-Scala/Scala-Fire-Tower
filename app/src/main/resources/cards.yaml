@@ -45,16 +45,16 @@ cardSets:
      Metti una gemma di fuoco a Ovest di un'altra gemma di fuoco."
     effectCode: 7
   - title: "Linea di bulldozer"
-    typeName: "Firebreaker"
+    typeName: "Firebreak"
     description: "Piazza due segnalini tagliafuoco adiacenti sul tabellone."
     effectCode: 8
   - title: "Linea provvisoria"
-    typeName: "Firebreaker"
+    typeName: "Firebreak"
     description: "Piazza due segnalini tagliafuoco sul tabellone, con uno 
     spazio di distanza tra loro."
     effectCode: 9
   - title: "Ri/Deforesta"
-    typeName: "Firebreaker"
+    typeName: "Firebreak"
     description: "Aggiungi un segnalino tagliafuoco sul tabellone. OPPURE
     Rimuovi un segnalino tagliafuoco dal tabellone."
     effectCode: 10

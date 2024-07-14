@@ -1,36 +1,28 @@
 package it.unibo.model.cards
 
-import cats.syntax.either._
+import cats.syntax.either.*
 import com.typesafe.scalalogging.Logger
 import io.circe.Decoder
 import io.circe.HCursor
-import it.unibo.model.cards.types.token.FireCards
-import it.unibo.model.cards.types.token.FirebreakCards
-import it.unibo.model.cards.types.token.WaterCards
+import it.unibo.model.cards.resolvers.Resolver
+import it.unibo.model.cards.types.allCards
 
 val logger = Logger("cards")
 
-trait Effect
-
 trait BaseCard:
   def title: String
-  def typeName: String
   def description: String
-  def resolve: () => Unit
+  def resolve: Resolver
 
 object BaseCard:
   implicit val decodeBaseCard: Decoder[BaseCard] = (c: HCursor) =>
     for {
       title <- c.downField("title").as[String]
-      typeName <- c.downField("typeName").as[String]
       description <- c.downField("description").as[String]
       effectCode <- c.downField("effectCode").as[Int]
-    } yield Card(title, typeName, description, resolve = parseResolution(effectCode))
+    } yield Card(title, description, resolve = parseResolution(effectCode))
 
-  private def parseResolution(effectCode: Int): () => Unit =
-    val cards = WaterCards.waterCards ++ FirebreakCards.firebreakCards ++ FireCards.fireCards
-//    val pattern = cards.filter(c => c.effectCode == effectCode)
-    println
+  private def parseResolution(effectCode: Int): Resolver = allCards
+    .filter(c => c.effectCode.equals(effectCode)).map(c => c.effect).head
 
-case class Card(title: String, typeName: String, description: String, resolve: () => Unit)
-  extends BaseCard
+case class Card(title: String, description: String, resolve: Resolver) extends BaseCard
