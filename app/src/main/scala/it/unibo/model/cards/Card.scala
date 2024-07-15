@@ -14,4 +14,4 @@ case class PatternChoice(patterns: List[AppliedSpatialPattern]) extends GameEffe
 val allCards = WaterCard.waterCards ++ FirebreakCard.firebreakCards ++ FireCard.fireCards ++
   WindCard.windCards
 
-case class Card(title: String, description: String, resolve: Resolver) extends BaseCard
+case class Card(title: String, description: String, resolve: Resolver, id: Int) extends BaseCard
