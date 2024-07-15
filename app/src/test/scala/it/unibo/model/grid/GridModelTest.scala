@@ -1,4 +1,4 @@
-package it.unibo.model.board
+package it.unibo.model.grid
 
 import it.unibo.model.cells.*
 import org.junit.runner.RunWith
@@ -8,49 +8,65 @@ import org.scalatestplus.junit.JUnitRunner
 import it.unibo.model.Position
 
 @RunWith(classOf[JUnitRunner])
-class BoardModelTest extends AnyWordSpec with Matchers:
+class GridModelTest extends AnyWordSpec with Matchers:
 
-  "An empty board" should:
+  def assertCellType(position: Position, expectedType: Class[?], grid: Grid): Unit =
+    val cell = grid.getCell(position).get
+    expectedType match
+      case _ if expectedType == classOf[Tower]       => cell shouldBe a[Tower]
+      case _ if expectedType == classOf[EternalFire] => cell shouldBe a[EternalFire]
+      case _ if expectedType == classOf[Woods]       => cell shouldBe a[Woods]
+      case _                                         => fail(s"Unexpected cell type: $expectedType")
+
+  val expectedCells: Seq[(Position, Class[? >: Tower & EternalFire & Woods <: Cell])] = List(
+    (Position(0, 0), classOf[Tower]),
+    (Position(7, 7), classOf[EternalFire]),
+    (Position(8, 8), classOf[EternalFire]),
+    (Position(5, 5), classOf[Woods])
+  )
+
+  "An empty grid" should:
     "have no cells" in:
-      val board = Board.empty
-      board.cells shouldBe empty
+      val grid = Grid.empty
+      grid.cells shouldBe empty
 
-  "A board" should:
+  "A grid" should:
     "correctly add and retrieve a cell" in:
-      val initialBoard = Board.empty
+      val initialGrid = Grid.empty
       val position = Position(0, 0)
       val cell = Tower()
-      val updatedBoard = initialBoard.setCell(position, cell)
-      updatedBoard.getCell(position) shouldBe Some(cell)
+      val updatedGrid = initialGrid.setCell(position, cell)
+      updatedGrid.getCell(position) shouldBe Some(cell)
 
     "update a cell correctly" in:
       val position = Position(1, 1)
       val initialCell = Woods()
       val updatedCell = Woods()
-      val boardWithInitialCell = Board.empty.setCell(position, initialCell)
-      val boardWithUpdatedCell = boardWithInitialCell.setCell(position, updatedCell)
-      boardWithUpdatedCell.getCell(position) shouldBe Some(updatedCell)
+      val gridWithInitialCell = Grid.empty.setCell(position, initialCell)
+      val gridWithUpdatedCell = gridWithInitialCell.setCell(position, updatedCell)
+      gridWithUpdatedCell.getCell(position) shouldBe Some(updatedCell)
 
   // noinspection ScalaUnusedExpression
-  "A standard board" should:
+  "A standard grid" should:
     "be initialized with the correct pattern" in:
-      val standardBoard = Board.standard
-      standardBoard.cells.size shouldBe Board.positionNumber
+      val standardGrid = Grid.standard
+      standardGrid.cells.size shouldBe Grid.positionNumber
 
-      standardBoard.getCell(Position(0, 0)).get shouldBe a[Tower]
-      standardBoard.getCell(Position(7, 7)).get shouldBe an[EternalFire]
+      expectedCells.foreach { case (position, cellType) =>
+        assertCellType(position, cellType, Grid.standard)
+      }
 
     "maintain the correct size after operations" in:
-      val board = Board.standard
+      val grid = Grid.standard
       val position = Position(3, 3)
       val cell = EternalFire()
-      val updatedBoard = board.setCell(position, cell)
-      updatedBoard.cells.size shouldBe Board.positionNumber
+      val updatedGrid = grid.setCell(position, cell)
+      updatedGrid.cells.size shouldBe Grid.positionNumber
 
     // noinspection ScalaUnusedExpression
     "be initialized with the correct pattern using the DSL" in:
-      val standardBoard = Board {
-        import BoardBuilder.DSL.*
+      val standardGrid = Grid {
+        import GridBuilder.DSL.*
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
@@ -69,9 +85,8 @@ class BoardModelTest extends AnyWordSpec with Matchers:
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
       }
 
-      standardBoard.cells.size shouldBe Board.positionNumber
-      // Example test to verify a specific cell type at a given position
-      standardBoard.getCell(Position(0, 0)).get shouldBe a[Tower]
-      standardBoard.getCell(Position(7, 7)).get shouldBe a[EternalFire]
-      standardBoard.getCell(Position(8, 8)).get shouldBe a[EternalFire]
-      standardBoard.getCell(Position(5, 5)).get shouldBe a[Woods]
+      standardGrid.cells.size shouldBe Grid.positionNumber
+
+      expectedCells.foreach { case (position, cellType) =>
+        assertCellType(position, cellType, Grid.standard)
+      }
