@@ -13,11 +13,11 @@ trait Lockable:
 
 trait LockableCell extends Cell with Lockable
 
-class EternalFire extends Cell:
+case class EternalFire() extends Cell:
   val name = "Eternal Fire"
 
-class Woods extends FlammableCell, LockableCell:
+case class Woods() extends FlammableCell, LockableCell:
   val name = "Woods"
 
-class Tower extends FlammableCell:
+case class Tower() extends FlammableCell:
   val name = "Tower"
