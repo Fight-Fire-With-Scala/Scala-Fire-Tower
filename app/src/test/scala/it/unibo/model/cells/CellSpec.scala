@@ -11,33 +11,33 @@ class CellSpec extends AnyWordSpecLike with Matchers:
 
   "A Woods cell" should:
     "ignite and become on fire" in:
-      val woods = Woods(Empty)
-      val ignitedWoods = woods.ignite()
-      ignitedWoods shouldBe Woods(Fire)
+      val woods = Woods()
+      val ignitedWoods = woods.isFlammable
+      ignitedWoods shouldBe true
   
     "place firebreak and become protected" in:
-      val woods = Woods(Empty)
-      val protectedWoods = woods.placeFirebreak()
-      protectedWoods shouldBe Woods(Firebreak)
+      val woods = Woods()
+      val protectedWoods = woods.isLockable
+      protectedWoods shouldBe true
   
   "A Tower cell" should:
     "ignite and become on fire" in:
-      val tower = Tower(Empty)
-      val ignitedTower = tower.ignite()
-      ignitedTower shouldBe Tower(Fire)
+      val tower = Tower()
+      val ignitedTower = tower.isFlammable
+      ignitedTower shouldBe true
   
     "not place firebreak" in:
-      val tower = Tower(Empty)
-      val protectedTower = tower.placeFirebreak()
-      protectedTower shouldBe None
+      val tower = Tower()
+      val protectedTower = tower.isLockable
+      protectedTower shouldBe false
   
   "An Eternal Fire cell" should:
     "not ignite" in:
-      val eternalFire = EternalFire(Empty)
-      val ignitedEternalFire = eternalFire.ignite()
-      ignitedEternalFire shouldBe None
+      val eternalFire = EternalFire()
+      val ignitedEternalFire = eternalFire.isFlammable
+      ignitedEternalFire shouldBe false
   
     "not place firebreak" in:
-      val eternalFire = EternalFire(Empty)
-      val protectedEternalFire = eternalFire.placeFirebreak()
-      protectedEternalFire shouldBe None
+      val eternalFire = EternalFire()
+      val protectedEternalFire = eternalFire.isLockable
+      protectedEternalFire shouldBe false

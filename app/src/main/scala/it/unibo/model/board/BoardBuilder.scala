@@ -1,7 +1,7 @@
 package it.unibo.model.board
 
 import it.unibo.model.board.GivenExtension.within
-import it.unibo.model.cells.{Cell, Empty, EternalFire, Tower, Woods}
+import it.unibo.model.cells.{Cell, EternalFire, Tower, Woods}
 
 import scala.annotation.targetName
 
@@ -70,13 +70,13 @@ object BoardBuilder:
   /** A DSL definition for a [[BoardBuilder]]. */
   object DSL:
     /** The towers. */
-    def T(using b: BoardBuilder): BoardBuilder = b + Tower(Empty)
+    def T(using b: BoardBuilder): BoardBuilder = b + Tower()
 
     /** A white pawn. */
-    def F(using b: BoardBuilder): BoardBuilder = b + Woods(Empty)
+    def F(using b: BoardBuilder): BoardBuilder = b + Woods()
 
     /** A white knight. */
-    def E(using b: BoardBuilder): BoardBuilder = b + EternalFire(Empty)
+    def E(using b: BoardBuilder): BoardBuilder = b + EternalFire()
 //
 //    /** Skip the next cells of the row, making them empty. */
 //    @targetName("nextRow")
