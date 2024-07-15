@@ -1,7 +1,7 @@
 package it.unibo.model.cards.resolvers
 
 import it.unibo.model.cards.{GameChoice, GameEffect}
-import it.unibo.model.cards.effects.patterns.PatternChoice
+import it.unibo.model.cards.PatternChoice
 
 trait Resolver
 

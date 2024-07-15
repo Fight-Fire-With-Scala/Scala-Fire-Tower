@@ -1,9 +1,7 @@
 package it.unibo.model.board
 
-import it.unibo.model.cards.resolvers.tokens.Token
 import it.unibo.model.cells.Cell
-
-case class Position(x: Int, y: Int)
+import it.unibo.model.Position
 
 trait Board:
   def cells: Map[Position, Cell]

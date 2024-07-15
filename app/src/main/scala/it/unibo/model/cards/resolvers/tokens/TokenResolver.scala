@@ -1,6 +1,7 @@
 package it.unibo.model.cards.resolvers.tokens
 
-import it.unibo.model.cards.effects.patterns.{PatternChoice, SpatialPattern}
+import it.unibo.model.SpatialPattern
+import it.unibo.model.cards.PatternChoice
 import it.unibo.model.cards.resolvers.SpatialResolver
 
 case class TokenResolver(pattern: Option[SpatialPattern]) extends SpatialResolver:

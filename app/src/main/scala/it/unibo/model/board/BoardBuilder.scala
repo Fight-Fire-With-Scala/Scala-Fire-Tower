@@ -1,6 +1,7 @@
 package it.unibo.model.board
 
 import it.unibo.model.board.GivenExtension.within
+import it.unibo.model.Position
 import it.unibo.model.cells.{Cell, EternalFire, Tower, Woods}
 
 import scala.annotation.targetName

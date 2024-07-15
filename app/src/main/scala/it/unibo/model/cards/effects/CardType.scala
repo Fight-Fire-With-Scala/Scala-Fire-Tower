@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.effects.patterns.PatternChoice
+import it.unibo.model.cards.PatternChoice
 import it.unibo.model.cards.{GameChoice, GameEffect}
 import it.unibo.model.cards.resolvers.{LinearResolver, Resolver, ResolverWithChoice}
 
