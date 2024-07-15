@@ -1,6 +1,6 @@
 package it.unibo.model.cards.resolvers.wind
 
-import it.unibo.model.cards.resolvers.GameChoice
+import it.unibo.model.cards.GameChoice
 
 trait WindChoice extends GameChoice
 

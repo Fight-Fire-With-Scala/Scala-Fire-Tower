@@ -1,12 +1,12 @@
 package it.unibo.model.cards.effects
 
 import it.unibo.model.cards.resolvers.tokens.TokenResolver
-import it.unibo.model.cards.types.FirebreakCards.*
+import it.unibo.model.cards.effects.FirebreakCard.*
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class FirebreakCardsSpec extends GameEffectAbstractSpec:
+class FirebreakCardSpec extends GameEffectAbstractSpec:
 
   "Cards of type Firebreak" should:
 

@@ -1,8 +1,6 @@
 package it.unibo.model.cards.resolvers.tokens
 
-import it.unibo.model.cards.resolvers.GameEffect
-
-trait Token extends GameEffect
+trait Token
 
 object Token:
   val tokens: Set[Token] = Set(Firebreak, Fire)

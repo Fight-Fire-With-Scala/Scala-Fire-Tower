@@ -1,15 +1,8 @@
-package it.unibo.model.cards.types
+package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.resolvers.{
-  GameChoice,
-  GameEffect,
-  LinearResolver,
-  Resolver,
-  ResolverWithChoice
-}
-
-val allCards = WaterCards.waterCards ++ FirebreakCards.firebreakCards ++ FireCards.fireCards ++
-  WindCards.windCards
+import it.unibo.model.cards.effects.patterns.PatternChoice
+import it.unibo.model.cards.{GameChoice, GameEffect}
+import it.unibo.model.cards.resolvers.{LinearResolver, Resolver, ResolverWithChoice}
 
 trait HasEffect:
   def effectCode: Int
@@ -21,3 +14,5 @@ trait HasSingleEffect[E <: GameEffect] extends HasEffect:
 trait HasMultipleEffects[C <: GameChoice, E <: GameEffect] extends HasEffect:
   def choices: Set[C]
   def effect: ResolverWithChoice[C, E]
+
+type HasSpatialEffect = HasSingleEffect[PatternChoice]

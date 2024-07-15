@@ -2,12 +2,12 @@ package it.unibo.model.cards.effects
 
 import it.unibo.model.cards.resolvers.tokens.TokenResolver
 import it.unibo.model.cards.resolvers.wind.WindResolver
-import it.unibo.model.cards.types.WaterCards.*
+import it.unibo.model.cards.effects.WaterCard.*
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class WaterCardsSpec extends GameEffectAbstractSpec:
+class WaterCardSpec extends GameEffectAbstractSpec:
 
   "Cards of type Water" should:
 

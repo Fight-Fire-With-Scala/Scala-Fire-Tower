@@ -1,6 +1,5 @@
-package it.unibo.model.cards.patterns
+package it.unibo.model.cards.effects.patterns
 
-import it.unibo.model.cards.patterns.SpatialPattern
 import scala.collection.mutable.ArrayBuffer
 
 class Pattern:

@@ -1,6 +1,5 @@
 package it.unibo.model.cards.resolvers
 
-import it.unibo.model.cards.resolvers.Dice
 import it.unibo.model.cards.resolvers.wind.WindChoice.{RandomUpdateWind, UpdateWind}
 import it.unibo.model.cards.resolvers.wind.{WindDirection, WindResolver}
 import org.junit.runner.RunWith

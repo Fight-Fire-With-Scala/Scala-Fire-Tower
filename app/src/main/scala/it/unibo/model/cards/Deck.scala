@@ -2,6 +2,7 @@ package it.unibo.model.cards
 
 import scala.io.Source
 import scala.util.Random
+import it.unibo.model.logger
 
 import cats.syntax.either._
 import io.circe._
@@ -20,7 +21,7 @@ object Deck:
     val cards = parseCards(cardsResourcePath)
     cards match
       case Some(cards) => new Deck(cards.cardSets)
-      case None => Deck(List.empty)
+      case None        => Deck(List.empty)
 
   private def parseCards(cardsResourcePath: String): Option[CardSet] =
     val deckYaml = Source.fromResource(cardsResourcePath).mkString

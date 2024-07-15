@@ -1,6 +1,6 @@
 package it.unibo.model.cards.resolvers.wind
 
-import it.unibo.model.cards.resolvers.GameEffect
+import it.unibo.model.cards.GameEffect
 
 trait WindDirection extends GameEffect
 
