@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects.patterns
 
-import it.unibo.model.board.Position
+import it.unibo.model.grid.Position
 import it.unibo.model.cards.GameEffect
 
 case class Matrix[T](rows: Int, cols: Int, data: Array[Array[T]]):
