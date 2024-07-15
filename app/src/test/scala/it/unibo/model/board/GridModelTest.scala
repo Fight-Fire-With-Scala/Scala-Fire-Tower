@@ -1,4 +1,4 @@
-package it.unibo.model.grid
+package it.unibo.model.board
 
 import it.unibo.model.cells.*
 import org.junit.runner.RunWith
@@ -6,6 +6,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
 import it.unibo.model.Position
+import it.unibo.model.grid.Grid
 
 @RunWith(classOf[JUnitRunner])
 class GridModelTest extends AnyWordSpec with Matchers:

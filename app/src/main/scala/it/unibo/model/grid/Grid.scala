@@ -1,7 +1,7 @@
 package it.unibo.model.grid
 
 import it.unibo.model.cards.resolvers.tokens.Token
-import it.unibo.model.cells.Cell
+import it.unibo.model.cells.{Cell, Woods, Tower, EternalFire}
 import it.unibo.model.Position
 
 trait Grid:
@@ -73,5 +73,29 @@ object Grid:
       BasicGrid(this._cells + (position -> cell))
 
     override def getCell(position: Position): Option[Cell] = this._cells.get(position)
+
+    override def toString: String =
+      val gridRepresentation = (for
+        i <- 0 until Grid.Size
+        j <- 0 until Grid.Size
+        position = Position(i, j)
+        cell = getCell(position).orNull
+        token = getToken(position)
+        cellChar = cell match
+          case _: Woods => "W"
+          case _: Tower => "T"
+          case _: EternalFire => "E"
+          case _ => "."
+        tokenChar = token match
+          case Some(Token.Fire) => "f"
+          case Some(Token.Firebreak) => "b"
+          case _ => cellChar // Use cellChar if there's no token
+        displayChar =
+          if (token.isDefined) tokenChar
+          else cellChar // Display tokenChar without "W" if token exists
+        separator = if (j == Grid.Size - 1) "\n" else " | "
+      yield s"$displayChar$separator").mkString
+
+      gridRepresentation.stripMargin
     
     
