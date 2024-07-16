@@ -14,16 +14,16 @@ case object WaterCard:
   case object SmokeJumper extends WaterCard:
     val effectCode: Int = 11
     val effect: SpatialResolver =
-      PatternResolver(pattern { w; w; w; w; f; w; w; w; w }.toMatrix(3, 3))
+      PatternResolver(pattern { w; w; w; w; f; w; w; w; w })
 
   case object AirDrop extends WaterCard:
     val effectCode: Int = 12
-    val effect: SpatialResolver = PatternResolver(pattern { w; w; w }.toMatrix(1, 3))
+    val effect: SpatialResolver = PatternResolver(pattern { w; w; w })
 
   case object FireEngine extends WaterCard:
     val effectCode: Int = 13
-    val effect: SpatialResolver = PatternResolver(pattern { w; w; w; w }.toMatrix(2, 2))
+    val effect: SpatialResolver = PatternResolver(pattern { w; w; w; w })
 
   case object Bucket extends WaterCard:
     val effectCode: Int = 14
-    val effect: SpatialResolver = PatternResolver(pattern { w; w; w }.toMatrix(1, 3))
+    val effect: SpatialResolver = PatternResolver(pattern { w; w; w })

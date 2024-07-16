@@ -1,6 +1,6 @@
 package it.unibo.model.cards.resolvers.tokens
 
-trait Token
+sealed trait Token
 
 object Token:
   val tokens: Set[Token] = Set(Firebreak, Fire, Water, Reforest)

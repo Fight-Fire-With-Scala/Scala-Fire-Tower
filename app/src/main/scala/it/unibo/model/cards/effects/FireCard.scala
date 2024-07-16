@@ -14,16 +14,16 @@ case object FireCard:
   case object Explosion extends FireCard:
     val effectCode: Int = 0
     val effect: SpatialResolver =
-      PatternResolver(pattern { f; f; f; f; b; f; f; f; f }.toMatrix(3, 3))
+      PatternResolver(pattern { f; f; f; f; b; f; f; f; f })
 
   case object Flare extends FireCard:
     val effectCode: Int = 1
-    val effect: SpatialResolver = PatternResolver(pattern { f; f; f }.toMatrix(1, 3))
+    val effect: SpatialResolver = PatternResolver(pattern { f; f; f })
 
   case object BurningSnag extends FireCard:
     val effectCode: Int = 2
-    val effect: SpatialResolver = PatternResolver(pattern { f; f; f; f }.toMatrix(2, 2))
+    val effect: SpatialResolver = PatternResolver(pattern { f; f; f; f })
 
   case object Ember extends FireCard:
     val effectCode: Int = 3
-    val effect: SpatialResolver = PatternResolver(pattern(f).toMatrix(1, 1))
+    val effect: SpatialResolver = PatternResolver(pattern(f))

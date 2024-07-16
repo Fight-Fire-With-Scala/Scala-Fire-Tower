@@ -31,7 +31,7 @@ object Deck:
   private def parseCardTypes(cardsResourcePath: String): Option[CardSet] =
     val deckYaml = Source.fromResource(cardsResourcePath).mkString
     parser.parse(deckYaml).leftMap(err => err: Error).flatMap(_.as[CardSet]).toOption
-  
+
   private def createCards(cardTypes: CardSet): List[Card] = cardTypes.cardSets.flatMap { c =>
     List.fill(c.amount)(c)
   }.zipWithIndex.map { case (c, index) => Card(index + 1, c) }

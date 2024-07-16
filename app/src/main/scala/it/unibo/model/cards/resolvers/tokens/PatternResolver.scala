@@ -1,9 +1,9 @@
 package it.unibo.model.cards.resolvers.tokens
 
-import it.unibo.model.SpatialPattern
+import it.unibo.model.cards.effects.patterns.Pattern
 import it.unibo.model.cards.resolvers.{ResolverWithChoice, SpatialResolver}
 
-case class PatternResolver(pattern: Option[SpatialPattern]) extends SpatialResolver:
+case class PatternResolver(pattern: Pattern) extends SpatialResolver:
   override def resolve(): PatternToApply =
     // convert from Map[Position, Token]
     // to List[Position] using Prolog/Scala
@@ -11,6 +11,6 @@ case class PatternResolver(pattern: Option[SpatialPattern]) extends SpatialResol
     // to PatternChoice since the data
     ???
 
-case class PatternResolverWithChoice(pattern: Option[SpatialPattern])
+case class PatternResolverWithChoice(pattern: Pattern)
     extends ResolverWithChoice[PatternChoice, PatternToApply]:
   override def resolve(choice: PatternChoice): PatternToApply = ???

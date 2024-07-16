@@ -1,16 +1,10 @@
 package it.unibo.model.cards.effects.patterns
 
-import it.unibo.model.{Matrix, SpatialPattern}
-
 import scala.collection.mutable.ArrayBuffer
 
 class Pattern:
   val cells = new ArrayBuffer[PatternCell]
   def add(c: PatternCell): Unit = cells += c
-  def toMatrix(rows: Int, cols: Int): Option[SpatialPattern] =
-    val dims = rows * cols
-    if (cells.length < dims || cells.length > dims) None
-    else Some(Matrix(rows, cols, Array.tabulate(rows, cols)((i, j) => cells(i * cols + j))))
 
   override def toString: String = cells.mkString("Pattern(", ", ", ")")
 

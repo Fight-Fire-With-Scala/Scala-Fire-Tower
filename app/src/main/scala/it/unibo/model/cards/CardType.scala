@@ -4,7 +4,7 @@ import io.circe.{Decoder, HCursor}
 import it.unibo.model.cards.resolvers.Resolver
 import it.unibo.model.logger
 
-case class CardType(title: String, description: String, amount: Int, resolve: Resolver)
+case class CardType(title: String, description: String, amount: Int, effect: Resolver)
 
 object CardType:
   implicit val decodeBaseCard: Decoder[CardType] = (c: HCursor) =>
@@ -13,7 +13,7 @@ object CardType:
       description <- c.downField("description").as[String]
       effectCode <- c.downField("effectCode").as[Int]
       amount <- c.downField("amount").as[Int]
-    yield CardType(title, description, amount, resolve = parseResolution(effectCode))
+    yield CardType(title, description, amount, effect = parseResolution(effectCode))
 
   private def parseResolution(effectCode: Int): Resolver =
     logger.info(s"effectCode: $effectCode")  

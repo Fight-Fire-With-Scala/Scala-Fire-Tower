@@ -15,4 +15,4 @@ case class WindResolver(direction: WindDirection, dice: Dice[WindDirection])
   override def resolve(choice: WindChoice): GameEffect = choice match
     case UpdateWind       => direction
     case RandomUpdateWind => dice.roll()
-    case PlaceFire        => PatternResolver(pattern(f).toMatrix(1, 1)).resolve()
+    case PlaceFire        => PatternResolver(pattern(f)).resolve()

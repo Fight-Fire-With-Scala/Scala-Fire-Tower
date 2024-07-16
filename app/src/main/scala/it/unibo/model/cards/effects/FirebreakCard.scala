@@ -13,12 +13,12 @@ case object FirebreakCard:
   case object DeReforest extends FirebreakCard:
     val effectCode: Int = 10
     val effect: ResolverWithChoice[PatternChoice, PatternToApply] =
-      PatternResolverWithChoice(pattern(b).toMatrix(1, 1))
+      PatternResolverWithChoice(pattern(b))
 
   case object ScratchLine extends FirebreakCard:
     val effectCode: Int = 9
-    val effect: SpatialResolver = PatternResolver(pattern { b; e; b }.toMatrix(1, 3))
+    val effect: SpatialResolver = PatternResolver(pattern { b; e; b })
 
   case object DozerLine extends FirebreakCard:
     val effectCode: Int = 8
-    val effect: SpatialResolver = PatternResolver(pattern { b; b }.toMatrix(1, 2))
+    val effect: SpatialResolver = PatternResolver(pattern { b; b })
