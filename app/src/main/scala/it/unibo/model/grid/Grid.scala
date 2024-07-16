@@ -64,6 +64,12 @@ object Grid:
     override def cells: Map[Position, Cell] = this._cells
     override def tokens: Map[Position, Token] = this._tokens
 
+    /**
+     * Set a token in the grid at the given position checking if it's possible. If it's invalid do nothing
+     * @param position
+     * @param token
+     * @return
+     */
     override def setToken(position: Position, token: Token): Grid =
       ???
       
