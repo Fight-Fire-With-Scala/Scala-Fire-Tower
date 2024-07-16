@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.resolvers.tokens.TokenResolver
+import it.unibo.model.cards.resolvers.tokens.{PatternResolver, PatternResolverWithChoice}
 import it.unibo.model.cards.effects.FirebreakCard.*
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
@@ -17,6 +17,6 @@ class FirebreakCardSpec extends GameEffectAbstractSpec:
       DozerLine.effectCode shouldBe 8
 
     "generate the correct resolver" in:
-      DeReforest.effect shouldBe a[TokenResolver]
-      ScratchLine.effect shouldBe a[TokenResolver]
-      DozerLine.effect shouldBe a[TokenResolver]
+      DeReforest.effect shouldBe a[PatternResolverWithChoice]
+      ScratchLine.effect shouldBe a[PatternResolver]
+      DozerLine.effect shouldBe a[PatternResolver]

@@ -1,7 +1,7 @@
 package it.unibo.model.cards.effects
 
 import it.unibo.model.cards.effects.patterns.{f, pattern, w}
-import it.unibo.model.cards.resolvers.tokens.TokenResolver
+import it.unibo.model.cards.resolvers.tokens.PatternResolver
 import it.unibo.model.cards.resolvers.SpatialResolver
 import it.unibo.model.cards.effects.HasSpatialEffect
 
@@ -14,16 +14,16 @@ case object WaterCard:
   case object SmokeJumper extends WaterCard:
     val effectCode: Int = 11
     val effect: SpatialResolver =
-      TokenResolver(pattern { w; w; w; w; f; w; w; w; w }.toMatrix(3, 3))
+      PatternResolver(pattern { w; w; w; w; f; w; w; w; w }.toMatrix(3, 3))
 
   case object AirDrop extends WaterCard:
     val effectCode: Int = 12
-    val effect: SpatialResolver = TokenResolver(pattern { w; w; w }.toMatrix(1, 3))
+    val effect: SpatialResolver = PatternResolver(pattern { w; w; w }.toMatrix(1, 3))
 
   case object FireEngine extends WaterCard:
     val effectCode: Int = 13
-    val effect: SpatialResolver = TokenResolver(pattern { w; w; w; w }.toMatrix(2, 2))
+    val effect: SpatialResolver = PatternResolver(pattern { w; w; w; w }.toMatrix(2, 2))
 
   case object Bucket extends WaterCard:
     val effectCode: Int = 14
-    val effect: SpatialResolver = TokenResolver(pattern { w; w; w }.toMatrix(1, 3))
+    val effect: SpatialResolver = PatternResolver(pattern { w; w; w }.toMatrix(1, 3))

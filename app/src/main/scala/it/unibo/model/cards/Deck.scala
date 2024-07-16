@@ -10,21 +10,30 @@ import io.circe.generic.auto._
 import io.circe.yaml
 import io.circe.yaml.parser
 
-case class CardSet(cardSets: List[BaseCard])
+// Used to parse the yaml file of the cards' types
+case class CardSet(cardSets: List[CardType])
 
-case class Deck(cards: List[BaseCard]):
+case class Deck(cards: List[Card]):
   def shuffle(): Deck = copy(cards = Random.shuffle(cards))
-  def drawCard(): (BaseCard, Deck) = (cards.head, copy(cards = cards.tail))
+  def drawCard(): (Card, Deck) = (cards.head, copy(cards = cards.tail))
 
 object Deck:
   def apply(cardsResourcePath: String): Deck =
-    val cards = parseCards(cardsResourcePath)
-    cards match
-      case Some(cards) => new Deck(cards.cardSets)
+    val cardTypes = parseCardTypes(cardsResourcePath)
+    logger.info(s"${cardTypes.get.cardSets}")
+    cardTypes match
+      case Some(cards) =>
+        val c = createCards(cards)
+        logger.info(s"$c")
+        new Deck(c)
       case None        => Deck(List.empty)
 
-  private def parseCards(cardsResourcePath: String): Option[CardSet] =
+  private def parseCardTypes(cardsResourcePath: String): Option[CardSet] =
     val deckYaml = Source.fromResource(cardsResourcePath).mkString
     parser.parse(deckYaml).leftMap(err => err: Error).flatMap(_.as[CardSet]).toOption
+  
+  private def createCards(cardTypes: CardSet): List[Card] = cardTypes.cardSets.flatMap { c =>
+    List.fill(c.amount)(c)
+  }.zipWithIndex.map { case (c, index) => Card(index + 1, c) }
 
-  def showDeck(deck: Deck): Unit = deck.cards.foreach(card => logger.debug(s"${card.title}"))
+  def showDeck(deck: Deck): Unit = deck.cards.foreach(card => logger.info(s"$card"))

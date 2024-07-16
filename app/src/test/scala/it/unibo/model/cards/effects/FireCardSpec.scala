@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.resolvers.tokens.TokenResolver
+import it.unibo.model.cards.resolvers.tokens.PatternResolver
 import it.unibo.model.cards.effects.FireCard.*
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
@@ -18,7 +18,7 @@ class FireCardSpec extends GameEffectAbstractSpec:
       Ember.effectCode shouldBe 3
 
     "generate the correct resolver" in:
-      Explosion.effect shouldBe a[TokenResolver]
-      Flare.effect shouldBe a[TokenResolver]
-      BurningSnag.effect shouldBe a[TokenResolver]
-      Ember.effect shouldBe a[TokenResolver]
+      Explosion.effect shouldBe a[PatternResolver]
+      Flare.effect shouldBe a[PatternResolver]
+      BurningSnag.effect shouldBe a[PatternResolver]
+      Ember.effect shouldBe a[PatternResolver]

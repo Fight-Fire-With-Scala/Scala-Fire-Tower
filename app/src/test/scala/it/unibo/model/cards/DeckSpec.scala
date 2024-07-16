@@ -15,9 +15,9 @@ class DeckSpec extends AnyWordSpecLike with Matchers:
 
     "shuffle the deck" in:
       val deck = Deck("cards.yaml")
-      val originalOrder = deck.cards.map(_.title)
+      val originalOrder = deck.cards.map(_.id)
       val shuffledDeck = deck.shuffle()
-      val shuffledOrder = shuffledDeck.cards.map(_.title)
+      val shuffledOrder = shuffledDeck.cards.map(_.id)
       shuffledOrder should not equal originalOrder
 
     "draw a card from the deck" in:

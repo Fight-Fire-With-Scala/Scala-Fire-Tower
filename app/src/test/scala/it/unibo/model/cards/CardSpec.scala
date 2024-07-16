@@ -19,7 +19,7 @@ class CardSpec extends AnyWordSpecLike with Matchers:
           |effectCode: 1
          """.stripMargin
     
-      val parsedCard = parser.parse(yaml).flatMap(_.as[BaseCard])
+      val parsedCard = parser.parse(yaml).flatMap(_.as[CardType])
     
       parsedCard.isRight shouldBe true
     
@@ -36,7 +36,7 @@ class CardSpec extends AnyWordSpecLike with Matchers:
           |effectCode: 2
          """.stripMargin
     
-      val parsedCard = parser.parse(yaml).flatMap(_.as[BaseCard])
+      val parsedCard = parser.parse(yaml).flatMap(_.as[CardType])
     
       parsedCard.isRight shouldBe true
     

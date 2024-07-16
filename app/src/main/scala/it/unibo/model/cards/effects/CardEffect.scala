@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.PatternChoice
+import it.unibo.model.cards.resolvers.tokens.PatternToApply
 import it.unibo.model.cards.{GameChoice, GameEffect}
 import it.unibo.model.cards.resolvers.{LinearResolver, Resolver, ResolverWithChoice}
 
@@ -15,4 +15,4 @@ trait HasMultipleEffects[C <: GameChoice, E <: GameEffect] extends HasEffect:
   def choices: Set[C]
   def effect: ResolverWithChoice[C, E]
 
-type HasSpatialEffect = HasSingleEffect[PatternChoice]
+type HasSpatialEffect = HasSingleEffect[PatternToApply]

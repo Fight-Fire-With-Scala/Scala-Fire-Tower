@@ -4,75 +4,90 @@ cardSets:
     description: "Scegli una gemma fuoco esistente e sostituiscila
      con un segnalino tagliafuoco. Metti gemme di fuoco sugli spazi circostanti."
     effectCode: 0
+    amount: 4
   - title: "Vampata"
     typeName: "Fire"
     description: "Piazza fino a tre gemme di fuoco adiacenti e allineate. 
     Almeno una di esse deve toccare ortogonalmente una gemma fuoco preesistente."
     effectCode: 1
+    amount: 3
   - title: "Albero morto che brucia"
     typeName: "Fire"
     description: "Piazza fino a quattro gemme di fuoco a forma di quadrato.
     Almeno una di esse deve toccare ortogonalmente una gemma fuoco preesistente."
     effectCode: 2
+    amount: 4
   - title: "Tizzone"
     typeName: "Fire"
     description: "Sposta una gemma di fuoco sul tabellone in un qualunque spazio
     adiacente ortogonalmente ad un'altra gemma di fuoco. Non puoi muovere una
     gemma di fuoco che si trovi in una delle aree delle torri antincendio."
     effectCode: 3
+    amount: 3
   - title: "Nord"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Nord. OPPURE
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Nord di un'altra gemma di fuoco."
     effectCode: 4
+    amount: 4
   - title: "Sud"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Sud. OPPURE
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Sud di un'altra gemma di fuoco."
     effectCode: 5
+    amount: 4
   - title: "Est"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Est. OPPURE
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Est di un'altra gemma di fuoco."
     effectCode: 6
+    amount: 4
   - title: "Ovest"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Ovest. OPPURE
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Ovest di un'altra gemma di fuoco."
     effectCode: 7
+    amount: 4
   - title: "Linea di bulldozer"
     typeName: "Firebreak"
     description: "Piazza due segnalini tagliafuoco adiacenti sul tabellone."
     effectCode: 8
+    amount: 3
   - title: "Linea provvisoria"
     typeName: "Firebreak"
     description: "Piazza due segnalini tagliafuoco sul tabellone, con uno 
     spazio di distanza tra loro."
     effectCode: 9
+    amount: 3
   - title: "Ri/Deforesta"
     typeName: "Firebreak"
     description: "Aggiungi un segnalino tagliafuoco sul tabellone. OPPURE
     Rimuovi un segnalino tagliafuoco dal tabellone."
     effectCode: 10
+    amount: 4
   - title: "Vigile del fuoco paracadutista"
     typeName: "Water"
     description: "Scegli una gemma fuoco sul tabellone e rimuovi le gemme di fuoco
     circostanti. La gemma di fuoco nel centro deve rimanere sul tabellone."
     effectCode: 11
+    amount: 4
   - title: "Bombardamento d'acqua"
     typeName: "Water"
     description: "Rimuovi fino a tre gemme di fuoco adiacenti e allineate sul tabellone."
     effectCode: 12
+    amount: 4
   - title: "Autopompa"
     typeName: "Water"
     description: "Rimuovi fino a quattro gemme fuoco che formano un quadrato sul tabellone."
     effectCode: 13
+    amount: 4
   - title: "Secchio"
     typeName: "Water"
     description: "Rimuovi fino a tre gemme di fuoco adiacenti e allineate sul tabellone.
     Almeno una di esse deve trovarsi nell'area della tua torre antincendio."
     effectCode: 14
+    amount: 4

@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.resolvers.tokens.TokenResolver
+import it.unibo.model.cards.resolvers.tokens.PatternResolver
 import it.unibo.model.cards.resolvers.wind.WindResolver
 import it.unibo.model.cards.effects.WaterCard.*
 import org.junit.runner.RunWith
@@ -19,7 +19,7 @@ class WaterCardSpec extends GameEffectAbstractSpec:
       Bucket.effectCode shouldBe 14
 
     "generate the correct resolver" in:
-      SmokeJumper.effect shouldBe a[TokenResolver]
-      AirDrop.effect shouldBe a[TokenResolver]
-      FireEngine.effect shouldBe a[TokenResolver]
-      Bucket.effect shouldBe a[TokenResolver]
+      SmokeJumper.effect shouldBe a[PatternResolver]
+      AirDrop.effect shouldBe a[PatternResolver]
+      FireEngine.effect shouldBe a[PatternResolver]
+      Bucket.effect shouldBe a[PatternResolver]
