@@ -1,4 +1,4 @@
-package it.unibo.model.board
+package it.unibo.model.gameboard
 
 import it.unibo.model.cells.*
 import org.junit.runner.RunWith
@@ -7,6 +7,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
 import it.unibo.model.Position
 import it.unibo.model.grid.Grid
+import it.unibo.model.grid.GridBuilder.DSL.*
 
 @RunWith(classOf[JUnitRunner])
 class GridModelTest extends AnyWordSpec with Matchers:
@@ -67,7 +68,6 @@ class GridModelTest extends AnyWordSpec with Matchers:
     // noinspection ScalaUnusedExpression
     "be initialized with the correct pattern using the DSL" in:
       val standardGrid = Grid {
-        import GridBuilder.DSL.*
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
         T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
