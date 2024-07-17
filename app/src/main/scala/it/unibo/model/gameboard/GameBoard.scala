@@ -26,7 +26,7 @@ case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Playe
     copy(board = board.applyEffect(getGameEffect(card, cardChoice)))
 
   private def getGameEffect(card: Card, cardChoice: Option[GameChoice]): Option[GameEffect] =
-    card.cardType.resolve match
+    card.cardType.effect match
       case r: LinearResolver[GameEffect]                   => Some(r.resolve())
       case res: ResolverWithChoice[GameChoice, GameEffect] => getGameChoice(res, cardChoice)
       case _                                               => Option.empty
