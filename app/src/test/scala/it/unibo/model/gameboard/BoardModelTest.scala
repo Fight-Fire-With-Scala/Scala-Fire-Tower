@@ -2,6 +2,7 @@ package it.unibo.model.gameboard
 
 import io.circe.yaml.parser
 import it.unibo.model.board.Board
+import it.unibo.model.cards.effects.WindCard
 import it.unibo.model.cards.{Card, CardType, Deck}
 import org.junit.runner.RunWith
 import it.unibo.model.grid.Grid
@@ -17,7 +18,7 @@ class BoardModelTest extends AnyFlatSpec with Matchers {
     val board = Board.withRandomWindAndStandardGrid
     board.grid shouldBe a [Grid]
     board.grid.cells.size shouldBe Grid.positionNumber
-    Seq(WindDirection.North, WindDirection.South, WindDirection.East, WindDirection.West) should contain (board.windDirection)
+    WindDirection.windDirections should contain (board.windDirection)
   }
 
   "Playing a card with Wind effect" should "update the wind direction in the board" in{
@@ -26,18 +27,8 @@ class BoardModelTest extends AnyFlatSpec with Matchers {
     val board = Board(Grid.standard, initialWindDirection)
     val gameBoard = GameBoard(board, Deck(List.empty))
 
-    val windCardYaml =
-      """
-        |title: "Sud"
-        |typeName: "Wind"
-        |description: "Cambia la direzione del vento verso Sud. OPPURE
-        |Tira il dado per scegliere una nuova direzione del vento. OPPURE
-        |Metti una gemma di fuoco a Nord di un'altra gemma di fuoco."
-        |effectCode: 5
-        |amount: 2
-        |""".stripMargin
-    val parsedCard = parser.parse(windCardYaml).flatMap(_.as[CardType])
-    val cardType = parsedCard.toOption.get
+    val cardType =
+      CardType(title = "Sud", description = "", amount = 2, effect = WindCard.South.effect)
 
     val updatedGameBoard = gameBoard.resolveCardPlayed(Card(0, cardType), Some(WindChoice.UpdateWind))
     updatedGameBoard.board.windDirection shouldBe newWindDirection
