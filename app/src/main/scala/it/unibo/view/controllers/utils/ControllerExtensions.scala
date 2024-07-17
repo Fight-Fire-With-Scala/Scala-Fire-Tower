@@ -1,9 +1,7 @@
 package it.unibo.view.controllers.utils
 
-import it.unibo.controller.ControllerModule.given
-import it.unibo.view.controllers.menu.ControllerMenuImpl
-import it.unibo.controller.StartGameNotifier
+trait Notifier:
+  def doNotify(): Unit
 
-extension (controllerMenuImpl: ControllerMenuImpl)
-  def notifyGameStart()(using notifier: StartGameNotifier): Unit =
-    notifier.notifyStartGame()
+class StartGameNotifier extends Notifier:
+  override def doNotify(): Unit = println("Starting game...")
