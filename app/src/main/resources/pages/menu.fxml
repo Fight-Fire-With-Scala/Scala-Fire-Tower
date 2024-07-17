@@ -12,7 +12,7 @@
 
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.view.controllers.menu.ControllerMenuImpl" minWidth="900" minHeight="600">
+<StackPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" minWidth="900" minHeight="600">
     <HBox spacing="20.0" alignment="CENTER">
         <VBox fx:id="leftSpacer" HBox.hgrow="ALWAYS"/>
         <VBox alignment="CENTER" spacing="20.0">
