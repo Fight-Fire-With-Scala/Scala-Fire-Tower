@@ -2,7 +2,7 @@ package it.unibo.model.cards.effects
 
 import it.unibo.model.cards.resolvers.wind.{WindChoice, WindDirection, WindResolver}
 import it.unibo.model.cards.resolvers.{Dice, ResolverWithChoice}
-import it.unibo.model.cards.{GameChoice, GameEffect}
+import it.unibo.model.cards.GameEffect
 
 trait WindCard extends HasMultipleEffects[WindChoice, GameEffect]:
   val choices: Set[WindChoice] = WindChoice.windChoices

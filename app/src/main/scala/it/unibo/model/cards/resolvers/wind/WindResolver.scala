@@ -1,6 +1,6 @@
 package it.unibo.model.cards.resolvers.wind
 
-import it.unibo.model.cards.effects.patterns.{f, pattern}
+import it.unibo.model.cards.effects.{f, pattern}
 import it.unibo.model.cards.resolvers.{Dice, ResolverWithChoice}
 import it.unibo.model.cards.resolvers.tokens.PatternResolver
 import it.unibo.model.cards.resolvers.wind.WindChoice.{PlaceFire, RandomUpdateWind, UpdateWind}
@@ -15,4 +15,4 @@ case class WindResolver(direction: WindDirection, dice: Dice[WindDirection])
   override def resolve(choice: WindChoice): GameEffect = choice match
     case UpdateWind       => direction
     case RandomUpdateWind => dice.roll()
-    case PlaceFire        => PatternResolver(pattern(f)).resolve()
+    case PlaceFire        => PatternResolver(pattern(f).toMap(1, 1)).resolve()

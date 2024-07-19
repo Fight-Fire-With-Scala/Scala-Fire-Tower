@@ -1,8 +1,6 @@
 package it.unibo.model.grid
 
 import it.unibo.model.grid.GivenExtension.within
-import it.unibo.model.cells.{Cell, EternalFire, Tower, Woods}
-import it.unibo.model.Position
 
 import scala.annotation.{tailrec, targetName}
 

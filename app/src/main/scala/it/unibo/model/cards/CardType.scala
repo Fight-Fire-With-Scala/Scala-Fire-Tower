@@ -4,7 +4,10 @@ import io.circe.{Decoder, HCursor}
 import it.unibo.model.cards.resolvers.Resolver
 import it.unibo.model.logger
 
-case class CardType(title: String, description: String, amount: Int, effect: Resolver)
+case class CardType(title: String, 
+                    description: String,
+                    amount: Int,
+                    effect: Resolver)
 
 object CardType:
   implicit val decodeBaseCard: Decoder[CardType] = (c: HCursor) =>

@@ -1,8 +1,6 @@
 package it.unibo.model.grid
 
-import it.unibo.model.cards.resolvers.tokens.Token
-import it.unibo.model.cells.{Cell, Woods, Tower, EternalFire}
-import it.unibo.model.Position
+import it.unibo.model.cards.effects.{Token, Fire, Firebreak}
 
 trait Grid:
   def cells: Map[Position, Cell]
@@ -91,10 +89,9 @@ object Grid:
           case _: Woods => "W"
           case _: Tower => "T"
           case _: EternalFire => "E"
-          case _ => "."
         tokenChar = token match
-          case Some(Token.Fire) => "f"
-          case Some(Token.Firebreak) => "b"
+          case Some(Fire()) => "f"
+          case Some(Firebreak()) => "b"
           case _ => cellChar // Use cellChar if there's no token
         displayChar =
           if (token.isDefined) tokenChar

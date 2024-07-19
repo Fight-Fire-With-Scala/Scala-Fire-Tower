@@ -1,6 +1,6 @@
 package it.unibo.model.cards
 
-import it.unibo.model.cards.effects.patterns.{b, e, f, pattern, w, Empty, Fire, Firebreak, Water}
+import it.unibo.model.cards.effects.{b, e, f, pattern, w, Empty, Fire, Firebreak, Water}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.junit.runner.RunWith
@@ -15,4 +15,4 @@ class PatternDSLSpec extends AnyWordSpecLike with Matchers:
     val dummyPattern = pattern { w; f; b; e }
 
     "accumulate cells correctly" in:
-      dummyPattern.cells shouldBe ArrayBuffer(Water(), Fire(), Firebreak(), Empty())
+      dummyPattern.tokens shouldBe ArrayBuffer(Water(), Fire(), Firebreak(), Empty())

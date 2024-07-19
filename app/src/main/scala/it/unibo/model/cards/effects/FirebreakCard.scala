@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.cards.effects.patterns.{b, e, pattern}
+import it.unibo.model.cards.effects.{b, e, pattern}
 import it.unibo.model.cards.resolvers.tokens.{PatternChoice, PatternResolver, PatternResolverWithChoice, PatternToApply}
 import it.unibo.model.cards.resolvers.{ResolverWithChoice, SpatialResolver}
 
@@ -13,12 +13,12 @@ case object FirebreakCard:
   case object DeReforest extends FirebreakCard:
     val effectCode: Int = 10
     val effect: ResolverWithChoice[PatternChoice, PatternToApply] =
-      PatternResolverWithChoice(pattern(b))
+      PatternResolverWithChoice(pattern(b).toMap(1, 1))
 
   case object ScratchLine extends FirebreakCard:
     val effectCode: Int = 9
-    val effect: SpatialResolver = PatternResolver(pattern { b; e; b })
+    val effect: SpatialResolver = PatternResolver(pattern { b; e; b }.toMap(1, 3))
 
   case object DozerLine extends FirebreakCard:
     val effectCode: Int = 8
-    val effect: SpatialResolver = PatternResolver(pattern { b; b })
+    val effect: SpatialResolver = PatternResolver(pattern { b; b }.toMap(1, 2))
