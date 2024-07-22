@@ -38,18 +38,14 @@
             <ComboBox fx:id="setOfCardsDropdown" prefWidth="200" promptText="SET OF CARDS">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Base"/>
-                        <String fx:value="Expanded"/>
-                        <String fx:value="Full"/>
+
                     </FXCollections>
                 </items>
             </ComboBox>
             <ComboBox fx:id="botBehaviourDropdown" prefWidth="200" promptText="BOT BEHAVIOUR">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Aggressive"/>
-                        <String fx:value="Balanced"/>
-                        <String fx:value="Defensive"/>
+
                     </FXCollections>
                 </items>
             </ComboBox>
