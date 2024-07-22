@@ -1,6 +1,7 @@
 package it.unibo.model.cards
 
 import io.circe.{Decoder, HCursor}
+import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.resolvers.Resolver
 import it.unibo.model.logger
 

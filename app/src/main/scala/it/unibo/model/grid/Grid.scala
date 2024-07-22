@@ -1,7 +1,5 @@
 package it.unibo.model.grid
 
-import it.unibo.model.cards.effects.{Token, Fire, Firebreak}
-
 trait Grid:
   def cells: Map[Position, Cell]
   

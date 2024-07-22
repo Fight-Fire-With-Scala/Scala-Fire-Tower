@@ -1,4 +1,4 @@
-package it.unibo.model.cards.effects
+package it.unibo.model.cards.types
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

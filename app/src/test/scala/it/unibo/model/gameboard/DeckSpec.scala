@@ -1,4 +1,4 @@
-package it.unibo.model.cards
+package it.unibo.model.gameboard
 
 import org.junit.runner.RunWith
 import org.scalatest.matchers.should.Matchers

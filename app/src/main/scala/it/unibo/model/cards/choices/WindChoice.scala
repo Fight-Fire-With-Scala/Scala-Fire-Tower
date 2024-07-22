@@ -1,8 +1,6 @@
-package it.unibo.model.cards.resolvers.wind
+package it.unibo.model.cards.choices
 
-import it.unibo.model.cards.GameChoice
-
-trait WindChoice extends GameChoice
+sealed trait WindChoice extends CardChoice
 
 case object WindChoice:
   val windChoices: Set[WindChoice] = Set(UpdateWind, RandomUpdateWind, PlaceFire)

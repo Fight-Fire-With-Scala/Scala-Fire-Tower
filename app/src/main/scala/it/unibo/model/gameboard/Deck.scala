@@ -1,14 +1,14 @@
-package it.unibo.model.cards
+package it.unibo.model.gameboard
 
 import scala.io.Source
 import scala.util.Random
 import it.unibo.model.logger
-
-import cats.syntax.either._
-import io.circe._
-import io.circe.generic.auto._
+import cats.syntax.either.*
+import io.circe.*
+import io.circe.generic.auto.*
 import io.circe.yaml
 import io.circe.yaml.parser
+import it.unibo.model.cards.{Card, CardType}
 
 // Used to parse the yaml file of the cards' types
 case class CardSet(cardSets: List[CardType])

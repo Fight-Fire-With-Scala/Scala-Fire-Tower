@@ -1,14 +1,10 @@
 package it.unibo.model.cards.resolvers
 
-import it.unibo.model.cards.{GameChoice, GameEffect}
-import it.unibo.model.cards.resolvers.tokens.PatternToApply
+import it.unibo.model.cards.choices.GameChoice
 
 trait Resolver
 
-trait LinearResolver[E <: GameEffect] extends Resolver:
-  def resolve(): E
+trait StepResolver extends Resolver
 
-trait ResolverWithChoice[C <: GameChoice, E <: GameEffect] extends Resolver:
-  def resolve(choice: C): E
-
-type SpatialResolver = LinearResolver[PatternToApply]
+trait CompositeResolver[C <: GameChoice, R <: Resolver] extends Resolver:
+  def resolve(choice: C): R

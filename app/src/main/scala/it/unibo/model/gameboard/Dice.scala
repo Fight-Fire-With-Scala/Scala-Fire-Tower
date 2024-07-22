@@ -1,4 +1,4 @@
-package it.unibo.model.cards.resolvers
+package it.unibo.model.gameboard
 
 import scala.util.Random
 

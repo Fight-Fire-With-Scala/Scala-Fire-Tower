@@ -1,20 +1,21 @@
 package it.unibo.model.gameboard
 
 import it.unibo.model.board.Board
-import it.unibo.model.cards.resolvers.{LinearResolver, ResolverWithChoice}
-import it.unibo.model.cards.{Card, Deck, GameChoice, GameEffect}
+import it.unibo.model.cards.resolvers.{ChoiceResolver, MultiStepResolver, Resolver, StepResolver}
+import it.unibo.model.cards.Card
+import it.unibo.model.cards.choices.{CardChoice, GameChoice}
+import it.unibo.model.cards.effects.{CardEffect, GameEffect}
 
 sealed trait Player
 case object Player1 extends Player
 case object Player2 extends Player
 
-/**
- *
- * @param board
- * @param deck
- * @param currentPlayer
- * @param Player MISSING
- */
+/** @param board
+  * @param deck
+  * @param currentPlayer
+  * @param Player
+  *   MISSING
+  */
 case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Player1):
   def changeTurn(): GameBoard =
     currentPlayer = currentPlayer match
@@ -25,15 +26,14 @@ case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Playe
   def resolveCardPlayed(card: Card, cardChoice: Option[GameChoice]): GameBoard =
     copy(board = board.applyEffect(getGameEffect(card, cardChoice)))
 
-  private def getGameEffect(card: Card, cardChoice: Option[GameChoice]): Option[GameEffect] =
+  private def getGameEffect(card: Card, choice: Option[GameChoice]): Option[CardEffect] =
     card.cardType.effect match
-      case r: LinearResolver[GameEffect]                   => Some(r.resolve())
-      case res: ResolverWithChoice[GameChoice, GameEffect] => getGameChoice(res, cardChoice)
-      case _                                               => Option.empty
+      case r: ChoiceResolver[_] => ???
+      case r: MultiStepResolver => ???
 
-  private def getGameChoice(
-      resolver: ResolverWithChoice[GameChoice, GameEffect],
-      cardChoice: Option[GameChoice]
-  ): Option[GameEffect] = cardChoice match
-    case Some(choice) => Some(resolver.resolve(choice))
-    case None         => None
+//  private def getGameChoice(
+//                             resolver: CompositeResolver[CardChoice, Resolver],
+//                             cardChoice: Option[CardChoice]
+//  ): Option[CardEffect] = cardChoice match
+//    case Some(choice) => Some(resolver.resolve(choice))
+//    case None         => None
