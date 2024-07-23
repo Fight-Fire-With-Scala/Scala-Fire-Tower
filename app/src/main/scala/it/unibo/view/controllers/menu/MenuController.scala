@@ -1,6 +1,7 @@
 package it.unibo.view.controllers.menu
 
 import it.unibo.model.settings.{BotBehaviour, CardSet, GameMode, Settings}
+import it.unibo.view.controllers.GraphicController
 import it.unibo.view.controllers.utils.Notifier
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
@@ -20,7 +21,7 @@ trait MenuControllerService extends ControllerService:
 //  override def handleExitAction(): Unit = actualController.handleExitAction()
 
 //noinspection VarCouldBeVal
-class MenuController(notifier: Notifier) extends MenuControllerService:
+class MenuController(notifier: Notifier) extends MenuControllerService, GraphicController:
 
   @FXML
   private var gameModeToggleGroup: ToggleGroup = uninitialized
@@ -42,9 +43,9 @@ class MenuController(notifier: Notifier) extends MenuControllerService:
   @FXML
   def initialize(): Unit =
     setOfCardsDropdown
-      .setItems(javafx.collections.FXCollections.observableArrayList(CardSet.values *))
+      .setItems(javafx.collections.FXCollections.observableArrayList(CardSet.values*))
     botBehaviourDropdown
-      .setItems(javafx.collections.FXCollections.observableArrayList(BotBehaviour.values *))
+      .setItems(javafx.collections.FXCollections.observableArrayList(BotBehaviour.values*))
     botBehaviourDropdown.setDisable(true)
     gameModeToggleGroup.selectedToggleProperty().addListener { (_, _, newToggle) =>
       val isHumanVsHumanSelected = newToggle == humanVsHuman
@@ -59,10 +60,14 @@ class MenuController(notifier: Notifier) extends MenuControllerService:
 
   @FXML
   def handleStartAction(): Unit =
-    val selectedGameMode = if (humanVsHuman.isSelected) GameMode.HumanVsHuman else GameMode.HumanVsBot
+    val selectedGameMode =
+      if (humanVsHuman.isSelected) GameMode.HumanVsHuman else GameMode.HumanVsBot
     val selectedCardSet = Option(setOfCardsDropdown.getValue).getOrElse(CardSet.Base)
-    val selectedBotBehaviour = if (humanVsHuman.isSelected) None else Some(Option(botBehaviourDropdown.getValue).getOrElse(BotBehaviour.Balanced))
-    val playerOneNameInput = if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
+    val selectedBotBehaviour =
+      if (humanVsHuman.isSelected) None
+      else Some(Option(botBehaviourDropdown.getValue).getOrElse(BotBehaviour.Balanced))
+    val playerOneNameInput =
+      if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
 
     notifier.doNotify(Settings(
