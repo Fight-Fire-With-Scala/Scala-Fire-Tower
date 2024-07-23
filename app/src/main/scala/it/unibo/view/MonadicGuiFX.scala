@@ -27,7 +27,7 @@ object GUIType extends Enumeration:
       controller: ControllerModule.Controller
   ): (String, GraphicController) = value match
     case Menu =>
-      val notifier = new StartGameNotifier(controller.notifyHand())
+      val notifier = new StartGameNotifier(controller.notifyStartGameSession())
       ("/pages/menu.fxml", new MenuController(notifier))
     case Hand => ("/pages/hand.fxml", new HandController())
     case Card => ("/pages/card.fxml", new CardController())

@@ -3,16 +3,11 @@ package it.unibo.controller
 import it.unibo.model.ModelModule
 import it.unibo.view.ViewModule
 
-trait StartGameNotifier{
-    def notifyStartGame(): Unit
-}
-
 object ControllerModule:
-  given StartGameNotifier with
-    def notifyStartGame(): Unit = println("Starting game...")
 
   trait Controller:
-    def notifyStart(): Unit
+    def notifyStartMenu(): Unit
+    def notifyStartGameSession(): Unit
 
   trait Provider:
     val controller: Controller
@@ -24,10 +19,11 @@ object ControllerModule:
 
     class ControllerImpl extends Controller:
 
-      def notifyStart(): Unit =
+      def notifyStartMenu(): Unit =
         // context.model.init()
         context.view.show()
 
+      def notifyStartGameSession(): Unit = print("Starting new game...")
 
   trait Interface extends Provider with Component:
     self: Requirements =>
