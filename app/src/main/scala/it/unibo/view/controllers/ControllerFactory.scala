@@ -2,6 +2,7 @@ package it.unibo.view.controllers
 
 import it.unibo.controller.ControllerModule
 import it.unibo.view.GUIType
+import it.unibo.view.controllers.gameboard.GridController
 //import it.unibo.view.controllers.hand.HandController
 //import it.unibo.view.controllers.hand.cards.CardController
 import it.unibo.view.controllers.menu.MenuController
@@ -12,7 +13,8 @@ object ControllerFactory:
     gui match
       case GUIType.Menu =>
         new MenuController(new StartGameNotifier(controller.notifyStartGameSession()))
-
+      case GUIType.Grid =>
+        new GridController()
       // case GUIType.Hand => new HandController()
 
       // case GUIType.Card => new CardController()
