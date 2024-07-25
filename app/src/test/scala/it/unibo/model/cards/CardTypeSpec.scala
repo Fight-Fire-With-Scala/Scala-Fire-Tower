@@ -31,4 +31,4 @@ class CardTypeSpec extends AnyWordSpecLike with Matchers:
       parsedCard.isRight shouldBe true
 
       val card = parsedCard.toOption.get
-      card.effect should not be null
+      card.effectType should not be null
