@@ -1,7 +1,7 @@
 package it.unibo.model.players
 
 import it.unibo.model.cards.{Card, CardType}
-import it.unibo.model.cards.effects.{WindCard, WindEffect}
+import it.unibo.model.cards.effects.WindEffect
 import it.unibo.model.cards.types.WindCardType
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec
@@ -12,7 +12,7 @@ import org.scalatestplus.junit.JUnitRunner
 class PlayerSpec extends AnyFlatSpec with Matchers:
 
   val testCardType: CardType =
-    CardType(title = "Test", description = "Test card", amount = 1, effect = WindCardType.South.effect)
+    CardType(title = "Test", description = "Test card", amount = 1, effectType = WindCardType.North)
 
   def commonPlayerTests(createPlayer: () => Player, playerType: String): Unit =
     s"maintain a record of moves for $playerType" should s"contain all logged moves in order" in {
