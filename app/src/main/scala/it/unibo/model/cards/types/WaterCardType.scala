@@ -3,7 +3,7 @@ package it.unibo.model.cards.types
 import it.unibo.model.cards.types.{f, pattern, w}
 import it.unibo.model.cards.resolvers.{MultiStepResolver, Resolver}
 
-sealed trait WaterCardType extends HasEffect
+sealed trait WaterCardType extends HasEffectType
 
 // noinspection DuplicatedCode
 case object WaterCardType:

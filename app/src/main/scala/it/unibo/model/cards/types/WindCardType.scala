@@ -7,7 +7,7 @@ import it.unibo.model.cards.effects.WindEffect
 import it.unibo.model.cards.resolvers.{ChoiceResolver, InstantResolver, MultiStepResolver, Resolver}
 import it.unibo.model.gameboard.Dice
 
-sealed trait WindCardType extends HasEffect:
+sealed trait WindCardType extends HasEffectType:
   lazy val windDirection: WindEffect
   val effect: Resolver = generateEffect(windDirection)
 

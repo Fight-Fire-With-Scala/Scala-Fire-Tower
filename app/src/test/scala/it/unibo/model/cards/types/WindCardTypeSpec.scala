@@ -2,7 +2,6 @@ package it.unibo.model.cards.types
 
 import it.unibo.model.cards.choices.WindChoice
 import it.unibo.model.cards.resolvers.ChoiceResolver
-import it.unibo.model.cards.types.WindCardType
 import org.junit.runner.RunWith
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

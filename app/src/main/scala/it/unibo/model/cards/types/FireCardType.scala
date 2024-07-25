@@ -3,7 +3,7 @@ package it.unibo.model.cards.types
 import it.unibo.model.cards.types.{b, f, pattern}
 import it.unibo.model.cards.resolvers.{MultiStepResolver, Resolver}
 
-sealed trait FireCardType extends HasEffect
+sealed trait FireCardType extends HasEffectType
 
 // noinspection DuplicatedCode
 case object FireCardType:

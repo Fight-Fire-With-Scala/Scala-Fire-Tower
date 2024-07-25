@@ -5,7 +5,7 @@ import it.unibo.model.cards.choices.FirebreakChoice.{Deforest, Reforest}
 import it.unibo.model.cards.resolvers.{ChoiceResolver, MultiStepResolver, Resolver}
 import it.unibo.model.cards.types.{b, e, pattern, r}
 
-sealed trait FirebreakCardType extends HasEffect
+sealed trait FirebreakCardType extends HasEffectType
 
 // noinspection DuplicatedCode
 case object FirebreakCardType:
