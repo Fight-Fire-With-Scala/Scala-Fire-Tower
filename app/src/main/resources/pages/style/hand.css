@@ -1,0 +1,39 @@
+.card-slot {
+    -fx-alignment: center;
+    -fx-border-color: gray;
+    -fx-border-style: solid;
+    -fx-border-width: 2;
+    -fx-min-width: 150px;
+    -fx-min-height: 200px;
+    -fx-background-color: lightgray;
+    -fx-padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+    -fx-min-width: 150px;
+    -fx-min-height: 200px;
+}
+
+.fire { -fx-background-color: red; }
+
+.firebreak { -fx-background-color: purple; }
+
+.water { -fx-background-color: blue; }
+
+.wind { -fx-background-color: grey; }
+
+.default {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.card:hover {
+    -fx-background-color: lightblue;
+}
