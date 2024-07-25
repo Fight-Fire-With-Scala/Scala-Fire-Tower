@@ -57,7 +57,7 @@ class MonadicGuiFX(
         val cardController = ControllerFactory.createController(GUIType.Card)(controller)
           .asInstanceOf[CardController]
         val cardView = viewLoader.load(GUIType.Card.fxmlPath, cardController).asInstanceOf[Node]
-        handController.addCardToSlot(cardView, cardController, slotIndex)
+        handController.setupCard(cardView, cardController, slotIndex)
       }
     }
   )

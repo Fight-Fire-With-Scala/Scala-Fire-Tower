@@ -25,7 +25,7 @@ class HandController extends GraphicController:
 
   private var cardControllers: List[Option[CardController]] = List.fill(5)(None)
 
-  def addCardToSlot(cardPane: Node, cardController: CardController, slotIndex: Int): Unit = Platform
+  def setupCard(cardPane: Node, cardController: CardController, slotIndex: Int): Unit = Platform
     .runLater { () =>
       val slot = slotIndex match
         case 0 => slot0
