@@ -8,7 +8,9 @@ import scalafx.application.{JFXApp3, Platform}
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.Pane
-import it.unibo.view.controllers.ControllerFactory
+import it.unibo.view.controllers.{ControllerFactory, GraphicController}
+import it.unibo.view.controllers.hand.HandController
+import it.unibo.view.controllers.hand.cards.CardController
 
 import scala.compiletime.uninitialized
 
@@ -29,14 +31,33 @@ class MonadicGuiFX(
       minWidth = 900
     loadGUI(GUIType.Menu)
 
-  def loadGUI(guiType: GUIType): Unit =
+  private def loadGuiComponent(
+      guiType: GUIType,
+      setup: Option[GraphicController => Unit] = None
+  ): Unit =
     val guiTask = Task {
-      val root = viewLoader
-        .load(guiType.fxmlPath, ControllerFactory.createController(guiType)(controller))
+      val controllerInstance = ControllerFactory.createController(guiType)(controller)
+      val root = viewLoader.load(guiType.fxmlPath, controllerInstance).asInstanceOf[Node]
+      setup.foreach(_(controllerInstance))
       Platform.runLater { () =>
         pane.children.clear()
-        pane.children.add(root.asInstanceOf[Node])
+        pane.children.add(root)
         stage.show()
       }
     }
     guiTask.runAsyncAndForget
+
+  private def loadGUI(guiType: GUIType): Unit = loadGuiComponent(guiType)
+
+  def loadHand(): Unit = loadGuiComponent(
+    GUIType.Hand,
+    Some { graphicController =>
+      val handController = graphicController.asInstanceOf[HandController]
+      (0 to 4).foreach { slotIndex =>
+        val cardController = ControllerFactory.createController(GUIType.Card)(controller)
+          .asInstanceOf[CardController]
+        val cardView = viewLoader.load(GUIType.Card.fxmlPath, cardController).asInstanceOf[Node]
+        handController.addCardToSlot(cardView, cardController, slotIndex)
+      }
+    }
+  )
