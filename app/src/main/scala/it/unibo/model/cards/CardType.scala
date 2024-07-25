@@ -4,7 +4,7 @@ import io.circe.{Decoder, HCursor}
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.HasEffectType
 
-case class CardType(title: String, description: String, amount: Int, effect: HasEffectType)
+case class CardType(title: String, description: String, amount: Int, effectType: HasEffectType)
 
 object CardType:
   implicit val decodeBaseCard: Decoder[CardType] = (c: HCursor) =>
@@ -14,5 +14,5 @@ object CardType:
       effectCode <- c.downField("effectCode").as[Int]
       amount <- c.downField("amount").as[Int]
     yield
-      val effect = allCards.filter(c => c.effectCode.equals(effectCode)).head
-      CardType(title, description, amount, effect)
+      val effectType = allCards.filter(c => c.effectCode.equals(effectCode)).head
+      CardType(title, description, amount, effectType)
