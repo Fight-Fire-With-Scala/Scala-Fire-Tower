@@ -1,15 +1,9 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.cards.resolvers.{
-  ChoiceResolver,
-  MultiStepResolver,
-  PatternApplicationResolver,
-  PatternComputationResolver,
-  StepResolver
-}
+import it.unibo.model.cards.resolvers.{ChoiceResolver, InstantResolver, MultiStepResolver, PatternApplicationResolver, PatternComputationResolver, StepResolver}
 import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.{GameChoice, PatternApplication, PatternComputation, StepChoice}
-import it.unibo.model.cards.effects.GameEffect
+import it.unibo.model.cards.effects.{CardEffect, GameEffect}
 import it.unibo.model.gameboard.board.Board
 
 sealed trait Player
@@ -48,6 +42,7 @@ case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Playe
     card.cardType.effectType.effect match
       case cr: ChoiceResolver[GameChoice] => cr.resolve(choice) match
           case sr: StepResolver => matchStepResolver(sr, choice)
+          case ir: InstantResolver[CardEffect] => Some(ir.resolve())
           case _                => None
       case _: MultiStepResolver           => None
       case _                              => None
