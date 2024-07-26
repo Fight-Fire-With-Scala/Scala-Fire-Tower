@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<Pane xmlns:fx="http://javafx.com/fxml">
+    <HBox fx:id="handPane" spacing="20" alignment="CENTER" stylesheets="@style/hand.css">
+        <Pane fx:id="slot0" styleClass="card-slot" />
+        <Pane fx:id="slot1" styleClass="card-slot" />
+        <Pane fx:id="slot2" styleClass="card-slot" />
+        <Pane fx:id="slot3" styleClass="card-slot" />
+        <Pane fx:id="slot4" styleClass="card-slot" />
+    </HBox>
+</Pane>
