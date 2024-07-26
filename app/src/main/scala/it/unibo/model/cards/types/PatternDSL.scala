@@ -1,7 +1,7 @@
 package it.unibo.model.cards.types
 
 import it.unibo.model.cards.effects.PatternChoiceEffect
-import it.unibo.model.grid.{Empty, Fire, Firebreak, Position, Reforest, Token, Water}
+import it.unibo.model.gameboard.grid.{Empty, Fire, Firebreak, Position, Reforest, Token, Water}
 
 import scala.collection.mutable.ArrayBuffer
 

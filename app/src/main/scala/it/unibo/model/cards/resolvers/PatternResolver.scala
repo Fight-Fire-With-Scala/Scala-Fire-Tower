@@ -1,7 +1,7 @@
 package it.unibo.model.cards.resolvers
 
-import it.unibo.model.board.Board
 import it.unibo.model.cards.effects.{BoardEffect, CardEffect, PatternChoiceEffect}
+import it.unibo.model.gameboard.board.Board
 
 case class PatternComputationResolver(pattern: PatternChoiceEffect) extends StepResolver:
   def getAvailableMoves: Board => CardEffect =

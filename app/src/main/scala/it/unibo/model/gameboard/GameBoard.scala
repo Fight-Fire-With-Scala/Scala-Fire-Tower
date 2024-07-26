@@ -1,6 +1,5 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.board.Board
 import it.unibo.model.cards.resolvers.{
   ChoiceResolver,
   MultiStepResolver,
@@ -11,6 +10,7 @@ import it.unibo.model.cards.resolvers.{
 import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.{GameChoice, PatternApplication, PatternComputation, StepChoice}
 import it.unibo.model.cards.effects.GameEffect
+import it.unibo.model.gameboard.board.Board
 
 sealed trait Player
 case object Player1 extends Player

@@ -1,4 +1,4 @@
-package it.unibo.model.grid
+package it.unibo.model.gameboard.grid
 
 sealed trait Token
 

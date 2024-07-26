@@ -1,7 +1,7 @@
-package it.unibo.model.board
+package it.unibo.model.gameboard.board
 
 import it.unibo.model.cards.effects.{CardEffect, GameEffect, PatternComputationEffect, WindEffect}
-import it.unibo.model.grid.Grid
+import it.unibo.model.gameboard.grid.Grid
 
 import scala.util.Random
 

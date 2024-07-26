@@ -1,7 +1,7 @@
 package it.unibo.model.cards.resolvers
 
-import it.unibo.model.board.Board
 import it.unibo.model.cards.effects.{PatternChoiceEffect, PatternComputationEffect}
+import it.unibo.model.gameboard.board.Board
 //import it.unibo.prolog.ExampleKt.searchValidPatterns
 //import it.unibo.tuprolog.core.Term
 

@@ -1,4 +1,4 @@
-package it.unibo.model.grid
+package it.unibo.model.gameboard.grid
 
 /** Utility for handling given instances. */
 object GivenExtension:

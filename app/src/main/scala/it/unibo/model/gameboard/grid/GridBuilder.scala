@@ -1,6 +1,6 @@
-package it.unibo.model.grid
+package it.unibo.model.gameboard.grid
 
-import it.unibo.model.grid.GivenExtension.within
+import GivenExtension.within
 
 import scala.annotation.{tailrec, targetName}
 
