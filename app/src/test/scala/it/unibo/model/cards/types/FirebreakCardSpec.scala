@@ -1,13 +1,12 @@
 package it.unibo.model.cards.types
 
-import it.unibo.model.cards.choices.FirebreakChoice
-import it.unibo.model.cards.resolvers.{ChoiceResolver, MultiStepResolver}
-import it.unibo.model.cards.types.FirebreakCardType.*
+import it.unibo.model.cards.resolvers.{FirebreakResolver, MultiStepResolver}
+import it.unibo.model.cards.types.FirebreakCard.*
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class FirebreakCardTypeSpec extends GameEffectAbstractSpec:
+class FirebreakCardSpec extends GameEffectAbstractSpec:
 
   "Cards of type Firebreak" should:
 
@@ -18,6 +17,6 @@ class FirebreakCardTypeSpec extends GameEffectAbstractSpec:
       DozerLine.effectCode shouldBe 8
 
     "generate the correct resolver" in:
-      DeReforest.effect shouldBe a[ChoiceResolver[FirebreakChoice]]
+      DeReforest.effect shouldBe a[FirebreakResolver]
       ScratchLine.effect shouldBe a[MultiStepResolver]
       DozerLine.effect shouldBe a[MultiStepResolver]

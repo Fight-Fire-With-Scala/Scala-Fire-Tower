@@ -1,10 +1,15 @@
 package it.unibo.model.cards.resolvers
 
-import it.unibo.model.cards.choices.GameChoice
+import it.unibo.model.cards.effects.{BoardEffect, PatternChoiceEffect, PatternComputationEffect}
+import it.unibo.model.gameboard.board.Board
 
-trait Resolver
+trait EffectResolver
 
-trait StepResolver extends Resolver
+sealed trait StepResolver extends EffectResolver
 
-trait CompositeResolver[C <: GameChoice, R <: Resolver] extends Resolver:
-  def resolve(choice: C): R
+sealed case class PatternComputationResolver(pattern: PatternChoiceEffect) extends StepResolver:
+  def getAvailableMoves: Board => PatternComputationEffect =
+    (b: Board) => PrologSolver().solveWithProlog(b, pattern)
+
+sealed case class PatternApplicationResolver(pattern: PatternChoiceEffect) extends StepResolver:
+  def applyMove: Board => BoardEffect = (b: Board) => BoardEffect(b.applyEffect(Some(pattern)))

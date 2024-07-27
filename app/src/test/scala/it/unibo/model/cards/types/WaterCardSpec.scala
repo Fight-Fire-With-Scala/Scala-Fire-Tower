@@ -1,12 +1,12 @@
 package it.unibo.model.cards.types
 
 import it.unibo.model.cards.resolvers.MultiStepResolver
-import it.unibo.model.cards.types.WaterCardType.*
+import it.unibo.model.cards.types.WaterCard.*
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class WaterCardTypeSpec extends GameEffectAbstractSpec:
+class WaterCardSpec extends GameEffectAbstractSpec:
 
   "Cards of type Water" should:
 

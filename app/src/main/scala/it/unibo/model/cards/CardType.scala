@@ -2,9 +2,9 @@ package it.unibo.model.cards
 
 import io.circe.{Decoder, HCursor}
 import it.unibo.model.cards.Card.allCards
-import it.unibo.model.cards.types.HasEffectType
+import it.unibo.model.cards.types.HasEffect
 
-case class CardType(title: String, description: String, amount: Int, effectType: HasEffectType)
+case class CardType(title: String, description: String, amount: Int, effectType: HasEffect)
 
 object CardType:
   implicit val decodeBaseCard: Decoder[CardType] = (c: HCursor) =>
