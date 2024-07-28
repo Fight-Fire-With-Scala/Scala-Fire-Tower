@@ -10,7 +10,6 @@ repositories { mavenCentral() }
 
 dependencies {
     implementation(libs.scala.library)
-    implementation(libs.tuprolog)
     implementation(libs.scalafx)
     implementation(libs.monix)
     implementation(libs.scala.logging)
@@ -21,7 +20,6 @@ dependencies {
     testImplementation(libs.scalatest)
     testImplementation(libs.junit)
     testImplementation(libs.scalatest.plusjunit)
-//    testRuntimeOnly("org.scala-lang.modules:scala-xml_3:2.0.1")
 }
 
 javafx {
