@@ -1,7 +1,8 @@
 package it.unibo.view.controllers.gameboard
 
+import it.unibo.model.gameboard.grid.{EternalFire, Fire, Firebreak, Grid, Position, Tower, Woods}
 import it.unibo.view.controllers.GraphicController
-import javafx.fxml.{FXML, FXMLLoader}
+import javafx.fxml.FXML
 import javafx.scene.layout.{GridPane, Pane}
 import javafx.scene.shape.Rectangle
 import javafx.application.Platform
@@ -76,5 +77,31 @@ class GridController extends GraphicController {
     text.setY(rectangle.getHeight / 2 + text.getLayoutBounds.getHeight / 6)
     pane.getChildren.add(text)
     println(s"Rectangle at ($row, $col) clicked")
+  }
+
+  def updateGrid(grid: Grid): Unit = {
+    for (i <- 0 until gridSize; j <- 0 until gridSize) {
+      val position = Position(i, j)
+      val cell = grid.getCell(position).orNull
+      val token = grid.getToken(position)
+      val rectangle = rectangleMap((i, j))
+
+      val cellColor = cell match {
+        case _: Woods => Color.DARKGREEN
+        case _: Tower => Color.BROWN
+        case _: EternalFire => Color.RED
+        case _ => Color.WHITE // Default color for empty cells
+      }
+
+      val tokenColor = token match {
+        case Some(Fire) => Color.ORANGE
+        case Some(Firebreak) => Color.BLUE
+        case _ => cellColor // Use cellColor if there's no token
+      }
+
+      Platform.runLater(() => {
+        rectangle.setFill(tokenColor)
+      })
+    }
   }
 }

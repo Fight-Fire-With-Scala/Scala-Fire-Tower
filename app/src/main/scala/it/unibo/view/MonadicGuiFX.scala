@@ -8,7 +8,7 @@ import scalafx.application.{JFXApp3, Platform}
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.Pane
-import it.unibo.view.controllers.{ControllerFactory, GraphicController}
+import it.unibo.view.controllers.{ControllerFactory, GraphicController, GraphicControllerRegistry}
 import it.unibo.view.controllers.hand.HandController
 import it.unibo.view.controllers.hand.cards.CardController
 
@@ -37,6 +37,7 @@ class MonadicGuiFX(
   ): Unit =
     val guiTask = Task {
       val controllerInstance = ControllerFactory.createController(guiType)(controller)
+      GraphicControllerRegistry.register(controllerInstance)
       val root = viewLoader.load(guiType.fxmlPath, controllerInstance).asInstanceOf[Node]
       setup.foreach(_(controllerInstance))
       Platform.runLater { () =>
@@ -48,6 +49,8 @@ class MonadicGuiFX(
     guiTask.runAsyncAndForget
 
   private def loadGUI(guiType: GUIType): Unit = loadGuiComponent(guiType)
+
+  def loadGrid(): Unit = loadGUI(GUIType.Grid)
 
   def loadHand(): Unit = loadGuiComponent(
     GUIType.Hand,

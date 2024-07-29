@@ -1,6 +1,7 @@
 package it.unibo.controller
 
 import it.unibo.model.ModelModule
+import it.unibo.model.gameboard.board.Board
 import it.unibo.view.ViewModule
 
 object ControllerModule:
@@ -8,7 +9,8 @@ object ControllerModule:
   trait Controller:
     def notifyStartMenu(): Unit
     def notifyStartGameSession(): Unit
-
+    def getBoard: Board
+  
   trait Provider:
     val controller: Controller
 
@@ -23,7 +25,12 @@ object ControllerModule:
         // context.model.init()
         context.view.show()
 
-      def notifyStartGameSession(): Unit = print("Starting new game...")
+      def notifyStartGameSession(): Unit =
+        context.model.addViewObserver(context.view)
+        context.view.showGrid()
+        context.model.initialiseModel()
+
+      def getBoard: Board = context.model.getBoard
 
   trait Interface extends Provider with Component:
     self: Requirements =>

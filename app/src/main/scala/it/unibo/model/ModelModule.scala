@@ -1,14 +1,22 @@
 package it.unibo.model
 
+import it.unibo.model.gameboard.board.Board
+import it.unibo.model.gameboard.grid.Grid
+
+import scala.compiletime.uninitialized
+
+trait Observer:
+  def updateGrid(): Unit
+
 object ModelModule:
 
   trait Model:
 
-    def init(): Unit
+    def initialiseModel(): Unit
 
-    def updateVirtualTime(t: Int): Unit
+    def addViewObserver(observer: Observer): Unit
 
-    def getVirtualTime: Int
+    def getBoard: Board
 
   trait Provider:
 
@@ -17,13 +25,19 @@ object ModelModule:
   trait Component:
 
     class ModelImpl extends Model:
+      private var viewObserver: Option[Observer] = None
+      private var board: Board = uninitialized
 
-      private var virtualTime: Int = 0
+      private def updateView(): Unit = viewObserver match
+        case Some(observer) => observer.updateGrid()
+        case None => ()
 
-      def init(): Unit = virtualTime = 0
+      def addViewObserver(observer: Observer): Unit = this.viewObserver = Some(observer)
 
-      def updateVirtualTime(t: Int): Unit = virtualTime = t
+      def initialiseModel(): Unit =
+        board = Board.withRandomWindAndStandardGrid
+        updateView()
 
-      def getVirtualTime: Int = virtualTime
+      def getBoard: Board = board
 
   trait Interface extends Provider with Component
