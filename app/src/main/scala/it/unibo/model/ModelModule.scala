@@ -1,14 +1,17 @@
 package it.unibo.model
 
+import it.unibo.model.gameboard.board.Board
+import it.unibo.model.gameboard.grid.Grid
+import monix.reactive.subjects.PublishSubject
+
+import scala.compiletime.uninitialized
+
 object ModelModule:
 
   trait Model:
 
-    def init(): Unit
-
-    def updateVirtualTime(t: Int): Unit
-
-    def getVirtualTime: Int
+    def initialiseModel(): Unit
+    def getObservable : PublishSubject[Grid]
 
   trait Provider:
 
@@ -17,13 +20,14 @@ object ModelModule:
   trait Component:
 
     class ModelImpl extends Model:
+      private val observerSubject = PublishSubject[Grid]()
+      private var board : Board = uninitialized
+      
+      def getObservable: PublishSubject[Grid] = observerSubject
 
-      private var virtualTime: Int = 0
-
-      def init(): Unit = virtualTime = 0
-
-      def updateVirtualTime(t: Int): Unit = virtualTime = t
-
-      def getVirtualTime: Int = virtualTime
+      def initialiseModel(): Unit =
+        board = Board.withRandomWindAndStandardGrid
+        observerSubject.onNext(board.grid)
+  
 
   trait Interface extends Provider with Component

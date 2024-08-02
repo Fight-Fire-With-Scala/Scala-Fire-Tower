@@ -15,6 +15,9 @@ case class Board(grid: Grid, windDirection: WindEffect):
     case Some(_)                           => this
     case None                              => this
 
+  override def toString: String =
+    s"Board:\nGrid:\n${grid.toString}\nWind Direction: ${windDirection.toString}"
+
 object Board:
   def withRandomWindAndStandardGrid: Board =
     val randomWindDirection = Random.shuffle(WindEffect.values).head
