@@ -1,5 +1,6 @@
 package it.unibo.view.controllers.gameboard
 
+import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.grid.{EternalFire, Fire, Firebreak, Grid, Position, Tower, Woods}
 import it.unibo.view.controllers.GraphicController
 import javafx.fxml.FXML
@@ -12,7 +13,7 @@ import javafx.scene.text.{Font, Text}
 
 import scala.collection.mutable
 
-class GridController extends GraphicController:
+class GridController(observableSubject: ViewSubject) extends GraphicController:
 
   @FXML
   private var gridPane: GridPane = _

@@ -1,16 +1,15 @@
 package it.unibo.controller
 
+import it.unibo.controller.subscribers.ViewMessageHandler
+import it.unibo.controller.subscribers.ModelMessageHandler
 import it.unibo.model.ModelModule
-import it.unibo.model.gameboard.board.Board
 import it.unibo.view.ViewModule
-import it.unibo.subscribers.ModelSubscriber
 
 object ControllerModule:
 
   trait Controller:
-    def notifyStartMenu(): Unit
-    def notifyStartGameSession(): Unit
-  
+    def notifyStartGame(): Unit
+
   trait Provider:
     val controller: Controller
 
@@ -20,15 +19,9 @@ object ControllerModule:
     context: Requirements =>
 
     class ControllerImpl extends Controller:
-
-      def notifyStartMenu(): Unit =
-        // context.model.init()
-        context.view.show()
-
-      def notifyStartGameSession(): Unit =
-        context.model.getObservable.subscribe(new ModelSubscriber(context.view))
-        context.view.showGrid()
-        context.model.initialiseModel()
+      def notifyStartGame(): Unit =
+        context.model.getObservable.subscribe(new ViewMessageHandler(context.view))
+        context.view.getObservable.subscribe(new ModelMessageHandler(context.model))
 
   trait Interface extends Provider with Component:
     self: Requirements =>

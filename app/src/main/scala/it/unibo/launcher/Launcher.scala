@@ -15,5 +15,6 @@ object Launcher
   override val view = new ViewImpl()
 
   @main
-  def Main(): Unit = controller.notifyStartMenu()
-  
+  def Main(): Unit =
+    controller.notifyStartGame()
+    view.show()

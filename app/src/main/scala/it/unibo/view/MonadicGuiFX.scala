@@ -11,6 +11,8 @@ import scalafx.scene.layout.Pane
 import it.unibo.view.controllers.{ControllerFactory, GraphicController, GraphicControllerRegistry}
 import it.unibo.view.controllers.hand.HandController
 import it.unibo.view.controllers.hand.cards.CardController
+import monix.reactive.subjects.PublishSubject
+import it.unibo.controller.ViewSubject
 
 import scala.compiletime.uninitialized
 
@@ -18,7 +20,8 @@ class MonadicGuiFX(
     val w: Int,
     val h: Int,
     controller: ControllerModule.Controller,
-    viewLoader: ViewLoader
+    viewLoader: ViewLoader,
+    observableSubject: ViewSubject
 ) extends JFXApp3:
 
   private var pane: Pane = uninitialized
@@ -36,7 +39,7 @@ class MonadicGuiFX(
       setup: Option[GraphicController => Unit] = None
   ): Unit =
     val guiTask = Task {
-      val controllerInstance = ControllerFactory.createController(guiType)(controller)
+      val controllerInstance = ControllerFactory.createController(guiType)(observableSubject)
       GraphicControllerRegistry.register(controllerInstance)
       val root = viewLoader.load(guiType.fxmlPath, controllerInstance).asInstanceOf[Node]
       setup.foreach(_(controllerInstance))
@@ -57,7 +60,7 @@ class MonadicGuiFX(
     Some { graphicController =>
       val handController = graphicController.asInstanceOf[HandController]
       (0 to 4).foreach { slotIndex =>
-        val cardController = ControllerFactory.createController(GUIType.Card)(controller)
+        val cardController = ControllerFactory.createController(GUIType.Card)(observableSubject)
           .asInstanceOf[CardController]
         val cardView = viewLoader.load(GUIType.Card.fxmlPath, cardController).asInstanceOf[Node]
         handController.setupCard(cardView, cardController, slotIndex)

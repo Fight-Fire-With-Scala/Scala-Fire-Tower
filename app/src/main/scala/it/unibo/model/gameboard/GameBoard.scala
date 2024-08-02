@@ -4,20 +4,9 @@ import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
 import it.unibo.model.cards.effects.GameEffect
-import it.unibo.model.cards.resolvers.{
-  ChoiceResultResolver,
-  EffectResolver,
-  FirebreakResolver,
-  InstantResolver,
-  InstantWindResolver,
-  MetaResolver,
-  MultiStepResolver,
-  PatternApplicationResolver,
-  PatternComputationResolver,
-  StepResolver,
-  WindResolver
-}
+import it.unibo.model.cards.resolvers.{ChoiceResultResolver, EffectResolver, FirebreakResolver, InstantResolver, InstantWindResolver, MetaResolver, MultiStepResolver, PatternApplicationResolver, PatternComputationResolver, StepResolver, WindResolver}
 import it.unibo.model.gameboard.board.Board
+import it.unibo.model.gameboard.grid.Grid
 
 sealed trait Player
 case object Player1 extends Player
@@ -59,3 +48,6 @@ case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Playe
   private def handleStep(resolver: StepResolver): Option[GameEffect] = resolver match
     case sr: PatternComputationResolver => Some(sr.getAvailableMoves(board))
     case sr: PatternApplicationResolver => Some(sr.applyMove(board))
+
+object GameBoard:
+  def apply(): GameBoard = GameBoard(Board.withRandomWindAndStandardGrid, Deck("cards.yaml"))

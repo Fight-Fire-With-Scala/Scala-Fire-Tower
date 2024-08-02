@@ -1,17 +1,15 @@
 package it.unibo.model
 
-import it.unibo.model.gameboard.board.Board
-import it.unibo.model.gameboard.grid.Grid
 import monix.reactive.subjects.PublishSubject
-
-import scala.compiletime.uninitialized
+import it.unibo.controller.{ModelMessage, ModelSubject, StartGameBoardMessage}
+import it.unibo.model.gameboard.GameBoard
 
 object ModelModule:
 
   trait Model:
 
     def initialiseModel(): Unit
-    def getObservable : PublishSubject[Grid]
+    def getObservable: ModelSubject
 
   trait Provider:
 
@@ -20,14 +18,10 @@ object ModelModule:
   trait Component:
 
     class ModelImpl extends Model:
-      private val observerSubject = PublishSubject[Grid]()
-      private var board : Board = uninitialized
-      
-      def getObservable: PublishSubject[Grid] = observerSubject
+      private val observerSubject = PublishSubject[ModelMessage]()
 
-      def initialiseModel(): Unit =
-        board = Board.withRandomWindAndStandardGrid
-        observerSubject.onNext(board.grid)
-  
+      def getObservable: ModelSubject = observerSubject
+
+      def initialiseModel(): Unit = observerSubject.onNext(StartGameBoardMessage(GameBoard()))
 
   trait Interface extends Provider with Component

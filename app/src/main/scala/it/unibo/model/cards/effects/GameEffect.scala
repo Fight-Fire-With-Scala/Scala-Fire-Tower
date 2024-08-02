@@ -1,11 +1,14 @@
 package it.unibo.model.cards.effects
 
+import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.grid.{Position, Token}
 
 sealed trait GameEffect
 
 sealed case class BoardEffect(board: Board) extends GameEffect
+
+sealed case class GameboardEffect(gameboard: GameBoard) extends GameEffect
 
 sealed trait CardEffect extends GameEffect
 

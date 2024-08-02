@@ -2,11 +2,11 @@ package it.unibo.view.controllers.menu
 
 import it.unibo.model.settings.{BotBehaviour, CardSet, GameMode, Settings}
 import it.unibo.view.controllers.GraphicController
-import it.unibo.view.controllers.utils.Notifier
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
 import scalafx.application.Platform
+import it.unibo.controller.{SettingsMessage, ViewMessage, ViewSubject}
 
 import scala.compiletime.uninitialized
 
@@ -21,7 +21,8 @@ trait MenuControllerService extends ControllerService:
 //  override def handleExitAction(): Unit = actualController.handleExitAction()
 
 //noinspection VarCouldBeVal
-class MenuController(notifier: Notifier) extends MenuControllerService, GraphicController:
+class MenuController(observableSubject: ViewSubject)
+    extends MenuControllerService, GraphicController:
 
   @FXML
   private var gameModeToggleGroup: ToggleGroup = uninitialized
@@ -69,11 +70,11 @@ class MenuController(notifier: Notifier) extends MenuControllerService, GraphicC
     val playerOneNameInput =
       if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
-
-    notifier.doNotify(Settings(
+    
+    observableSubject.onNext(SettingsMessage(Settings(
       gameMode = selectedGameMode,
       cardSet = selectedCardSet,
       botBehaviour = selectedBotBehaviour,
       playerOneName = playerOneNameInput,
       playerTwoName = playerTwoNameInput
-    ))
+    )))
