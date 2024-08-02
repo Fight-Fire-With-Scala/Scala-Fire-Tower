@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Scala-Fire-Tower.app.test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Scala-Fire-Tower.app.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kt-prolog/Scala-Fire-Tower.kt-prolog.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kt-prolog/Scala-Fire-Tower.kt-prolog.main.iml" />
     </modules>
   </component>
 </project>
