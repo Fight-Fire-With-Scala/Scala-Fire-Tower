@@ -13,7 +13,7 @@ javafx-plugin-version = "0.0.13"
 circe-yaml-version = "1.15.0"
 circe-generic-version = "0.14.9"
 tuprolog-version = "1.0.4"
-kotlin-version = "1.9.20"
+kotlin-version = "1.8.10"
 
 [libraries]
 scala-logging = { module = "com.typesafe.scala-logging:scala-logging_3", version.ref = "scala-logging-version" }
@@ -27,11 +27,18 @@ scalatest-plusjunit = { module = "org.scalatestplus:junit-4-13_3", version.ref =
 circe-yaml = { module = "io.circe:circe-yaml_3", version.ref = "circe-yaml-version" }
 circe-generic = { module = "io.circe:circe-generic_3", version.ref = "circe-generic-version" }
 tuprolog-core = { module = "it.unibo.tuprolog:core-jvm", version.ref = "tuprolog-version" }
+tuprolog-unify = { module = "it.unibo.tuprolog:unify-jvm", version.ref = "tuprolog-version" }
+tuprolog-theory = { module = "it.unibo.tuprolog:theory-jvm", version.ref = "tuprolog-version" }
+tuprolog-solve = { module = "it.unibo.tuprolog:solve-jvm", version.ref = "tuprolog-version" }
+tuprolog-solve-classic = { module = "it.unibo.tuprolog:solve-classic-jvm", version.ref = "tuprolog-version" }
+tuprolog-parser-core = { module = "it.unibo.tuprolog:parser-core-jvm", version.ref = "tuprolog-version" }
+tuprolog-parser-theory = { module = "it.unibo.tuprolog:parser-theory-jvm", version.ref = "tuprolog-version" }
 tuprolog-dsl-core = { module = "it.unibo.tuprolog:dsl-core-jvm", version.ref = "tuprolog-version" }
 tuprolog-dsl-unify = { module = "it.unibo.tuprolog:dsl-unify-jvm", version.ref = "tuprolog-version" }
 tuprolog-dsl-theory = { module = "it.unibo.tuprolog:dsl-theory-jvm", version.ref = "tuprolog-version" }
 tuprolog-dsl-solve = { module = "it.unibo.tuprolog:dsl-solve-jvm", version.ref = "tuprolog-version" }
-tuprolog-solve-classic = { module = "it.unibo.tuprolog:solve-classic-jvm", version.ref = "tuprolog-version" }
+kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-version" }
+kotlin-stdlib-jvm = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
 
 [plugins]
 javafx = { id = "org.openjfx.javafxplugin", version.ref = "javafx-plugin-version" }
