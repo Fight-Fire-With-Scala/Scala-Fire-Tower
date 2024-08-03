@@ -25,7 +25,7 @@ object ViewModule:
 
       private val observableSubject = PublishSubject[ViewMessage]()
       private val gui =
-        MonadicGuiFX(800, 600, context.controller, new FXMLViewLoader, observableSubject)
+        MonadicGuiFX(800, 600, new FXMLViewLoader, observableSubject)
 
       def show(): Unit = gui.main(Array.empty)
 

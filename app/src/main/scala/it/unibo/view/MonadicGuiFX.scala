@@ -19,7 +19,6 @@ import scala.compiletime.uninitialized
 class MonadicGuiFX(
     val w: Int,
     val h: Int,
-    controller: ControllerModule.Controller,
     viewLoader: ViewLoader,
     observableSubject: ViewSubject
 ) extends JFXApp3:
