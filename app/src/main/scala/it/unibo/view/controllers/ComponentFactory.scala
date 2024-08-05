@@ -9,8 +9,8 @@ import it.unibo.view.controllers.menu.MenuController
 import it.unibo.view.controllers.utils.StartGameNotifier
 import monix.reactive.subjects.PublishSubject
 
-object ControllerFactory:
-  def createController(gui: GUIType)(observableSubject: ViewSubject): GraphicController =
+object ComponentFactory:
+  def createFXMLComponent(gui: GUIType)(observableSubject: ViewSubject): GraphicController =
     gui match
       case GUIType.Menu => new MenuController(observableSubject)
       case GUIType.Grid => new GridController(observableSubject)
