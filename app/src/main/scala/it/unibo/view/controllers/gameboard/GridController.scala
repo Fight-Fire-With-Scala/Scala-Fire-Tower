@@ -28,7 +28,7 @@ class GridController(observableSubject: ViewSubject) extends GraphicController:
       row <- 0 until gridSize
       col <- 0 until gridSize
     } {
-      val square = new GridSquare(row, col, squareSize, handleRectangleHover)
+      val square = GridSquare(row, col, squareSize, handleRectangleHover)
       GridPane.setRowIndex(square.getGraphicRectangle, row)
       GridPane.setColumnIndex(square.getGraphicRectangle, col)
       gridPane.children.add(square.getGraphicRectangle)
@@ -41,18 +41,18 @@ class GridController(observableSubject: ViewSubject) extends GraphicController:
     println(s"Direction: $direction")
 
   def updateGrid(grid: Grid): Unit =
-  squareMap.foreach { case ((i, j), square) =>
-    val position = Position(i, j)
-    val cellColor = grid.getCell(position) match
-      case Some(_: Woods)       => Color.DarkGreen
-      case Some(_: Tower)       => Color.rgb(66, 39, 3)
-      case Some(_: EternalFire) => Color.Red
-      case _                    => Color.White
+    squareMap.foreach { case ((i, j), square) =>
+      val position = Position(i, j)
+      val cellColor = grid.getCell(position) match
+        case Some(_: Woods)       => Color.DarkGreen
+        case Some(_: Tower)       => Color.rgb(66, 39, 3)
+        case Some(_: EternalFire) => Color.Red
+        case _                    => Color.White
 
-    val tokenColor = grid.getToken(position) match
-      case Some(Fire)      => Color.Orange
-      case Some(Firebreak) => Color.Blue
-      case _               => cellColor
+      val tokenColor = grid.getToken(position) match
+        case Some(Fire)      => Color.Orange
+        case Some(Firebreak) => Color.Blue
+        case _               => cellColor
 
-    Platform.runLater(() => square.updateColor(tokenColor))
-  }
+      Platform.runLater(() => square.updateColor(tokenColor))
+    }
