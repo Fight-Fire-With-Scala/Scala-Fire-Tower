@@ -3,6 +3,10 @@ package it.unibo.view.controllers.gameboard
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import javafx.scene.input.MouseEvent
+import javafx.animation.PauseTransition
+import javafx.util.Duration
+
+import scala.compiletime.uninitialized
 
 enum HoverDirection:
   case North, South, West, East, Center
@@ -20,11 +24,30 @@ case class GridSquare(row: Int, col: Int, size: Double, onHover: (Int, Int, Stri
     width = size
     height = size
     stroke = Color.Black
-    onMouseMoved = (event: MouseEvent) => handleHover(event)
+    onMouseMoved = (event: MouseEvent) => handleMouseMoved(event)
+    onMouseExited = (_: MouseEvent) => cancelHoverDelay()
 
-  private def handleHover(event: MouseEvent): Unit =
+  private val initialDelay = new PauseTransition(Duration.millis(500))
+  private val hoverDelay = new PauseTransition(Duration.millis(500))
+  hoverDelay.setOnFinished(_ => triggerHover())
+
+  private var lastEvent: MouseEvent = uninitialized
+
+  initialDelay.setOnFinished(_ => hoverDelay.playFromStart())
+
+  private def handleMouseMoved(event: MouseEvent): Unit =
+    lastEvent = event
+    initialDelay.playFromStart()
+    hoverDelay.stop()
+
+  private def cancelHoverDelay(): Unit =
+    initialDelay.stop()
+    hoverDelay.stop()
+
+  private def triggerHover(): Unit =
     val direction = HoverDirection
-      .fromCoordinates(event.getX, event.getY, rectangle.getWidth, rectangle.getHeight).toString
+      .fromCoordinates(lastEvent.getX, lastEvent.getY, rectangle.getWidth, rectangle.getHeight)
+      .toString
     onHover(row, col, direction)
 
   def getGraphicRectangle: Rectangle = rectangle
