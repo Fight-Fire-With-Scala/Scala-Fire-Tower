@@ -1,0 +1,49 @@
+<mxfile host="drawio-plugin" modified="2024-08-05T10:03:28.857Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" version="22.1.22" etag="nvcVSeTU1R0Sii708I7A" type="embed">
+  <diagram id="0zkbAS8sL2Kek0OyzCj2" name="Page-1">
+    <mxGraphModel dx="1127" dy="640" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="21" value="" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="180" y="120" width="510" height="510" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="GameBoard" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="200" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="200" y="160" width="310" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="Grid" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="200" y="130" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="510" width="310" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="Hand" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="200" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="27" value="" style="rounded=0;whiteSpace=wrap;html=1;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="385.5" y="326" width="438" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="Sidebar" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="574.5" y="120" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="- gridControllerFXML&lt;br&gt;- sidebarFXML&lt;br&gt;-handFXML" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="90" y="660" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="&lt;b&gt;GameBoardController&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="660" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="ViewModule utilizza GameBoardController" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="450" y="850" width="350" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="- updateGrid&lt;br&gt;....&lt;br&gt;...." style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="310" y="660" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="&lt;b&gt;GridControllerFXML&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="660" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
