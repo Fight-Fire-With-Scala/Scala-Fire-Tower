@@ -4,101 +4,78 @@ import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.grid.{EternalFire, Fire, Firebreak, Grid, Position, Tower, Woods}
 import it.unibo.view.controllers.GraphicController
 import javafx.fxml.FXML
-import javafx.scene.layout.{GridPane, Pane}
-import javafx.scene.shape.Rectangle
-import javafx.application.Platform
-import javafx.scene.paint.Color
-import javafx.scene.input.MouseEvent
-import javafx.scene.text.{Font, Text}
+import scalafx.scene.layout.GridPane
+import javafx.scene.layout.StackPane
+import scalafx.application.Platform
+import scalafx.scene.paint.Color
+import scalafx.scene.shape.Rectangle
 
 import scala.collection.mutable
+import scala.compiletime.uninitialized
 
 class GridController(observableSubject: ViewSubject) extends GraphicController:
 
   @FXML
-  private var gridPane: GridPane = _
+  private var container: StackPane = uninitialized
+  private var gridPane: GridPane = uninitialized
   private val gridSize = 16
   private val rectangleMap: mutable.Map[(Int, Int), Rectangle] = mutable.Map()
 
   @FXML
   def initialize(): Unit =
-    // Set fixed size constraints for the GridPane
-    gridPane.setMinSize(900, 600)
-    gridPane.setMaxSize(900, 600)
-
-    // Dynamically create and add panes with rectangles to the GridPane
-    for {
-      i <- 0 until gridSize
-      j <- 0 until gridSize
-    } {
-      val pane = new Pane()
-      val rectangle = new Rectangle()
-      rectangle.setStroke(Color.BLACK)
-      rectangle.setStrokeWidth(1)
-      rectangle.setFill(Color.DARKCYAN)
-      rectangle
-        .addEventHandler(MouseEvent.MOUSE_CLICKED, (_: MouseEvent) => handleRectangleClick(i, j))
-      pane.getChildren.add(rectangle)
-      gridPane.add(pane, i, j)
-      rectangleMap((i, j)) = rectangle
+    gridPane = new GridPane
+    //Add squares to the GridPane
+    for (row <- 0 until gridSize; col <- 0 until gridSize) {
+      val square = new Rectangle {
+        width = 30
+        height = 30
+        fill = if ((row + col) % 2 == 0) Color.White else Color.Gray
+        stroke = Color.Black
+      }
+      GridPane.setRowIndex(square, row)
+      GridPane.setColumnIndex(square, col)
+      gridPane.children.add(square)
+      rectangleMap((row, col)) = square
     }
+    container.getChildren.add(gridPane)
 
-    // Ensure we run updateRectangleSizes after the layout is complete
-    Platform.runLater { () =>
-      updateRectangleSizes()
+//  private def updateSquaresSizes(): Unit = {
+//    val width = container.getWidth
+//    val height = container.getHeight
+//    val squareSize = width / gridSize
+//    print("Square size: " + squareSize)
+//    for (row <- 0 until gridSize; col <- 0 until gridSize) {
+//      val square = rectangleMap((row, col))
+//      square.width = squareSize
+//      square.height = squareSize
+//    }
+//  }
 
-      // Add listeners to handle resizing dynamically
-      gridPane.widthProperty().addListener((_, _, _) => updateRectangleSizes())
-      gridPane.heightProperty().addListener((_, _, _) => updateRectangleSizes())
-    }
+//  private def handleRectangleClick(row: Int, col: Int): Unit =
+//    val rectangle = rectangleMap((row, col))
+//    val pane = rectangle.getParent.asInstanceOf[Pane]
+//    val text = new Text("!")
+//    text.setFill(Color.RED)
+//    text.setFont(new Font(rectangle.getHeight / 2)) // Adjust font size to fit within the rectangle
+//    text.setX(rectangle.getWidth / 2 - text.getLayoutBounds.getWidth / 2)
+//    text.setY(rectangle.getHeight / 2 + text.getLayoutBounds.getHeight / 6)
+//    pane.getChildren.add(text)
+//    println(s"Rectangle at ($row, $col) clicked")
 
-  private def updateRectangleSizes(): Unit =
-    val numColumns = gridSize
-    val numRows = gridSize
-    val width = gridPane.getWidth
-    val height = gridPane.getHeight
-
-    // Calculate the minimum dimension to ensure cells are square
-    val squareSize =
-      if (width > 0) { width / numColumns }
-      else 0
-    println("Resize event: width=" + width + ", height=" + height + ", squareSize=" + squareSize)
-    // Resize rectangles within panes to be square and fill the entire cell
-    for {
-      i <- 0 until numColumns
-      j <- 0 until numRows
-    } {
-      val rectangle = rectangleMap((i, j))
-      rectangle.setWidth(squareSize)
-      rectangle.setHeight(squareSize)
-    }
-
-  private def handleRectangleClick(row: Int, col: Int): Unit =
-    val rectangle = rectangleMap((row, col))
-    val pane = rectangle.getParent.asInstanceOf[Pane]
-    val text = new Text("!")
-    text.setFill(Color.RED)
-    text.setFont(new Font(rectangle.getHeight / 2)) // Adjust font size to fit within the rectangle
-    text.setX(rectangle.getWidth / 2 - text.getLayoutBounds.getWidth / 2)
-    text.setY(rectangle.getHeight / 2 + text.getLayoutBounds.getHeight / 6)
-    pane.getChildren.add(text)
-    println(s"Rectangle at ($row, $col) clicked")
-
-  def updateGrid(grid: Grid): Unit =
-  for {
+  def updateGrid(grid: Grid): Unit = for {
     i <- 0 until gridSize
     j <- 0 until gridSize
   } {
     val position = Position(i, j)
     val cellColor = grid.getCell(position) match
-      case Some(_: Woods)       => Color.DARKGREEN
-      case Some(_: Tower)       => Color.BROWN
-      case Some(_: EternalFire) => Color.RED
-      case _                    => Color.WHITE
+      case Some(_: Woods)       => Color.DarkGreen
+      case Some(_: Tower)       => Color.Brown
+      case Some(_: EternalFire) => Color.Red
+      case _                    => Color.White
 
     val tokenColor = grid.getToken(position) match
-      case Some(Fire)      => Color.ORANGE
-      case Some(Firebreak) => Color.BLUE
+      case Some(Fire)      => Color.Orange
+      case Some(Firebreak) => Color.Blue
       case _               => cellColor
 
     Platform.runLater(() => rectangleMap((i, j)).setFill(tokenColor))
