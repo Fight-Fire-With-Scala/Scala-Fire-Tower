@@ -20,6 +20,8 @@ object HoverDirection:
     else HoverDirection.Center
 
 case class GridSquare(row: Int, col: Int, size: Double, onHover: (Int, Int, String) => Unit):
+  private val hoverDelayMillis = 250
+
   private val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
@@ -27,8 +29,8 @@ case class GridSquare(row: Int, col: Int, size: Double, onHover: (Int, Int, Stri
     onMouseMoved = (event: MouseEvent) => handleMouseMoved(event)
     onMouseExited = (_: MouseEvent) => cancelHoverDelay()
 
-  private val initialDelay = new PauseTransition(Duration.millis(500))
-  private val hoverDelay = new PauseTransition(Duration.millis(500))
+  private val initialDelay = new PauseTransition(Duration.millis(hoverDelayMillis))
+  private val hoverDelay = new PauseTransition(Duration.millis(hoverDelayMillis))
   hoverDelay.setOnFinished(_ => triggerHover())
 
   private var lastEvent: MouseEvent = uninitialized
