@@ -29,8 +29,8 @@ class MonadicGuiFX(
     pane = new Pane()
     stage = new PrimaryStage:
       scene = new Scene(pane, w, h)
-      minHeight = 600
-      minWidth = 900
+      minHeight = 720
+      minWidth = 1280
     loadGUI(GUIType.Menu)
 
   private def loadGuiComponent(
