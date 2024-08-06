@@ -1,12 +1,14 @@
 package it.unibo.view.controllers.hand.cards
 
+import it.unibo.model.cards.Card.allCards
+import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
 import it.unibo.view.controllers.GraphicController
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import javafx.scene.input.MouseEvent
-import scalafx.Includes._
+import scalafx.Includes.*
 
 import scala.compiletime.uninitialized
 
@@ -38,9 +40,9 @@ class CardController extends GraphicController:
       cardId = ""
 
   private def getStyleClassForCardType(cardType: CardType): String =
-    cardType.effectType.effectCode match
-      case 0 | 1 | 2 | 3     => "fire"
-      case 4 | 5 | 6 | 7     => "wind"
-      case 8 | 9 | 10        => "firebreak"
-      case 11 | 12 | 13 | 14 => "water"
-      case _                 => "default"
+    allCards.find(_.effectCode == cardType.effectType.effectCode) match
+      case Some(_: FireCard)      => "fire"
+      case Some(_: WindCard)      => "wind"
+      case Some(_: FirebreakCard) => "firebreak"
+      case Some(_: WaterCard)     => "water"
+      case _                      => "default"
