@@ -1,6 +1,6 @@
 package it.unibo.view.components.deck
 
-import it.unibo.controller.ViewSubject
+import it.unibo.controller.{DrawCardMessage, ViewSubject}
 import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
 import javafx.scene.control.{Spinner, SpinnerValueFactory}
@@ -27,6 +27,5 @@ class DeckComponent(observableSubject: ViewSubject) extends GraphicComponent:
     numberInput.getValueFactory.setValue(1)
 
   @FXML
-  private def handleDrawCard(): Unit =
-    val number = numberInput.getValue
-    println(s"Number selected: $number")
+  private def handleDrawCard(): Unit = observableSubject
+    .onNext(DrawCardMessage(numberInput.getValue))

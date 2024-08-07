@@ -14,6 +14,7 @@ sealed trait Message
  */
 sealed trait ViewMessage extends Message
 case class SettingsMessage(settings: Settings) extends ViewMessage
+case class DrawCardMessage(nCards: Int) extends ViewMessage
 
 /*
  * This refers to messages sent to the view from the model
