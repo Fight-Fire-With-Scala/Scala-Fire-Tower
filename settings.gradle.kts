@@ -4,4 +4,4 @@ plugins {
 }
 
 rootProject.name = "Scala-Fire-Tower"
-include("app", "kt-prolog")
+include("app")
