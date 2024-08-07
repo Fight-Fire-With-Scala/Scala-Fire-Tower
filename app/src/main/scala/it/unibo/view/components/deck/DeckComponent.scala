@@ -1,13 +1,13 @@
-package it.unibo.view.controllers.deck
+package it.unibo.view.components.deck
 
 import it.unibo.controller.ViewSubject
-import it.unibo.view.controllers.GraphicController
+import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
 import javafx.scene.control.{Spinner, SpinnerValueFactory}
 
 import scala.compiletime.uninitialized
 
-class DeckController(observableSubject: ViewSubject) extends GraphicController:
+class DeckComponent(observableSubject: ViewSubject) extends GraphicComponent:
 
   @FXML
   private var numberInput: Spinner[Integer] = uninitialized

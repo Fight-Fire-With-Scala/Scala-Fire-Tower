@@ -1,8 +1,8 @@
-package it.unibo.view.controllers.gameboard
+package it.unibo.view.components.gameboard
 
 import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.grid.{EternalFire, Fire, Firebreak, Grid, Position, Tower, Woods}
-import it.unibo.view.controllers.GraphicController
+import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
@@ -13,7 +13,7 @@ import scala.collection.mutable
 import scala.compiletime.uninitialized
 import scala.language.postfixOps
 
-class GridController(observableSubject: ViewSubject) extends GraphicController:
+class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
 
   @FXML
   private var container: StackPane = uninitialized

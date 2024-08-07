@@ -1,4 +1,4 @@
-package it.unibo.view.controllers.gameboard
+package it.unibo.view.components.gameboard
 
 enum HoverDirection:
   case North, South, West, East, NotDetermined

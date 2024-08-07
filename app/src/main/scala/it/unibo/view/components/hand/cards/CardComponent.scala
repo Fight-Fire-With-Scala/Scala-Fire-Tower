@@ -1,9 +1,9 @@
-package it.unibo.view.controllers.hand.cards
+package it.unibo.view.components.hand.cards
 
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
-import it.unibo.view.controllers.GraphicController
+import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
@@ -12,7 +12,7 @@ import scalafx.Includes.*
 
 import scala.compiletime.uninitialized
 
-class CardController extends GraphicController:
+class CardComponent extends GraphicComponent:
   @FXML
   var cardPane: Pane = uninitialized
   @FXML

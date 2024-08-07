@@ -1,4 +1,4 @@
-package it.unibo.view.controllers.gameboard
+package it.unibo.view.components.gameboard
 
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
