@@ -9,17 +9,17 @@ import javafx.util.Duration
 import scala.compiletime.uninitialized
 
 enum HoverDirection:
-  case North, South, West, East, Center
+  case North, South, West, East, NotDetermined
 
 object HoverDirection:
   def fromCoordinates(x: Double, y: Double, width: Double, height: Double): HoverDirection =
-    if y < height / 3 then HoverDirection.North
-    else if y > 2 * height / 3 then HoverDirection.South
-    else if x < width / 3 then HoverDirection.West
-    else if x > 2 * width / 3 then HoverDirection.East
-    else HoverDirection.Center
+    if y < height / 3 && x >= width / 3 && x <= 2 * width / 3 then HoverDirection.North
+    else if y > 2 * height / 3 && x >= width / 3 && x <= 2 * width / 3 then HoverDirection.South
+    else if x < width / 3 && y >= height / 3 && y <= 2 * height / 3 then HoverDirection.West
+    else if x > 2 * width / 3 && y >= height / 3 && y <= 2 * height / 3 then HoverDirection.East
+    else HoverDirection.NotDetermined
 
-case class GridSquare(row: Int, col: Int, size: Double, onHover: (Int, Int, String) => Unit):
+case class GridSquare(row: Int, col: Int, size: Double, onHover: (Int, Int, HoverDirection) => Unit):
   private val hoverDelayMillis = 250
 
   private val rectangle: Rectangle = new Rectangle:
@@ -49,7 +49,6 @@ case class GridSquare(row: Int, col: Int, size: Double, onHover: (Int, Int, Stri
   private def triggerHover(): Unit =
     val direction = HoverDirection
       .fromCoordinates(lastEvent.getX, lastEvent.getY, rectangle.getWidth, rectangle.getHeight)
-      .toString
     onHover(row, col, direction)
 
   def getGraphicRectangle: Rectangle = rectangle
