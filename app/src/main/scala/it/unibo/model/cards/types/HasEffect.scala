@@ -4,5 +4,5 @@ import it.unibo.model.cards.choices.GameChoice
 import it.unibo.model.cards.resolvers.{MetaResolver, EffectResolver}
 
 trait HasEffect:
-  def effectCode: Int
+  def id: Int
   def effect: MetaResolver[? <: GameChoice, ? <: EffectResolver]

@@ -1,24 +1,56 @@
 package it.unibo.model.cards.types
 
-import it.unibo.model.cards.types.{b, f, pattern}
-import it.unibo.model.cards.resolvers.{MetaResolver, MultiStepResolver, EffectResolver}
+import it.unibo.model.cards.resolvers.{EffectResolver, MetaResolver, MultiStepResolver}
 import it.unibo.model.cards.choices.GameChoice
+import it.unibo.model.cards.effects.{LargeEffect, MediumEffect, VerySmallEffect, VeryLargeEffect}
+import it.unibo.model.gameboard.grid.{Fire, Firebreak, Token}
+import it.unibo.model.prolog.Scala2P.given
+import it.unibo.model.prolog.PrologSolver.engine
 
-// noinspection DuplicatedCode
 enum FireCard(
-    override val effectCode: Int,
+    override val id: Int,
     override val effect: MetaResolver[? <: GameChoice, ? <: EffectResolver]
 ) extends HasEffect:
   case Explosion
       extends FireCard(
-        effectCode = 0,
-        effect = MultiStepResolver(pattern { f; f; f; f; b; f; f; f; f }.mapTo(3, 3))
+        id = 0,
+        effect = MultiStepResolver(
+          VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
   case Flare
-      extends FireCard(effectCode = 1, effect = MultiStepResolver(pattern { f; f; f }.mapTo(1, 3)))
+      extends FireCard(
+        id = 1,
+        effect = MultiStepResolver(
+          MediumEffect(FireCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
+      )
   case BurningSnag
       extends FireCard(
-        effectCode = 2,
-        effect = MultiStepResolver(pattern { f; f; f; f }.mapTo(2, 2))
+        id = 2,
+        effect = MultiStepResolver(
+          LargeEffect(FireCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
-  case Ember extends FireCard(effectCode = 3, effect = MultiStepResolver(pattern(f).mapTo(1, 1)))
+  case Ember
+      extends FireCard(
+        id = 3,
+        effect = MultiStepResolver(
+          VerySmallEffect(FireCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
+      )
+
+object FireCard:
+  val defaultTokens: Map[String, Token] = Map("a" -> Fire)

@@ -12,10 +12,10 @@ class WaterCardSpec extends GameEffectAbstractSpec:
 
     // noinspection ScalaUnusedExpression
     "have the correct effect code" in:
-      SmokeJumper.effectCode shouldBe 11
-      AirDrop.effectCode shouldBe 12
-      FireEngine.effectCode shouldBe 13
-      Bucket.effectCode shouldBe 14
+      SmokeJumper.id shouldBe 11
+      AirDrop.id shouldBe 12
+      FireEngine.id shouldBe 13
+      Bucket.id shouldBe 14
 
     "generate the correct resolver" in:
       SmokeJumper.effect shouldBe a[MultiStepResolver]

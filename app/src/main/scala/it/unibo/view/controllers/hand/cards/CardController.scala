@@ -38,7 +38,7 @@ class CardController extends GraphicController:
       cardId = ""
 
   private def getStyleClassForCardType(cardType: CardType): String =
-    cardType.effectType.effectCode match
+    cardType.effectType.id match
       case 0 | 1 | 2 | 3     => "fire"
       case 4 | 5 | 6 | 7     => "wind"
       case 8 | 9 | 10        => "firebreak"
