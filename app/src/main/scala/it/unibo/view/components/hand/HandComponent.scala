@@ -1,7 +1,7 @@
-package it.unibo.view.controllers.hand
+package it.unibo.view.components.hand
 
-import it.unibo.view.controllers.GraphicController
-import it.unibo.view.controllers.hand.cards.CardController
+import it.unibo.view.components.GraphicComponent
+import it.unibo.view.components.hand.cards.CardComponent
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import scalafx.application.Platform
@@ -9,7 +9,7 @@ import javafx.scene.Node
 
 import scala.compiletime.uninitialized
 
-class HandController extends GraphicController:
+class HandComponent extends GraphicComponent:
   @FXML
   var handPane: Pane = uninitialized
   @FXML
@@ -23,9 +23,9 @@ class HandController extends GraphicController:
   @FXML
   var slot4: Pane = uninitialized
 
-  private var cardControllers: List[Option[CardController]] = List.fill(5)(None)
+  private var cardComponents: List[Option[CardComponent]] = List.fill(5)(None)
 
-  def setupCard(cardPane: Node, cardController: CardController, slotIndex: Int): Unit = Platform
+  def setupCard(cardPane: Node, cardComponent: CardComponent, slotIndex: Int): Unit = Platform
     .runLater { () =>
       val slot = slotIndex match
         case 0 => slot0
@@ -39,11 +39,11 @@ class HandController extends GraphicController:
       pane.layoutYProperty().bind(slot.heightProperty().subtract(pane.heightProperty()).divide(2))
       pane.getStyleClass.add("default")
       slot.getChildren.add(pane)
-      cardControllers = cardControllers.updated(slotIndex, Some(cardController))
+      cardComponents = cardComponents.updated(slotIndex, Some(cardComponent))
     }
 
   def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = Platform.runLater { () =>
     cards.zipWithIndex.foreach { case (card, index) =>
-      cardControllers(index).foreach(_.setCard(Some(card)))
+      cardComponents(index).foreach(_.setCard(Some(card)))
     }
   }

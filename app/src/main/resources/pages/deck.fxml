@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <Pane fx:id="cardPane" layoutX="125.0" layoutY="100.0" prefHeight="200.0" prefWidth="150.0" style="-fx-background-color: #D2B48C; -fx-border-color: black; -fx-border-width: 2;">
+        <VBox alignment="CENTER" layoutX="25.0" layoutY="50.0" spacing="10">
+            <Button onAction="#handleDrawCard" text="Draw Card" />
+            <Spinner fx:id="numberInput" prefWidth="100">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="5" initialValue="1"/>
+                </valueFactory>
+            </Spinner>
+        </VBox>
+    </Pane>
+</AnchorPane>

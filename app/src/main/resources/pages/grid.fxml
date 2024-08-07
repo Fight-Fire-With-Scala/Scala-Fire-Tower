@@ -1,44 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.css.Style?>
-<GridPane fx:id="gridPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" minWidth="900" minHeight="600">
-    <columnConstraints>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-        <ColumnConstraints percentWidth="6.25" hgrow="ALWAYS"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-        <RowConstraints percentHeight="6.25" vgrow="ALWAYS"/>
-    </rowConstraints>
-</GridPane>
+
+<?import javafx.scene.layout.StackPane?>
+<StackPane fx:id="container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" minWidth="1280" minHeight="720">
+</StackPane>

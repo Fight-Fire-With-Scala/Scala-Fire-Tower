@@ -2,6 +2,12 @@ package it.unibo.controller
 
 //import it.unibo.model.cards.effects.GameboardEffect
 
+/*
+In the modelMessageHandler we needed the logic to handle the status of the turn.
+because the turn could be made in two phases and with different possibilities.
+Is a sort of handler of the game phase.
+ */
+
 //enum GamePhase:
 //  case WindPhase, ActionPhase
 //

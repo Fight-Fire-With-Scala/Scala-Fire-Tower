@@ -1,7 +1,7 @@
-package it.unibo.view.controllers.menu
+package it.unibo.view.components.menu
 
 import it.unibo.model.settings.{BotBehaviour, CardSet, GameMode, Settings}
-import it.unibo.view.controllers.GraphicController
+import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
@@ -10,9 +10,9 @@ import it.unibo.controller.{SettingsMessage, ViewMessage, ViewSubject}
 
 import scala.compiletime.uninitialized
 
-trait ControllerService
+trait ComponentService
 
-trait MenuControllerService extends ControllerService:
+trait MenuComponentService extends ComponentService:
   def handleStartAction(): Unit
   def handleExitAction(): Unit
 
@@ -21,8 +21,8 @@ trait MenuControllerService extends ControllerService:
 //  override def handleExitAction(): Unit = actualController.handleExitAction()
 
 //noinspection VarCouldBeVal
-class MenuController(observableSubject: ViewSubject)
-    extends MenuControllerService, GraphicController:
+class MenuComponent(observableSubject: ViewSubject)
+    extends MenuComponentService, GraphicComponent:
 
   @FXML
   private var gameModeToggleGroup: ToggleGroup = uninitialized

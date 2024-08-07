@@ -3,20 +3,19 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{ViewMessage, SettingsMessage}
+import it.unibo.controller.{DrawCardMessage, SettingsMessage, ViewMessage}
 import it.unibo.model.ModelModule.Model
 
 import scala.concurrent.Future
 
-/**
- * This class is subscribed to the View updates and changes the Model accordingly
- **/
+/** This class is subscribed to the View updates and changes the Model accordingly */
 class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
   override def scheduler: Scheduler = Scheduler.global
 
   override def onNext(msg: ViewMessage): Future[Ack] =
     msg match
-      case SettingsMessage(_) => model.initialiseModel()
+      case SettingsMessage(_)           => model.initialiseModel()
+      case DrawCardMessage(nCards: Int) => println(s"Draw $nCards cards")
 
     println(s"View updated Model with value: $msg")
     // update del model
