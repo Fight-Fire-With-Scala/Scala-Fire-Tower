@@ -4,15 +4,14 @@ import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.grid.{EternalFire, Fire, Firebreak, Grid, Position, Tower, Woods}
 import it.unibo.view.controllers.GraphicController
 import javafx.fxml.FXML
-import javafx.scene.input.MouseEvent
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.application.Platform
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
 
 import scala.collection.mutable
 import scala.compiletime.uninitialized
+import scala.language.postfixOps
 
 class GridController(observableSubject: ViewSubject) extends GraphicController:
 
@@ -20,55 +19,46 @@ class GridController(observableSubject: ViewSubject) extends GraphicController:
   private var container: StackPane = uninitialized
   private var gridPane: GridPane = uninitialized
   private val gridSize = 16
-  private val squareSize = 40
-  private val rectangleMap: mutable.Map[(Int, Int), Rectangle] = mutable.Map()
+  private val squareSize = 45
+  private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
 
   @FXML
   def initialize(): Unit =
     gridPane = new GridPane
-    // Add squares to the GridPane
     for {
       row <- 0 until gridSize
       col <- 0 until gridSize
     } {
-      val square = new Rectangle:
-        width = squareSize
-        height = squareSize
-        fill = if ((row + col) % 2 == 0) Color.White else Color.Gray
-        stroke = Color.Black
-      square.onMouseMoved = (event: MouseEvent) => handleRectangleHover(event, row, col)
-      GridPane.setRowIndex(square, row)
-      GridPane.setColumnIndex(square, col)
-      gridPane.children.add(square)
-      rectangleMap((row, col)) = square
+      val square = GridSquare(row, col, squareSize, handleRectangleHover)
+      GridPane.setRowIndex(square.getGraphicRectangle, row)
+      GridPane.setColumnIndex(square.getGraphicRectangle, col)
+      gridPane.children.add(square.getGraphicRectangle)
+      squareMap(Position(row, col)) = square
     }
     container.getChildren.add(gridPane)
 
-  private def handleRectangleHover(event: MouseEvent, row: Int, col: Int): Unit =
-    val square = rectangleMap((row, col))
-    val direction = getDirection(event, square)
+  private def handleRectangleHover(row: Int, col: Int, direction: HoverDirection): Unit =
     println(s"Hovering over square at row $row, col $col")
-    println(s"Direction: $direction")
+    println(direction)
 
-  private def getDirection(event: MouseEvent, square: Rectangle): String =
-    val x = event.getX
-    val y = event.getY
-    val width = square.getWidth
-    val height = square.getHeight
-    if (y < height / 3) "North"
-    else if (y > 2 * height / 3) "South"
-    else if (x < width / 3) "West"
-    else if (x > 2 * width / 3) "East"
-    else "Center"
+    val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
-  def updateGrid(grid: Grid): Unit = for {
-    i <- 0 until gridSize
-    j <- 0 until gridSize
-  } {
-    val position = Position(i, j)
+    val adjacentCells = direction match
+      case HoverDirection.North => Seq(Position(row - 1, col), Position(row - 2, col))
+      case HoverDirection.South => Seq(Position(row + 1, col), Position(row + 2, col))
+      case HoverDirection.West  => Seq(Position(row, col - 1), Position(row, col - 2))
+      case HoverDirection.East  => Seq(Position(row, col + 1), Position(row, col + 2))
+      case _                    => Seq() // No adjacent cells for not determined
+
+    adjacentCells.foreach { position =>
+      if squareMap.contains(position) then
+        Platform.runLater(() => squareMap(position).updateColor(hoverColor))
+    }
+
+  def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match
       case Some(_: Woods)       => Color.DarkGreen
-      case Some(_: Tower)       => Color.Brown
+      case Some(_: Tower)       => Color.rgb(66, 39, 3)
       case Some(_: EternalFire) => Color.Red
       case _                    => Color.White
 
@@ -77,5 +67,5 @@ class GridController(observableSubject: ViewSubject) extends GraphicController:
       case Some(Firebreak) => Color.Blue
       case _               => cellColor
 
-    Platform.runLater(() => rectangleMap((i, j)).setFill(tokenColor))
+    Platform.runLater(() => square.updateColor(tokenColor))
   }
