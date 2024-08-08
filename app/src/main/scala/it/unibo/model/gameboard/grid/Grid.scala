@@ -86,9 +86,9 @@ private case class BasicGrid(
         case _: EternalFire => "E"
         case _              => " " // Default character for empty cells
       tokenChar = token match
-        case Some(Fire())      => "f"
-        case Some(Firebreak()) => "b"
-        case _                 => cellChar // Use cellChar if there's no token
+        case Some(Fire)      => "f"
+        case Some(Firebreak) => "b"
+        case _               => cellChar // Use cellChar if there's no token
       displayChar =
         if (token.isDefined) tokenChar
         else cellChar // Display tokenChar without "W" if token exists

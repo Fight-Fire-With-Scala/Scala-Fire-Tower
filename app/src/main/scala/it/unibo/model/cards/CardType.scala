@@ -14,5 +14,5 @@ object CardType:
       effectCode <- c.downField("effectCode").as[Int]
       amount <- c.downField("amount").as[Int]
     yield
-      val effectType = allCards.filter(c => c.effectCode.equals(effectCode)).head
+      val effectType = allCards.filter(c => c.id.equals(effectCode)).head
       CardType(title, description, amount, effectType)

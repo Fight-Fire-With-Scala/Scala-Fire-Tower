@@ -1,10 +1,10 @@
-package it.unibo.model.cards
+package it.unibo.model.cards.patterns
 
-import it.unibo.model.cards.types.{b, e, f, pattern, w}
+import it.unibo.model.cards.patterns.*
 import it.unibo.model.gameboard.grid.{Empty, Fire, Firebreak, Water}
+import org.junit.runner.RunWith
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 
 import scala.collection.mutable.ArrayBuffer
@@ -13,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 class PatternDSLSpec extends AnyWordSpecLike with Matchers:
 
   "Pattern DSL" should:
-    val dummyPattern = pattern { w; f; b; e }
+    val dummyPattern = pattern { w; f; k; e }
 
     "accumulate cells correctly" in:
-      dummyPattern.tokens shouldBe ArrayBuffer(Water(), Fire(), Firebreak(), Empty())
+      dummyPattern.tokens.toSeq shouldEqual ArrayBuffer(Water, Fire, Firebreak, Empty).toSeq

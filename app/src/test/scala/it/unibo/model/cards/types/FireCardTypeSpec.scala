@@ -12,10 +12,10 @@ class FireCardTypeSpec extends GameEffectAbstractSpec:
 
     // noinspection ScalaUnusedExpression
     "have the correct effect code" in:
-      Explosion.effectCode shouldBe 0
-      Flare.effectCode shouldBe 1
-      BurningSnag.effectCode shouldBe 2
-      Ember.effectCode shouldBe 3
+      Explosion.id shouldBe 0
+      Flare.id shouldBe 1
+      BurningSnag.id shouldBe 2
+      Ember.id shouldBe 3
 
     "generate the correct resolver" in:
       Explosion.effect shouldBe a[MultiStepResolver]

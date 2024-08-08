@@ -1,8 +1,9 @@
 package it.unibo.model.cards.resolvers
 
+import alice.tuprolog.{SolveInfo, Term, Theory}
 import it.unibo.model.cards.choices.StepChoice.{PatternApplication, PatternComputation}
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
-import it.unibo.model.cards.effects.{CardEffect, PatternChoiceEffect, WindEffect}
+import it.unibo.model.cards.effects.{CardEffect, PatternEffect, WindEffect}
 
 sealed trait MetaResolver[C <: GameChoice, R <: EffectResolver] extends EffectResolver:
   def resolve(choice: C): R
@@ -20,7 +21,7 @@ sealed trait ChoiceResultResolver extends EffectResolver
 sealed trait InstantResolver[E <: CardEffect](effect: E) extends ChoiceResultResolver:
   def resolve(): E = effect
 
-sealed case class InstantWindResolver(effect: WindEffect)
+sealed case class InstantWindResolver(private val effect: WindEffect)
     extends InstantResolver[WindEffect](effect):
   override def resolve(): WindEffect = effect
 
@@ -29,7 +30,10 @@ sealed case class MultiStepResolver(private val resolver: StepChoice => StepReso
   override def resolve(choice: StepChoice): StepResolver = resolver(choice)
 
 object MultiStepResolver:
-  def apply(pattern: PatternChoiceEffect): MultiStepResolver = new MultiStepResolver({
+  def apply(
+      pattern: PatternEffect,
+      engine: Theory => LazyList[SolveInfo]
+  ): MultiStepResolver = new MultiStepResolver({
     case PatternComputation    => PatternComputationResolver(pattern)
     case PatternApplication(p) => PatternApplicationResolver(p)
   })

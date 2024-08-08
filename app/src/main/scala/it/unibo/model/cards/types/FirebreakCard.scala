@@ -2,30 +2,59 @@ package it.unibo.model.cards.types
 
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice}
 import it.unibo.model.cards.choices.FirebreakChoice.{Deforest, Reforest}
-import it.unibo.model.cards.resolvers.{FirebreakResolver, MetaResolver, MultiStepResolver, EffectResolver}
-import it.unibo.model.cards.types.{b, e, pattern, r}
+import it.unibo.model.cards.effects.{MediumAltEffect, SmallEffect, VerySmallEffect}
+import it.unibo.model.cards.resolvers.{
+  EffectResolver,
+  FirebreakResolver,
+  MetaResolver,
+  MultiStepResolver
+}
+import it.unibo.model.gameboard.grid.{Empty, Firebreak, Token}
+import it.unibo.model.prolog.PrologSolver.engine
+import it.unibo.model.prolog.Scala2P.given
 
-// noinspection DuplicatedCode
 enum FirebreakCard(
-    override val effectCode: Int,
+    override val id: Int,
     override val effect: MetaResolver[? <: GameChoice, ? <: EffectResolver]
 ) extends HasEffect:
-
   case DeReforest
       extends FirebreakCard(
-        effectCode = 10,
+        id = 10,
         effect = FirebreakResolver {
-          case Deforest => MultiStepResolver(pattern(b).mapTo(1, 1))
-          case Reforest => MultiStepResolver(pattern(r).mapTo(1, 1))
+          case Deforest => MultiStepResolver(
+              VerySmallEffect(FirebreakCard.defaultTokens),
+              engine("""
+                | cell(2, 1, X)
+                |""".stripMargin)
+            )
+          case Reforest => MultiStepResolver(
+              VerySmallEffect(FirebreakCard.defaultTokens),
+              engine("""
+                | cell(2, 1, X)
+                |""".stripMargin)
+            )
         }
       )
   case ScratchLine
       extends FirebreakCard(
-        effectCode = 9,
-        effect = MultiStepResolver(pattern { b; e; b }.mapTo(1, 3))
+        id = 9,
+        effect = MultiStepResolver(
+          MediumAltEffect(Map("a" -> Firebreak, "b" -> Empty)),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
   case DozerLine
       extends FirebreakCard(
-        effectCode = 8,
-        effect = MultiStepResolver(pattern { b; b }.mapTo(1, 2))
+        id = 8,
+        effect = MultiStepResolver(
+          SmallEffect(FirebreakCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
+
+object FirebreakCard:
+  val defaultTokens: Map[String, Token] = Map("a" -> Firebreak)

@@ -2,17 +2,20 @@ package it.unibo.model.gameboard.grid
 
 sealed trait Token
 
-case class Firebreak() extends Token:
-  override def toString: String = "b"
+case object Firebreak extends Token:
+  override def toString: String = "k"
   
-case class Fire() extends Token:
+case object Fire extends Token:
   override def toString: String = "f"
   
-case class Water() extends Token:
+case object Water extends Token:
   override def toString: String = "w"
   
-case class Reforest() extends Token:
+case object Reforest extends Token:
   override def toString: String = "r"
   
-case class Empty() extends Token:
+case object Empty extends Token:
   override def toString: String = "e"
+
+case class TemplateToken(id: String) extends Token:
+  override def toString: String = id

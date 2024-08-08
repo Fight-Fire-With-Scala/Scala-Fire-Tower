@@ -12,9 +12,9 @@ class FirebreakCardSpec extends GameEffectAbstractSpec:
 
     // noinspection ScalaUnusedExpression
     "have the correct effect code" in:
-      DeReforest.effectCode shouldBe 10
-      ScratchLine.effectCode shouldBe 9
-      DozerLine.effectCode shouldBe 8
+      DeReforest.id shouldBe 10
+      ScratchLine.id shouldBe 9
+      DozerLine.id shouldBe 8
 
     "generate the correct resolver" in:
       DeReforest.effect shouldBe a[FirebreakResolver]

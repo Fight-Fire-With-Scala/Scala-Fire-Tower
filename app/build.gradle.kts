@@ -11,6 +11,7 @@ repositories { mavenCentral() }
 dependencies {
     implementation(libs.scala.library)
     implementation(libs.scalafx)
+    implementation(libs.tuprolog)
     implementation(libs.monix)
     implementation(libs.scala.logging)
     implementation(libs.logback)

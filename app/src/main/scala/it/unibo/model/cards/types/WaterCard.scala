@@ -1,31 +1,56 @@
 package it.unibo.model.cards.types
 
 import it.unibo.model.cards.choices.GameChoice
-import it.unibo.model.cards.types.{f, pattern, w}
-import it.unibo.model.cards.resolvers.{MetaResolver, MultiStepResolver, EffectResolver}
+import it.unibo.model.cards.effects.{LargeEffect, MediumEffect, VerySmallEffect, VeryLargeEffect}
+import it.unibo.model.cards.resolvers.{EffectResolver, MetaResolver, MultiStepResolver}
+import it.unibo.model.gameboard.grid.{Fire, Token, Water}
+import it.unibo.model.prolog.PrologSolver.engine
+import it.unibo.model.prolog.Scala2P.given
 
-// noinspection DuplicatedCode
 enum WaterCard(
-    override val effectCode: Int,
+    override val id: Int,
     override val effect: MetaResolver[? <: GameChoice, ? <: EffectResolver]
 ) extends HasEffect:
   case SmokeJumper
       extends WaterCard(
-        effectCode = 11,
-        effect = MultiStepResolver(pattern { w; w; w; w; f; w; w; w; w }.mapTo(3, 3))
+        id = 11,
+        effect = MultiStepResolver(
+          VeryLargeEffect(Map("a" -> Water, "b" -> Fire)),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
   case AirDrop
       extends WaterCard(
-        effectCode = 12,
-        effect = MultiStepResolver(pattern { w; w; w }.mapTo(1, 3))
+        id = 12,
+        effect = MultiStepResolver(
+          MediumEffect(WaterCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
   case FireEngine
       extends WaterCard(
-        effectCode = 13,
-        effect = MultiStepResolver(pattern { w; w; w; w }.mapTo(2, 2))
+        id = 13,
+        effect = MultiStepResolver(
+          LargeEffect(WaterCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
   case Bucket
       extends WaterCard(
-        effectCode = 14,
-        effect = MultiStepResolver(pattern { w; w; w }.mapTo(1, 3))
+        id = 14,
+        effect = MultiStepResolver(
+          VerySmallEffect(WaterCard.defaultTokens),
+          engine("""
+            | cell(2, 1, X)
+            |""".stripMargin)
+        )
       )
+
+object WaterCard:
+  val defaultTokens: Map[String, Token] = Map("a" -> Water)

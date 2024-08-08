@@ -13,10 +13,10 @@ class WindCardSpec extends AnyWordSpecLike with Matchers:
 
     // noinspection ScalaUnusedExpression
     "have the correct effect code for each wind card" in:
-      WindCard.North.effectCode shouldBe 4
-      WindCard.South.effectCode shouldBe 5
-      WindCard.East.effectCode shouldBe 6
-      WindCard.West.effectCode shouldBe 7
+      WindCard.North.id shouldBe 4
+      WindCard.South.id shouldBe 5
+      WindCard.East.id shouldBe 6
+      WindCard.West.id shouldBe 7
 
     "generate the correct resolver" in:
       WindCard.North.effect shouldBe a[WindResolver]
