@@ -40,7 +40,7 @@ class CardComponent extends GraphicComponent:
       cardId = ""
 
   private def getStyleClassForCardType(cardType: CardType): String =
-    allCards.find(_.effectCode == cardType.effectType.id) match
+    allCards.find(_.id == cardType.effectType.id) match
       case Some(_: FireCard)      => "fire"
       case Some(_: WindCard)      => "wind"
       case Some(_: FirebreakCard) => "firebreak"
