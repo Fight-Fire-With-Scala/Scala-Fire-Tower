@@ -7,7 +7,7 @@ import scalafx.application.{JFXApp3, Platform}
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
-import it.unibo.view.components.{ComponentFactory, GraphicComponent, GraphicComponentRegistry}
+import it.unibo.view.components.{ComponentFactory, GraphicComponent}
 import it.unibo.view.components.hand.HandComponent
 import it.unibo.view.components.hand.cards.CardComponent
 import it.unibo.controller.ViewSubject
