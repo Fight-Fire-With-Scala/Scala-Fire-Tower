@@ -7,6 +7,7 @@ import it.unibo.view.components.gameboard.GridComponent
 import it.unibo.view.components.hand.HandComponent
 import it.unibo.view.components.hand.cards.CardComponent
 import it.unibo.view.components.menu.MenuComponent
+import it.unibo.view.components.game.GameComponent
 import monix.reactive.subjects.PublishSubject
 
 object ComponentFactory:
@@ -17,3 +18,4 @@ object ComponentFactory:
       case GUIType.Deck => new DeckComponent(observableSubject)
       case GUIType.Hand => new HandComponent()
       case GUIType.Card => new CardComponent()
+      case GUIType.Game => new GameComponent()
