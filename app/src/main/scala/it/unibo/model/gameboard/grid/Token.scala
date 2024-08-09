@@ -1,21 +1,14 @@
 package it.unibo.model.gameboard.grid
 
-sealed trait Token
+sealed trait Token:
+  def id: String
 
-case object Firebreak extends Token:
-  override def toString: String = "k"
-  
-case object Fire extends Token:
-  override def toString: String = "f"
-  
-case object Water extends Token:
-  override def toString: String = "w"
-  
-case object Reforest extends Token:
-  override def toString: String = "r"
-  
-case object Empty extends Token:
-  override def toString: String = "e"
+enum ConcreteToken(override val id: String) extends Token:
+  case Firebreak extends ConcreteToken("k")
+  case Fire extends ConcreteToken("f")
+  case Water extends ConcreteToken("w")
+  case Reforest extends ConcreteToken("r")
+  case Empty extends ConcreteToken("e")
 
-case class TemplateToken(id: String) extends Token:
+case class TemplateToken(override val id: String) extends Token:
   override def toString: String = id

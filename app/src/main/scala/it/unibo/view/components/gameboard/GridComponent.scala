@@ -1,7 +1,9 @@
 package it.unibo.view.components.gameboard
 
 import it.unibo.controller.ViewSubject
-import it.unibo.model.gameboard.grid.{EternalFire, Fire, Firebreak, Grid, Position, Tower, Woods}
+import it.unibo.model.gameboard.grid.{Grid, Position}
+import it.unibo.model.gameboard.grid.Cell.*
+import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
 import scalafx.scene.layout.GridPane
@@ -57,10 +59,10 @@ class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
 
   def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match
-      case Some(_: Woods)       => Color.DarkGreen
-      case Some(_: Tower)       => Color.rgb(66, 39, 3)
-      case Some(_: EternalFire) => Color.Red
-      case _                    => Color.White
+      case Some(_: Woods.type)       => Color.DarkGreen
+      case Some(_: Tower.type)       => Color.rgb(66, 39, 3)
+      case Some(_: EternalFire.type) => Color.Red
+      case _                         => Color.White
 
     val tokenColor = grid.getToken(position) match
       case Some(Fire)      => Color.Orange

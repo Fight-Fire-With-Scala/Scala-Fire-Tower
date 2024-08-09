@@ -1,7 +1,7 @@
 package it.unibo.model.gameboard.grid
 
 import GivenExtension.within
-
+import it.unibo.model.gameboard.grid.Cell.*
 import scala.annotation.{tailrec, targetName}
 
 /** Builder of a grid. */
@@ -69,11 +69,11 @@ object GridBuilder:
   /** A DSL definition for a [[GridBuilder]]. */
   object DSL:
 
-    def T(using b: GridBuilder): GridBuilder = b + Tower()
+    def T(using b: GridBuilder): GridBuilder = b + Tower
 
-    def F(using b: GridBuilder): GridBuilder = b + Woods()
+    def F(using b: GridBuilder): GridBuilder = b + Woods
 
-    def E(using b: GridBuilder): GridBuilder = b + EternalFire()
+    def E(using b: GridBuilder): GridBuilder = b + EternalFire
 
     extension (self: GridBuilder)
       /** DSL separator for cells. */

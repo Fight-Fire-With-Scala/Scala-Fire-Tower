@@ -9,9 +9,11 @@ import it.unibo.model.cards.resolvers.{
   MetaResolver,
   MultiStepResolver
 }
-import it.unibo.model.gameboard.grid.{Empty, Firebreak, Token}
-import it.unibo.model.prolog.PrologSolver.engine
-import it.unibo.model.prolog.Scala2P.given
+import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Firebreak}
+
+import it.unibo.model.gameboard.grid.Token
+
+import it.unibo.model.prolog.AtLeast
 
 enum FirebreakCard(
     override val id: Int,
@@ -23,15 +25,11 @@ enum FirebreakCard(
         effect = FirebreakResolver {
           case Deforest => MultiStepResolver(
               VerySmallEffect(FirebreakCard.defaultTokens),
-              engine("""
-                | cell(2, 1, X)
-                |""".stripMargin)
+              List(AtLeast("neigh", "cell", "[]", "[]"))
             )
           case Reforest => MultiStepResolver(
               VerySmallEffect(FirebreakCard.defaultTokens),
-              engine("""
-                | cell(2, 1, X)
-                |""".stripMargin)
+              List(AtLeast("neigh", "cell", "[]", "[]"))
             )
         }
       )
@@ -40,9 +38,7 @@ enum FirebreakCard(
         id = 9,
         effect = MultiStepResolver(
           MediumAltEffect(Map("a" -> Firebreak, "b" -> Empty)),
-          engine("""
-            | cell(2, 1, X)
-            |""".stripMargin)
+          List(AtLeast("neigh", "cell", "[]", "[]"))
         )
       )
   case DozerLine
@@ -50,9 +46,7 @@ enum FirebreakCard(
         id = 8,
         effect = MultiStepResolver(
           SmallEffect(FirebreakCard.defaultTokens),
-          engine("""
-            | cell(2, 1, X)
-            |""".stripMargin)
+          List(AtLeast("neigh", "cell", "[]", "[]"))
         )
       )
 

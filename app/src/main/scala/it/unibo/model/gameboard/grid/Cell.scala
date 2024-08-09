@@ -1,12 +1,6 @@
 package it.unibo.model.gameboard.grid
 
-sealed trait Cell
-
-case class EternalFire() extends Cell:
-  override def toString: String = "Eternal Fire"
-
-case class Woods() extends Cell:
-  override def toString: String = "Woods"
-
-case class Tower() extends Cell:
-  override def toString: String = "Tower"
+enum Cell(val id: String):
+  case EternalFire extends Cell("ef")
+  case Woods extends Cell("w")
+  case Tower extends Cell("t")

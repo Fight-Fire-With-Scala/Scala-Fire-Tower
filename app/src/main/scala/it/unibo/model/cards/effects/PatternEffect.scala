@@ -18,20 +18,20 @@ object PatternEffect:
   def unapply(tokens: Map[String, Token], template: Map[Position, Token]): Map[Position, Token] =
     PatternEffect.fillPattern(template, tokens)
 
-case class VeryLargeEffect(tokens: Map[String, Token]) extends PatternEffect:
+final case class VeryLargeEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern { a; a; a; a; b; a; a; a; a }.mapTo(3, 3)
 
-case class LargeEffect(tokens: Map[String, Token]) extends PatternEffect:
+final case class LargeEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern { a; a; a; a }.mapTo(2, 2)
 
-case class MediumEffect(tokens: Map[String, Token]) extends PatternEffect:
+final case class MediumEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern { a; a; a }.mapTo(1, 3)
 
-case class MediumAltEffect(tokens: Map[String, Token]) extends PatternEffect:
+final case class MediumAltEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern { a; b; a }.mapTo(1, 3)
 
-case class SmallEffect(tokens: Map[String, Token]) extends PatternEffect:
+final case class SmallEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern { a; a }.mapTo(1, 2)
 
-case class VerySmallEffect(tokens: Map[String, Token]) extends PatternEffect:
+final case class VerySmallEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern(a).mapTo(1, 1)

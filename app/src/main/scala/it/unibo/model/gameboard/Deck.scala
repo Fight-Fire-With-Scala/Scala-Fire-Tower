@@ -11,9 +11,9 @@ import io.circe.yaml.parser
 import it.unibo.model.cards.{Card, CardType}
 
 // Used to parse the yaml file of the cards' types
-case class CardSet(cardSets: List[CardType])
+final case class CardSet(cardSets: List[CardType])
 
-case class Deck(cards: List[Card]):
+final case class Deck(cards: List[Card]):
   def shuffle(): Deck = copy(cards = Random.shuffle(cards))
   def drawCard(): (Card, Deck) = (cards.head, copy(cards = cards.tail))
 

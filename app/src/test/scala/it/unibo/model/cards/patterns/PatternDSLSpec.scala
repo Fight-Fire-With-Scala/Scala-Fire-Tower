@@ -1,7 +1,7 @@
 package it.unibo.model.cards.patterns
 
 import it.unibo.model.cards.patterns.*
-import it.unibo.model.gameboard.grid.{Empty, Fire, Firebreak, Water}
+import it.unibo.model.gameboard.grid.ConcreteToken.*
 import org.junit.runner.RunWith
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

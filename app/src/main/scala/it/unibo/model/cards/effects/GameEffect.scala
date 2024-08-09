@@ -1,6 +1,6 @@
 package it.unibo.model.cards.effects
 
-import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.grid.{Position, Token}
 
@@ -14,8 +14,4 @@ trait CardEffect extends GameEffect
 
 sealed case class PatternComputationEffect(patterns: List[Map[Position, Token]]) extends CardEffect
 
-enum WindEffect extends CardEffect:
-  case North
-  case South
-  case East
-  case West
+case class WindEffect(direction: Direction) extends CardEffect

@@ -1,5 +1,8 @@
 package it.unibo.model.gameboard.grid
 
+import it.unibo.model.gameboard.grid.ConcreteToken.*
+import it.unibo.model.gameboard.grid.Cell.*
+
 trait Grid:
   def cells: Map[Position, Cell]
 
@@ -56,7 +59,7 @@ object Grid:
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
   }
 
-private case class BasicGrid(
+final case class BasicGrid(
     private val _cells: Map[Position, Cell] = Map.empty,
     private val _tokens: Map[Position, Token] = Map.empty
 ) extends Grid:
@@ -81,10 +84,10 @@ private case class BasicGrid(
       cell = getCell(position).orNull
       token = getToken(position)
       cellChar = cell match
-        case _: Woods       => "W"
-        case _: Tower       => "T"
-        case _: EternalFire => "E"
-        case _              => " " // Default character for empty cells
+        case _: Woods.type       => "W"
+        case _: Tower.type       => "T"
+        case _: EternalFire.type => "E"
+        case _                   => " " // Default character for empty cells
       tokenChar = token match
         case Some(Fire)      => "f"
         case Some(Firebreak) => "b"

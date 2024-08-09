@@ -1,10 +1,10 @@
 package it.unibo.model.cards.patterns
 
-import it.unibo.model.gameboard.grid.{TemplateToken, Empty, Fire, Firebreak, Position, Reforest, Token, Water}
-
+import it.unibo.model.gameboard.grid.{TemplateToken, Position, Token}
+import it.unibo.model.gameboard.grid.ConcreteToken.*
 import scala.collection.mutable.ArrayBuffer
 
-class PatternDSL:
+final class PatternDSL:
   val tokens = new ArrayBuffer[Token]
   def add(c: Token): Unit = tokens += c
   def mapTo(nRows: Int, nCols: Int): Map[Position, Token] =
