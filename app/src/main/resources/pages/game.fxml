@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<Pane xmlns:fx="http://javafx.com/fxml">
+    <VBox>
+        <HBox>
+            <Pane fx:id="grid" VBox.vgrow="ALWAYS">
+            </Pane>
+            <Pane fx:id="sidebar" VBox.vgrow="ALWAYS">
+            </Pane>
+        </HBox>
+        <Pane fx:id="hand">
+        </Pane>
+    </VBox>
+</Pane>

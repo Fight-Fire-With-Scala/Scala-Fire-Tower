@@ -6,3 +6,4 @@ enum GUIType(val fxmlPath: String):
   case Card extends GUIType("/pages/card.fxml")
   case Grid extends GUIType("/pages/grid.fxml")
   case Deck extends GUIType("/pages/deck.fxml")
+  case Game extends GUIType("/pages/game.fxml")
