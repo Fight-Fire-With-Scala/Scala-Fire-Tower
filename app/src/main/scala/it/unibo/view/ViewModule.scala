@@ -2,7 +2,6 @@ package it.unibo.view
 
 import it.unibo.controller.{ControllerModule, ViewMessage, ViewSubject}
 import it.unibo.model.gameboard.grid.Grid
-import it.unibo.view.components.GraphicComponentRegistry
 import it.unibo.view.components.gameboard.GridComponent
 import monix.reactive.subjects.PublishSubject
 
@@ -10,9 +9,9 @@ object ViewModule:
 
   trait View:
     def show(): Unit
-    def showGrid(): Unit
-    def updateGrid(grid: Grid): Unit
+    def startGame(): Unit
     def getObservable: PublishSubject[ViewMessage]
+    def refresh(grid: Grid): Unit
 
   trait Provider:
     val view: View
@@ -28,11 +27,9 @@ object ViewModule:
 
       def show(): Unit = gui.main(Array.empty)
 
-      def showGrid(): Unit = gui.loadGrid()
+      def startGame(): Unit = gui.loadGame()
 
-      def updateGrid(grid: Grid): Unit =
-        val component = GraphicComponentRegistry.getComponent(classOf[GridComponent])
-        component.foreach(_.updateGrid(grid))
+      def refresh(grid: Grid): Unit = GameBoardController.refresh(grid)
 
       def getObservable: ViewSubject = observableSubject
 

@@ -4,7 +4,7 @@ import it.unibo.view.ViewModule.View
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{StartGameBoardMessage, ModelMessage}
+import it.unibo.controller.{ModelMessage, StartGameBoardMessage}
 
 import scala.concurrent.Future
 
@@ -17,8 +17,11 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
   override def onNext(msg: ModelMessage): Future[Ack] =
     msg match
       case StartGameBoardMessage(gameboard) =>
-        view.showGrid()
-        view.updateGrid(gameboard.board.grid)
+        view.startGame()
+        view.refresh(gameboard.board.grid)
+
+
+
     Continue
 
   override def onError(ex: Throwable): Unit = println(s"Received error $ex")
