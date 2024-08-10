@@ -21,7 +21,7 @@ class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
   private var container: StackPane = uninitialized
   private var gridPane: GridPane = uninitialized
   private val gridSize = 16
-  private val squareSize = 45
+  private val squareSize = 30
   private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
 
   @FXML

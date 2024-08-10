@@ -2,5 +2,5 @@
 
 
 <?import javafx.scene.layout.StackPane?>
-<StackPane fx:id="container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" minWidth="1280" minHeight="720">
+<StackPane fx:id="container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
 </StackPane>
