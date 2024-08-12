@@ -27,8 +27,8 @@ class MonadicGuiFX(val w: Int, val h: Int, viewLoader: ViewLoader, observableSub
     pane = new StackPane()
     stage = new PrimaryStage:
       scene = new Scene(pane, w, h)
-      minHeight = 720
-      minWidth = 1280
+      minHeight = h
+      minWidth = w
     loadGUI(GUIType.Menu)
 
   private def loadGuiComponent(guiType: GUIType, setups: (GraphicComponent => Unit)*): Unit =

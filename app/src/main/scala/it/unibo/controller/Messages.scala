@@ -1,6 +1,7 @@
 package it.unibo.controller
 
 import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.settings.Settings
 import monix.reactive.subjects.PublishSubject
 
@@ -15,9 +16,11 @@ sealed trait Message
 sealed trait ViewMessage extends Message
 case class SettingsMessage(settings: Settings) extends ViewMessage
 case class DrawCardMessage(nCards: Int) extends ViewMessage
+case class ResolveWindPhase() extends ViewMessage
 
 /*
  * This refers to messages sent to the view from the model
  */
 sealed trait ModelMessage extends Message
 case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
+case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMessage

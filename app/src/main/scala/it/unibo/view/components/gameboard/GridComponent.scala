@@ -1,7 +1,8 @@
 package it.unibo.view.components.gameboard
 
 import it.unibo.controller.ViewSubject
-import it.unibo.model.gameboard.grid.{Grid, Position}
+import it.unibo.model.gameboard.Direction
+import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.view.components.GraphicComponent
@@ -21,8 +22,9 @@ class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
   private var container: StackPane = uninitialized
   private var gridPane: GridPane = uninitialized
   private val gridSize = 16
-  private val squareSize = 30
+  private val squareSize = 42
   private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
+  var availablePatterns: List[Map[Position, Token]] = List.empty
 
   @FXML
   def initialize(): Unit =
@@ -31,31 +33,37 @@ class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
       row <- 0 until gridSize
       col <- 0 until gridSize
     } {
-      val square = GridSquare(row, col, squareSize, handleRectangleHover)
-      GridPane.setRowIndex(square.getGraphicRectangle, row)
-      GridPane.setColumnIndex(square.getGraphicRectangle, col)
-      gridPane.children.add(square.getGraphicRectangle)
+      val square = GridSquare(row, col, squareSize, handleCellHover)
+      GridPane.setRowIndex(square.getGraphicPane, row)
+      GridPane.setColumnIndex(square.getGraphicPane, col)
+      gridPane.children.add(square.getGraphicPane)
       squareMap(Position(row, col)) = square
     }
     container.getChildren.add(gridPane)
 
-  private def handleRectangleHover(row: Int, col: Int, direction: HoverDirection): Unit =
+  private def handleCellHover(row: Int, col: Int, direction: HoverDirection): Unit =
     println(s"Hovering over square at row $row, col $col")
     println(direction)
 
     val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
-    val adjacentCells = direction match
-      case HoverDirection.North => Seq(Position(row - 1, col), Position(row - 2, col))
-      case HoverDirection.South => Seq(Position(row + 1, col), Position(row + 2, col))
-      case HoverDirection.West  => Seq(Position(row, col - 1), Position(row, col - 2))
-      case HoverDirection.East  => Seq(Position(row, col + 1), Position(row, col + 2))
-      case _                    => Seq() // No adjacent cells for not determined
+    val positionToCheck = checkNeighbor(Position(col, row), direction.direction)
+    val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
 
-    adjacentCells.foreach { position =>
-      if squareMap.contains(position) then
-        Platform.runLater(() => squareMap(position).updateColor(hoverColor))
+    candidatePositions.foreach { pattern =>
+      if (pattern.keys.exists(_ == positionToCheck))
+        val square = squareMap(positionToCheck)
+        Platform.runLater(() => square.updateColor(hoverColor))
     }
+
+  private def checkNeighbor(startPosition: Position, direction: Direction): Position =
+    val x = startPosition.x
+    val y = startPosition.y
+    direction match
+      case Direction.North => startPosition.copy(y = y - 1)
+      case Direction.South => startPosition.copy(y = y + 1)
+      case Direction.West => startPosition.copy(x = x - 1)
+      case Direction.East => startPosition.copy(x = x + 1)
 
   def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match

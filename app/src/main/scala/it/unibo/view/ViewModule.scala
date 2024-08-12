@@ -1,9 +1,9 @@
 package it.unibo.view
 
-import it.unibo.controller.{ControllerModule, ViewMessage, ViewSubject}
-import it.unibo.model.gameboard.grid.Grid
-import it.unibo.view.components.gameboard.GridComponent
+import it.unibo.controller.{ControllerModule, ResolveWindPhase, ViewMessage, ViewSubject}
+import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import monix.reactive.subjects.PublishSubject
+import scalafx.application.Platform
 
 object ViewModule:
 
@@ -12,6 +12,7 @@ object ViewModule:
     def startGame(): Unit
     def getObservable: PublishSubject[ViewMessage]
     def refresh(grid: Grid): Unit
+    def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit
 
   trait Provider:
     val view: View
@@ -21,17 +22,21 @@ object ViewModule:
   trait Component:
     context: Requirements =>
     class ViewImpl extends View:
-
       private val observableSubject = PublishSubject[ViewMessage]()
-      private val gui = MonadicGuiFX(800, 600, new FXMLViewLoader, observableSubject)
+      private val gui = MonadicGuiFX(1600, 900, new FXMLViewLoader, observableSubject)
 
-      def show(): Unit = gui.main(Array.empty)
+      override def show(): Unit = gui.main(Array.empty)
 
-      def startGame(): Unit = gui.loadGame()
+      override def startGame(): Unit =
+        gui.loadGame()
+        observableSubject.onNext(ResolveWindPhase())
 
-      def refresh(grid: Grid): Unit = GameBoardController.refresh(grid)
+      override def refresh(grid: Grid): Unit = GameBoardController.refresh(grid)
 
-      def getObservable: ViewSubject = observableSubject
+      override def getObservable: ViewSubject = observableSubject
+
+      override def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
+        Platform.runLater(() => GameBoardController.gameComponent.get.gridComponent.availablePatterns = patterns)
 
   trait Interface extends Provider with Component:
     self: Requirements =>

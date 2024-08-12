@@ -20,11 +20,9 @@ final case class Deck(cards: List[Card]):
 object Deck:
   def apply(cardsResourcePath: String): Deck =
     val cardTypes = parseCardTypes(cardsResourcePath)
-    logger.info(s"${cardTypes.get.cardSets}")
     cardTypes match
       case Some(cards) =>
         val c = createCards(cards)
-        logger.info(s"$c")
         new Deck(c)
       case None        => Deck(List.empty)
 

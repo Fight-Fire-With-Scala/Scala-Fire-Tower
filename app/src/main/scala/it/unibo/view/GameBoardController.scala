@@ -4,7 +4,7 @@ import it.unibo.model.gameboard.grid.Grid
 import it.unibo.view.components.game.GameComponent
 
 object GameBoardController:
-  private var gameComponent: Option[GameComponent] = None
+  var gameComponent: Option[GameComponent] = None
 
   def initialize(component: GameComponent): Unit =
     gameComponent = Some(component)

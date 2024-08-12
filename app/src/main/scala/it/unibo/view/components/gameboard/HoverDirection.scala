@@ -1,12 +1,13 @@
 package it.unibo.view.components.gameboard
 
-enum HoverDirection:
-  case North, South, West, East, NotDetermined
+import it.unibo.model.gameboard.Direction
+
+case class HoverDirection(direction: Direction, isDetermined: Boolean = true)
 
 object HoverDirection:
   def fromCoordinates(x: Double, y: Double, width: Double, height: Double): HoverDirection =
-    if y < height / 3 && x >= width / 3 && x <= 2 * width / 3 then HoverDirection.North
-    else if y > 2 * height / 3 && x >= width / 3 && x <= 2 * width / 3 then HoverDirection.South
-    else if x < width / 3 && y >= height / 3 && y <= 2 * height / 3 then HoverDirection.West
-    else if x > 2 * width / 3 && y >= height / 3 && y <= 2 * height / 3 then HoverDirection.East
-    else HoverDirection.NotDetermined
+    if y < height / 3 && x >= width / 3 && x <= 2 * width / 3 then HoverDirection(Direction.North)
+    else if y > 2 * height / 3 && x >= width / 3 && x <= 2 * width / 3 then HoverDirection(Direction.South)
+    else if x < width / 3 && y >= height / 3 && y <= 2 * height / 3 then HoverDirection(Direction.West)
+    else if x > 2 * width / 3 && y >= height / 3 && y <= 2 * height / 3 then HoverDirection(Direction.East)
+    else HoverDirection(Direction.North, isDetermined = false)

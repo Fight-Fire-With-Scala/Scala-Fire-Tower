@@ -19,9 +19,9 @@ class GameComponent extends GraphicComponent:
   @FXML
   var hand: Pane = uninitialized
 
-  private var gridComponent: GridComponent = uninitialized
-  private var sidebarComponent: GraphicComponent = uninitialized
-  private var handComponent: HandComponent = uninitialized
+  var gridComponent: GridComponent = uninitialized
+  var sidebarComponent: GraphicComponent = uninitialized
+  var handComponent: HandComponent = uninitialized
 
   private def setupComponent[T <: GraphicComponent](
       pane: Pane,

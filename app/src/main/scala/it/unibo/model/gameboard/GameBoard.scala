@@ -5,14 +5,26 @@ import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, Wi
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
 import it.unibo.model.cards.effects.GameEffect
 import it.unibo.model.cards.resolvers.{ChoiceResultResolver, EffectResolver, FirebreakResolver, InstantResolver, InstantWindResolver, MetaResolver, MultiStepResolver, PatternApplicationResolver, PatternComputationResolver, StepResolver, WindResolver}
+import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
-import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.logger
 
 sealed trait Player
 case object Player1 extends Player
 case object Player2 extends Player
 
-case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Player1):
+enum GamePhase:
+  case WindPhase, ActionPhase
+
+enum ActionPhaseChoice:
+  case RedrawCards, PlayCard
+
+case class GameBoard(
+    board: Board,
+    deck: Deck,
+    var currentPlayer: Player = Player1,
+    var gamePhase: GamePhase = WindPhase
+):
   def changeTurn(): GameBoard =
     currentPlayer = currentPlayer match
       case Player1 => Player2
@@ -50,4 +62,9 @@ case class GameBoard(board: Board, deck: Deck, var currentPlayer: Player = Playe
     case sr: PatternApplicationResolver => Some(sr.applyMove(board))
 
 object GameBoard:
-  def apply(): GameBoard = GameBoard(Board.withRandomWindAndStandardGrid, Deck("cards.yaml"))
+  def apply(): GameBoard =
+    val b = Board.withRandomWindAndStandardGrid
+    logger.info(s"Wind Direction: ${b.windDirection}")
+    val gb = GameBoard(b, Deck("cards.yaml"))
+    logger.info(s"Player turn: ${gb.currentPlayer}")
+    gb
