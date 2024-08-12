@@ -15,10 +15,10 @@ class FireCardTypeSpec extends GameEffectAbstractSpec:
       Explosion.id shouldBe 0
       Flare.id shouldBe 1
       BurningSnag.id shouldBe 2
-      Ember.id shouldBe 3
+//      Ember.id shouldBe 3
 
     "generate the correct resolver" in:
       Explosion.effect shouldBe a[MultiStepResolver]
       Flare.effect shouldBe a[MultiStepResolver]
       BurningSnag.effect shouldBe a[MultiStepResolver]
-      Ember.effect shouldBe a[MultiStepResolver]
+//      Ember.effect shouldBe a[MultiStepResolver]

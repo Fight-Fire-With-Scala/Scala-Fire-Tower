@@ -7,6 +7,9 @@ trait PatternEffect extends CardEffect:
   val tokens: Map[String, Token]
   val template: Map[Position, Token]
 
+  def compilePattern: Map[Position, Token] =
+    PatternEffect.fillPattern(template, tokens)
+
 object PatternEffect:
   private def fillPattern(
       skeleton: Map[Position, Token],
@@ -15,8 +18,6 @@ object PatternEffect:
     case (pos, TemplateToken(id: String)) if tokens.contains(id) => pos -> tokens(id)
     case (pos, token)                                            => pos -> token
   }
-  def unapply(tokens: Map[String, Token], template: Map[Position, Token]): Map[Position, Token] =
-    PatternEffect.fillPattern(template, tokens)
 
 final case class VeryLargeEffect(tokens: Map[String, Token]) extends PatternEffect:
   override val template: Map[Position, Token] = pattern { a; a; a; a; b; a; a; a; a }.mapTo(3, 3)

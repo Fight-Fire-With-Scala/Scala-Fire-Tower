@@ -17,13 +17,13 @@ cardSets:
     Almeno una di esse deve toccare ortogonalmente una gemma fuoco preesistente."
     effectCode: 2
     amount: 4
-  - title: "Tizzone"
-    typeName: "Fire"
-    description: "Sposta una gemma di fuoco sul tabellone in un qualunque spazio
-    adiacente ortogonalmente ad un'altra gemma di fuoco. Non puoi muovere una
-    gemma di fuoco che si trovi in una delle aree delle torri antincendio."
-    effectCode: 3
-    amount: 3
+#  - title: "Tizzone"
+#    typeName: "Fire"
+#    description: "Sposta una gemma di fuoco sul tabellone in un qualunque spazio
+#    adiacente ortogonalmente ad un'altra gemma di fuoco. Non puoi muovere una
+#    gemma di fuoco che si trovi in una delle aree delle torri antincendio."
+#    effectCode: 3
+#    amount: 3
   - title: "Nord"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Nord. OPPURE

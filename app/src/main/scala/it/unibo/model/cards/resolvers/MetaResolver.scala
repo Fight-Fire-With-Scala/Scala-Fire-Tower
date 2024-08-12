@@ -3,6 +3,7 @@ package it.unibo.model.cards.resolvers
 import it.unibo.model.cards.choices.StepChoice.{PatternApplication, PatternComputation}
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.effects.{CardEffect, PatternEffect, WindEffect}
+import it.unibo.model.gameboard.Direction
 import it.unibo.model.prolog.Rule
 
 sealed trait MetaResolver[C <: GameChoice, R <: EffectResolver] extends EffectResolver:
@@ -30,7 +31,11 @@ final case class MultiStepResolver(private val resolver: StepChoice => StepResol
   override def resolve(choice: StepChoice): StepResolver = resolver(choice)
 
 object MultiStepResolver:
-  def apply(pattern: PatternEffect, rules: List[Rule]): MultiStepResolver = new MultiStepResolver({
-    case PatternComputation    => PatternComputationResolver(pattern)
+  def apply(
+      pattern: PatternEffect,
+      goal: Rule,
+      directions: List[Direction]
+  ): MultiStepResolver = new MultiStepResolver({
+    case PatternComputation    => PatternComputationResolver(pattern, goal, directions)
     case PatternApplication(p) => PatternApplicationResolver(p)
   })

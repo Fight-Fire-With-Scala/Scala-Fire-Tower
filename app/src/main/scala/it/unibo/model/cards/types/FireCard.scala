@@ -1,11 +1,13 @@
 package it.unibo.model.cards.types
 
+import alice.tuprolog.{Struct, Var}
 import it.unibo.model.cards.resolvers.{EffectResolver, MetaResolver, MultiStepResolver}
 import it.unibo.model.cards.choices.GameChoice
 import it.unibo.model.cards.effects.{LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect}
+import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Token
-import it.unibo.model.gameboard.grid.ConcreteToken.{Firebreak, Fire}
-import it.unibo.model.prolog.AtLeast
+import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
+import it.unibo.model.prolog.Rule
 
 enum FireCard(
     override val id: Int,
@@ -16,7 +18,8 @@ enum FireCard(
         id = 0,
         effect = MultiStepResolver(
           VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)),
-          List(AtLeast("neigh", "cell", "[]", "[]"))
+          Rule(Struct.of("fire", Var.of("R"))),
+          FireCard.directions
         )
       )
   case Flare
@@ -24,7 +27,8 @@ enum FireCard(
         id = 1,
         effect = MultiStepResolver(
           MediumEffect(FireCard.defaultTokens),
-          List(AtLeast("neigh", "cell", "[]", "[]"))
+          Rule(Struct.of("fire", Var.of("R"))),
+          FireCard.directions
         )
       )
   case BurningSnag
@@ -32,17 +36,19 @@ enum FireCard(
         id = 2,
         effect = MultiStepResolver(
           LargeEffect(FireCard.defaultTokens),
-          List(AtLeast("neigh", "cell", "[]", "[]"))
+          Rule(Struct.of("fire", Var.of("R"))),
+          FireCard.directions
         )
       )
-  case Ember
-      extends FireCard(
-        id = 3,
-        effect = MultiStepResolver(
-          VerySmallEffect(FireCard.defaultTokens),
-          List(AtLeast("neigh", "cell", "[]", "[]"))
-        )
-      )
+//  case Ember
+//      extends FireCard(
+//        id = 3,
+//        effect = MultiStepResolver(
+//          VerySmallEffect(FireCard.defaultTokens),
+//          List(AtLeast("neigh", "cell", "[]", "[]"))
+//        )
+//      )
 
 object FireCard:
+  val directions: List[Direction] = Direction.values.toList
   val defaultTokens: Map[String, Token] = Map("a" -> Fire)

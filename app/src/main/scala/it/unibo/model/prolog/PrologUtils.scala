@@ -7,9 +7,9 @@ import it.unibo.model.gameboard.grid.{Cell, ConcreteToken, Grid, Position, Token
 import scala.collection.mutable.ListBuffer
 
 object PrologUtils:
-  given Conversion[Rule, Term] = _.toTerm
+//  given Conversion[Rule, Term] = _.toTerm
   given Conversion[String, Term] = Term.createTerm(_)
-
+  
   given Conversion[List[?], Term] = _.mkString("[", ",", "]")
 
   given Conversion[Int, Term] = (int: Int) => Term.createTerm(int.toString)
@@ -30,10 +30,6 @@ object PrologUtils:
 
   extension (g: Grid)
     def size: Int = math.sqrt(g.cells.size).toInt
-    def applyTokens(tokens: Map[Position, Token]): Grid = tokens
-      .foldLeft(g) { case (currentGrid, (position, token)) =>
-        currentGrid.setToken(position, token)
-      }
 
   private val resultBuffer: ListBuffer[String] = ListBuffer[String]()
 
@@ -53,7 +49,7 @@ object PrologUtils:
   def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] =
     resultBuffer.clear()
     val solutionAsStruct = solution.getSolution.asInstanceOf[Struct]
-    val result = solutionAsStruct.getArg(1).asInstanceOf[Var].getLink.asInstanceOf[Struct]
+    val result = solutionAsStruct.getArg(0).asInstanceOf[Var].getLink.asInstanceOf[Struct]
     parseStruct(result, resultBuffer)
     convertToMap(resultBuffer)
 
