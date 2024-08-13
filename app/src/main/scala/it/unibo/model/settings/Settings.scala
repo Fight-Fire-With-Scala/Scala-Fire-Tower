@@ -20,7 +20,7 @@ case class Settings(
 ) derives CanEqual:
   private val playerOne: Player = Person(playerOneName, List.empty, List.empty)
   private val playerTwo: Player = gameMode match
-    case GameMode.HumanVsHuman => Player.apply(playerTwoName.getOrElse("Player 2"))
+    case GameMode.HumanVsHuman => Player(playerTwoName.getOrElse("Player 2"))
     case GameMode.HumanVsBot   => Player.bot
 
   def getPlayerOne: Player = playerOne
