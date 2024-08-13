@@ -57,13 +57,7 @@ class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
     }
 
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
-    val x = startPosition.x
-    val y = startPosition.y
-    direction match
-      case Direction.North => startPosition.copy(y = y - 1)
-      case Direction.South => startPosition.copy(y = y + 1)
-      case Direction.West => startPosition.copy(x = x - 1)
-      case Direction.East => startPosition.copy(x = x + 1)
+    startPosition + direction.getDelta
 
   def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match
