@@ -33,11 +33,6 @@ object BoardTheory:
       Struct.of("token", Struct.tuple(pos._1, pos._2), token)
     }
 
-//    val eternalFireTokens = grid.cells.find {
-//      case (_, _: EternalFire.type) => true
-//      case _                        => false
-//    }.map((p, c) => Struct.of("token", Struct.tuple(p.x, p.y), Fire)).iterator
-
     val numRows = Iterator.single(Struct.of("numRows", grid.size))
     val numCols = Iterator.single(Struct.of("numCols", grid.size))
 
