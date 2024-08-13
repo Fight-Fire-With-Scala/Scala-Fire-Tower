@@ -1,10 +1,8 @@
 package it.unibo.model.cards.types
 
-import alice.tuprolog.{Struct, Var}
 import it.unibo.model.cards.choices.GameChoice
 import it.unibo.model.cards.effects.{LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect}
 import it.unibo.model.cards.resolvers.{EffectResolver, MetaResolver, MultiStepResolver}
-import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Water}
 import it.unibo.model.prolog.Rule
@@ -16,40 +14,25 @@ enum WaterCard(
   case SmokeJumper
       extends WaterCard(
         id = 11,
-        effect = MultiStepResolver(
-          VeryLargeEffect(Map("a" -> Water, "b" -> Fire)),
-          Rule(Struct.of("fire", Var.of("R"))),
-          WaterCard.directions
-        )
+        effect =
+          MultiStepResolver(VeryLargeEffect(Map("a" -> Water, "b" -> Fire)), Rule("smoke_jumper"))
       )
   case AirDrop
       extends WaterCard(
         id = 12,
-        effect = MultiStepResolver(
-          MediumEffect(WaterCard.defaultTokens),
-          Rule(Struct.of("fire", Var.of("R"))),
-          WaterCard.directions
-        )
+        effect = MultiStepResolver(MediumEffect(WaterCard.defaultTokens), Rule("water"))
       )
   case FireEngine
       extends WaterCard(
         id = 13,
-        effect = MultiStepResolver(
-          LargeEffect(WaterCard.defaultTokens),
-          Rule(Struct.of("fire", Var.of("R"))),
-          WaterCard.directions
-        )
+        effect = MultiStepResolver(LargeEffect(WaterCard.defaultTokens), Rule("water"))
       )
   case Bucket
       extends WaterCard(
         id = 14,
-        effect = MultiStepResolver(
-          VerySmallEffect(WaterCard.defaultTokens),
-          Rule(Struct.of("fire", Var.of("R"))),
-          WaterCard.directions
-        )
+        effect = MultiStepResolver(VerySmallEffect(WaterCard.defaultTokens), Rule("bucket"))
       )
+      with CanBePlayedAsExtra
 
 object WaterCard:
-  val directions: List[Direction] = Direction.values.toList
   val defaultTokens: Map[String, Token] = Map("a" -> Water)

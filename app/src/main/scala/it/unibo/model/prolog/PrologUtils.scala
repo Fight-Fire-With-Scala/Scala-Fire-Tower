@@ -7,11 +7,9 @@ import it.unibo.model.gameboard.grid.{Cell, ConcreteToken, Grid, Position, Token
 import scala.collection.mutable.ListBuffer
 
 object PrologUtils:
-//  given Conversion[Rule, Term] = _.toTerm
+  given Conversion[Rule, Term] = _.term
   given Conversion[String, Term] = Term.createTerm(_)
-  
   given Conversion[List[?], Term] = _.mkString("[", ",", "]")
-
   given Conversion[Int, Term] = (int: Int) => Term.createTerm(int.toString)
   given Conversion[Cell, Term] = (cell: Cell) => Term.createTerm(cell.id)
   given Conversion[Token, Term] = (token: Token) => Term.createTerm(token.id)
@@ -32,19 +30,6 @@ object PrologUtils:
     def size: Int = math.sqrt(g.cells.size).toInt
 
   private val resultBuffer: ListBuffer[String] = ListBuffer[String]()
-
-  def parseComputedApplicationPoints(solution: SolveInfo): Position =
-    resultBuffer.clear()
-    val solutionAsStruct = solution.getSolution.asInstanceOf[Struct]
-    val result = solutionAsStruct.getArg(0).asInstanceOf[Var].getLink.asInstanceOf[Struct]
-    parseStruct(result, resultBuffer)
-    convertToPosition(resultBuffer)
-
-  private def convertToPosition(buffer: ListBuffer[String]): Position =
-    val list = buffer.toList
-    val grouped = list.grouped(2).toList
-    grouped.collectFirst { case List(i1: String, i2: String) => Position(i1.toInt, i2.toInt) }
-      .getOrElse(Position(0, 0))
 
   def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] =
     resultBuffer.clear()

@@ -34,7 +34,7 @@ object MultiStepResolver:
   def apply(
       pattern: PatternEffect,
       goal: Rule,
-      directions: List[Direction]
+      directions: List[Direction] = Direction.values.toList
   ): MultiStepResolver = new MultiStepResolver({
     case PatternComputation    => PatternComputationResolver(pattern, goal, directions)
     case PatternApplication(p) => PatternApplicationResolver(p)

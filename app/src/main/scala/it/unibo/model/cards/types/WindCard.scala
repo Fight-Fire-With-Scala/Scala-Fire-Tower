@@ -1,9 +1,14 @@
 package it.unibo.model.cards.types
 
-import alice.tuprolog.{Struct, Var}
 import it.unibo.model.cards.choices.GameChoice
 import it.unibo.model.cards.effects.{VerySmallEffect, WindEffect}
-import it.unibo.model.cards.resolvers.{EffectResolver, InstantWindResolver, MetaResolver, MultiStepResolver, WindResolver}
+import it.unibo.model.cards.resolvers.{
+  EffectResolver,
+  InstantWindResolver,
+  MetaResolver,
+  MultiStepResolver,
+  WindResolver
+}
 import it.unibo.model.gameboard.{Dice, Direction}
 import it.unibo.model.cards.choices.WindChoice.*
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
@@ -26,9 +31,6 @@ object WindCard:
   def getEffect(direction: Direction): WindResolver = WindResolver {
     case UpdateWind       => InstantWindResolver(direction)
     case RandomUpdateWind => InstantWindResolver(dice.roll())
-    case PlaceFire        => MultiStepResolver(
-      VerySmallEffect(Map("a" -> Fire)),
-      Rule(Struct.of("fire", Var.of("R"))),
-      Direction.values.toList
-    )
+    case PlaceFire        =>
+      MultiStepResolver(VerySmallEffect(Map("a" -> Fire)), Rule("fire"), List(direction))
   }

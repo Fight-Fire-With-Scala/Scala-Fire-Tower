@@ -2,9 +2,12 @@ package it.unibo.model.prolog
 
 import alice.tuprolog.{Struct, Term, Theory}
 import it.unibo.model.gameboard.Direction
+import it.unibo.model.gameboard.grid.Cell.EternalFire
+import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.model.prolog.PrologUtils.{size, given}
-import scala.jdk.CollectionConverters._
+
+import scala.jdk.CollectionConverters.*
 
 final case class BoardTheory(
     private val grid: Grid,
@@ -29,6 +32,11 @@ object BoardTheory:
     val tokens = grid.tokens.iterator.map { case (pos, token) =>
       Struct.of("token", Struct.tuple(pos._1, pos._2), token)
     }
+
+//    val eternalFireTokens = grid.cells.find {
+//      case (_, _: EternalFire.type) => true
+//      case _                        => false
+//    }.map((p, c) => Struct.of("token", Struct.tuple(p.x, p.y), Fire)).iterator
 
     val numRows = Iterator.single(Struct.of("numRows", grid.size))
     val numCols = Iterator.single(Struct.of("numCols", grid.size))

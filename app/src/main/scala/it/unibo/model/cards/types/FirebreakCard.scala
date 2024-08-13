@@ -1,6 +1,5 @@
 package it.unibo.model.cards.types
 
-import alice.tuprolog.{Struct, Var}
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice}
 import it.unibo.model.cards.choices.FirebreakChoice.{Deforest, Reforest}
 import it.unibo.model.cards.effects.{MediumAltEffect, SmallEffect, VerySmallEffect}
@@ -10,7 +9,6 @@ import it.unibo.model.cards.resolvers.{
   MetaResolver,
   MultiStepResolver
 }
-import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Firebreak}
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.prolog.Rule
@@ -23,16 +21,10 @@ enum FirebreakCard(
       extends FirebreakCard(
         id = 10,
         effect = FirebreakResolver {
-          case Deforest => MultiStepResolver(
-              VerySmallEffect(FirebreakCard.defaultTokens),
-              Rule(Struct.of("fire", Var.of("R"))),
-              FirebreakCard.directions
-            )
-          case Reforest => MultiStepResolver(
-              VerySmallEffect(FirebreakCard.defaultTokens),
-              Rule(Struct.of("fire", Var.of("R"))),
-              FirebreakCard.directions
-            )
+          case Deforest =>
+            MultiStepResolver(VerySmallEffect(FirebreakCard.defaultTokens), Rule("deforest"))
+          case Reforest =>
+            MultiStepResolver(VerySmallEffect(FirebreakCard.defaultTokens), Rule("reforest"))
         }
       )
   case ScratchLine
@@ -40,20 +32,14 @@ enum FirebreakCard(
         id = 9,
         effect = MultiStepResolver(
           MediumAltEffect(Map("a" -> Firebreak, "b" -> Empty)),
-          Rule(Struct.of("fire", Var.of("R"))),
-          FirebreakCard.directions
+          Rule("scratch_line")
         )
       )
   case DozerLine
       extends FirebreakCard(
         id = 8,
-        effect = MultiStepResolver(
-          SmallEffect(FirebreakCard.defaultTokens),
-          Rule(Struct.of("fire", Var.of("R"))),
-          FirebreakCard.directions
-        )
+        effect = MultiStepResolver(SmallEffect(FirebreakCard.defaultTokens), Rule("dozer_line"))
       )
 
 object FirebreakCard:
-  val directions: List[Direction] = Direction.values.toList
   val defaultTokens: Map[String, Token] = Map("a" -> Firebreak)

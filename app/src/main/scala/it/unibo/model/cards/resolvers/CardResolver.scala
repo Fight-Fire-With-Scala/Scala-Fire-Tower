@@ -5,7 +5,7 @@ import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.prolog.{BoardTheory, PrologEngine, Rule}
 import it.unibo.model.prolog.PrologProgram.{cardsProgram, solverProgram}
-import it.unibo.model.prolog.PrologUtils.parseComputedPatterns
+import it.unibo.model.prolog.PrologUtils.{parseComputedPatterns, given}
 
 import scala.jdk.CollectionConverters.*
 
@@ -23,7 +23,7 @@ sealed case class PatternComputationResolver(
     theory.append(cardsProgram)
     theory.append(solverProgram)
     val engine = PrologEngine(theory)
-    val computedPatterns = engine.solve(goal.rule).map(i => parseComputedPatterns(i)).toList
+    val computedPatterns = engine.solve(goal).map(i => parseComputedPatterns(i)).toList
     PatternComputationEffect(computedPatterns)
 
 sealed case class PatternApplicationResolver(pattern: PatternEffect) extends StepResolver:

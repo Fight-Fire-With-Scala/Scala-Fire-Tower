@@ -1,13 +1,18 @@
 package it.unibo.model.prolog
 
 import alice.tuprolog.{Prolog, SolveInfo, Term, Theory}
+import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.prolog.PrologEngine.{engineWithResolver, engineWithTheory}
+import it.unibo.model.prolog.PrologUtils.parseComputedPatterns
 
 final case class PrologEngine(private val theory: Theory):
   private val engine = engineWithResolver(engineWithTheory(theory))
 
   def solve(goal: Term): LazyList[SolveInfo] = engine(goal)
 
+  def solveAsPatternList(goal: Term): List[Map[Position, Token]] =
+    solve(goal).map(i => parseComputedPatterns(i)).toList
+  
   def isSolvedWithSuccess(goal: Term): Boolean = 
     engine(goal).map(_.isSuccess).headOption.contains(true)
 
