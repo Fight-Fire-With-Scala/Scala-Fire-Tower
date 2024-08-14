@@ -24,3 +24,4 @@ case class ResolveWindPhase() extends ViewMessage
 sealed trait ModelMessage extends Message
 case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
 case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMessage
+case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
