@@ -9,25 +9,26 @@ import org.junit.runner.RunWith
 
 @RunWith(classOf[JUnitRunner])
 class WindCardRulesSpec extends AbstractPrologSpec:
-
-  // noinspection ScalaUnusedExpression
   "A wind card" should:
-    "provide the correct choices to place a fire token in a given cardinal direction" in:
-      val goal = Rule("fire")
-      val pattern = VerySmallEffect(Map("a" -> Fire)).compilePattern
-      val engine = buildEngine(pattern, Direction.North)
+    val goal = Rule("fire")
+    val pattern = VerySmallEffect(Map("a" -> Fire)).compilePattern
+    val engine = buildEngine(pattern, directions = Direction.North)
 
-      val solNorth = engine.solveAsPatternList(goal)
-      solNorth shouldEqual List(Map(Position(0, 1) -> Fire))
+    "provide the correct choices to place a fire token in the north direction" in:
+      val solNorth = engine.solveAsPatterns(goal)
+      solNorth shouldEqual Set(Map(Position(1, 2) -> Fire))
 
-      val engineSouth = engine.copy(buildTheory(pattern, Direction.South))
-      val solSouth = engineSouth.solveAsPatternList(goal)
-      solSouth shouldEqual List(Map(Position(2, 1) -> Fire))
+    "provide the correct choices to place a fire token in the south direction" in:
+      val engineSouth = engine.copy(buildTheory(pattern, directions = Direction.South))
+      val solSouth = engineSouth.solveAsPatterns(goal)
+      solSouth shouldEqual Set(Map(Position(3, 2) -> Fire))
 
-      val engineEast = engine.copy(buildTheory(pattern, Direction.East))
-      val solEast = engineEast.solveAsPatternList(goal)
-      solEast shouldEqual List(Map(Position(1, 2) -> Fire))
+    "provide the correct choices to place a fire token in the east direction" in:
+      val engineEast = engine.copy(buildTheory(pattern, directions = Direction.East))
+      val solEast = engineEast.solveAsPatterns(goal)
+      solEast shouldEqual Set(Map(Position(2, 3) -> Fire))
 
-      val engineWest = engine.copy(buildTheory(pattern, Direction.West))
-      val solWest = engineWest.solveAsPatternList(goal)
-      solWest shouldEqual List(Map(Position(1, 0) -> Fire))
+    "provide the correct choices to place a fire token in the west direction" in:
+      val engineWest = engine.copy(buildTheory(pattern, directions = Direction.West))
+      val solWest = engineWest.solveAsPatterns(goal)
+      solWest shouldEqual Set(Map(Position(2, 1) -> Fire))
