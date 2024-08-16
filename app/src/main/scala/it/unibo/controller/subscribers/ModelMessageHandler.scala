@@ -60,6 +60,12 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
 
     Continue
 
-  override def onError(ex: Throwable): Unit = println(s"Received error $ex")
+  override def onError(ex: Throwable): Unit =
+    println(s"Received error: ${ex.getMessage}")
+    ex.getStackTrace.foreach { traceElement =>
+      println(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
+          .getFileName}:${traceElement.getLineNumber})")
+    }
+    println(s"Full description: ${ex.toString}")
 
   override def onComplete(): Unit = println(s"Received final event")
