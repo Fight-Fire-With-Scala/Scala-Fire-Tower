@@ -1,8 +1,8 @@
-package it.unibo.view.components.gameboard
+package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.model.gameboard.Direction
 
-case class HoverDirection(direction: Direction, isDetermined: Boolean = true)
+final case class HoverDirection(direction: Direction, isDetermined: Boolean = true)
 
 object HoverDirection:
   def fromCoordinates(x: Double, y: Double, width: Double, height: Double): HoverDirection =

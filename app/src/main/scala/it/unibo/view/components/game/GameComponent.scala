@@ -2,8 +2,8 @@ package it.unibo.view.components.game
 
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.view.components.GraphicComponent
-import it.unibo.view.components.gameboard.GridComponent
-import it.unibo.view.components.hand.HandComponent
+import it.unibo.view.components.game.gameboard.grid.GridComponent
+import it.unibo.view.components.game.gameboard.hand.HandComponent
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import scalafx.application.Platform
@@ -11,14 +11,14 @@ import javafx.scene.Node
 
 import scala.compiletime.uninitialized
 
-class GameComponent extends GraphicComponent:
+final class GameComponent extends GraphicComponent:
   @FXML
   var grid: Pane = uninitialized
   @FXML
   var sidebar: Pane = uninitialized
   @FXML
   var hand: Pane = uninitialized
-
+  
   var gridComponent: GridComponent = uninitialized
   var sidebarComponent: GraphicComponent = uninitialized
   var handComponent: HandComponent = uninitialized
@@ -29,7 +29,6 @@ class GameComponent extends GraphicComponent:
       componentController: T,
       componentVar: T => Unit
   ): Unit = Platform.runLater { () =>
-    pane.getChildren.clear()
     pane.getChildren.add(componentPane)
     componentVar(componentController)
   }

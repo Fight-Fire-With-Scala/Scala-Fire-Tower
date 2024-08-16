@@ -1,4 +1,4 @@
-package it.unibo.view.components.gameboard
+package it.unibo.view.components.game.gameboard.grid
 
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
@@ -10,7 +10,7 @@ import scalafx.scene.layout.Pane
 
 import scala.compiletime.uninitialized
 
-case class GridSquare(
+final case class GridSquare(
     row: Int,
     col: Int,
     size: Double,

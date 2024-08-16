@@ -1,77 +1,87 @@
 package it.unibo.view
 
-import monix.eval.Task
-import monix.execution.Scheduler.Implicits.global
 import javafx.scene.Node
 import scalafx.application.{JFXApp3, Platform}
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
 import it.unibo.view.components.{ComponentFactory, GraphicComponent}
-import it.unibo.view.components.hand.HandComponent
-import it.unibo.view.components.hand.cards.CardComponent
 import it.unibo.controller.ViewSubject
-import it.unibo.view.components.deck.DeckComponent
 import it.unibo.view.components.game.GameComponent
-import it.unibo.view.components.gameboard.GridComponent
+import it.unibo.view.components.game.gameboard.grid.GridComponent
+import it.unibo.view.components.game.gameboard.hand.{CardComponent, HandComponent}
+import it.unibo.view.components.game.gameboard.sidebar.{
+  DeckComponent,
+  GameInfoComponent,
+  SidebarComponent,
+  WindRoseComponent
+}
+import scalafx.scene.image.Image
 
 import scala.compiletime.uninitialized
 import scala.jdk.CollectionConverters.*
 
-class MonadicGuiFX(val w: Int, val h: Int, viewLoader: ViewLoader, observableSubject: ViewSubject)
-    extends JFXApp3:
+final class MonadicGuiFX(val w: Int, val h: Int, viewObservable: ViewSubject) extends JFXApp3:
 
   private var pane: Pane = uninitialized
 
   override def start(): Unit =
     pane = new StackPane()
     stage = new PrimaryStage:
+      title = "Scala Fire Tower"
+      resizable = false
+      icons += new Image(this.getClass.getResourceAsStream("/icon.png"))
       scene = new Scene(pane, w, h)
       minHeight = h
       minWidth = w
     loadGUI(GUIType.Menu)
 
   private def loadGuiComponent(guiType: GUIType, setups: (GraphicComponent => Unit)*): Unit =
-    val guiTask = Task {
-      val componentInstance = ComponentFactory.createFXMLComponent(guiType)(observableSubject)
-      val root = viewLoader.load(guiType.fxmlPath, componentInstance).asInstanceOf[Node]
-      setups.foreach(_(componentInstance))
-      Platform.runLater { () =>
-        pane.children.clear()
-        pane.children.add(root)
-        stage.show()
-      }
+    val componentInstance = ComponentFactory.createFXMLComponent(guiType)(viewObservable)
+    val root = FXMLViewLoader.load(guiType.fxmlPath, componentInstance).asInstanceOf[Node]
+    setups.foreach(_(componentInstance))
+    Platform.runLater { () =>
+      pane.children.clear()
+      pane.children.add(root)
+      stage.show()
     }
-    guiTask.runAsyncAndForget
 
   private def loadGUI(guiType: GUIType): Unit = loadGuiComponent(guiType)
 
-  def loadGrid(): Unit = loadGUI(GUIType.Grid)
-
   private def loadHand(): (HandComponent, Node) =
-    val handComponent = ComponentFactory.createFXMLComponent(GUIType.Hand)(observableSubject)
+    val handComponent = ComponentFactory.createFXMLComponent(GUIType.Hand)(viewObservable)
       .asInstanceOf[HandComponent]
-    val handView = viewLoader.load(GUIType.Hand.fxmlPath, handComponent).asInstanceOf[Node]
+    val handView = FXMLViewLoader.load(GUIType.Hand.fxmlPath, handComponent)
     handComponent.handPane.getChildren.asScala.zipWithIndex.foreach { case (_, slotIndex) =>
-      val cardComponent = ComponentFactory.createFXMLComponent(GUIType.Card)(observableSubject)
+      val cardComponent = ComponentFactory.createFXMLComponent(GUIType.Card)(viewObservable)
         .asInstanceOf[CardComponent]
-      val cardView = viewLoader.load(GUIType.Card.fxmlPath, cardComponent).asInstanceOf[Node]
+      val cardView = FXMLViewLoader.load(GUIType.Card.fxmlPath, cardComponent)
       handComponent.setupCard(cardView, cardComponent, slotIndex)
     }
     (handComponent, handView)
+
+  private def loadSidebar(): (SidebarComponent, Node) =
+    given observable: ViewSubject = viewObservable
+    val subComponents = List(WindRoseComponent(), DeckComponent(), GameInfoComponent())
+    val sidebarComponent = SidebarComponent(subComponents)
+    val sidebarView = FXMLViewLoader.load(GUIType.Sidebar.fxmlPath, sidebarComponent)
+    (sidebarComponent, sidebarView)
+
+  private def loadGrid(): (GridComponent, Node) =
+    val gridComponent = ComponentFactory.createFXMLComponent(GUIType.Grid)(viewObservable)
+      .asInstanceOf[GridComponent]
+    val gridView = FXMLViewLoader.load(GUIType.Grid.fxmlPath, gridComponent)
+    (gridComponent, gridView)
 
   def loadGame(): Unit = loadGuiComponent(
     GUIType.Game,
     graphicComponent =>
       val gameComponent = graphicComponent.asInstanceOf[GameComponent]
-      val gridComponent = ComponentFactory.createFXMLComponent(GUIType.Grid)(observableSubject)
-        .asInstanceOf[GridComponent]
-      val gridView = viewLoader.load(GUIType.Grid.fxmlPath, gridComponent).asInstanceOf[Node]
+
+      val (gridComponent, gridView) = loadGrid()
       gameComponent.setupGrid(gridView, gridComponent)
 
-      val sidebarComponent = ComponentFactory.createFXMLComponent(GUIType.Deck)(observableSubject)
-        .asInstanceOf[DeckComponent]
-      val sidebarView = viewLoader.load(GUIType.Deck.fxmlPath, sidebarComponent).asInstanceOf[Node]
+      val (sidebarComponent, sidebarView) = loadSidebar()
       gameComponent.setupSidebar(sidebarView, sidebarComponent)
 
       val (handComponent, handView) = loadHand()

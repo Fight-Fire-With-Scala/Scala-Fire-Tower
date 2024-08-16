@@ -1,24 +1,25 @@
-package it.unibo.view.components.hand.cards
+package it.unibo.view.components.game.gameboard.hand
 
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
 import it.unibo.view.components.GraphicComponent
 import javafx.fxml.FXML
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
-import javafx.scene.input.MouseEvent
 import scalafx.Includes.*
 
 import scala.compiletime.uninitialized
 
-class CardComponent extends GraphicComponent:
+//noinspection VarCouldBeVal
+final class CardComponent extends GraphicComponent:
   @FXML
   var cardPane: Pane = uninitialized
   @FXML
-  var cardTitle: Text = uninitialized
+  private var cardTitle: Text = uninitialized
   @FXML
-  var cardDescription: Text = uninitialized
+  private var cardDescription: Text = uninitialized
   @FXML
   var cardId: String = uninitialized
 

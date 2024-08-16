@@ -6,23 +6,12 @@ import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
 import scalafx.application.Platform
-import it.unibo.controller.{SettingsMessage, ViewMessage, ViewSubject}
+import it.unibo.controller.{SettingsMessage, ViewSubject}
 
 import scala.compiletime.uninitialized
 
-trait ComponentService
-
-trait MenuComponentService extends ComponentService:
-  def handleStartAction(): Unit
-  def handleExitAction(): Unit
-
-//class MenuControllerProxy(actualController: MenuControllerService) extends MenuControllerService:
-//  override def handleStartAction(): Unit = actualController.handleStartAction()
-//  override def handleExitAction(): Unit = actualController.handleExitAction()
-
 //noinspection VarCouldBeVal
-class MenuComponent(observableSubject: ViewSubject)
-    extends MenuComponentService, GraphicComponent:
+final class MenuComponent(observableSubject: ViewSubject) extends GraphicComponent:
 
   @FXML
   private var gameModeToggleGroup: ToggleGroup = uninitialized
@@ -70,7 +59,7 @@ class MenuComponent(observableSubject: ViewSubject)
     val playerOneNameInput =
       if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
-    
+
     observableSubject.onNext(SettingsMessage(Settings(
       gameMode = selectedGameMode,
       cardSet = selectedCardSet,
