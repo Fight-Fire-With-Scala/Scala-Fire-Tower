@@ -1,18 +1,21 @@
-package it.unibo.view.components.deck
+package it.unibo.view.components.game.gameboard.sidebar
 
 import it.unibo.controller.{DrawCardMessage, ViewSubject}
-import it.unibo.view.components.GraphicComponent
+import it.unibo.view.components.IHaveView
 import javafx.fxml.FXML
 import javafx.scene.control.{Spinner, SpinnerValueFactory}
 
 import scala.compiletime.uninitialized
 
-class DeckComponent(observableSubject: ViewSubject) extends GraphicComponent:
+//noinspection VarCouldBeVal
+final class DeckComponent(using observable: ViewSubject) extends IHaveView:
 
   @FXML
   private var numberInput: Spinner[Integer] = uninitialized
 
   private var maxCards: Int = 5
+
+  override val fxmlPath: String = "/pages/deck.fxml"
 
   def maxCards_=(value: Int): Unit =
     maxCards = value
@@ -27,5 +30,4 @@ class DeckComponent(observableSubject: ViewSubject) extends GraphicComponent:
     numberInput.getValueFactory.setValue(1)
 
   @FXML
-  private def handleDrawCard(): Unit = observableSubject
-    .onNext(DrawCardMessage(numberInput.getValue))
+  private def handleDrawCard(): Unit = observable.onNext(DrawCardMessage(numberInput.getValue))

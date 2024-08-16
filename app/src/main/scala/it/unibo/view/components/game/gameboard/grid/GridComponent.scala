@@ -1,4 +1,4 @@
-package it.unibo.view.components.gameboard
+package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.Direction
@@ -6,17 +6,20 @@ import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.view.components.GraphicComponent
+import it.unibo.view.components.game.GameComponent
 import javafx.fxml.FXML
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.application.Platform
+import scalafx.scene.Node
 import scalafx.scene.paint.Color
 
 import scala.collection.mutable
 import scala.compiletime.uninitialized
 import scala.language.postfixOps
 
-class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
+//noinspection VarCouldBeVal
+final class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
 
   @FXML
   private var container: StackPane = uninitialized
@@ -62,7 +65,7 @@ class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
   def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match
       case Some(_: Woods.type)       => Color.DarkGreen
-      case Some(_: Tower.type)       => Color.rgb(66, 39, 3)
+      case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
       case Some(_: EternalFire.type) => Color.Red
       case _                         => Color.White
 

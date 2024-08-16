@@ -24,7 +24,7 @@ object ViewModule:
     context: Requirements =>
     class ViewImpl extends View:
       private val observableSubject = PublishSubject[ViewMessage]()
-      private val gui = MonadicGuiFX(1600, 900, new FXMLViewLoader, observableSubject)
+      private val gui = MonadicGuiFX(1280, 1024, observableSubject)
 
       override def show(): Unit = gui.main(Array.empty)
 
