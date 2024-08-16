@@ -26,20 +26,22 @@ final class GameComponent extends GraphicComponent:
   private def setupComponent[T <: GraphicComponent](
       pane: Pane,
       componentPane: Node,
-      componentController: T,
-      componentVar: T => Unit
+      assignComponent: () => Unit
   ): Unit = Platform.runLater { () =>
     pane.getChildren.add(componentPane)
-    componentVar(componentController)
+    assignComponent()
   }
 
   def setupGrid(gridPane: Node, gridController: GridComponent): Unit =
-    setupComponent(grid, gridPane, gridController, gridComponent = _)
+    setupComponent(grid, gridPane, () => gridComponent = gridController)
 
-  def setupSidebar(sidebarPane: Node, sidebarController: GraphicComponent): Unit =
-    setupComponent(sidebar, sidebarPane, sidebarController, sidebarComponent = _)
+  def setupSidebar(sidebarPane: Node, sidebarController: GraphicComponent): Unit = setupComponent(
+    sidebar,
+    sidebarPane,
+    () => sidebarComponent = sidebarController
+  )
 
   def setupHand(handPane: Node, handController: HandComponent): Unit =
-    setupComponent(hand, handPane, handController, handComponent = _)
+    setupComponent(hand, handPane, () => handComponent = handController)
 
   def updateGrid(grid: Grid): Unit = Platform.runLater(() => gridComponent.updateGrid(grid))

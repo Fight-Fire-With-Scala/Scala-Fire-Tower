@@ -21,9 +21,9 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
 
   override def onNext(msg: ViewMessage): Future[Ack] =
     msg match
-      case SettingsMessage(_)           =>
+      case SettingsMessage(settings)           =>
         logger.info(s"Received Settings Message")
-        model.initialiseModel()
+        model.initialiseModel(settings)
       case DrawCardMessage(nCards: Int) =>
         logger.info(s"Draw $nCards cards")
 //        val gameBoard = model.getGameBoard

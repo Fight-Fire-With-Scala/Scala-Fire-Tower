@@ -28,8 +28,8 @@ extension (p: Player)
     case Some(card) =>
       val updatedHand = p.hand.filterNot(_.id == cardId)
       p match
-        case person: Person => (person.copy(hand = updatedHand), Option.apply(card))
-        case bot: Bot       => (bot.copy(hand = updatedHand), Option.apply(card))
+        case person: Person => (person.copy(hand = updatedHand), Option(card))
+        case bot: Bot       => (bot.copy(hand = updatedHand), Option(card))
     case None       => (p, Option.empty)
 
   def logMove(move: Move): Player = p match

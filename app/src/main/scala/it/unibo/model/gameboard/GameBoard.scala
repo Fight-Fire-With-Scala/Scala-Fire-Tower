@@ -4,14 +4,23 @@ import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
 import it.unibo.model.cards.effects.GameEffect
-import it.unibo.model.cards.resolvers.{ChoiceResultResolver, EffectResolver, FirebreakResolver, InstantResolver, InstantWindResolver, MetaResolver, MultiStepResolver, PatternApplicationResolver, PatternComputationResolver, StepResolver, WindResolver}
+import it.unibo.model.cards.resolvers.{
+  ChoiceResultResolver,
+  EffectResolver,
+  FirebreakResolver,
+  InstantResolver,
+  InstantWindResolver,
+  MetaResolver,
+  MultiStepResolver,
+  PatternApplicationResolver,
+  PatternComputationResolver,
+  StepResolver,
+  WindResolver
+}
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.logger
-
-sealed trait Player
-case object Player1 extends Player
-case object Player2 extends Player
+import it.unibo.model.players.Player
 
 enum GamePhase:
   case WindPhase, ActionPhase
@@ -22,14 +31,13 @@ enum ActionPhaseChoice:
 case class GameBoard(
     board: Board,
     deck: Deck,
-    var currentPlayer: Player = Player1,
+    player1: Player,
+    player2: Player,
+    currentPlayer: Player = null,
     var gamePhase: GamePhase = WindPhase
 ):
   def changeTurn(): GameBoard =
-    currentPlayer = currentPlayer match
-      case Player1 => Player2
-      case Player2 => Player1
-    this
+    copy(currentPlayer = if currentPlayer == player1 then player2 else player1)
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
@@ -62,9 +70,9 @@ case class GameBoard(
     case sr: PatternApplicationResolver => Some(sr.applyMove(board))
 
 object GameBoard:
-  def apply(): GameBoard =
+  def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
     logger.info(s"Wind Direction: ${b.windDirection}")
-    val gb = GameBoard(b, Deck("cards.yaml"))
+    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2, player1)
     logger.info(s"Player turn: ${gb.currentPlayer}")
     gb
