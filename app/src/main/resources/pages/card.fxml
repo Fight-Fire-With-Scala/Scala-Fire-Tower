@@ -2,12 +2,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.String?>
-<Pane fx:id="cardPane" xmlns:fx="http://javafx.com/fxml" stylesheets="@style/hand.css" styleClass="card-test">
+<Pane fx:id="cardPane" xmlns:fx="http://javafx.com/fxml" stylesheets="@style/hand.css" styleClass="card-container">
     <fx:define>
         <String fx:id="cardId" fx:value=""/>
     </fx:define>
-    <VBox alignment="CENTER" spacing="10">
-        <Text fx:id="cardTitle"/>
-        <Text fx:id="cardDescription"/>
+    <VBox alignment="CENTER" spacing="10" styleClass="vbox">
+        <Text fx:id="cardTitle" styleClass="text" textAlignment="CENTER"/>
+        <Text fx:id="cardDescription" wrappingWidth="135" textAlignment="CENTER" styleClass="text"/>
     </VBox>
 </Pane>

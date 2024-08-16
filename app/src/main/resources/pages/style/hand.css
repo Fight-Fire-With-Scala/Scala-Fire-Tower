@@ -5,6 +5,8 @@
     -fx-border-width: 2;
     -fx-min-width: 150px;
     -fx-min-height: 200px;
+    -fx-max-height: 200px;
+    -fx-max-width: 150px;
     -fx-background-color: lightgray;
     -fx-padding: 10px;
     display: flex;
@@ -21,6 +23,27 @@
     -fx-min-height: 200px;
 }
 
+.card-container .text {
+    -fx-wrap-text: true;
+    -fx-text-overrun: ellipsis;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+.card-container .vbox {
+    -fx-alignment: center;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+}
+
+.card-container {
+    -fx-alignment: center;
+}
+
+.card:hover {
+    -fx-background-color: lightblue;
+}
+
 .fire { -fx-background-color: red; }
 
 .firebreak { -fx-background-color: purple; }
@@ -34,6 +57,3 @@
     -fx-border-color: transparent;
 }
 
-.card:hover {
-    -fx-background-color: lightblue;
-}
