@@ -1,8 +1,9 @@
 package it.unibo.view
 
 import it.unibo.controller.{ControllerModule, ResolveWindPhase, ViewMessage, ViewSubject}
-import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.grid.{Grid, Position, Token}
+import it.unibo.model.gameboard.{Direction, GameBoard}
+import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.view.components.game.gameboard.sidebar.WindRoseComponent
 import monix.reactive.subjects.PublishSubject
 import scalafx.application.Platform
 
@@ -14,6 +15,7 @@ object ViewModule:
     def getObservable: PublishSubject[ViewMessage]
     def refresh(gameBoard: GameBoard): Unit
     def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit
+    def setWindDirection(windDirection: Direction): Unit
 
   trait Provider:
     val view: View
@@ -40,6 +42,16 @@ object ViewModule:
         .runLater(() =>
           GameBoardController.gameComponent.get.gridComponent.availablePatterns = patterns
         )
+
+      override def setWindDirection(windDirection: Direction): Unit = Platform.runLater(() =>
+        val components = GameBoardController.gameComponent.get.sidebarComponent.components
+        val windRose = components.collectFirst { case windRose: WindRoseComponent => windRose }
+        handleWindRose(windRose, windDirection)
+      )
+
+      private def handleWindRose(wr: Option[WindRoseComponent], d: Direction): Unit = wr match
+        case Some(windRose) => windRose.updateWindRoseDirection(d)
+        case None           => logger.warn("WindRoseComponent not found")
 
   trait Interface extends Provider with Component:
     self: Requirements =>

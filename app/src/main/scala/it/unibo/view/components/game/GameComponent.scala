@@ -5,6 +5,7 @@ import it.unibo.model.players.Player
 import it.unibo.view.components.GraphicComponent
 import it.unibo.view.components.game.gameboard.grid.GridComponent
 import it.unibo.view.components.game.gameboard.hand.HandComponent
+import it.unibo.view.components.game.gameboard.sidebar.SidebarComponent
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import scalafx.application.Platform
@@ -21,7 +22,7 @@ final class GameComponent extends GraphicComponent:
   var hand: Pane = uninitialized
   
   var gridComponent: GridComponent = uninitialized
-  var sidebarComponent: GraphicComponent = uninitialized
+  var sidebarComponent: SidebarComponent = uninitialized
   var handComponent: HandComponent = uninitialized
 
   private def setupComponent[T <: GraphicComponent](
@@ -36,7 +37,7 @@ final class GameComponent extends GraphicComponent:
   def setupGrid(gridPane: Node, gridController: GridComponent): Unit =
     setupComponent(grid, gridPane, () => gridComponent = gridController)
 
-  def setupSidebar(sidebarPane: Node, sidebarController: GraphicComponent): Unit =
+  def setupSidebar(sidebarPane: Node, sidebarController: SidebarComponent): Unit =
     setupComponent(sidebar, sidebarPane, () => sidebarComponent = sidebarController)
 
   def setupHand(handPane: Node, handController: HandComponent): Unit =

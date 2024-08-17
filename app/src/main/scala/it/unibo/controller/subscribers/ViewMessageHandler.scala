@@ -23,6 +23,7 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
       case StartGameBoardMessage(gameBoard) =>
         logger.info(s"Received StartGameBoardMessage")
         view.startGame()
+        view.setWindDirection(gameBoard.board.windDirection)
         view.refresh(gameBoard)
       case ShowAvailablePatterns(patterns)  =>
         logger.info(s"Received ShowAvailablePatterns")
