@@ -50,7 +50,7 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
 
     val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
-    val positionToCheck = checkNeighbor(Position(col, row), direction.direction)
+    val positionToCheck = checkNeighbor(Position(row, col), direction.direction)
     val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
 
     candidatePositions.foreach { pattern =>
@@ -60,7 +60,7 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
     }
 
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
-    startPosition + direction.getDelta
+    startPosition - direction.getDelta
 
   def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match

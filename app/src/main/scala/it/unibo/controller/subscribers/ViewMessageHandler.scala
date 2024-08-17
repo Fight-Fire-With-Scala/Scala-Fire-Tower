@@ -28,7 +28,7 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
         logger.info(s"Received ShowAvailablePatterns")
         logger.info(s"patterns $patterns")
       // Enable the hovering of the grid considering the available patterns
-      // view.setAvailablePatterns(patterns)
+        view.setAvailablePatterns(patterns)
       case RefreshMessage(gameBoard)        =>
         logger.info(s"Received RefreshMessage")
         view.refresh(gameBoard)
