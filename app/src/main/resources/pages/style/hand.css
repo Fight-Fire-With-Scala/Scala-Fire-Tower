@@ -23,23 +23,6 @@
     -fx-min-height: 200px;
 }
 
-.card-container .text {
-    -fx-wrap-text: true;
-    -fx-text-overrun: ellipsis;
-    -fx-text-alignment: center;
-    -fx-alignment: center;
-}
-
-.card-container .vbox {
-    -fx-alignment: center;
-    -fx-padding: 10px;
-    -fx-spacing: 10px;
-}
-
-.card-container {
-    -fx-alignment: center;
-}
-
 .card:hover {
     -fx-background-color: lightblue;
 }
