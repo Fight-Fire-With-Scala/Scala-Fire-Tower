@@ -1,6 +1,6 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.ViewSubject
+import it.unibo.controller.{UpdateWindDirection, ViewSubject}
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.{East, North, South, West}
@@ -25,7 +25,10 @@ final class WindRoseComponent(using observable: ViewSubject) extends IHaveView w
   private val windRoseDirections = Direction.values.map(d => d -> WindRoseDirection.create(d)).toMap
 
   private val windRoseEventHandler: Direction => EventHandler[MouseEvent] =
-    dir => ev => windRoseArrow.updateDirection(dir)
+    dir => ev => {
+      windRoseArrow.updateDirection(dir)
+      observable.onNext(UpdateWindDirection(dir))
+    }
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
 

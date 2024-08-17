@@ -3,13 +3,7 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{
-  DrawCardMessage,
-  ResolveWindPhase,
-  SettingsMessage,
-  ShowAvailablePatterns,
-  ViewMessage
-}
+import it.unibo.controller.{DrawCardMessage, ResolveWindPhase, SettingsMessage, ShowAvailablePatterns, UpdateWindDirection, ViewMessage}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.logger
 import it.unibo.model.cards.resolvers.PatternComputationResolver
@@ -18,8 +12,9 @@ import scala.concurrent.Future
 import it.unibo.model.prolog.Rule
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import alice.tuprolog.{Struct, Var}
+import it.unibo.controller.subscribers.ModelMessageHandler.resolveWindPhase
 import it.unibo.model.cards.effects.VerySmallEffect
-import it.unibo.model.cards.effects.PatternComputationEffect
+import it.unibo.model.gameboard.Direction
 import it.unibo.model.players.drawCardFromDeck
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
@@ -46,17 +41,15 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
         model.setGameBoard(gameBoard.copy(deck = finalDeck, currentPlayer = finalPlayer))
 
       case ResolveWindPhase() =>
-        logger.info(s"Received Settings Message")
-        val board = model.getGameBoard.board
-        val direction = board.windDirection
+        logger.info(s"Received ResolveWindPhase Message")
+        resolveWindPhase(model)
 
-        val availablePatterns = PatternComputationResolver(
-          VerySmallEffect(Map("a" -> Fire)),
-          Rule(Struct.of("fire", Var.of("R"))),
-          List(direction)
-        ).getAvailableMoves(board).patterns
-
-        model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))
+      case UpdateWindDirection(windDirection: Direction) =>
+        logger.info(s"Received UpdateWindDirection Message")
+        val gameBoard = model.getGameBoard
+        val board = gameBoard.board
+        model.setGameBoard(gameBoard.copy(board = board.copy(windDirection = windDirection)))
+        resolveWindPhase(model)
 
     Continue
 
@@ -69,3 +62,16 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
     println(s"Full description: ${ex.toString}")
 
   override def onComplete(): Unit = println(s"Received final event")
+
+object ModelMessageHandler:
+  def resolveWindPhase(model: Model): Future[Ack] =
+    val board = model.getGameBoard.board
+    val direction = board.windDirection
+
+    val availablePatterns = PatternComputationResolver(
+      VerySmallEffect(Map("a" -> Fire)),
+      Rule(Struct.of("fire", Var.of("R"))),
+      List(direction)
+    ).getAvailableMoves(board).patterns
+
+    model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))

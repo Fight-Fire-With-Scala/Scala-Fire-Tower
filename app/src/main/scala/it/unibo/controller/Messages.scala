@@ -1,6 +1,6 @@
 package it.unibo.controller
 
-import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.settings.Settings
 import monix.reactive.subjects.PublishSubject
@@ -17,7 +17,7 @@ sealed trait ViewMessage extends Message
 case class SettingsMessage(settings: Settings) extends ViewMessage
 case class DrawCardMessage(nCards: Int) extends ViewMessage
 case class ResolveWindPhase() extends ViewMessage
-
+case class UpdateWindDirection(windDirection: Direction) extends ViewMessage
 /*
  * This refers to messages sent to the view from the model
  */
