@@ -49,15 +49,9 @@ final class MonadicGuiFX(val w: Int, val h: Int, viewObservable: ViewSubject) ex
   private def loadGUI(guiType: GUIType): Unit = loadGuiComponent(guiType)
 
   private def loadHand(): (HandComponent, Node) =
-    val handComponent = ComponentFactory.createFXMLComponent(GUIType.Hand)(viewObservable)
-      .asInstanceOf[HandComponent]
+    val cardComponents = List.fill(5)(new CardComponent())
+    val handComponent = HandComponent(cardComponents)
     val handView = FXMLViewLoader.load(GUIType.Hand.fxmlPath, handComponent)
-    handComponent.handPane.getChildren.asScala.zipWithIndex.foreach { case (_, slotIndex) =>
-      val cardComponent = ComponentFactory.createFXMLComponent(GUIType.Card)(viewObservable)
-        .asInstanceOf[CardComponent]
-      val cardView = FXMLViewLoader.load(GUIType.Card.fxmlPath, cardComponent)
-      handComponent.setupCard(cardView, cardComponent, slotIndex)
-    }
     (handComponent, handView)
 
   private def loadSidebar(): (SidebarComponent, Node) =

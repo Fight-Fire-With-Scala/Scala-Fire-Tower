@@ -13,6 +13,4 @@ object ComponentFactory:
     gui match
       case Menu => new MenuComponent(observableSubject)
       case Grid => new GridComponent(observableSubject)
-      case Hand => new HandComponent()
-      case Card => new CardComponent()
       case Game => new GameComponent()
