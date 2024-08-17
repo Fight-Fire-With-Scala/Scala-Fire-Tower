@@ -17,35 +17,35 @@
         <BorderPane prefHeight="102.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <center>
                 <Pane BorderPane.alignment="CENTER">
-                    <StackPane fx:id="southPane" prefHeight="127.0" prefWidth="127.0" />
+                    <StackPane fx:id="southPane" styleClass="disabled" prefHeight="127.0" prefWidth="127.0" />
                 </Pane>
             </center>
         </BorderPane>
         <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="1">
             <center>
                 <Pane BorderPane.alignment="CENTER">
-                    <StackPane fx:id="centerPane" prefHeight="127.0" prefWidth="127.0" />
+                    <StackPane fx:id="centerPane" styleClass="disabled" prefHeight="127.0" prefWidth="127.0" />
                 </Pane>
             </center>
         </BorderPane>
         <BorderPane GridPane.rowIndex="1">
             <center>
                 <Pane BorderPane.alignment="CENTER">
-                    <StackPane fx:id="westPane" prefHeight="127.0" prefWidth="127.0" />
+                    <StackPane fx:id="westPane" styleClass="disabled" prefHeight="127.0" prefWidth="127.0" />
                 </Pane>
             </center>
         </BorderPane>
         <BorderPane GridPane.columnIndex="2" GridPane.rowIndex="1">
             <center>
                 <Pane BorderPane.alignment="CENTER">
-                    <StackPane fx:id="eastPane" prefHeight="127.0" prefWidth="127.0" />
+                    <StackPane fx:id="eastPane" styleClass="disabled" prefHeight="127.0" prefWidth="127.0" />
                 </Pane>
             </center>
         </BorderPane>
         <BorderPane GridPane.columnIndex="1">
             <center>
                 <Pane BorderPane.alignment="CENTER">
-                    <StackPane fx:id="northPane" prefHeight="127.0" prefWidth="127.0" />
+                    <StackPane fx:id="northPane" styleClass="disabled" prefHeight="127.0" prefWidth="127.0" />
                 </Pane>
             </center>
         </BorderPane>

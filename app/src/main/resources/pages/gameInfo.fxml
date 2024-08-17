@@ -23,7 +23,7 @@
         <center>
             <Pane BorderPane.alignment="CENTER">
                 <StackPane style="-fx-background-color: #e8d7c2; -fx-border-color: black; -fx-border-width: 2;"
-                           fx:id="dicePane" layoutX="35.0" layoutY="35.0" prefHeight="75" prefWidth="75" />
+                           styleClass="disabled" fx:id="dicePane" layoutX="35.0" layoutY="35.0" prefHeight="75" prefWidth="75" />
             </Pane>
         </center>
     </BorderPane>

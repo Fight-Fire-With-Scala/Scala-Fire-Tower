@@ -43,10 +43,11 @@ object ViewModule:
           GameBoardController.gameComponent.get.gridComponent.availablePatterns = patterns
         )
 
-      override def setWindDirection(windDirection: Direction): Unit =
+      override def setWindDirection(windDirection: Direction): Unit = Platform.runLater(() =>
         val components = GameBoardController.gameComponent.get.sidebarComponent.components
         val windRose = components.collectFirst { case windRose: WindRoseComponent => windRose }
         handleWindRose(windRose, windDirection)
+      )
 
       private def handleWindRose(wr: Option[WindRoseComponent], d: Direction): Unit = wr match
         case Some(windRose) => windRose.updateWindRoseDirection(d)
