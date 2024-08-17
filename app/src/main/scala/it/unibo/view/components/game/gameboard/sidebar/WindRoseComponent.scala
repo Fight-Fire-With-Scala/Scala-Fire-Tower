@@ -4,17 +4,17 @@ import it.unibo.controller.{UpdateWindDirection, ViewSubject}
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.{East, North, South, West}
-import it.unibo.view.components.{ICanBeDisabled, IHaveView}
+import it.unibo.view.components.{ICanBeDisabled, IHaveView, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
-
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class WindRoseComponent(using observable: ViewSubject) extends IHaveView with ICanBeDisabled:
+final class WindRoseComponent(using observable: ViewSubject)
+    extends IHaveView with ICanBeDisabled with IUpdateView:
   override val fxmlPath: String = "/pages/windRose.fxml"
 
   @FXML
@@ -24,11 +24,10 @@ final class WindRoseComponent(using observable: ViewSubject) extends IHaveView w
 
   private val windRoseDirections = Direction.values.map(d => d -> WindRoseDirection.create(d)).toMap
 
-  private val windRoseEventHandler: Direction => EventHandler[MouseEvent] =
-    dir => ev => {
+  private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
+    ev =>
       windRoseArrow.updateDirection(dir)
       observable.onNext(UpdateWindDirection(dir))
-    }
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
 
@@ -43,4 +42,5 @@ final class WindRoseComponent(using observable: ViewSubject) extends IHaveView w
     windRoseArrow.updateDirection(South)
     centerPane.getChildren.add(windRoseArrow.svgPath)
 
-  def updateWindRoseDirection(direction: Direction): Unit = windRoseArrow.updateDirection(direction)
+  def updateWindRoseDirection(direction: Direction): Unit =
+    runOnUIThread(windRoseArrow.updateDirection(direction))
