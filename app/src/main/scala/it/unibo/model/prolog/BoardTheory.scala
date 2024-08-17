@@ -51,6 +51,6 @@ object BoardTheory:
     patternTerms ++ directionsFact
 
   private def getDeltas(directions: List[Direction]): Iterator[Term] =
-    val directionDeltas = directions.iterator.map(_.getDelta).map(d => Struct.tuple(d.x, d.y))
+    val directionDeltas = directions.iterator.map(_.getDelta).map(d => Struct.tuple(d.row, d.col))
 
     Iterator.single(Struct.of("deltas", directionDeltas.toList))

@@ -2,11 +2,11 @@ package it.unibo.model.gameboard.grid
 
 import scala.annotation.targetName
 
-case class Position(x: Int, y: Int):
+case class Position(row: Int, col: Int):
   @targetName("plus")
   def +(other: Position): Position =
-    Position(this.x + other.x, this.y + other.y)
+    Position(this.row + other.row, this.col + other.col)
     
   @targetName("minus")
   def -(other: Position): Position =
-    Position(this.x - other.x, this.y - other.y) 
+    Position(this.row - other.row, this.col - other.col)

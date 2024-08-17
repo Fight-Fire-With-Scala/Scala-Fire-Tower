@@ -24,8 +24,8 @@ check_pattern(Entity, Coords, ReqList) :-
 neighbor((X1, Y1), (X2, Y2)) :-
     deltas(Delta),
     member((DX, DY), Delta),
-    X2 is DX + X1,
-    Y2 is DY + Y1.
+    X2 is X1 - DX,
+    Y2 is Y1 - DY.
 
 check_neighbor(Entity, PatternList, Coords, ReqList) :-
     forall(
@@ -57,10 +57,10 @@ at_least(Kind, PatternList, AllowedPattern, RequiredCells, RequiredTokens) :-
 apply_pattern(Direction, (X, Y), SX, SY, PType) :-
     pattern((PX, PY), PType),
     (
-        Direction = north, SX is X - PY, SY is Y + PX
+        Direction = north, SX is X + PY, SY is Y - PX
         ; Direction = west, SX is X - PX, SY is Y - PY
         ; Direction = east, SX is X + PX, SY is Y + PY
-        ; Direction = south, SX is X + PY, SY is Y - PX
+        ; Direction = south, SX is X - PY, SY is Y + PX
     ).
 
 in_bounds((X, Y)) :-

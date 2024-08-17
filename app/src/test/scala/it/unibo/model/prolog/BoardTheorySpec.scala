@@ -15,7 +15,7 @@ import org.scalatestplus.junit.JUnitRunner
 class BoardTheorySpec extends AnyWordSpecLike with Matchers:
   val defaultDirections: List[String] = Direction.values.map(_.getId).toList
   val defaultDeltas: List[Struct] = Direction.values.map(_.getDelta)
-    .map(d => Struct.tuple(d.x, d.y)).toList
+    .map(d => Struct.tuple(d.row, d.col)).toList
 
   val dummyBoard: (List[String], List[Struct]) => Theory = (directions, deltas) =>
     Theory.fromPrologList(Struct.list(

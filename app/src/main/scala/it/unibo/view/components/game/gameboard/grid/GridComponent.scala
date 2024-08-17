@@ -8,6 +8,7 @@ import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.view.components.GraphicComponent
 import it.unibo.view.components.game.GameComponent
 import javafx.fxml.FXML
+import it.unibo.view.logger
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.application.Platform
@@ -45,13 +46,15 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
     container.getChildren.add(gridPane)
 
   private def handleCellHover(row: Int, col: Int, direction: HoverDirection): Unit =
-    println(s"Hovering over square at row $row, col $col")
-    println(direction)
+    logger.info(s"Hovering over square at row $row, col $col")
+    logger.info(s"Direction to check is ${direction.direction}")
 
     val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
     val positionToCheck = checkNeighbor(Position(row, col), direction.direction)
+    logger.info(s"Position to check is at row ${positionToCheck.row}, col ${positionToCheck.col}")
     val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
+    logger.info(s"Candidate positions are $candidatePositions")
 
     candidatePositions.foreach { pattern =>
       if (pattern.keys.exists(_ == positionToCheck))
@@ -60,7 +63,7 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
     }
 
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
-    startPosition - direction.getDelta
+    startPosition + direction.getDelta
 
   def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match
