@@ -34,13 +34,15 @@ final class WindRoseComponent(using observable: ViewSubject)
   @FXML
   def initialize(): Unit =
     windRosePanes = Map(North -> northPane, South -> southPane, West -> westPane, East -> eastPane)
-    windRosePanes.foreach((dir, pane) =>
-      pane.getChildren.add(windRoseDirections(dir).svgPath)
-      toggleActivation(pane, windRoseEventHandler(dir))
-    )
+    toggleActivation()
 
     windRoseArrow.updateDirection(South)
     centerPane.getChildren.add(windRoseArrow.svgPath)
 
   def updateWindRoseDirection(direction: Direction): Unit =
     runOnUIThread(windRoseArrow.updateDirection(direction))
+
+  def toggleActivation(): Unit = windRosePanes.foreach((dir, pane) =>
+    pane.getChildren.add(windRoseDirections(dir).svgPath)
+    super.toggleActivation(pane, windRoseEventHandler(dir))
+  )

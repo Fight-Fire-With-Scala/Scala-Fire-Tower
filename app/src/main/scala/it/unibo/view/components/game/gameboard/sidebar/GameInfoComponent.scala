@@ -36,7 +36,7 @@ final class GameInfoComponent(using observable: ViewSubject)
     turnPhase.setEditable(false)
 
     dicePane.getChildren.add(diceFace.svgPath)
-    toggleActivation(dicePane, diceEventHandler)
+    toggleActivation()
 
   private val diceEventHandler: EventHandler[MouseEvent] =
     ev => diceFace.updateDirection(Random.shuffle(Direction.values).head)
@@ -49,3 +49,5 @@ final class GameInfoComponent(using observable: ViewSubject)
     runOnUIThread(turnPlayer.setText(currentPlayer))
   def updateTurnPhase(currentTurnPhase: String): Unit =
     runOnUIThread(turnPhase.setText(currentTurnPhase))
+
+  def toggleActivation(): Unit = super.toggleActivation(dicePane, diceEventHandler)
