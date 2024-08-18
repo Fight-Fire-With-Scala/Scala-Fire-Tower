@@ -45,22 +45,26 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
     }
     container.getChildren.add(gridPane)
 
-  private def handleCellHover(row: Int, col: Int, direction: HoverDirection): Unit =
-    logger.info(s"Hovering over square at row $row, col $col")
-    logger.info(s"Direction to check is ${direction.direction}")
+  private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
+    hoverDirection.direction match
+      case Some(dir) =>
+        logger.info(s"Hovering over square at row $row, col $col")
+        logger.info(s"Direction to check is ${dir}")
 
-    val hoverColor = Color.rgb(255, 0, 0, 0.5)
+        val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
-    val positionToCheck = checkNeighbor(Position(row, col), direction.direction)
-    logger.info(s"Position to check is at row ${positionToCheck.row}, col ${positionToCheck.col}")
-    val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
-    logger.info(s"Candidate positions are $candidatePositions")
+        val positionToCheck = checkNeighbor(Position(row, col), dir)
+        logger.info(s"Position to check is at row ${positionToCheck.row}, col ${positionToCheck.col}")
+        val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
+        logger.info(s"Candidate positions are $candidatePositions")
 
-    candidatePositions.foreach { pattern =>
-      if (pattern.keys.exists(_ == positionToCheck))
-        val square = squareMap(positionToCheck)
-        Platform.runLater(() => square.updateColor(hoverColor))
-    }
+        candidatePositions.foreach { pattern =>
+          if (pattern.keys.exists(_ == positionToCheck))
+            val square = squareMap(positionToCheck)
+            Platform.runLater(() => square.updateColor(hoverColor))
+        }
+      case None => println("No direction")
+
 
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
     startPosition + direction.getDelta
