@@ -1,5 +1,6 @@
 package it.unibo.view.components.game.gameboard.grid
 
+import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.view.components.ICanBeDisabled
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
@@ -20,22 +21,22 @@ final case class GridSquare(
     onClick: () => Unit
 ) extends ICanBeDisabled:
 
-  private val hoverDelayMillis = 2
+  private val hoverDelayMillis = 5
   private var squareColor: Color = Color.White
   private val onMouseMovedFun: EventHandler[MouseEvent] = (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
+  private val onMouseClickedFun: EventHandler[MouseEvent] = (_: MouseEvent) => handleMouseClicked()
+  private val eventHandlers = List(
+    MouseEvent.MOUSE_MOVED -> onMouseMovedFun,
+    MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
+    MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
+  )
 
   val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
     stroke = Color.Black
     fill = squareColor
-    //onMouseMoved = onMouseMovedFun
-    //onMouseExited = (_: MouseEvent) => cancelHoverDelay()
-    //onMouseClicked = (_: MouseEvent) => handleMouseClicked()
-
-  def toggleActivation(): Unit =
-    super.toggleActivation(rectangle, onMouseMovedFun, MouseEvent.MOUSE_MOVED)
 
   private val text: Text = new Text(s"$row, $col")
   text.setFill(Color.BLACK)
@@ -70,7 +71,7 @@ final case class GridSquare(
 
   private def handleMouseClicked(): Unit =
     onClick()
-  
+
   def getGraphicPane: Pane = pane
 
   def updateColor(color: Color): Unit =
@@ -78,3 +79,11 @@ final case class GridSquare(
     rectangle.setFill(color)
 
   def getColor: Color = squareColor
+
+  def toggleRectangleActivation(): Unit =
+    runOnUIThread(
+      toggleActivation(rectangle, eventHandlers,
+        () => updateColor(Color.Gray),
+        () => updateColor(Color.White)
+      )
+    )

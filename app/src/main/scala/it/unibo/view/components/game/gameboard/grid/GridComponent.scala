@@ -46,10 +46,8 @@ final class GridComponent(observableSubject: ViewSubject)
       gridPane.children.add(square.getGraphicPane)
       squareMap(Position(row, col)) = square
     }
-    squareMap.foreach {
-      case (_, square) =>
-        square.rectangle.getStyleClass.add("disabled")
-        square.toggleActivation()
+    squareMap.foreach { case (_, square) =>
+      square.toggleRectangleActivation()
     }
     container.getChildren.add(gridPane)
 
