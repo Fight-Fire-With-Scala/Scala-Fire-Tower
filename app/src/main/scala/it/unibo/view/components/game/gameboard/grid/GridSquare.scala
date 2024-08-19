@@ -16,7 +16,7 @@ final case class GridSquare(
     size: Double,
     onHover: (Int, Int, HoverDirection) => Unit
 ):
-  private val hoverDelayMillis = 50
+  private val hoverDelayMillis = 2
   private var squareColor: Color = Color.White
 
   private val rectangle: Rectangle = new Rectangle:
@@ -48,7 +48,7 @@ final case class GridSquare(
     lastEvent = event
     initialDelay.playFromStart()
     hoverDelay.stop()
-    triggerHover()
+
 
   private def cancelHoverDelay(): Unit =
     initialDelay.stop()
