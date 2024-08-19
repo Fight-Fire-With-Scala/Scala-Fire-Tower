@@ -1,5 +1,6 @@
 package it.unibo.view.components.game.gameboard.grid
 
+import it.unibo.view.components.ICanBeDisabled
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.{Font, Text}
@@ -16,7 +17,7 @@ final case class GridSquare(
     size: Double,
     onHover: (Int, Int, HoverDirection) => Unit,
     onClick: () => Unit
-):
+) extends ICanBeDisabled:
   private val hoverDelayMillis = 2
   private var squareColor: Color = Color.White
 
@@ -28,6 +29,8 @@ final case class GridSquare(
     onMouseMoved = (event: MouseEvent) => handleMouseMoved(event)
     onMouseExited = (_: MouseEvent) => cancelHoverDelay()
     onMouseClicked = (_: MouseEvent) => handleMouseClicked()
+  
+  toggleActivation(rectangle, (event: MouseEvent) => handleMouseMoved(event), MouseEvent.MOUSE_MOVED)
 
   private val text: Text = new Text(s"$row, $col")
   text.setFill(Color.BLACK)

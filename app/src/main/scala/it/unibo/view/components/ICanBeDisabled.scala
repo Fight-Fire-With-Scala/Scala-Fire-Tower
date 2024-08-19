@@ -1,14 +1,18 @@
 package it.unibo.view.components
 
-import javafx.event.EventHandler
+import javafx.event.{EventHandler, EventType}
+import javafx.scene.Node
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.Pane
 
 trait ICanBeDisabled:
-  protected def toggleActivation(pane: Pane, eventHandler: EventHandler[MouseEvent]): Unit =
-    if (!pane.getStyleClass.contains("disabled"))
-      pane.setOnMouseEntered(event => pane.getStyleClass.add("disabled"))
-      pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler)
+  protected def toggleActivation(
+      node: Node,
+      eventHandler: EventHandler[? >: MouseEvent],
+      mouseEvent: EventType[MouseEvent]
+  ): Unit =
+    if (!node.getStyleClass.contains("disabled"))
+      node.getStyleClass.add("disabled")
+      node.removeEventHandler(mouseEvent, eventHandler)
     else
-      pane.setOnMouseEntered(event => pane.getStyleClass.remove("disabled"))
-      pane.setOnMouseClicked(eventHandler)
+      node.getStyleClass.remove("disabled")
+      node.setOnMouseClicked(eventHandler)

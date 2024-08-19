@@ -44,5 +44,5 @@ final class WindRoseComponent(using observable: ViewSubject)
 
   def toggleActivation(): Unit = windRosePanes.foreach((dir, pane) =>
     pane.getChildren.add(windRoseDirections(dir).svgPath)
-    super.toggleActivation(pane, windRoseEventHandler(dir))
+    super.toggleActivation(pane, windRoseEventHandler(dir), MouseEvent.MOUSE_CLICKED)
   )
