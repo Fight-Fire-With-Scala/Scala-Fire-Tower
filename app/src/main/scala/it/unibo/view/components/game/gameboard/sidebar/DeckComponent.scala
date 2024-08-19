@@ -1,6 +1,7 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
 import it.unibo.controller.{DrawCardMessage, ViewSubject}
+import it.unibo.view.GUIType
 import it.unibo.view.components.IHaveView
 import javafx.fxml.FXML
 import javafx.scene.control.{Spinner, SpinnerValueFactory}
@@ -15,7 +16,7 @@ final class DeckComponent(using observable: ViewSubject) extends IHaveView:
 
   private var maxCards: Int = 5
 
-  override val fxmlPath: String = "/pages/deck.fxml"
+  override val fxmlPath: String = GUIType.Deck.fxmlPath
 
   def maxCards_=(value: Int): Unit =
     maxCards = value

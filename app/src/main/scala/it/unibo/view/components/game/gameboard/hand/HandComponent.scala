@@ -8,7 +8,8 @@ import scalafx.application.Platform
 
 import scala.compiletime.uninitialized
 
-final class HandComponent(val cardComponents: List[CardComponent]) extends GraphicComponent with IHaveView with IUpdateView:
+final class HandComponent(val cardComponents: List[CardComponent])
+    extends GraphicComponent with IHaveView with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
 
@@ -21,9 +22,9 @@ final class HandComponent(val cardComponents: List[CardComponent]) extends Graph
   @FXML
   def initialize(): Unit = cardComponents.foreach(addComponent)
 
-  def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = Platform.runLater { () =>
+  def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = runOnUIThread(
     cardComponents.zipWithIndex.foreach { case (cardComponent, index) =>
       val card = cards.lift(index)
       cardComponent.setCard(card)
     }
-  }
+  )

@@ -4,18 +4,20 @@ import it.unibo.controller.{UpdateWindDirection, ViewSubject}
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.{East, North, South, West}
+import it.unibo.view.GUIType
 import it.unibo.view.components.{ICanBeDisabled, IHaveView, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
+
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class WindRoseComponent(using observable: ViewSubject)
     extends IHaveView with ICanBeDisabled with IUpdateView:
-  override val fxmlPath: String = "/pages/windRose.fxml"
+  override val fxmlPath: String = GUIType.WindRose.fxmlPath
 
   @FXML
   private var northPane, westPane, centerPane, eastPane, southPane: Pane = uninitialized

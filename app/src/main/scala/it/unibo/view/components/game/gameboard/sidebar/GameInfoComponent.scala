@@ -3,6 +3,7 @@ package it.unibo.view.components.game.gameboard.sidebar
 import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
+import it.unibo.view.GUIType
 import it.unibo.view.components.game.gameboard.sidebar.svg.DiceFace
 import it.unibo.view.components.{ICanBeDisabled, IHaveView, IUpdateView}
 import javafx.event.EventHandler
@@ -19,7 +20,7 @@ import scala.util.Random
 //noinspection VarCouldBeVal
 final class GameInfoComponent(using observable: ViewSubject)
     extends IHaveView with ICanBeDisabled with IUpdateView:
-  override val fxmlPath: String = "/pages/gameInfo.fxml"
+  override val fxmlPath: String = GUIType.GameInfo.fxmlPath
 
   @FXML
   private var dicePane: Pane = uninitialized
