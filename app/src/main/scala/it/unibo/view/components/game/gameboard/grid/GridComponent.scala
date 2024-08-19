@@ -28,6 +28,7 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
   private val gridSize = 16
   private val squareSize = 42
   private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
+  private var previousHoverCells: mutable.ListBuffer[(Position, Color)] = mutable.ListBuffer()
   var availablePatterns: List[Map[Position, Token]] = List.empty
 
   @FXML
@@ -46,25 +47,38 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
     container.getChildren.add(gridPane)
 
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
+    resetHoverColors()
+    //logger.info(s"Hovering over square at row $row, col $col")
+
     hoverDirection.direction match
       case Some(dir) =>
-        logger.info(s"Hovering over square at row $row, col $col")
-        logger.info(s"Direction to check is ${dir}")
+        //logger.info(s"Direction to check is ${dir}")
 
         val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
         val positionToCheck = checkNeighbor(Position(row, col), dir)
-        logger.info(s"Position to check is at row ${positionToCheck.row}, col ${positionToCheck.col}")
+        //logger.info(s"Position to check is at row ${positionToCheck.row}, col ${positionToCheck.col}")
         val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
-        logger.info(s"Candidate positions are $candidatePositions")
+        //logger.info(s"Candidate positions are $candidatePositions")
 
         candidatePositions.foreach { pattern =>
           if (pattern.keys.exists(_ == positionToCheck))
             val square = squareMap(positionToCheck)
-            Platform.runLater(() => square.updateColor(hoverColor))
+            Platform.runLater(() =>
+              previousHoverCells += positionToCheck -> square.getColor
+              square.updateColor(hoverColor)
+            )
+
         }
       case None => println("No direction")
 
+  private def resetHoverColors(): Unit =
+    println(previousHoverCells)
+    previousHoverCells.foreach { case (position, color) =>
+      val square = squareMap(position)
+      Platform.runLater(() => square.updateColor(color))
+    }
+    previousHoverCells.clear()
 
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
     startPosition + direction.getDelta
