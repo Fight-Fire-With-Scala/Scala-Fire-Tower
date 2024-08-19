@@ -21,7 +21,7 @@ import scalafx.scene.image.Image
 import scala.compiletime.uninitialized
 import scala.jdk.CollectionConverters.*
 
-final class MonadicGuiFX(val w: Int, val h: Int, viewObservable: ViewSubject) extends JFXApp3:
+final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) extends JFXApp3:
 
   private var pane: Pane = uninitialized
 
@@ -48,18 +48,15 @@ final class MonadicGuiFX(val w: Int, val h: Int, viewObservable: ViewSubject) ex
 
   private def loadGUI(guiType: GUIType): Unit = loadGuiComponent(guiType)
 
-  private def loadHand(): (HandComponent, Node) =
+  private def loadHand(): HandComponent =
     val cardComponents = List.fill(5)(new CardComponent())
     val handComponent = HandComponent(cardComponents)
-    val handView = FXMLViewLoader.load(GUIType.Hand.fxmlPath, handComponent)
-    (handComponent, handView)
+    handComponent
 
-  private def loadSidebar(): (SidebarComponent, Node) =
+  private def loadSidebar(): SidebarComponent =
     given observable: ViewSubject = viewObservable
     val subComponents = List(WindRoseComponent(), DeckComponent(), GameInfoComponent())
-    val sidebarComponent = SidebarComponent(subComponents)
-    val sidebarView = FXMLViewLoader.load(GUIType.Sidebar.fxmlPath, sidebarComponent)
-    (sidebarComponent, sidebarView)
+    SidebarComponent(subComponents)
 
   private def loadGrid(): GridComponent =
     new GridComponent(viewObservable)
@@ -69,14 +66,9 @@ final class MonadicGuiFX(val w: Int, val h: Int, viewObservable: ViewSubject) ex
     graphicComponent =>
       val gameComponent = graphicComponent.asInstanceOf[GameComponent]
 
-      val gridComponent = loadGrid()
-      gameComponent.setupGrid(gridComponent.getView, gridComponent)
-
-      val (sidebarComponent, sidebarView) = loadSidebar()
-      gameComponent.setupSidebar(sidebarView, sidebarComponent)
-
-      val (handComponent, handView) = loadHand()
-      gameComponent.setupHand(handView, handComponent)
+      gameComponent.setupGrid(loadGrid())
+      gameComponent.setupSidebar(loadSidebar())
+      gameComponent.setupHand(loadHand())
 
       GameBoardController.initialize(gameComponent)
   )

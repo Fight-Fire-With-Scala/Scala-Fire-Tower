@@ -1,13 +1,16 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.view.components.{GraphicComponent, IHaveView}
+import it.unibo.view.GUIType
+import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.layout.VBox
 
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class SidebarComponent(val components: List[IHaveView]) extends GraphicComponent:
+final class SidebarComponent(val components: List[IHaveView]) extends GraphicComponent with IHaveView with IUpdateView:
+
+  override val fxmlPath: String = GUIType.Sidebar.fxmlPath
 
   @FXML
   private var sidebarContainer: VBox = uninitialized

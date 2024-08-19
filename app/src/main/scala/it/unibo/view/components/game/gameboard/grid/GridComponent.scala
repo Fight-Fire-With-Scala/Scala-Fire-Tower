@@ -8,7 +8,7 @@ import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
 import it.unibo.view.components.game.GameComponent
 import javafx.fxml.FXML
-import it.unibo.view.logger
+import it.unibo.view.{GUIType, logger}
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.application.Platform
@@ -22,7 +22,7 @@ import scala.language.postfixOps
 //noinspection VarCouldBeVal
 final class GridComponent(observableSubject: ViewSubject) extends GraphicComponent with IHaveView with IUpdateView:
 
-  override val fxmlPath: String = "/pages/grid.fxml"
+  override val fxmlPath: String = GUIType.Grid.fxmlPath
 
   @FXML
   private var container: StackPane = uninitialized
