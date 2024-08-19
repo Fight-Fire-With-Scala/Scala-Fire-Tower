@@ -17,7 +17,7 @@ import it.unibo.model.prolog.Rule
 enum WindCard(
     override val id: Int,
     override val effect: MetaResolver[? <: GameChoice, ? <: EffectResolver]
-) extends HasEffect:
+) extends HasEffect with CanBeDiscarded:
   case North extends WindCard(id = 4, effect = WindCard.getEffect(Direction.North))
   case South extends WindCard(id = 5, effect = WindCard.getEffect(Direction.South))
   case East extends WindCard(id = 6, effect = WindCard.getEffect(Direction.East))

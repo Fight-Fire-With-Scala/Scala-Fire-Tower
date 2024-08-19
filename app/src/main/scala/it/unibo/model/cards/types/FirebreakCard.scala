@@ -16,7 +16,7 @@ import it.unibo.model.prolog.Rule
 enum FirebreakCard(
     override val id: Int,
     override val effect: MetaResolver[? <: GameChoice, ? <: EffectResolver]
-) extends HasEffect:
+) extends HasEffect with CanBeDiscarded:
   case DeReforest
       extends FirebreakCard(
         id = 10,

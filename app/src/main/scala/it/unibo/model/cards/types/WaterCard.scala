@@ -16,23 +16,23 @@ enum WaterCard(
         id = 11,
         effect =
           MultiStepResolver(VeryLargeEffect(Map("a" -> Water, "b" -> Fire)), Rule("smoke_jumper"))
-      )
+      ) with CanBeDiscarded
   case AirDrop
       extends WaterCard(
         id = 12,
         effect = MultiStepResolver(MediumEffect(WaterCard.defaultTokens), Rule("water"))
-      )
+      ) with CanBeDiscarded
   case FireEngine
       extends WaterCard(
         id = 13,
         effect = MultiStepResolver(LargeEffect(WaterCard.defaultTokens), Rule("water"))
-      )
+      ) with CanBeDiscarded
   case Bucket
       extends WaterCard(
         id = 14,
         effect = MultiStepResolver(VerySmallEffect(WaterCard.defaultTokens), Rule("bucket"))
       )
-      with CanBePlayedAsExtra
+      with CanBePlayedAsExtra with CannotBeDiscarded
 
 object WaterCard:
   val defaultTokens: Map[String, Token] = Map("a" -> Water)
