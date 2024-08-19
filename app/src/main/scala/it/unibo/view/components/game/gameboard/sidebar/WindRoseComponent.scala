@@ -36,6 +36,7 @@ final class WindRoseComponent(using observable: ViewSubject)
   @FXML
   def initialize(): Unit =
     windRosePanes = Map(North -> northPane, South -> southPane, West -> westPane, East -> eastPane)
+    windRosePanes.foreach((dir, pane) => pane.getChildren.add(windRoseDirections(dir).svgPath))
     toggleActivation()
 
     windRoseArrow.updateDirection(South)
@@ -45,6 +46,10 @@ final class WindRoseComponent(using observable: ViewSubject)
     runOnUIThread(windRoseArrow.updateDirection(direction))
 
   def toggleActivation(): Unit = windRosePanes.foreach((dir, pane) =>
-    pane.getChildren.add(windRoseDirections(dir).svgPath)
-    super.toggleActivation(pane, windRoseEventHandler(dir), MouseEvent.MOUSE_CLICKED)
+    super.toggleActivation(
+      pane,
+      List(MouseEvent.MOUSE_CLICKED -> windRoseEventHandler(dir)),
+      () => pane.getStyleClass.add("disabled"),
+      () => pane.getStyleClass.remove("disabled")
+    )
   )

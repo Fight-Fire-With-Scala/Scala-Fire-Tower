@@ -13,4 +13,3 @@ object ComponentFactory:
     gui match
       case Menu => new MenuComponent(observableSubject)
       case Game => new GameComponent()
-      

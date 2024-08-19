@@ -20,7 +20,7 @@ final class CardComponent extends IHaveView with ICanBeDisabled:
   override val fxmlPath: String = GUIType.Card.fxmlPath
 
   @FXML
-  var cardPane: Pane = uninitialized
+  private var cardPane: Pane = uninitialized
   @FXML
   private var cardTitle: Text = uninitialized
   @FXML
