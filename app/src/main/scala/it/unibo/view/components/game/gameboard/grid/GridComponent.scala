@@ -32,6 +32,7 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
   private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
   private var hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
   var availablePatterns: List[Map[Position, Token]] = List.empty
+  private var hoverEnabled: Boolean = true
 
   @FXML
   def initialize(): Unit =
@@ -54,10 +55,14 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
         case pattern if pattern.contains(position) => position -> pattern(position)
       }
     }.toMap
-    hoveredCellsOriginalColors.clear()
-    observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
+    if(matchedPatterns.nonEmpty){
+      hoverEnabled = false
+      hoveredCellsOriginalColors.clear()
+      observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
+    }
 
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
+    if(!hoverEnabled) return
     resetHoverColors()
     hoverDirection.direction match
       case Some(dir) =>
