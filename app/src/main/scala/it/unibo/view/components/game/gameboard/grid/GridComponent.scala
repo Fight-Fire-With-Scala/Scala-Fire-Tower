@@ -5,7 +5,7 @@ import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.ConcreteToken.*
-import it.unibo.view.components.GraphicComponent
+import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
 import it.unibo.view.components.game.GameComponent
 import javafx.fxml.FXML
 import it.unibo.view.logger
@@ -20,7 +20,9 @@ import scala.compiletime.uninitialized
 import scala.language.postfixOps
 
 //noinspection VarCouldBeVal
-final class GridComponent(observableSubject: ViewSubject) extends GraphicComponent:
+final class GridComponent(observableSubject: ViewSubject) extends GraphicComponent with IHaveView with IUpdateView:
+
+  override val fxmlPath: String = "/pages/grid.fxml"
 
   @FXML
   private var container: StackPane = uninitialized
@@ -49,11 +51,9 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     resetHoverColors()
     //logger.info(s"Hovering over square at row $row, col $col")
-
     hoverDirection.direction match
       case Some(dir) =>
         //logger.info(s"Direction to check is ${dir}")
-
         val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
         val positionToCheck = checkNeighbor(Position(row, col), dir)
@@ -64,11 +64,10 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
         candidatePositions.foreach { pattern =>
           if (pattern.keys.exists(_ == positionToCheck))
             val square = squareMap(positionToCheck)
-            Platform.runLater(() =>
+            runOnUIThread{
               previousHoverCells += positionToCheck -> square.getColor
               square.updateColor(hoverColor)
-            )
-
+            }
         }
       case None => println("No direction")
 

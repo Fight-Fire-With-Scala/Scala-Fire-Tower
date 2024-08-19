@@ -61,19 +61,16 @@ final class MonadicGuiFX(val w: Int, val h: Int, viewObservable: ViewSubject) ex
     val sidebarView = FXMLViewLoader.load(GUIType.Sidebar.fxmlPath, sidebarComponent)
     (sidebarComponent, sidebarView)
 
-  private def loadGrid(): (GridComponent, Node) =
-    val gridComponent = ComponentFactory.createFXMLComponent(GUIType.Grid)(viewObservable)
-      .asInstanceOf[GridComponent]
-    val gridView = FXMLViewLoader.load(GUIType.Grid.fxmlPath, gridComponent)
-    (gridComponent, gridView)
+  private def loadGrid(): GridComponent =
+    new GridComponent(viewObservable)
 
   def loadGame(): Unit = loadGuiComponent(
     GUIType.Game,
     graphicComponent =>
       val gameComponent = graphicComponent.asInstanceOf[GameComponent]
 
-      val (gridComponent, gridView) = loadGrid()
-      gameComponent.setupGrid(gridView, gridComponent)
+      val gridComponent = loadGrid()
+      gameComponent.setupGrid(gridComponent.getView, gridComponent)
 
       val (sidebarComponent, sidebarView) = loadSidebar()
       gameComponent.setupSidebar(sidebarView, sidebarComponent)
