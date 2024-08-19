@@ -20,7 +20,7 @@ final class GameComponent extends GraphicComponent:
   var sidebar: Pane = uninitialized
   @FXML
   var hand: Pane = uninitialized
-  
+
   var gridComponent: GridComponent = uninitialized
   var sidebarComponent: SidebarComponent = uninitialized
   var handComponent: HandComponent = uninitialized
@@ -34,14 +34,17 @@ final class GameComponent extends GraphicComponent:
     assignComponent()
   }
 
-  def setupGrid(gridPane: Node, gridController: GridComponent): Unit =
-    setupComponent(grid, gridPane, () => gridComponent = gridController)
+  def setupGrid(gc: GridComponent): Unit =
+    val gridView: Node = gc.getView
+    setupComponent(grid, gridView, () => gridComponent = gc)
 
-  def setupSidebar(sidebarPane: Node, sidebarController: SidebarComponent): Unit =
-    setupComponent(sidebar, sidebarPane, () => sidebarComponent = sidebarController)
+  def setupSidebar(sc: SidebarComponent): Unit =
+    val sidebarView: Node = sc.getView
+    setupComponent(sidebar, sidebarView, () => sidebarComponent = sc)
 
-  def setupHand(handPane: Node, handController: HandComponent): Unit =
-    setupComponent(hand, handPane, () => handComponent = handController)
+  def setupHand(hc: HandComponent): Unit =
+    val handView: Node = hc.getView
+    setupComponent(hand, handView, () => handComponent = hc)
 
   def updateGrid(grid: Grid): Unit = Platform.runLater(() => gridComponent.updateGrid(grid))
 

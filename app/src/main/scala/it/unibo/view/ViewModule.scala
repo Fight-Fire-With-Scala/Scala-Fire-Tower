@@ -31,7 +31,7 @@ object ViewModule:
     context: Requirements =>
     class ViewImpl extends View:
       private val observableSubject = PublishSubject[ViewMessage]()
-      private val gui = MonadicGuiFX(1280, 1024, observableSubject)
+      private val gui = GameUIManager(1280, 1024, observableSubject)
 
       override def show(): Unit = gui.main(Array.empty)
 

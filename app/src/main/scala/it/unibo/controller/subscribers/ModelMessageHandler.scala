@@ -3,7 +3,7 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{DrawCardMessage, ResolveWindPhase, SettingsMessage, ShowAvailablePatterns, UpdateWindDirection, ViewMessage}
+import it.unibo.controller.{DrawCardMessage, ResolveWindPhase, SettingsMessage, ResolvePatternChoice, ShowAvailablePatterns, UpdateWindDirection, ViewMessage}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.logger
 import it.unibo.model.cards.resolvers.PatternComputationResolver
@@ -51,6 +51,10 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
         model.setGameBoard(gameBoard.copy(board = board.copy(windDirection = windDirection)))
         resolveWindPhase(model)
 
+      case ResolvePatternChoice(pattern) =>
+        val gameBoard = model.getGameBoard
+        val board = gameBoard.board
+        model.setGameBoard(gameBoard.copy(board = board.copy(grid = board.grid.setTokens(pattern.toSeq*))))
     Continue
 
   override def onError(ex: Throwable): Unit =

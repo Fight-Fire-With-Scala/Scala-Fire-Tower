@@ -14,9 +14,10 @@ final case class GridSquare(
     row: Int,
     col: Int,
     size: Double,
-    onHover: (Int, Int, HoverDirection) => Unit
+    onHover: (Int, Int, HoverDirection) => Unit,
+    onClick: () => Unit
 ):
-  private val hoverDelayMillis = 50
+  private val hoverDelayMillis = 2
   private var squareColor: Color = Color.White
 
   private val rectangle: Rectangle = new Rectangle:
@@ -26,6 +27,7 @@ final case class GridSquare(
     fill = squareColor
     onMouseMoved = (event: MouseEvent) => handleMouseMoved(event)
     onMouseExited = (_: MouseEvent) => cancelHoverDelay()
+    onMouseClicked = (_: MouseEvent) => handleMouseClicked()
 
   private val text: Text = new Text(s"$row, $col")
   text.setFill(Color.BLACK)
@@ -48,7 +50,7 @@ final case class GridSquare(
     lastEvent = event
     initialDelay.playFromStart()
     hoverDelay.stop()
-    triggerHover()
+
 
   private def cancelHoverDelay(): Unit =
     initialDelay.stop()
@@ -57,9 +59,11 @@ final case class GridSquare(
   private def triggerHover(): Unit =
     val direction = HoverDirection
       .fromCoordinates(lastEvent.getX, lastEvent.getY, rectangle.getWidth, rectangle.getHeight)
-    println(direction)
     onHover(row, col, direction)
 
+  private def handleMouseClicked(): Unit =
+    onClick()
+  
   def getGraphicPane: Pane = pane
 
   def updateColor(color: Color): Unit =

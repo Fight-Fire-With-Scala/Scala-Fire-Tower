@@ -15,6 +15,9 @@ trait Grid:
   def setCell(position: Position, cell: Cell): Grid
 
   def setToken(position: Position, token: Token): Grid
+  
+  def setTokens(tokens: (Position, Token)*): Grid =
+    tokens.foldLeft(this) { case (grid, (position, token)) => grid.setToken(position, token) }
 
   def update(updates: (Position, Cell)*): Grid = updates
     .foldLeft(this) { case (grid, (position, cell)) => grid.setCell(position, cell) }
@@ -66,6 +69,9 @@ final case class BasicGrid(
   override def cells: Map[Position, Cell] = this._cells
   override def tokens: Map[Position, Token] = this._tokens
 
+  /**
+   * TODO: add controls to not place token in illegal areas
+   */
   override def setToken(position: Position, token: Token): Grid =
     BasicGrid(this._cells, this._tokens + (position -> token))
 
