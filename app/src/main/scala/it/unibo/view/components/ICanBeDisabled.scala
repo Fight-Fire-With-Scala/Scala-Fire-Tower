@@ -11,8 +11,10 @@ trait ICanBeDisabled:
       mouseEvent: EventType[MouseEvent]
   ): Unit =
     if (!node.getStyleClass.contains("disabled"))
+      println("Disabling")
       node.getStyleClass.add("disabled")
       node.removeEventHandler(mouseEvent, eventHandler)
     else
+      println("Enabling")
       node.getStyleClass.remove("disabled")
       node.setOnMouseClicked(eventHandler)

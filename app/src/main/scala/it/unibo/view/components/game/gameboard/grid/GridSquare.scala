@@ -6,6 +6,7 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.{Font, Text}
 import javafx.scene.input.MouseEvent
 import javafx.animation.PauseTransition
+import javafx.event.EventHandler
 import javafx.util.Duration
 import scalafx.scene.layout.Pane
 
@@ -18,19 +19,26 @@ final case class GridSquare(
     onHover: (Int, Int, HoverDirection) => Unit,
     onClick: () => Unit
 ) extends ICanBeDisabled:
+
   private val hoverDelayMillis = 2
   private var squareColor: Color = Color.White
+  private val onMouseMovedFun: EventHandler[MouseEvent] = (event: MouseEvent) => handleMouseMoved(event)
+  private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
 
   private val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
     stroke = Color.Black
     fill = squareColor
-    onMouseMoved = (event: MouseEvent) => handleMouseMoved(event)
-    onMouseExited = (_: MouseEvent) => cancelHoverDelay()
-    onMouseClicked = (_: MouseEvent) => handleMouseClicked()
-  
-  toggleActivation(rectangle, (event: MouseEvent) => handleMouseMoved(event), MouseEvent.MOUSE_MOVED)
+    //styleClass = Seq("disabled")
+    //onMouseMoved = onMouseMovedFun
+    //onMouseExited = (_: MouseEvent) => cancelHoverDelay()
+    //onMouseClicked = (_: MouseEvent) => handleMouseClicked()
+
+  rectangle.getStyleClass.add("disabled")
+  def toggleActivation(): Unit =
+    super.toggleActivation(rectangle, onMouseMovedFun, MouseEvent.MOUSE_MOVED)
+    super.toggleActivation(rectangle, onMouseExitedFun, MouseEvent.MOUSE_EXITED)
 
   private val text: Text = new Text(s"$row, $col")
   text.setFill(Color.BLACK)
@@ -53,7 +61,6 @@ final case class GridSquare(
     lastEvent = event
     initialDelay.playFromStart()
     hoverDelay.stop()
-
 
   private def cancelHoverDelay(): Unit =
     initialDelay.stop()
