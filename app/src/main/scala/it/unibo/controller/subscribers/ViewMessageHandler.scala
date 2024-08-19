@@ -24,11 +24,14 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
         logger.info(s"Received StartGameBoardMessage")
         view.startGame()
         view.setWindDirection(gameBoard.board.windDirection)
+        view.setTurnPhase(gameBoard.gamePhase.toString)
+        view.setTurnNumber(0)
+        view.setTurnPlayer(gameBoard.currentPlayer.name)
         view.refresh(gameBoard)
       case ShowAvailablePatterns(patterns)  =>
         logger.info(s"Received ShowAvailablePatterns")
         logger.info(s"patterns $patterns")
-      // Enable the hovering of the grid considering the available patterns
+        // Enable the hovering of the grid considering the available patterns
         view.setAvailablePatterns(patterns)
       case RefreshMessage(gameBoard)        =>
         logger.info(s"Received RefreshMessage")
@@ -42,5 +45,5 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
           .getFileName}:${traceElement.getLineNumber})")
     }
     println(s"Full description: ${ex.toString}")
-    
+
   override def onComplete(): Unit = println(s"Received final event")

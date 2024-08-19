@@ -44,10 +44,10 @@ final class GameInfoComponent(using observable: ViewSubject)
   def updateDiceFaceDirection(direction: Direction): Unit =
     runOnUIThread(diceFace.updateDirection(direction))
   def updateTurnNumber(currentTurnNumber: Int): Unit =
-    runOnUIThread(turnNumber.setText(String.valueOf(currentTurnNumber)))
+    runOnUIThread(turnNumber.setText(s"Turn Number: $currentTurnNumber"))
   def updateTurnPlayer(currentPlayer: String): Unit =
-    runOnUIThread(turnPlayer.setText(currentPlayer))
+    runOnUIThread(turnPlayer.setText(s"Player: $currentPlayer"))
   def updateTurnPhase(currentTurnPhase: String): Unit =
-    runOnUIThread(turnPhase.setText(currentTurnPhase))
+    runOnUIThread(turnPhase.setText(s"Phase: $currentTurnPhase"))
 
   def toggleActivation(): Unit = super.toggleActivation(dicePane, diceEventHandler)
