@@ -12,5 +12,5 @@ object ComponentFactory:
   def createFXMLComponent(gui: GUIType)(observableSubject: ViewSubject): GraphicComponent =
     gui match
       case Menu => new MenuComponent(observableSubject)
-      case Grid => new GridComponent(observableSubject)
       case Game => new GameComponent()
+      

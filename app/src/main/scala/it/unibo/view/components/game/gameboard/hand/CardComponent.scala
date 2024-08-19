@@ -3,6 +3,7 @@ package it.unibo.view.components.game.gameboard.hand
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
+import it.unibo.view.GUIType
 import it.unibo.view.components.{GraphicComponent, ICanBeDisabled, IHaveView}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -16,7 +17,7 @@ import scala.compiletime.uninitialized
 //noinspection VarCouldBeVal
 final class CardComponent extends IHaveView with ICanBeDisabled:
 
-  override val fxmlPath: String = "/pages/card.fxml"
+  override val fxmlPath: String = GUIType.Card.fxmlPath
 
   @FXML
   var cardPane: Pane = uninitialized
