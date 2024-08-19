@@ -51,4 +51,4 @@ final class GameInfoComponent(using observable: ViewSubject)
   def updateTurnPhase(currentTurnPhase: String): Unit =
     runOnUIThread(turnPhase.setText(s"Phase: $currentTurnPhase"))
 
-  def toggleActivation(): Unit = super.toggleActivation(dicePane, diceEventHandler)
+  def toggleActivation(): Unit = super.toggleActivation(dicePane, diceEventHandler, MouseEvent.MOUSE_CLICKED)

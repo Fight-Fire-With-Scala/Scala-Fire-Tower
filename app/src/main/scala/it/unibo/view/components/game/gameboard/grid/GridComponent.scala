@@ -46,6 +46,10 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
       GridPane.setColumnIndex(square.getGraphicPane, col)
       gridPane.children.add(square.getGraphicPane)
       squareMap(Position(row, col)) = square
+      squareMap.foreach {
+        case (_, square) =>
+          square.toggleActivation()
+      }
     }
     container.getChildren.add(gridPane)
 
