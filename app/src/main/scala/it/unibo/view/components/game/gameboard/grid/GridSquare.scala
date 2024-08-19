@@ -25,20 +25,17 @@ final case class GridSquare(
   private val onMouseMovedFun: EventHandler[MouseEvent] = (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
 
-  private val rectangle: Rectangle = new Rectangle:
+  val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
     stroke = Color.Black
     fill = squareColor
-    //styleClass = Seq("disabled")
     //onMouseMoved = onMouseMovedFun
     //onMouseExited = (_: MouseEvent) => cancelHoverDelay()
     //onMouseClicked = (_: MouseEvent) => handleMouseClicked()
 
-  rectangle.getStyleClass.add("disabled")
   def toggleActivation(): Unit =
     super.toggleActivation(rectangle, onMouseMovedFun, MouseEvent.MOUSE_MOVED)
-    super.toggleActivation(rectangle, onMouseExitedFun, MouseEvent.MOUSE_EXITED)
 
   private val text: Text = new Text(s"$row, $col")
   text.setFill(Color.BLACK)
