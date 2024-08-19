@@ -2,7 +2,7 @@ package it.unibo.view.components.game
 
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.players.Player
-import it.unibo.view.components.GraphicComponent
+import it.unibo.view.components.{GraphicComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
 import it.unibo.view.components.game.gameboard.hand.HandComponent
 import it.unibo.view.components.game.gameboard.sidebar.SidebarComponent
@@ -13,7 +13,7 @@ import javafx.scene.Node
 
 import scala.compiletime.uninitialized
 
-final class GameComponent extends GraphicComponent:
+final class GameComponent extends GraphicComponent with IUpdateView:
   @FXML
   var grid: Pane = uninitialized
   @FXML
@@ -46,7 +46,6 @@ final class GameComponent extends GraphicComponent:
     val handView: Node = hc.getView
     setupComponent(hand, handView, () => handComponent = hc)
 
-  def updateGrid(grid: Grid): Unit = Platform.runLater(() => gridComponent.updateGrid(grid))
+  def updateGrid(grid: Grid): Unit = runOnUIThread(gridComponent.updateGrid(grid))
 
-  def updatePlayer(player: Player): Unit = Platform
-    .runLater(() => handComponent.updateHand(player.hand))
+  def updatePlayer(player: Player): Unit = runOnUIThread(handComponent.updateHand(player.hand))

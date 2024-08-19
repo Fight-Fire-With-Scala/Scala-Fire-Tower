@@ -8,10 +8,9 @@ import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
 import it.unibo.view.components.game.GameComponent
 import javafx.fxml.FXML
-import it.unibo.view.{GUIType, logger}
+import it.unibo.view.{logger, GUIType}
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
-import scalafx.application.Platform
 import scalafx.scene.Node
 import scalafx.scene.paint.Color
 
@@ -20,7 +19,8 @@ import scala.compiletime.uninitialized
 import scala.language.postfixOps
 
 //noinspection VarCouldBeVal
-final class GridComponent(observableSubject: ViewSubject) extends GraphicComponent with IHaveView with IUpdateView:
+final class GridComponent(observableSubject: ViewSubject)
+    extends GraphicComponent with IHaveView with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
 
@@ -46,27 +46,25 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
       GridPane.setColumnIndex(square.getGraphicPane, col)
       gridPane.children.add(square.getGraphicPane)
       squareMap(Position(row, col)) = square
-      squareMap.foreach {
-        case (_, square) =>
-          square.toggleActivation()
-      }
+      squareMap.foreach { case (_, square) => square.toggleActivation() }
     }
     container.getChildren.add(gridPane)
 
   private def handleCellClick(): Unit =
-    val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys.flatMap { position =>
-      availablePatterns.collect {
-        case pattern if pattern.contains(position) => position -> pattern(position)
-      }
-    }.toMap
-    if(matchedPatterns.nonEmpty){
+    val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
+      .flatMap { position =>
+        availablePatterns.collect {
+          case pattern if pattern.contains(position) => position -> pattern(position)
+        }
+      }.toMap
+    if (matchedPatterns.nonEmpty) {
       hoverEnabled = false
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
     }
 
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
-    if(!hoverEnabled) return
+    if (!hoverEnabled) return
     resetHoverColors()
     hoverDirection.direction match
       case Some(dir) =>
@@ -78,17 +76,17 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
         candidatePositions.foreach { pattern =>
           if (pattern.keys.exists(_ == positionToCheck))
             val square = squareMap(positionToCheck)
-            runOnUIThread{
+            runOnUIThread {
               hoveredCellsOriginalColors += positionToCheck -> square.getColor
               square.updateColor(hoverColor)
             }
         }
-      case None =>
+      case None      =>
 
   private def resetHoverColors(): Unit =
     hoveredCellsOriginalColors.foreach { case (position, color) =>
       val square = squareMap(position)
-      Platform.runLater(() => square.updateColor(color))
+      runOnUIThread(square.updateColor(color))
     }
     hoveredCellsOriginalColors.clear()
 
@@ -107,5 +105,5 @@ final class GridComponent(observableSubject: ViewSubject) extends GraphicCompone
       case Some(Firebreak) => Color.Blue
       case _               => cellColor
 
-    Platform.runLater(() => square.updateColor(tokenColor))
+    runOnUIThread(square.updateColor(tokenColor))
   }
