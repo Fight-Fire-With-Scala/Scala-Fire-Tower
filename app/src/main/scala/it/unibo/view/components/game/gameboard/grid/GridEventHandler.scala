@@ -12,11 +12,11 @@ class GridEventHandler(
     observableSubject: ViewSubject,
     squareMap: mutable.Map[Position, GridSquare],
     availablePatterns: List[Map[Position, Token]]
-) {
+):
   private var hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
   private var hoverEnabled: Boolean = true
 
-  def handleCellClick(): Unit = {
+  def handleCellClick(): Unit =
     val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
       .flatMap { position =>
         availablePatterns.collect {
@@ -28,12 +28,11 @@ class GridEventHandler(
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
     }
-  }
 
-  def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit = {
+  def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     if (!hoverEnabled) return
     resetHoverColors()
-    hoverDirection.direction match {
+    hoverDirection.direction match
       case Some(dir) =>
         val hoverColor = Color.rgb(255, 0, 0, 0.5)
         val positionToCheck = checkNeighbor(Position(row, col), dir)
@@ -47,19 +46,14 @@ class GridEventHandler(
             }
           }
         }
-      case None =>
-    }
-  }
+      case None      =>
 
-  private def resetHoverColors(): Unit = {
+  private def resetHoverColors(): Unit =
     hoveredCellsOriginalColors.foreach { case (position, color) =>
       val square = squareMap(position)
       runOnUIThread(square.updateColor(color))
     }
     hoveredCellsOriginalColors.clear()
-  }
 
-  private def checkNeighbor(startPosition: Position, direction: Direction): Position = {
+  private def checkNeighbor(startPosition: Position, direction: Direction): Position =
     startPosition + direction.getDelta
-  }
-}

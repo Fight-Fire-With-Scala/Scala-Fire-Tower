@@ -24,21 +24,23 @@ final class GridComponent(observableSubject: ViewSubject)
   private val squareSize = 42
   var availablePatterns: List[Map[Position, Token]] = List.empty
 
-  private val gridInitializer = new GridInitializer(gridSize, squareSize, handleCellHover, handleCellClick)
-  private val gridEventHandler = new GridEventHandler(observableSubject, gridInitializer.squareMap, availablePatterns)
+  private val gridInitializer =
+    new GridInitializer(gridSize, squareSize, handleCellHover, handleCellClick)
+  private val gridEventHandler =
+    new GridEventHandler(observableSubject, gridInitializer.squareMap, availablePatterns)
 
   @FXML
-  def initialize(): Unit = {
+  def initialize(): Unit =
     gridPane = new GridPane
     gridInitializer.initializeGridSquares(gridPane)
     container.getChildren.add(gridPane)
-  }
 
   private def handleCellClick(): Unit = gridEventHandler.handleCellClick()
 
-  private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit = gridEventHandler.handleCellHover(row, col, hoverDirection)
+  private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
+    gridEventHandler.handleCellHover(row, col, hoverDirection)
 
-  import it.unibo.model.gameboard.grid.Cell.{Woods, Tower, EternalFire}
+  import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 
   def updateGrid(grid: Grid): Unit = gridInitializer.squareMap.foreach { case (position, square) =>
