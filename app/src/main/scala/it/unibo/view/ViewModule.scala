@@ -39,7 +39,9 @@ object ViewModule:
         gui.loadGame()
         observableSubject.onNext(ResolveWindPhase())
 
-      override def refresh(gameBoard: GameBoard): Unit = GameBoardController.refresh(gameBoard)
+      override def refresh(gameBoard: GameBoard): Unit =
+        GameBoardController.refresh(gameBoard)
+        GameBoardController.discard()
 
       override def getObservable: ViewSubject = observableSubject
 

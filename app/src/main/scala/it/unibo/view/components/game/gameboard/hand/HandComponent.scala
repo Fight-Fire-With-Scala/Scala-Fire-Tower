@@ -4,17 +4,17 @@ import it.unibo.view.GUIType
 import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
-import scalafx.application.Platform
 
 import scala.compiletime.uninitialized
 
+//noinspection VarCouldBeVal
 final class HandComponent(val cardComponents: List[CardComponent])
     extends GraphicComponent with IHaveView with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
 
   @FXML
-  var handPane: Pane = uninitialized
+  private var handPane: Pane = uninitialized
 
   private val addComponent =
     (component: CardComponent) => handPane.getChildren.add(component.getView)
