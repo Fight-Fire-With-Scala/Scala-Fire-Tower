@@ -32,14 +32,14 @@ final case class GridSquare(
     MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
   )
 
-  val rectangle: Rectangle = new Rectangle:
+  private val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
     stroke = Color.Black
     fill = squareColor
 
   private val text: Text = new Text(s"$row, $col")
-  text.setFill(Color.BLACK)
+  text.setFill(Color.Black)
   text.setFont(new Font(size / 4)) // Adjust font size to fit within the rectangle
   text.setX(size / 2 - text.getLayoutBounds.getWidth / 2)
   text.setY(size / 2 + text.getLayoutBounds.getHeight / 4)
