@@ -39,7 +39,7 @@ object ViewModule:
       override def show(): Unit = gui.main(Array.empty)
 
       override def startGame(gameBoard: GameBoard): Unit =
-        val task = gui.loadGuiComponent(GUIType.Game).asInstanceOf[Task[GameComponent]]
+        val task = gui.loadGUIRoot(GUIType.Game)
 
         given observable: ViewSubject = observableSubject
         

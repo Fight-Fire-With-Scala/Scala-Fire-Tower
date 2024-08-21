@@ -5,4 +5,4 @@ import javafx.scene.Node
 
 trait IHaveView:
   val fxmlPath: String
-  def getView: Node = FXMLViewLoader.load(fxmlPath, this).asInstanceOf[Node]
+  def getView: Node = FXMLViewLoader.load(fxmlPath, this)
