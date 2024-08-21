@@ -23,7 +23,8 @@ final case class GridSquare(
 
   private val hoverDelayMillis = 5
   private var squareColor: Color = Color.White
-  private val onMouseMovedFun: EventHandler[MouseEvent] = (event: MouseEvent) => handleMouseMoved(event)
+  private val onMouseMovedFun: EventHandler[MouseEvent] =
+    (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
   private val onMouseClickedFun: EventHandler[MouseEvent] = (_: MouseEvent) => handleMouseClicked()
   private val eventHandlers = List(
@@ -32,14 +33,14 @@ final case class GridSquare(
     MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
   )
 
-  val rectangle: Rectangle = new Rectangle:
+  private val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
     stroke = Color.Black
     fill = squareColor
 
   private val text: Text = new Text(s"$row, $col")
-  text.setFill(Color.BLACK)
+  text.setFill(Color.Black)
   text.setFont(new Font(size / 4)) // Adjust font size to fit within the rectangle
   text.setX(size / 2 - text.getLayoutBounds.getWidth / 2)
   text.setY(size / 2 + text.getLayoutBounds.getHeight / 4)
@@ -69,8 +70,7 @@ final case class GridSquare(
       .fromCoordinates(lastEvent.getX, lastEvent.getY, rectangle.getWidth, rectangle.getHeight)
     onHover(row, col, direction)
 
-  private def handleMouseClicked(): Unit =
-    onClick()
+  private def handleMouseClicked(): Unit = onClick()
 
   def getGraphicPane: Pane = pane
 
