@@ -11,5 +11,5 @@ import it.unibo.view.components.game.gameboard.hand.{CardComponent, HandComponen
 object ComponentFactory:
   def createFXMLComponent(gui: GUIType)(observableSubject: ViewSubject): GraphicComponent =
     gui match
-      case Menu => new MenuComponent(observableSubject)
-      case Game => new GameComponent()
+      case Menu => MenuComponent(observableSubject)
+      case Game => GameComponent()

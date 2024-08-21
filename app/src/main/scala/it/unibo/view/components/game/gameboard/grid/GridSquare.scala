@@ -82,8 +82,9 @@ final case class GridSquare(
 
   def toggleRectangleActivation(): Unit =
     runOnUIThread(
-      toggleActivation(rectangle, eventHandlers,
+      toggleActivation(rectangle,
         () => updateColor(Color.Gray),
-        () => updateColor(Color.White)
+        () => updateColor(Color.White),
+        eventHandlers*
       )
     )
