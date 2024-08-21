@@ -29,7 +29,7 @@ final class GameComponent extends GraphicComponent with IUpdateView:
       pane: Pane,
       componentPane: Node,
       assignComponent: () => Unit
-  ): Unit = Platform.runLater { () =>
+  ): Unit = runOnUIThread { 
     pane.getChildren.add(componentPane)
     assignComponent()
   }
