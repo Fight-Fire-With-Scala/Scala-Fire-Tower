@@ -7,7 +7,7 @@ import javafx.scene.input.MouseEvent
 trait ICanBeDisabled:
   private var enabled: Boolean = false
 
-  protected def toggleActivation(
+  def toggleActivation(
       node: Node,
       graphicChangeDisabled: () => Unit,
       graphicChangeEnabled: () => Unit,
