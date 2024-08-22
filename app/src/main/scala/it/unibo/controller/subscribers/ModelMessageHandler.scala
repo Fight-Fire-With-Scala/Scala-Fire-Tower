@@ -15,7 +15,7 @@ import alice.tuprolog.{Struct, Var}
 import it.unibo.controller.subscribers.ModelMessageHandler.resolveWindPhase
 import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.players.drawCardFromDeck
+
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
