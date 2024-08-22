@@ -2,14 +2,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.String?>
+<?import java.lang.Boolean?>
 <StackPane fx:id="cardPane" xmlns:fx="http://javafx.com/fxml">
     <fx:define>
         <String fx:id="cardId" fx:value=""/>
+        <Boolean fx:id="discardable" fx:value="true"/>
     </fx:define>
     <Pane>
         <VBox alignment="CENTER" spacing="10">
             <Text fx:id="cardTitle" textAlignment="CENTER"/>
-            <Text fx:id="cardDescription" wrappingWidth="135" textAlignment="CENTER"/>
+            <Text fx:id="cardDescription" wrappingWidth="140" textAlignment="CENTER"/>
         </VBox>
     </Pane>
 </StackPane>
