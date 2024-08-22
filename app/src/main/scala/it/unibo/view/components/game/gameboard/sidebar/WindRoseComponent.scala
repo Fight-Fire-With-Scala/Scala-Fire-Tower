@@ -4,7 +4,7 @@ import it.unibo.controller.{UpdateWindDirection, ViewSubject}
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.{East, North, South, West}
-import it.unibo.view.GUIType
+import it.unibo.view.{GUIType, logger}
 import it.unibo.view.components.{ICanBeDisabled, IHaveView, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
 import javafx.event.EventHandler
@@ -29,6 +29,7 @@ final class WindRoseComponent(using observable: ViewSubject)
   private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
     ev =>
       windRoseArrow.updateDirection(dir)
+      logger.info(s"Clicked dir $dir")
       observable.onNext(UpdateWindDirection(dir))
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
@@ -37,19 +38,18 @@ final class WindRoseComponent(using observable: ViewSubject)
   def initialize(): Unit =
     windRosePanes = Map(North -> northPane, South -> southPane, West -> westPane, East -> eastPane)
     windRosePanes.foreach((dir, pane) => pane.getChildren.add(windRoseDirections(dir).svgPath))
-    toggleActivation()
-
-    windRoseArrow.updateDirection(South)
     centerPane.getChildren.add(windRoseArrow.svgPath)
+    toggleActivation()
 
   def updateWindRoseDirection(direction: Direction): Unit =
     runOnUIThread(windRoseArrow.updateDirection(direction))
 
   def toggleActivation(): Unit = windRosePanes.foreach((dir, pane) =>
+    logger.info(s"Checked dir $dir, pane $pane")
     super.toggleActivation(
       pane,
-      List(MouseEvent.MOUSE_CLICKED -> windRoseEventHandler(dir)),
       () => pane.getStyleClass.add("disabled"),
-      () => pane.getStyleClass.remove("disabled")
+      () => pane.getStyleClass.remove("disabled"),
+      MouseEvent.MOUSE_CLICKED -> windRoseEventHandler(dir)
     )
   )

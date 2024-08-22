@@ -9,9 +9,9 @@ trait ICanBeDisabled:
 
   protected def toggleActivation(
       node: Node,
-      eventHandlers: List[(EventType[MouseEvent], EventHandler[MouseEvent])],
       graphicChangeDisabled: () => Unit,
-      graphicChangeEnabled: () => Unit
+      graphicChangeEnabled: () => Unit,
+      eventHandlers: (EventType[MouseEvent], EventHandler[MouseEvent])*
   ): Unit =
     if enabled then
       eventHandlers.foreach { case (eventType, handler) =>

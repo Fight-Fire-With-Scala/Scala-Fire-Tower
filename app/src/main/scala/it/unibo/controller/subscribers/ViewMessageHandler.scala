@@ -22,12 +22,7 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
     msg match
       case StartGameBoardMessage(gameBoard) =>
         logger.info(s"Received StartGameBoardMessage")
-        view.startGame()
-        view.setWindDirection(gameBoard.board.windDirection)
-        view.setTurnPhase(gameBoard.gamePhase.toString)
-        view.setTurnNumber(0)
-        view.setTurnPlayer(gameBoard.currentPlayer.name)
-        view.refresh(gameBoard)
+        view.startGame(gameBoard)
       case ShowAvailablePatterns(patterns)  =>
         logger.info(s"Received ShowAvailablePatterns")
         logger.info(s"patterns $patterns")

@@ -80,9 +80,11 @@ final case class GridSquare(
 
   def getColor: Color = squareColor
 
-  def toggleRectangleActivation(): Unit = runOnUIThread(toggleActivation(
-    rectangle,
-    eventHandlers,
-    () => updateColor(Color.Gray),
-    () => updateColor(Color.White)
-  ))
+  def toggleRectangleActivation(): Unit =
+    runOnUIThread(
+      toggleActivation(rectangle,
+        () => updateColor(Color.Gray),
+        () => updateColor(Color.White),
+        eventHandlers*
+      )
+    )

@@ -54,7 +54,7 @@ final class GameInfoComponent(using observable: ViewSubject)
   def toggleActivation(): Unit =
     super.toggleActivation(
       dicePane,
-      List(MouseEvent.MOUSE_CLICKED -> diceEventHandler),
       () => dicePane.getStyleClass.add("disabled"),
-      () => dicePane.getStyleClass.remove("disabled")
+      () => dicePane.getStyleClass.remove("disabled"),
+      MouseEvent.MOUSE_CLICKED -> diceEventHandler
     )
