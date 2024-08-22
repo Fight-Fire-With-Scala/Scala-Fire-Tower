@@ -7,6 +7,7 @@ import monix.reactive.subjects.PublishSubject
 
 type ModelSubject = PublishSubject[ModelMessage]
 type ViewSubject = PublishSubject[ViewMessage]
+type InternalViewSubject = PublishSubject[InternalViewMessage]
 
 sealed trait Message
 
@@ -26,3 +27,8 @@ sealed trait ModelMessage extends Message
 case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
 case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMessage
 case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
+/*
+ * This refers to messages sent to the view from the view
+ */
+sealed trait InternalViewMessage extends Message
+case class InitializeDiscardProcedureMessage() extends InternalViewMessage

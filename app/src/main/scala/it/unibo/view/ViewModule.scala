@@ -1,6 +1,14 @@
 package it.unibo.view
 
-import it.unibo.controller.{ControllerModule, ResolveWindPhase, ViewMessage, ViewSubject}
+import it.unibo.controller.subscribers.InternalViewMessageHandler
+import it.unibo.controller.{
+  ControllerModule,
+  InternalViewMessage,
+  InternalViewSubject,
+  ResolveWindPhase,
+  ViewMessage,
+  ViewSubject
+}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
@@ -34,6 +42,7 @@ object ViewModule:
     class ViewImpl extends View:
       private val gameBoardController = GameBoardController()
       private val observableSubject = PublishSubject[ViewMessage]()
+      private val internalObservableSubject = PublishSubject[InternalViewMessage]()
       private val gui = GameUIManager(1280, 1024, observableSubject)
 
       override def show(): Unit = gui.main(Array.empty)
@@ -42,7 +51,8 @@ object ViewModule:
         val task = gui.loadGUIRoot(GUIType.Game)
 
         given observable: ViewSubject = observableSubject
-        
+        given internalObservable: InternalViewSubject = internalObservableSubject
+
         task.setOnSucceeded(
           new EventHandler[WorkerStateEvent]():
             def handle(t: WorkerStateEvent): Unit =
@@ -54,9 +64,10 @@ object ViewModule:
               setTurnNumber(0)
               setTurnPlayer(gameBoard.currentPlayer.name)
               refresh(gameBoard)
+              internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
               observableSubject.onNext(ResolveWindPhase())
         )
-        
+
         task.run()
 
       override def refresh(gameBoard: GameBoard): Unit =
@@ -69,7 +80,7 @@ object ViewModule:
         runOnUIThread(gameBoardController.gameComponent.get.gridComponent.availablePatterns =
           patterns
         )
-      
+
       private def updateOnUIThreadGameInfoComponent(update: GameInfoComponent => Unit): Unit =
         runOnUIThread {
           val components = gameBoardController.gameComponent.get.sidebarComponent.components
