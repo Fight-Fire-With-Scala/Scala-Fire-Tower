@@ -1,6 +1,12 @@
 package it.unibo.controller.subscribers
 
-import it.unibo.controller.{InitializeDiscardProcedureMessage, InternalViewMessage}
+import it.unibo.controller.{
+  CancelDiscardMessage,
+  ConfirmDiscardMessage,
+  InitializeDiscardProcedureMessage,
+  InternalViewMessage,
+  ToggleCardInListMessage
+}
 import it.unibo.view.GameBoardController
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
@@ -14,8 +20,19 @@ class InternalViewMessageHandler(gameBoardController: GameBoardController)
 
   override def onNext(msg: InternalViewMessage): Future[Ack] =
     msg match
-      case InitializeDiscardProcedureMessage =>
+      case InitializeDiscardProcedureMessage() =>
         println("Received InitializeDiscardProcedureMessage")
+        gameBoardController.initDiscardProcedure()
+      case ToggleCardInListMessage(cardId)     =>
+        println(s"Received ToggleCardInListMessage with cardId: $cardId")
+        gameBoardController.toggleCardInDiscardList(cardId)
+      case ConfirmDiscardMessage()             =>
+        println("Received ConfirmDiscardMessage")
+        gameBoardController.confirmDiscard()
+      case CancelDiscardMessage()              =>
+        println("Received CancelDiscardMessage")
+        gameBoardController.cancelDiscard()
+
     Continue
 
   override def onError(ex: Throwable): Unit =

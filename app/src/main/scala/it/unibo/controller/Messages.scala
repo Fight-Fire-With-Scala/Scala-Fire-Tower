@@ -20,6 +20,8 @@ case class DrawCardMessage(nCards: Int) extends ViewMessage
 case class ResolveWindPhase() extends ViewMessage
 case class UpdateWindDirection(windDirection: Direction) extends ViewMessage
 case class ResolvePatternChoice(pattern: Map[Position, Token]) extends ViewMessage
+case class DiscardTheseCardsMessage(cards: List[Int]) extends ViewMessage
+
 /*
  * This refers to messages sent to the view from the model
  */
@@ -32,3 +34,6 @@ case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
  */
 sealed trait InternalViewMessage extends Message
 case class InitializeDiscardProcedureMessage() extends InternalViewMessage
+case class ToggleCardInListMessage(cardId: Int) extends InternalViewMessage
+case class ConfirmDiscardMessage() extends InternalViewMessage
+case class CancelDiscardMessage() extends InternalViewMessage

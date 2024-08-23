@@ -11,14 +11,24 @@ trait ComponentManager:
   def initialize(component: GameComponent): Unit = gameComponent = Some(component)
 
 trait DiscardManager extends ComponentManager:
-  def discard(): Unit = gameComponent.fold(()) { component =>
-    println("Discard procedure called")
-//    component.handComponent.startDiscardProcedure(println)
+  def confirmDiscard(): Unit = gameComponent.fold(()) { component =>
+    component.handComponent.discardCards()
+  }
+
+  def cancelDiscard(): Unit = gameComponent.fold(()) { component =>
+    component.handComponent.endDiscardProcedure()
+  }
+
+  def initDiscardProcedure(): Unit = gameComponent.fold(()) { component =>
+    component.handComponent.initDiscardProcedure()
+  }
+
+  def toggleCardInDiscardList(cardId: Int): Unit = gameComponent.fold(()) { component =>
+    component.handComponent.toggleCardInDiscardList(cardId)
   }
 
 trait RefreshManager extends ComponentManager:
-  def refresh(gameBoard: GameBoard): Unit =
-    gameComponent.fold(()) { component =>
-      component.updateGrid(gameBoard.board.grid)
-      component.updatePlayer(gameBoard.currentPlayer)
-    }
+  def refresh(gameBoard: GameBoard): Unit = gameComponent.fold(()) { component =>
+    component.updateGrid(gameBoard.board.grid)
+    component.updatePlayer(gameBoard.currentPlayer)
+  }

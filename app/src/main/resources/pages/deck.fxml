@@ -5,11 +5,16 @@
 
 <StackPane style="-fx-background-color: #e8d7c2; -fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <VBox fx:id="cardPane" alignment="CENTER" spacing="5" prefHeight="138.0" prefWidth="100.0">
-        <Button onAction="#handleDrawCard" prefWidth="121.0" text="Draw Card"/>
+        <Button fx:id="drawButton" onAction="#handleDrawCard" prefWidth="121.0" text="Draw Card"/>
         <Spinner fx:id="numberInput" prefWidth="100">
             <valueFactory>
                 <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="1" max="5" min="1"/>
             </valueFactory>
         </Spinner>
+        <Button fx:id="discardButton" onAction="#startDiscardProcedure" prefWidth="121.0" text="Discard Card"/>
+        <HBox alignment="CENTER" spacing="5">
+            <Button fx:id="okButton" onAction="#discard" text="OK"/>
+            <Button fx:id="cancelButton" onAction="#cancel" text="Cancel"/>
+        </HBox>
     </VBox>
 </StackPane>

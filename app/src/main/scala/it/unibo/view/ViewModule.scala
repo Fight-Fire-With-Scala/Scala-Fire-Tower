@@ -70,9 +70,7 @@ object ViewModule:
 
         task.run()
 
-      override def refresh(gameBoard: GameBoard): Unit =
-        gameBoardController.refresh(gameBoard)
-        gameBoardController.discard()
+      override def refresh(gameBoard: GameBoard): Unit = gameBoardController.refresh(gameBoard)
 
       override def getObservable: ViewSubject = observableSubject
 

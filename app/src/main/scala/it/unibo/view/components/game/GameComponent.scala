@@ -1,6 +1,6 @@
 package it.unibo.view.components.game
 
-import it.unibo.controller.ViewSubject
+import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.players.Player
 import it.unibo.view.components.{GraphicComponent, IUpdateView}
@@ -30,7 +30,7 @@ final class GameComponent extends GraphicComponent with IUpdateView:
       pane: Pane,
       componentPane: Node,
       assignComponent: () => Unit
-  ): Unit = runOnUIThread { 
+  ): Unit = runOnUIThread {
     pane.getChildren.add(componentPane)
     assignComponent()
   }
@@ -52,6 +52,7 @@ final class GameComponent extends GraphicComponent with IUpdateView:
   def updatePlayer(player: Player): Unit = runOnUIThread(handComponent.updateHand(player.hand))
 
 object GameComponent extends GameComponentInitializer:
-  override def initialize(gameComponent: GameComponent)(using
-      viewObservable: ViewSubject
-  ): GameComponent = loadGame(gameComponent)
+  override def initialize(
+      gameComponent: GameComponent
+  )(using viewObservable: ViewSubject, internalViewObservable: InternalViewSubject): GameComponent =
+    loadGame(gameComponent)

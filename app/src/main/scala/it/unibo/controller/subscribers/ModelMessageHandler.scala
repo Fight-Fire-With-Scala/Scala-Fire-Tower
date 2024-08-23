@@ -3,7 +3,16 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{DrawCardMessage, ResolveWindPhase, SettingsMessage, ResolvePatternChoice, ShowAvailablePatterns, UpdateWindDirection, ViewMessage}
+import it.unibo.controller.{
+  DiscardTheseCardsMessage,
+  DrawCardMessage,
+  ResolvePatternChoice,
+  ResolveWindPhase,
+  SettingsMessage,
+  ShowAvailablePatterns,
+  UpdateWindDirection,
+  ViewMessage
+}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.logger
 import it.unibo.model.cards.resolvers.PatternComputationResolver
@@ -15,7 +24,6 @@ import alice.tuprolog.{Struct, Var}
 import it.unibo.controller.subscribers.ModelMessageHandler.resolveWindPhase
 import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.gameboard.Direction
-
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
@@ -54,7 +62,15 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
       case ResolvePatternChoice(pattern) =>
         val gameBoard = model.getGameBoard
         val board = gameBoard.board
-        model.setGameBoard(gameBoard.copy(board = board.copy(grid = board.grid.setTokens(pattern.toSeq*))))
+        model.setGameBoard(
+          gameBoard.copy(board = board.copy(grid = board.grid.setTokens(pattern.toSeq*)))
+        )
+
+      case DiscardTheseCardsMessage(cards) =>
+        println(s"Received DiscardTheseCardsMessage with cards: $cards")
+        val gameBoard = model.getGameBoard
+        val player = gameBoard.currentPlayer
+        model.setGameBoard(gameBoard.copy(currentPlayer = player.discardCards(cards)))
     Continue
 
   override def onError(ex: Throwable): Unit =
