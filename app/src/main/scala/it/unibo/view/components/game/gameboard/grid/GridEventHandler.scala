@@ -12,9 +12,9 @@ class GridEventHandler(
     observableSubject: ViewSubject,
     squareMap: mutable.Map[Position, GridSquare]
 ):
-  private var hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
-  private var hoverEnabled: Boolean = true
+  private val hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
   private var availablePatterns: List[Map[Position, Token]] = List.empty
+  private val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
   def updateAvailablePatterns(ap : List[Map[Position, Token]]): Unit =
     availablePatterns = ap
@@ -27,17 +27,14 @@ class GridEventHandler(
         }
       }.toMap
     if (matchedPatterns.nonEmpty) {
-      hoverEnabled = false
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
     }
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
-    if (!hoverEnabled) return
     resetHoverColors()
     hoverDirection.direction match
       case Some(dir) =>
-        val hoverColor = Color.rgb(255, 0, 0, 0.5)
         val positionToCheck = checkNeighbor(Position(row, col), dir)
         val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
         candidatePositions.foreach { pattern =>
@@ -50,7 +47,8 @@ class GridEventHandler(
           }
         }
       case None      =>
-
+  
+  
   private def resetHoverColors(): Unit =
     hoveredCellsOriginalColors.foreach { case (position, color) =>
       val square = squareMap(position)

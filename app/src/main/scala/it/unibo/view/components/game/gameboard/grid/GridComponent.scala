@@ -35,13 +35,18 @@ final class GridComponent(observableSubject: ViewSubject)
     gridEventHandler = new GridEventHandler(observableSubject, squareMap)
     container.getChildren.add(gridPane)
 
-  private def handleCellClick(): Unit = gridEventHandler.handleCellClick()
+  private def handleCellClick(): Unit =
+    gridEventHandler.handleCellClick()
 
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
-    gridEventHandler.updateAvailablePatterns(patterns)
+  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
+    .updateAvailablePatterns(patterns)
+
+  def toggleGridSquaresActivation(): Unit = squareMap.foreach { case (_, square) =>
+    square.toggleRectangleActivation()
+  }
 
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}

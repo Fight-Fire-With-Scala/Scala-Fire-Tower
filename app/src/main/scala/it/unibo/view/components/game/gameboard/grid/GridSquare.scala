@@ -77,14 +77,15 @@ final case class GridSquare(
   def updateColor(color: Color): Unit =
     squareColor = color
     rectangle.setFill(color)
+    rectangle.setOpacity(0.85)
 
   def getColor: Color = squareColor
 
   def toggleRectangleActivation(): Unit =
     runOnUIThread(
       toggleActivation(rectangle,
-        () => updateColor(Color.Gray),
-        () => updateColor(Color.White),
+        () => rectangle.setOpacity(0.7),
+        () => rectangle.setOpacity(0.9),
         eventHandlers*
       )
     )
