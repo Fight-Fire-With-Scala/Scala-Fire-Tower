@@ -22,17 +22,17 @@ final class GridComponent(observableSubject: ViewSubject)
   private var gridPane: GridPane = uninitialized
   private val gridSize = 16
   private val squareSize = 42
-  var availablePatterns: List[Map[Position, Token]] = List.empty
-
-  private val gridInitializer =
-    new GridInitializer(gridSize, squareSize, handleCellHover, handleCellClick)
-  private val gridEventHandler =
-    new GridEventHandler(observableSubject, gridInitializer.squareMap, availablePatterns)
+  private var squareMap: mutable.Map[Position, GridSquare] = uninitialized
+  private var gridInitializer: GridInitializer = uninitialized
+  private var gridEventHandler: GridEventHandler = uninitialized
 
   @FXML
   def initialize(): Unit =
+    gridInitializer = new GridInitializer(gridSize, squareSize, handleCellHover, handleCellClick)
     gridPane = new GridPane
-    gridInitializer.initializeGridSquares(gridPane)
+
+    squareMap = gridInitializer.initializeGridSquares(gridPane)
+    gridEventHandler = new GridEventHandler(observableSubject, squareMap)
     container.getChildren.add(gridPane)
 
   private def handleCellClick(): Unit = gridEventHandler.handleCellClick()
@@ -40,10 +40,13 @@ final class GridComponent(observableSubject: ViewSubject)
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection)
 
+  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
+    gridEventHandler.updateAvailablePatterns(patterns)
+
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 
-  def updateGrid(grid: Grid): Unit = gridInitializer.squareMap.foreach { case (position, square) =>
+  def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
     val cellColor = grid.getCell(position) match
       case Some(_: Woods.type)       => Color.DarkGreen
       case Some(_: Tower.type)       => Color.rgb(76, 39, 3)

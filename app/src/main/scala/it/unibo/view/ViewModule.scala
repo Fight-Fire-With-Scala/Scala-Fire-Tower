@@ -75,8 +75,7 @@ object ViewModule:
       override def getObservable: ViewSubject = observableSubject
 
       override def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
-        runOnUIThread(gameBoardController.gameComponent.get.gridComponent.availablePatterns =
-          patterns
+        runOnUIThread(gameBoardController.gameComponent.get.gridComponent.setAvailablePatterns(patterns)
         )
 
       private def updateOnUIThreadGameInfoComponent(update: GameInfoComponent => Unit): Unit =

@@ -10,12 +10,15 @@ import scala.collection.mutable
 
 class GridEventHandler(
     observableSubject: ViewSubject,
-    squareMap: mutable.Map[Position, GridSquare],
-    availablePatterns: List[Map[Position, Token]]
+    squareMap: mutable.Map[Position, GridSquare]
 ):
   private var hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
   private var hoverEnabled: Boolean = true
+  private var availablePatterns: List[Map[Position, Token]] = List.empty
 
+  def updateAvailablePatterns(ap : List[Map[Position, Token]]): Unit =
+    availablePatterns = ap
+  
   def handleCellClick(): Unit =
     val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
       .flatMap { position =>
