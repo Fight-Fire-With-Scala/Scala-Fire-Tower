@@ -83,9 +83,9 @@ final case class GridSquare(
   override def generalToggle(): Unit =
     super.generalToggle()
     toggleActivation(
-      rectangle,
+      pane,
       () => rectangle.setOpacity(0.7),
       () => rectangle.setOpacity(0.9),
       eventHandlers*
     )
-  
+
