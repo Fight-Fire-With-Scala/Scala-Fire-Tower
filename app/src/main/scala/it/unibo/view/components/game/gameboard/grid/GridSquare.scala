@@ -81,12 +81,13 @@ final case class GridSquare(
 
   def getColor: Color = squareColor
 
-  def toggleRectangleActivation(): Unit =
+  def toggleRectangleActivation(enabled: Boolean): Unit =
     runOnUIThread{
       toggleActivation(rectangle,
         () =>
           rectangle.setOpacity(0.7),
         () => rectangle.setOpacity(0.9),
+        enabled,
         eventHandlers *
       )
     }

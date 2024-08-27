@@ -48,6 +48,7 @@ final class WindRoseComponent(using observable: ViewSubject) extends IHaveCondit
       pane,
       () => pane.getStyleClass.add("disabled"),
       () => pane.getStyleClass.remove("disabled"),
+      enabled,
       MouseEvent.MOUSE_CLICKED -> windRoseEventHandler(dir)
     )
   )

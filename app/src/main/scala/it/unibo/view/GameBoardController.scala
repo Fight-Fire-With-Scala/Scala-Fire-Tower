@@ -3,8 +3,7 @@ package it.unibo.view
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.components.game.GameComponent
 import it.unibo.model.gameboard.GamePhase.ActionPhase
-import it.unibo.view.components.game.gameboard.sidebar.GameInfoComponent
-import it.unibo.view.components.game.gameboard.sidebar.WindRoseComponent
+import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
 
 class GameBoardController extends RefreshManager with DiscardManager with EnableDisableManager
 
@@ -39,12 +38,13 @@ trait EnableDisableManager extends ComponentManager:
   def handleStartActionPhase(): Unit =
     gameComponent.fold(()) { component =>
       component.gridComponent.disableView()
-      component.sidebarComponent.components.foreach {
-        case cp: WindRoseComponent => cp.disableView()
-        case cp: GameInfoComponent =>
-          cp.disableView()
-          cp.updateTurnPhase(ActionPhase.toString)
-      }
+//      component.sidebarComponent.components.foreach {
+//        case d: DeckComponent =>
+//        case cp: WindRoseComponent => cp.disableView()
+//        case cp: GameInfoComponent =>
+//          cp.disableView()
+//          cp.updateTurnPhase(ActionPhase.toString)
+//      }
     }
 
 trait RefreshManager extends ComponentManager:

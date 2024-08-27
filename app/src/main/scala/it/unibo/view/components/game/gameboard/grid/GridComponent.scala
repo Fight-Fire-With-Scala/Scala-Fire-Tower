@@ -46,10 +46,10 @@ final class GridComponent(observableSubject: ViewSubject)(using internalObservab
   def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
     .updateAvailablePatterns(patterns)
 
-  override def generalToggle(): Unit = 
+  override def generalToggle(): Unit =
+    super.generalToggle()
     squareMap.foreach { case (_, square) =>
-    square.toggleRectangleActivation()
-  }
+      square.toggleRectangleActivation(enabled) }
 
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}

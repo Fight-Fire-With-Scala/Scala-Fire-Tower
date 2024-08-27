@@ -56,5 +56,6 @@ final class GameInfoComponent(using observable: ViewSubject)
       dicePane,
       () => dicePane.getStyleClass.add("disabled"),
       () => dicePane.getStyleClass.remove("disabled"),
+      enabled,
       MouseEvent.MOUSE_CLICKED -> diceEventHandler
     )
