@@ -2,7 +2,7 @@ package it.unibo.model.players
 
 import it.unibo.model.cards.{Card, CardType}
 import it.unibo.model.cards.effects.WindEffect
-import it.unibo.model.cards.types.WindCard
+import it.unibo.model.cards.types.{CanBePlayedAsExtra, WaterCard, WindCard}
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -13,6 +13,9 @@ class PlayerSpec extends AnyFlatSpec with Matchers:
 
   val testCardType: CardType =
     CardType(title = "Test", description = "Test card", amount = 1, effectType = WindCard.North)
+
+  val extraCardType: CardType =
+    CardType(title = "Extra", description = "Extra card", amount = 1, effectType = WaterCard.Bucket)
 
   def commonPlayerTests(createPlayer: () => Player, playerType: String): Unit =
     s"maintain a record of moves for $playerType" should s"contain all logged moves in order" in {
@@ -56,6 +59,30 @@ class PlayerSpec extends AnyFlatSpec with Matchers:
 
         playedCardOption should contain(card)
       }
+
+    s"draw an extra card for $playerType" should s"place the card in the extra card slot" in {
+      val player = createPlayer()
+      val extraCard = Card(5, extraCardType)
+      val updatedPlayer = player.drawCardFromDeck(extraCard)
+      updatedPlayer.extraCard should contain(extraCard)
+    }
+
+    s"play an extra card for $playerType" should s"remove the card from the extra card slot" in {
+      val player = createPlayer()
+      val extraCard = Card(5, extraCardType)
+      val updatedPlayer = player.drawCardFromDeck(extraCard)
+      val (playerAfterPlayingExtraCard, playedCardOption) = updatedPlayer.playCard(extraCard.id)
+      playerAfterPlayingExtraCard.extraCard should be(None)
+      playedCardOption should contain(extraCard)
+    }
+
+    s"not discard an extra card for $playerType" should s"keep the extra card in the slot" in {
+      val player = createPlayer()
+      val extraCard = Card(5, extraCardType)
+      val updatedPlayer = player.drawCardFromDeck(extraCard)
+      val playerAfterDiscard = updatedPlayer.discardCards(List(extraCard.id))
+      playerAfterDiscard.extraCard should contain(extraCard)
+    }
 
   "A Person" should "be able to choose a name" in {
     val person = Player.apply("Alice")

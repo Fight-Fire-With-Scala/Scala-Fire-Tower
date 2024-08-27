@@ -16,7 +16,7 @@ trait GameComponentInitializer:
       viewObservable: ViewSubject,
       internalViewObservable: InternalViewSubject
   ): HandComponent =
-    val cardComponents = List.fill(5)(new CardComponent())
+    val cardComponents = List.fill(6)(new CardComponent())
     val handComponent = HandComponent(cardComponents)
     handComponent
 
