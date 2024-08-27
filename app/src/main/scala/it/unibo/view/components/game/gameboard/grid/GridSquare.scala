@@ -2,7 +2,6 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.view.components.ICanBeDisabled
-import it.unibo.view.logger
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.{Font, Text}
@@ -81,13 +80,12 @@ final case class GridSquare(
 
   def getColor: Color = squareColor
 
-  def toggleRectangleActivation(enabled: Boolean): Unit =
-    runOnUIThread{
-      toggleActivation(rectangle,
-        () =>
-          rectangle.setOpacity(0.7),
-        () => rectangle.setOpacity(0.9),
-        enabled,
-        eventHandlers *
-      )
-    }
+  override def generalToggle(): Unit =
+    super.generalToggle()
+    toggleActivation(
+      rectangle,
+      () => rectangle.setOpacity(0.7),
+      () => rectangle.setOpacity(0.9),
+      eventHandlers*
+    )
+  

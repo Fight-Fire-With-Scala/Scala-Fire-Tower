@@ -5,7 +5,7 @@ import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
 import it.unibo.view.GUIType
 import it.unibo.view.components.game.gameboard.sidebar.svg.DiceFace
-import it.unibo.view.components.{ICanBeDisabled, IHaveConditionalView, IHaveView, IUpdateView}
+import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import javafx.event.EventHandler
 
 import scala.compiletime.uninitialized
@@ -19,7 +19,7 @@ import scala.util.Random
 
 //noinspection VarCouldBeVal
 final class GameInfoComponent(using observable: ViewSubject)
-    extends IHaveConditionalView with IUpdateView:
+    extends ISidebarComponent with IUpdateView:
   override val fxmlPath: String = GUIType.GameInfo.fxmlPath
 
   @FXML
@@ -52,10 +52,10 @@ final class GameInfoComponent(using observable: ViewSubject)
     runOnUIThread(turnPhase.setText(s"Phase: $currentTurnPhase"))
 
   override def generalToggle(): Unit =
-    super.toggleActivation(
-      dicePane,
-      () => dicePane.getStyleClass.add("disabled"),
-      () => dicePane.getStyleClass.remove("disabled"),
-      enabled,
-      MouseEvent.MOUSE_CLICKED -> diceEventHandler
-    )
+    super.generalToggle()  
+    toggleActivation(
+    dicePane,
+    () => dicePane.getStyleClass.add("disabled"),
+    () => dicePane.getStyleClass.remove("disabled"),
+    MouseEvent.MOUSE_CLICKED -> diceEventHandler
+  )
