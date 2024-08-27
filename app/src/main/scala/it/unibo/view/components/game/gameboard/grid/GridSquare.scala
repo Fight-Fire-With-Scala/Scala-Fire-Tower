@@ -71,7 +71,8 @@ final case class GridSquare(
       .fromCoordinates(lastEvent.getX, lastEvent.getY, rectangle.getWidth, rectangle.getHeight)
     onHover(row, col, direction)
 
-  private def handleMouseClicked(): Unit = onClick()
+  private def handleMouseClicked(): Unit =
+    onClick()
 
   def getGraphicPane: Pane = pane
 
@@ -83,7 +84,7 @@ final case class GridSquare(
 
   def toggleRectangleActivation(enabled: Boolean): Unit =
     runOnUIThread{
-      toggleActivation(rectangle,
+      toggleActivation(pane,
         () =>
           rectangle.setOpacity(0.7),
         () => rectangle.setOpacity(0.9),
