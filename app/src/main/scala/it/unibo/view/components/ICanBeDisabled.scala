@@ -5,7 +5,7 @@ import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 
 trait ICanBeDisabled:
-  private var enabled: Boolean = false
+  protected var enabled: Boolean = false
 
   def toggleActivation(
       node: Node,

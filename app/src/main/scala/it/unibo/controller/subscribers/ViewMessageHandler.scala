@@ -12,7 +12,7 @@ import it.unibo.controller.{
 }
 
 import scala.concurrent.Future
-import it.unibo.model.logger
+import it.unibo.controller.logger
 
 /** This class is subscribed to the Model updates and changes the View accordingly */
 class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:

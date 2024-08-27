@@ -2,6 +2,7 @@ package it.unibo.view.components.game
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
+import it.unibo.view.components.IHaveConditionalView
 import it.unibo.view.components.game.gameboard.hand.{CardComponent, HandComponent}
 import it.unibo.view.components.game.gameboard.sidebar.{
   DeckComponent,
@@ -23,10 +24,10 @@ trait GameComponentInitializer:
       viewObservable: ViewSubject,
       internalViewObservable: InternalViewSubject
   ): SidebarComponent =
-    val subComponents = List(WindRoseComponent(), DeckComponent(), GameInfoComponent())
+    val subComponents: List[IHaveConditionalView] = List(WindRoseComponent(), DeckComponent(), GameInfoComponent())
     SidebarComponent(subComponents)
 
-  private def loadGrid(using viewObservable: ViewSubject): GridComponent =
+  private def loadGrid(using viewObservable: ViewSubject, internalViewObservable: InternalViewSubject): GridComponent =
     new GridComponent(viewObservable)
 
   protected def loadGame(

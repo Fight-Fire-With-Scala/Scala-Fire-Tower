@@ -2,14 +2,14 @@ package it.unibo.view.components.game.gameboard.hand
 
 import it.unibo.controller.DrawCardMessage
 import it.unibo.view.GUIType
-import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
+import it.unibo.view.components.{GraphicComponent, IHaveConditionalView, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ViewSubject}
 import scala.compiletime.uninitialized
 
 final class HandComponent(val cardComponents: List[CardComponent])(using observable: ViewSubject)
-    extends GraphicComponent with IHaveView with IUpdateView:
+    extends GraphicComponent with IHaveConditionalView with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
 
@@ -24,6 +24,8 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
   @FXML
   def initialize(): Unit = cardComponents.foreach(addComponent)
 
+  override def generalToggle(): Unit = ??? 
+    
   def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = runOnUIThread {
     cardComponents.foreach(_.reset())
     cardComponents.zip(cards).foreach { case (cardComponent, card) => cardComponent.setCard(card) }

@@ -8,15 +8,15 @@ import it.unibo.controller.{
   InternalViewSubject,
   ViewSubject
 }
-import it.unibo.view.{GUIType, GameBoardController}
-import it.unibo.view.components.IHaveView
+import it.unibo.view.{GUIType}
+import it.unibo.view.components.IHaveConditionalView
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, Spinner, SpinnerValueFactory}
 
 import scala.compiletime.uninitialized
 
 final class DeckComponent(using observable: ViewSubject, internalObservable: InternalViewSubject)
-    extends IHaveView:
+    extends IHaveConditionalView:
 
   @FXML
   private var numberInput: Spinner[Integer] = uninitialized
@@ -52,6 +52,8 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
     okButton.setDisable(!enabled)
     cancelButton.setDisable(!enabled)
     discardButton.setDisable(enabled)
+
+  override def generalToggle(): Unit = ???
 
   @FXML
   private def handleDrawCard(): Unit = observable.onNext(DrawCardMessage(numberInput.getValue))

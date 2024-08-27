@@ -1,9 +1,9 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.ViewSubject
+import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
-import it.unibo.view.GUIType
-import it.unibo.view.components.{GraphicComponent, IHaveView, IUpdateView}
+import it.unibo.view.{GUIType, logger}
+import it.unibo.view.components.{GraphicComponent, IHaveConditionalView, IUpdateView}
 import javafx.fxml.FXML
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
@@ -12,8 +12,9 @@ import scalafx.scene.paint.Color
 import scala.collection.mutable
 import scala.compiletime.uninitialized
 
-final class GridComponent(observableSubject: ViewSubject)
-    extends GraphicComponent with IHaveView with IUpdateView:
+//noinspection VarCouldBeVal
+final class GridComponent(observableSubject: ViewSubject)(using internalObservable: InternalViewSubject)
+    extends GraphicComponent with IHaveConditionalView with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
 
@@ -32,8 +33,9 @@ final class GridComponent(observableSubject: ViewSubject)
     gridPane = new GridPane
 
     squareMap = gridInitializer.initializeGridSquares(gridPane)
-    gridEventHandler = new GridEventHandler(observableSubject, squareMap)
+    gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
     container.getChildren.add(gridPane)
+    enableView()
 
   private def handleCellClick(): Unit =
     gridEventHandler.handleCellClick()
@@ -44,7 +46,8 @@ final class GridComponent(observableSubject: ViewSubject)
   def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
     .updateAvailablePatterns(patterns)
 
-  def toggleGridSquaresActivation(): Unit = squareMap.foreach { case (_, square) =>
+  override def generalToggle(): Unit = 
+    squareMap.foreach { case (_, square) =>
     square.toggleRectangleActivation()
   }
 

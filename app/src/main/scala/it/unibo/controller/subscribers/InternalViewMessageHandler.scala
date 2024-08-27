@@ -13,6 +13,7 @@ import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
 
 import scala.concurrent.Future
+import it.unibo.controller.{logger, SetupActionPhase}
 
 class InternalViewMessageHandler(gameBoardController: GameBoardController)
     extends Subscriber[InternalViewMessage]:
@@ -20,27 +21,30 @@ class InternalViewMessageHandler(gameBoardController: GameBoardController)
 
   override def onNext(msg: InternalViewMessage): Future[Ack] =
     msg match
+      case SetupActionPhase() =>
+        logger.info("Received SetupActionPhase")
+        gameBoardController.handleStartActionPhase()
       case InitializeDiscardProcedureMessage() =>
-        println("Received InitializeDiscardProcedureMessage")
+        logger.info("Received InitializeDiscardProcedureMessage")
         gameBoardController.initDiscardProcedure()
       case ToggleCardInListMessage(cardId)     =>
-        println(s"Received ToggleCardInListMessage with cardId: $cardId")
+        logger.info(s"Received ToggleCardInListMessage with cardId: $cardId")
         gameBoardController.toggleCardInDiscardList(cardId)
       case ConfirmDiscardMessage()             =>
-        println("Received ConfirmDiscardMessage")
+        logger.info("Received ConfirmDiscardMessage")
         gameBoardController.confirmDiscard()
       case CancelDiscardMessage()              =>
-        println("Received CancelDiscardMessage")
+        logger.info("Received CancelDiscardMessage")
         gameBoardController.cancelDiscard()
 
     Continue
 
   override def onError(ex: Throwable): Unit =
-    println(s"Received error: ${ex.getMessage}")
+    logger.error(s"Received error: ${ex.getMessage}")
     ex.getStackTrace.foreach { traceElement =>
-      println(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
+      logger.error(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
           .getFileName}:${traceElement.getLineNumber})")
     }
-    println(s"Full description: ${ex.toString}")
+    logger.error(s"Full description: ${ex.toString}")
 
   override def onComplete(): Unit = println(s"Received final event")

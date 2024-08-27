@@ -21,7 +21,7 @@ object ControllerModule:
     class ControllerImpl extends Controller:
       def notifyStartGame(): Unit =
         context.model.getObservable.subscribe(new ViewMessageHandler(context.view))
-        context.view.getObservable.subscribe(new ModelMessageHandler(context.model))
+        context.view.getObservable.subscribe(new ModelMessageHandler(context.model, new GameController))
 
   trait Interface extends Provider with Component:
     self: Requirements =>

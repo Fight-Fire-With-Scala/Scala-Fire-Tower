@@ -5,7 +5,7 @@ import it.unibo.controller.{
   ControllerModule,
   InternalViewMessage,
   InternalViewSubject,
-  ResolveWindPhase,
+  SetupWindPhase,
   ViewMessage,
   ViewSubject
 }
@@ -17,7 +17,7 @@ import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, WindR
 import monix.reactive.subjects.PublishSubject
 import it.unibo.view.components.game.GameComponent
 import javafx.event.EventHandler
-import javafx.concurrent.{Task, WorkerStateEvent}
+import javafx.concurrent.WorkerStateEvent
 
 object ViewModule:
 
@@ -65,7 +65,8 @@ object ViewModule:
               setTurnPlayer(gameBoard.currentPlayer.name)
               refresh(gameBoard)
               internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
-              observableSubject.onNext(ResolveWindPhase())
+              //gameBoardController.handleStartWindPhase()
+              observableSubject.onNext(SetupWindPhase())
         )
 
         task.run()

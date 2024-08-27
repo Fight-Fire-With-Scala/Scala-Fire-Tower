@@ -22,6 +22,5 @@ class GridInitializer(
       GridPane.setColumnIndex(square.getGraphicPane, col)
       gridPane.children.add(square.getGraphicPane)
       squareMap(Position(row, col)) = square
-      square.toggleRectangleActivation()
     }
     squareMap

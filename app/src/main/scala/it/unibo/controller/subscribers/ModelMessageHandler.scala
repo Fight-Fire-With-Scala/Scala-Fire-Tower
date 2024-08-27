@@ -6,16 +6,19 @@ import monix.reactive.observers.Subscriber
 import it.unibo.controller.{
   DiscardTheseCardsMessage,
   DrawCardMessage,
+  EndWindPhase,
+  GameController,
   ResolvePatternChoice,
-  ResolveWindPhase,
+  SetupWindPhase,
   SettingsMessage,
   ShowAvailablePatterns,
   UpdateWindDirection,
   ViewMessage
 }
 import it.unibo.model.ModelModule.Model
-import it.unibo.model.logger
+import it.unibo.controller.logger
 import it.unibo.model.cards.resolvers.PatternComputationResolver
+import it.unibo.model.gameboard.GamePhase.{WindPhase, ActionPhase}
 
 import scala.concurrent.Future
 import it.unibo.model.prolog.Rule
@@ -26,7 +29,7 @@ import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.gameboard.Direction
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
-class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
+class ModelMessageHandler(model: Model, controller: GameController) extends Subscriber[ViewMessage]:
   override def scheduler: Scheduler = Scheduler.global
 
   override def onNext(msg: ViewMessage): Future[Ack] =
@@ -48,9 +51,14 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
         }
         model.setGameBoard(gameBoard.copy(deck = finalDeck, currentPlayer = finalPlayer))
 
-      case ResolveWindPhase() =>
+      case SetupWindPhase() =>
         logger.info(s"Received ResolveWindPhase Message")
-        resolveWindPhase(model)
+        controller.handleWindPhase(model)
+
+      case EndWindPhase() =>
+        logger.info(s"Received EndWindPhase Message")
+        val gameBoard = model.getGameBoard
+        model.setGameBoard(gameBoard.copy(gamePhase = ActionPhase))
 
       case UpdateWindDirection(windDirection: Direction) =>
         logger.info(s"Received UpdateWindDirection Message")
@@ -74,12 +82,12 @@ class ModelMessageHandler(model: Model) extends Subscriber[ViewMessage]:
     Continue
 
   override def onError(ex: Throwable): Unit =
-    println(s"Received error: ${ex.getMessage}")
+    logger.error(s"Received error: ${ex.getMessage}")
     ex.getStackTrace.foreach { traceElement =>
-      println(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
+      logger.error(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
           .getFileName}:${traceElement.getLineNumber})")
     }
-    println(s"Full description: ${ex.toString}")
+    logger.error(s"Full description: ${ex.toString}")
 
   override def onComplete(): Unit = println(s"Received final event")
 

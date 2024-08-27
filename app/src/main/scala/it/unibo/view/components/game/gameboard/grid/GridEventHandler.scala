@@ -4,12 +4,14 @@ import it.unibo.controller.{ResolvePatternChoice, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.controller.{InternalViewSubject, SetupActionPhase}
 import scalafx.scene.paint.Color
 
 import scala.collection.mutable
 
 class GridEventHandler(
     observableSubject: ViewSubject,
+    internalObservable: InternalViewSubject,
     squareMap: mutable.Map[Position, GridSquare]
 ):
   private val hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
@@ -18,7 +20,7 @@ class GridEventHandler(
 
   def updateAvailablePatterns(ap : List[Map[Position, Token]]): Unit =
     availablePatterns = ap
-  
+
   def handleCellClick(): Unit =
     val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
       .flatMap { position =>
@@ -29,6 +31,7 @@ class GridEventHandler(
     if (matchedPatterns.nonEmpty) {
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
+      internalObservable.onNext(SetupActionPhase())
     }
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
@@ -47,8 +50,8 @@ class GridEventHandler(
           }
         }
       case None      =>
-  
-  
+
+
   private def resetHoverColors(): Unit =
     hoveredCellsOriginalColors.foreach { case (position, color) =>
       val square = squareMap(position)
