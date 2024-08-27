@@ -24,7 +24,6 @@ import scala.concurrent.Future
 import it.unibo.model.prolog.Rule
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import alice.tuprolog.{Struct, Var}
-import it.unibo.controller.subscribers.ModelMessageHandler.resolveWindPhase
 import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.gameboard.ActionPhaseChoice.PlayCard
 import it.unibo.model.gameboard.Direction
@@ -52,13 +51,6 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
         val gameBoard = model.getGameBoard
         model.setGameBoard(gameBoard.copy(gamePhase = ActionPhase))
 
-      case UpdateWindDirection(windDirection: Direction) =>
-        logger.info(s"Received UpdateWindDirection Message")
-        val gameBoard = model.getGameBoard
-        val board = gameBoard.board
-        model.setGameBoard(gameBoard.copy(board = board.copy(windDirection = windDirection)))
-        resolveWindPhase(model)
-
       case ResolvePatternChoice(pattern) =>
         val gameBoard = model.getGameBoard
         val board = gameBoard.board
@@ -69,6 +61,9 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
       case DiscardTheseCardsMessage(cards) =>
         println(s"Received DiscardTheseCardsMessage with cards: $cards")
         model.discardCards(cards)
+
+      case it.unibo.controller.UpdateWindDirection(_) => ???
+      case it.unibo.controller.ResolvePatternComputation() => ???
     Continue
 
   override def onError(ex: Throwable): Unit =
@@ -80,16 +75,3 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
     logger.error(s"Full description: ${ex.toString}")
 
   override def onComplete(): Unit = println(s"Received final event")
-
-object ModelMessageHandler:
-  def resolveWindPhase(model: Model): Future[Ack] =
-    val board = model.getGameBoard.board
-    val direction = board.windDirection
-
-    val availablePatterns = PatternComputationResolver(
-      VerySmallEffect(Map("a" -> Fire)),
-      Rule(Struct.of("fire", Var.of("R"))),
-      List(direction)
-    ).getAvailableMoves(board).patterns
-
-    model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))
