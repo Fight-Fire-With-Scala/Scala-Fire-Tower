@@ -18,7 +18,7 @@ import it.unibo.controller.{
 import it.unibo.model.ModelModule.Model
 import it.unibo.controller.logger
 import it.unibo.model.cards.resolvers.PatternComputationResolver
-import it.unibo.model.gameboard.GamePhase.{WindPhase, ActionPhase}
+import it.unibo.model.gameboard.GamePhase.{ActionPhase, WindPhase}
 
 import scala.concurrent.Future
 import it.unibo.model.prolog.Rule
@@ -35,22 +35,13 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
 
   override def onNext(msg: ViewMessage): Future[Ack] =
     msg match
-      case SettingsMessage(settings)    =>
+      case SettingsMessage(settings) =>
         logger.info(s"Received Settings Message")
         model.initialiseModel(settings)
+
       case DrawCardMessage(nCards: Int) =>
         logger.info(s"Draw $nCards cards")
-        val gameBoard = model.getGameBoard
-        val deck = gameBoard.deck
-        val player = gameBoard.currentPlayer
-
-        val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, player)) {
-          case ((currentDeck, currentPlayer), _) =>
-            val (card, newDeck) = currentDeck.drawCard()
-            val newPlayer = currentPlayer.drawCardFromDeck(card)
-            (newDeck, newPlayer)
-        }
-        model.setGameBoard(gameBoard.copy(deck = finalDeck, currentPlayer = finalPlayer))
+        model.drawCards(nCards)
 
       case SetupWindPhase() =>
         logger.info(s"Received ResolveWindPhase Message")
@@ -77,9 +68,7 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
 
       case DiscardTheseCardsMessage(cards) =>
         println(s"Received DiscardTheseCardsMessage with cards: $cards")
-        val gameBoard = model.getGameBoard
-        val player = gameBoard.currentPlayer
-        model.setGameBoard(gameBoard.copy(currentPlayer = player.discardCards(cards)))
+        model.discardCards(cards)
     Continue
 
   override def onError(ex: Throwable): Unit =
