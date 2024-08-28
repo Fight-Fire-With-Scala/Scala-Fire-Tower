@@ -9,6 +9,7 @@ import it.unibo.model.gameboard.GamePhase.{ActionPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.{ActionPhaseChoice, GamePhase}
 import it.unibo.model.prolog.Rule
+import it.unibo.model.cards.choices.StepChoice
 
 //import it.unibo.model.cards.effects.GameboardEffect
 
@@ -24,14 +25,6 @@ Is a sort of handler of the game phase.
 //enum ActionPhaseChoice:
 //  case RedrawCards, PlayCard
 //
-//ovviamente manca il model al GameController. Ma non saprei se darglielo o meno.
-// direi di provare a metterlo, secondo me lo usiamo tutte le volte che serve gestire il turno
-//probabilmente sì, però non so se è il caso di gestire le modifiche al model tramite il modelModule
-//ma comunque dovremmo passarlo
-//per ora passiamolo
-// ok sì per accorciare il codice poi spostiamo il grosso nel model module
-// meglio così che dici?
-//sì
 case class GameController():
   def handleWindPhase(model: Model): Unit =
     val board = model.getGameBoard.board
@@ -45,9 +38,21 @@ case class GameController():
 
     model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))
 
-  def handleActionPhase(model: Model, choice: ActionPhaseChoice): Unit =
-    handleActionPhaseChoice(model, choice)
+  def handleActionPhase(cardId: Int, model: Model, choice: ActionPhaseChoice): Unit =
+    handleActionPhaseChoice(cardId, model, choice)
 
-  private def handleActionPhaseChoice(model: Model, choice: ActionPhaseChoice): Unit = choice match
-    case RedrawCards => ???
-    case PlayCard    => ???
+  private def handleActionPhaseChoice(cardId: Int, model: Model, choice: ActionPhaseChoice): Unit = ???
+//    choice match
+//      case RedrawCards => ???
+//      case PlayCard    =>
+//        val gameBoard = model.getGameBoard
+//        val (updatedPlayer, card) = gameBoard.currentPlayer.playCard(cardId)
+//        model.setGameBoard(gameBoard.copy(currentPlayer = updatedPlayer))
+//
+//        card match
+//          case Some(c) => 
+//            val cardResolver: MetaResolver[StepChoice, ChoiceResultResolver] = c.cardType.effectType.effect
+//            val stepResolver: PatternComputationResolver = cardResolver.resolve(StepChoice.PatternComputation)
+//            val availablePatterns = stepResolver.getAvailableMoves(gameBoard.board).patterns
+//            model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))
+//          case None    => logger.warn("No card found")

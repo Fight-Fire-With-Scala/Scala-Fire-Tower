@@ -31,8 +31,8 @@ enum ActionPhaseChoice:
 case class GameBoard(
     board: Board,
     deck: Deck,
-    player1: Player,
-    player2: Player,
+    private val player1: Player,
+    private val player2: Player,
     currentPlayer: Player = null,
     var gamePhase: GamePhase = WindPhase
 ):
