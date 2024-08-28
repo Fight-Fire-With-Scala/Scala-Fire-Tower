@@ -3,18 +3,20 @@ package it.unibo.view.components.game
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.players.Player
-import it.unibo.view.components.{GraphicComponent, IUpdateView}
+import it.unibo.view.GUIType
+import it.unibo.view.components.{IMainComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
 import it.unibo.view.components.game.gameboard.hand.HandComponent
 import it.unibo.view.components.game.gameboard.sidebar.SidebarComponent
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
-import scalafx.application.Platform
 import javafx.scene.Node
 
 import scala.compiletime.uninitialized
 
-final class GameComponent extends GraphicComponent with IUpdateView:
+final class GameComponent extends IMainComponent with IUpdateView:
+  override val fxmlPath: String = GUIType.Game.fxmlPath
+  
   @FXML
   var grid: Pane = uninitialized
   @FXML
@@ -26,7 +28,7 @@ final class GameComponent extends GraphicComponent with IUpdateView:
   var sidebarComponent: SidebarComponent = uninitialized
   var handComponent: HandComponent = uninitialized
 
-  private def setupComponent[T <: GraphicComponent](
+  private def setupComponent[T <: IMainComponent](
       pane: Pane,
       componentPane: Node,
       assignComponent: () => Unit

@@ -5,7 +5,7 @@ import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.{East, North, South, West}
 import it.unibo.view.GUIType
-import it.unibo.view.components.{IHaveConditionalView, IUpdateView}
+import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -15,7 +15,8 @@ import javafx.scene.layout.Pane
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class WindRoseComponent(using observable: ViewSubject) extends IHaveConditionalView with IUpdateView:
+final class WindRoseComponent(using observable: ViewSubject)
+    extends ISidebarComponent with IUpdateView:
   override val fxmlPath: String = GUIType.WindRose.fxmlPath
 
   @FXML
@@ -23,8 +24,8 @@ final class WindRoseComponent(using observable: ViewSubject) extends IHaveCondit
 
   private val windRoseArrow = WindRoseArrow.create(South)
 
-  private val windRoseDirections: Map[Direction, WindRoseDirection] = 
-    Direction.values.map(d => d -> WindRoseDirection.create(d)).toMap
+  private val windRoseDirections: Map[Direction, WindRoseDirection] = Direction.values
+    .map(d => d -> WindRoseDirection.create(d)).toMap
 
   private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
     ev =>
@@ -43,12 +44,13 @@ final class WindRoseComponent(using observable: ViewSubject) extends IHaveCondit
   def updateWindRoseDirection(direction: Direction): Unit =
     runOnUIThread(windRoseArrow.updateDirection(direction))
 
-  override def generalToggle(): Unit = windRosePanes.foreach((dir, pane) =>
+  override def generalToggle(): Unit =
+    super.generalToggle()  
+    windRosePanes.foreach((dir, pane) =>
     windRoseDirections(dir).toggleActivation(
       pane,
       () => pane.getStyleClass.add("disabled"),
       () => pane.getStyleClass.remove("disabled"),
-      enabled,
       MouseEvent.MOUSE_CLICKED -> windRoseEventHandler(dir)
     )
   )

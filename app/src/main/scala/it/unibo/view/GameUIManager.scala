@@ -6,6 +6,7 @@ import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
 import it.unibo.controller.ViewSubject
 import it.unibo.view.GUIType.{Game, Menu}
+import it.unibo.view.components.IMainComponent
 import it.unibo.view.components.game.GameComponent
 import it.unibo.view.components.menu.MenuComponent
 import javafx.concurrent.Task
@@ -27,16 +28,13 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
       scene = new Scene(pane, w, h)
       minHeight = h
       minWidth = w
-    loadGUIRoot(GUIType.Menu).run()
+      
+    loadGUIRoot(MenuComponent(viewObservable)).run()
 
-  def loadGUIRoot(guiType: RootView): Task[guiType.Component] =
-    val componentInstance = guiType match
-      case Menu => MenuComponent(viewObservable)
-      case Game => GameComponent()
-
-    val root = FXMLViewLoader.load(guiType.fxmlPath, componentInstance)
+  def loadGUIRoot(componentInstance: IMainComponent): Task[IMainComponent] =
+    val root = FXMLViewLoader.load(componentInstance)
     () =>
       pane.children.clear()
       pane.children.add(root)
       stage.show()
-      componentInstance.asInstanceOf[guiType.Component]
+      componentInstance

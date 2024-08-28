@@ -12,7 +12,7 @@ import it.unibo.controller.{
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.{IHaveView, IUpdateView}
+import it.unibo.view.components.IUpdateView
 import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, WindRoseComponent}
 import monix.reactive.subjects.PublishSubject
 import it.unibo.view.components.game.GameComponent
@@ -48,7 +48,7 @@ object ViewModule:
       override def show(): Unit = gui.main(Array.empty)
 
       override def startGame(gameBoard: GameBoard): Unit =
-        val task = gui.loadGUIRoot(GUIType.Game)
+        val task = gui.loadGUIRoot(GameComponent())
 
         given observable: ViewSubject = observableSubject
         given internalObservable: InternalViewSubject = internalObservableSubject
@@ -56,7 +56,7 @@ object ViewModule:
         task.setOnSucceeded(
           new EventHandler[WorkerStateEvent]():
             def handle(t: WorkerStateEvent): Unit =
-              val gameComponent = task.getValue
+              val gameComponent = task.getValue.asInstanceOf[GameComponent]
               GameComponent.initialize(gameComponent)
               gameBoardController.initialize(gameComponent)
               setWindDirection(gameBoard.board.windDirection)
@@ -65,7 +65,7 @@ object ViewModule:
               setTurnPlayer(gameBoard.currentPlayer.name)
               refresh(gameBoard)
               internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
-              //gameBoardController.handleStartWindPhase()
+//              gameBoardController.handleStartWindPhase()
               observableSubject.onNext(SetupWindPhase())
         )
 

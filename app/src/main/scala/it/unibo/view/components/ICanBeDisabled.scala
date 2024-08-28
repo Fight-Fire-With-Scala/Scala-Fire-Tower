@@ -5,12 +5,18 @@ import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 
 trait ICanBeDisabled:
+  protected var enabled: Boolean = false
+
+  def generalToggle(): Unit = enabled = !enabled
+
+  def enableView(): Unit = if !enabled then generalToggle()
+
+  def disableView(): Unit = if enabled then generalToggle()
 
   def toggleActivation(
       node: Node,
       graphicChangeDisabled: () => Unit,
       graphicChangeEnabled: () => Unit,
-      enabled: Boolean,
       eventHandlers: (EventType[MouseEvent], EventHandler[MouseEvent])*
   ): Unit =
     if !enabled then

@@ -2,8 +2,8 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
-import it.unibo.view.{GUIType, logger}
-import it.unibo.view.components.{GraphicComponent, IHaveConditionalView, IUpdateView}
+import it.unibo.view.GUIType
+import it.unibo.view.components.{IMainComponent, IUpdateView}
 import javafx.fxml.FXML
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
@@ -13,8 +13,9 @@ import scala.collection.mutable
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class GridComponent(observableSubject: ViewSubject)(using internalObservable: InternalViewSubject)
-    extends GraphicComponent with IHaveConditionalView with IUpdateView:
+final class GridComponent(observableSubject: ViewSubject)(using
+    internalObservable: InternalViewSubject
+) extends IMainComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
 
@@ -35,10 +36,9 @@ final class GridComponent(observableSubject: ViewSubject)(using internalObservab
     squareMap = gridInitializer.initializeGridSquares(gridPane)
     gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
     container.getChildren.add(gridPane)
-    enableView()
+    generalToggle()
 
-  private def handleCellClick(): Unit =
-    gridEventHandler.handleCellClick()
+  private def handleCellClick(): Unit = gridEventHandler.handleCellClick()
 
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection)
@@ -48,8 +48,7 @@ final class GridComponent(observableSubject: ViewSubject)(using internalObservab
 
   override def generalToggle(): Unit =
     super.generalToggle()
-    squareMap.foreach { case (_, square) =>
-      square.toggleRectangleActivation(enabled) }
+    squareMap.foreach { case (_, square) => square.generalToggle() }
 
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}

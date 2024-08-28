@@ -5,7 +5,7 @@ import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
 import it.unibo.view.GUIType
-import it.unibo.view.components.{GraphicComponent, ICanBeDisabled, IHaveView}
+import it.unibo.view.components.{IMainComponent, ICanBeDisabled, IHaveView}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.input.MouseEvent
@@ -15,8 +15,8 @@ import scalafx.Includes.*
 
 import scala.compiletime.uninitialized
 
-final class CardComponent(using internalObservable: InternalViewSubject)
-    extends IHaveView with ICanBeDisabled:
+//noinspection VarCouldBeVal
+final class CardComponent(using internalObservable: InternalViewSubject) extends IHaveView with ICanBeDisabled:
 
   override val fxmlPath: String = GUIType.Card.fxmlPath
 
