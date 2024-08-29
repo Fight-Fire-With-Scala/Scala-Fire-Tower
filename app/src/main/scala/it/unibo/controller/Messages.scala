@@ -21,6 +21,7 @@ case class SetupWindPhase() extends ViewMessage
 case class UpdateWindDirection(windDirection: Direction) extends ViewMessage
 case class EndWindPhase() extends ViewMessage
 case class ResolvePatternComputation(cardId: Int) extends ViewMessage
+case class ResetPatternComputation() extends ViewMessage
 case class ResolvePatternChoice(pattern: Map[Position, Token]) extends ViewMessage
 case class DiscardTheseCardsMessage(cards: List[Int]) extends ViewMessage
 
