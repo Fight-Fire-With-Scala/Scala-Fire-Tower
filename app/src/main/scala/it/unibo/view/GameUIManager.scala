@@ -5,15 +5,21 @@ import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
 import it.unibo.controller.ViewSubject
-import it.unibo.view.GUIType.{Game, Menu}
 import it.unibo.view.components.IMainComponent
-import it.unibo.view.components.game.GameComponent
 import it.unibo.view.components.menu.MenuComponent
-import javafx.concurrent.Task
+import javafx.concurrent.Task as JFXTask
+import monix.eval.Task
 import scalafx.scene.image.Image
+import monix.execution.Scheduler.Implicits.global
 
 import scala.compiletime.uninitialized
 import scala.jdk.CollectionConverters.*
+
+def wrapInMonixTask[T](jfxTask: JFXTask[T]): Task[T] = Task.async { cb =>
+  jfxTask.setOnSucceeded(_ => cb.onSuccess(jfxTask.getValue))
+  jfxTask.setOnFailed(_ => cb.onError(jfxTask.getException))
+  jfxTask.run()
+}
 
 final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) extends JFXApp3:
 
@@ -28,13 +34,14 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
       scene = new Scene(pane, w, h)
       minHeight = h
       minWidth = w
-      
-    loadGUIRoot(MenuComponent(viewObservable)).run()
+
+    loadGUIRoot(MenuComponent(viewObservable)).runAsyncAndForget
 
   def loadGUIRoot(componentInstance: IMainComponent): Task[IMainComponent] =
     val root = FXMLViewLoader.load(componentInstance)
-    () =>
+    wrapInMonixTask[IMainComponent] { () =>
       pane.children.clear()
       pane.children.add(root)
       stage.show()
       componentInstance
+    }

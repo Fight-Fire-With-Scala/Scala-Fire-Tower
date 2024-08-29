@@ -83,8 +83,7 @@ trait RefreshManager extends ComponentManager:
     gameComponent.fold(()) { component =>
       component.updateGrid(gameBoard.board.grid)
       component.updatePlayer(gameBoard.currentPlayer)
+      component.sidebarComponent.components.collectFirst { case component: GameInfoComponent => component } match
+        case Some(component) => component.updateTurnPhase(currentGamePhase.toString)
+        case None => logger.warn(s"Component not found")
     }
-//    val components =  gameComponent.get.sidebarComponent.components
-//    components.collectFirst { case component: GameInfoComponent => component } match
-//      case Some(component) => component.updateTurnPhase(currentGamePhase.toString)
-//      case None => logger.warn(s"Component not found")

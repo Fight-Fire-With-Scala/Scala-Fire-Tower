@@ -36,7 +36,6 @@ final class GridComponent(observableSubject: ViewSubject)(using
     squareMap = gridInitializer.initializeGridSquares(gridPane)
     gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
     container.getChildren.add(gridPane)
-    enableView()
 
   private def handleCellClick(): Unit = gridEventHandler.handleCellClick()
 

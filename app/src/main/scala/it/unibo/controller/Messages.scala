@@ -33,11 +33,6 @@ case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMes
 case class ChangeTurnPhase(gamePhase: GamePhase) extends ModelMessage
 case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
 
-// potrebbe estendere in una qualche maniera ResolvePatternChoice ?
-// al massimo la risoluzione di resolvepatternchoice è un metodo privato che viene richiamato  da entrambe
-// chiami lo stesso metodo al limite 
-// sì esatto lo facciamo come metodo in comune
-
 /*
  * This refers to messages sent to the view from the view
  */
