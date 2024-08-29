@@ -1,23 +1,16 @@
 package it.unibo.view
 
 import it.unibo.controller.subscribers.InternalViewMessageHandler
-import it.unibo.controller.{
-  ControllerModule,
-  InternalViewMessage,
-  InternalViewSubject,
-  SetupWindPhase,
-  ViewMessage,
-  ViewSubject
-}
+import it.unibo.controller.{ControllerModule, InternalViewMessage, InternalViewSubject, SetupWindPhase, ViewMessage, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.IUpdateView
+import it.unibo.view.components.{IMainComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, WindRoseComponent}
 import monix.reactive.subjects.PublishSubject
 import it.unibo.view.components.game.GameComponent
-import javafx.event.EventHandler
-import javafx.concurrent.WorkerStateEvent
+import monix.eval.Task
+import monix.execution.Scheduler.Implicits.global
 
 object ViewModule:
 
@@ -48,35 +41,31 @@ object ViewModule:
       override def show(): Unit = gui.main(Array.empty)
 
       override def startGame(gameBoard: GameBoard): Unit =
-        val task = gui.loadGUIRoot(GameComponent())
+        val task: Task[IMainComponent] = gui.loadGUIRoot(GameComponent())
 
         given observable: ViewSubject = observableSubject
         given internalObservable: InternalViewSubject = internalObservableSubject
 
-        task.setOnSucceeded(
-          new EventHandler[WorkerStateEvent]():
-            def handle(t: WorkerStateEvent): Unit =
-              val gameComponent = task.getValue.asInstanceOf[GameComponent]
-              GameComponent.initialize(gameComponent)
-              gameBoardController.initialize(gameComponent)
-              setWindDirection(gameBoard.board.windDirection)
-              setTurnPhase(gameBoard.gamePhase.toString)
-              setTurnNumber(0)
-              setTurnPlayer(gameBoard.currentPlayer.name)
-              refresh(gameBoard)
-              internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
-              observableSubject.onNext(SetupWindPhase())
-        )
-
-        task.run()
+        task.runToFuture.onComplete(res => {
+          val gameComponent = res.get.asInstanceOf[GameComponent]
+          GameComponent.initialize(gameComponent)
+          gameBoardController.initialize(gameComponent)
+          setWindDirection(gameBoard.board.windDirection)
+          setTurnNumber(0)
+          setTurnPlayer(gameBoard.currentPlayer.name)
+          refresh(gameBoard)
+          internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
+          gameBoardController.handleStartWindPhase()
+          observableSubject.onNext(SetupWindPhase())
+        })
 
       override def refresh(gameBoard: GameBoard): Unit = gameBoardController.refresh(gameBoard)
 
       override def getObservable: ViewSubject = observableSubject
 
-      override def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
-        runOnUIThread(gameBoardController.gameComponent.get.gridComponent.setAvailablePatterns(patterns)
-        )
+      override def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = runOnUIThread(
+        gameBoardController.gameComponent.get.gridComponent.setAvailablePatterns(patterns)
+      )
 
       private def updateOnUIThreadGameInfoComponent(update: GameInfoComponent => Unit): Unit =
         runOnUIThread {
