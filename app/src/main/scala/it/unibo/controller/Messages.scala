@@ -48,3 +48,4 @@ case class InitializeDiscardProcedureMessage() extends InternalViewMessage
 case class ToggleCardInListMessage(cardId: Int) extends InternalViewMessage
 case class ConfirmDiscardMessage() extends InternalViewMessage
 case class CancelDiscardMessage() extends InternalViewMessage
+case class CandidateCardToPlayMessage(cardId: Int) extends InternalViewMessage

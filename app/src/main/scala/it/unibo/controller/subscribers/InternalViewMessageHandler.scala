@@ -1,10 +1,13 @@
 package it.unibo.controller.subscribers
 
 import it.unibo.controller.{
+  logger,
   CancelDiscardMessage,
+  CandidateCardToPlayMessage,
   ConfirmDiscardMessage,
   InitializeDiscardProcedureMessage,
   InternalViewMessage,
+  SetupActionPhase,
   ToggleCardInListMessage
 }
 import it.unibo.view.GameBoardController
@@ -13,7 +16,6 @@ import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
 
 import scala.concurrent.Future
-import it.unibo.controller.{logger, SetupActionPhase}
 
 class InternalViewMessageHandler(gameBoardController: GameBoardController)
     extends Subscriber[InternalViewMessage]:
@@ -21,7 +23,7 @@ class InternalViewMessageHandler(gameBoardController: GameBoardController)
 
   override def onNext(msg: InternalViewMessage): Future[Ack] =
     msg match
-      case SetupActionPhase() =>
+      case SetupActionPhase()                  =>
         logger.info("Received SetupActionPhase")
         gameBoardController.handleStartActionPhase()
       case InitializeDiscardProcedureMessage() =>
@@ -36,7 +38,9 @@ class InternalViewMessageHandler(gameBoardController: GameBoardController)
       case CancelDiscardMessage()              =>
         logger.info("Received CancelDiscardMessage")
         gameBoardController.cancelDiscard()
-
+      case CandidateCardToPlayMessage(cardId)  =>
+        logger.info(s"Received CandidateCardToPlayMessage with cardId: $cardId")
+        gameBoardController.candidateCardToPlay(cardId)
     Continue
 
   override def onError(ex: Throwable): Unit =

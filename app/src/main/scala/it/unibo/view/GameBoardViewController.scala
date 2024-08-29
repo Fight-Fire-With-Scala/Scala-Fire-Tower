@@ -6,6 +6,7 @@ import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.view.components.game.GameComponent
 import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
 
+//change name into InternalViewController
 class GameBoardController extends RefreshManager with DiscardManager with EnableDisableManager
 
 trait ComponentManager:
@@ -84,7 +85,7 @@ trait RefreshManager extends ComponentManager:
       component.updateGrid(gameBoard.board.grid)
       component.updatePlayer(gameBoard.currentPlayer)
     }
-//    val components =  gameComponent.get.sidebarComponent.components
-//    components.collectFirst { case component: GameInfoComponent => component } match
-//      case Some(component) => component.updateTurnPhase(currentGamePhase.toString)
-//      case None => logger.warn(s"Component not found")
+
+  def candidateCardToPlay(cardId: Int): Unit = gameComponent.fold(()) { component =>
+    component.handComponent.cardToPlay_=(cardId)
+  }

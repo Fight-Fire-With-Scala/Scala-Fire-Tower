@@ -1,11 +1,16 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.DrawCardMessage
+import it.unibo.controller.{
+  DiscardTheseCardsMessage,
+  DrawCardMessage,
+  ResetPatternComputation,
+  ResolvePatternComputation,
+  ViewSubject
+}
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IMainComponent, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
-import it.unibo.controller.{DiscardTheseCardsMessage, ViewSubject}
 
 import scala.compiletime.uninitialized
 
@@ -14,6 +19,8 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     extends IMainComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
+
+  private var cardToPlay: Option[CardComponent] = None
 
   private var cardToRemove = List.empty[Int]
 
@@ -25,7 +32,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
 
   @FXML
   def initialize(): Unit = cardComponents.foreach(addComponent)
-    
+
   def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = runOnUIThread {
     cardComponents.foreach(_.reset())
     cardComponents.zip(cards).foreach { case (cardComponent, card) => cardComponent.setCard(card) }
@@ -47,3 +54,13 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     observable.onNext(DiscardTheseCardsMessage(cardToRemove))
     observable.onNext(DrawCardMessage(cardToRemove.size))
     endDiscardProcedure()
+
+  def cardToPlay_=(cardId: Int): Unit =
+    val cardComponent = cardComponents.find(_.cardId == cardId.toString)
+    cardComponent.get.toggleHighlight()
+    if cardToPlay == cardComponent then
+      cardToPlay = None
+      observable.onNext(ResetPatternComputation())
+    else
+      cardToPlay = cardComponent
+      observable.onNext(ResolvePatternComputation(cardId))
