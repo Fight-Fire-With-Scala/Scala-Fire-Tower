@@ -3,13 +3,30 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, EndWindPhase, GameController, ResolvePatternChoice, ResolvePatternComputation, SettingsMessage, SetupWindPhase, UpdateWindDirection, ViewMessage}
+import it.unibo.controller.{
+  DiscardTheseCardsMessage,
+  DrawCardMessage,
+  EndWindPhase,
+  GameController,
+  ResolvePatternChoice,
+  SettingsMessage,
+  SetupWindPhase,
+  ShowAvailablePatterns,
+  UpdateWindDirection,
+  ViewMessage
+}
 import it.unibo.model.ModelModule.Model
 import it.unibo.controller.logger
-import it.unibo.model.gameboard.GamePhase.ActionPhase
+import it.unibo.model.cards.resolvers.PatternComputationResolver
+import it.unibo.model.gameboard.GamePhase.{ActionPhase, WindPhase}
 
 import scala.concurrent.Future
-import it.unibo.model.gameboard.{ActionPhaseChoice, Direction}
+import it.unibo.model.prolog.Rule
+import it.unibo.model.gameboard.grid.ConcreteToken.Fire
+import alice.tuprolog.{Struct, Var}
+import it.unibo.model.cards.effects.VerySmallEffect
+import it.unibo.model.gameboard.ActionPhaseChoice.PlayCard
+import it.unibo.model.gameboard.Direction
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 class ModelMessageHandler(model: Model, controller: GameController) extends Subscriber[ViewMessage]:
@@ -56,6 +73,9 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
       case DiscardTheseCardsMessage(cards) =>
         logger.info(s"Received DiscardTheseCardsMessage with cards: $cards")
         model.discardCards(cards)
+
+      case it.unibo.controller.UpdateWindDirection(_) => ???
+      case it.unibo.controller.ResolvePatternComputation() => ???
     Continue
 
   override def onError(ex: Throwable): Unit =

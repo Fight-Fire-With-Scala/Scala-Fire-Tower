@@ -5,6 +5,7 @@ import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.controller.{InternalViewSubject, SetupActionPhase}
+import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import scalafx.scene.paint.Color
 
 import scala.collection.mutable
@@ -16,9 +17,8 @@ class GridEventHandler(
 ):
   private val hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
   private var availablePatterns: List[Map[Position, Token]] = List.empty
-  private val hoverColor = Color.rgb(255, 0, 0, 0.5)
 
-  def updateAvailablePatterns(ap : List[Map[Position, Token]]): Unit =
+  def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit =
     availablePatterns = ap
 
   def handleCellClick(): Unit =
@@ -28,11 +28,10 @@ class GridEventHandler(
           case pattern if pattern.contains(position) => position -> pattern(position)
         }
       }.toMap
-    if (matchedPatterns.nonEmpty) {
+    if matchedPatterns.nonEmpty then
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
       internalObservable.onNext(SetupActionPhase())
-    }
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     resetHoverColors()
@@ -41,16 +40,16 @@ class GridEventHandler(
         val positionToCheck = checkNeighbor(Position(row, col), dir)
         val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
         candidatePositions.foreach { pattern =>
-          if (pattern.keys.exists(_ == positionToCheck)) {
+          if pattern.keys.exists(_ == positionToCheck) then
             val square = squareMap(positionToCheck)
+            val token = pattern(positionToCheck)
+            val hoverColor = getHoverColor(token)
             runOnUIThread {
               hoveredCellsOriginalColors += positionToCheck -> square.getColor
               square.updateColor(hoverColor)
             }
-          }
         }
-      case None      =>
-
+      case None =>
 
   private def resetHoverColors(): Unit =
     hoveredCellsOriginalColors.foreach { case (position, color) =>
@@ -61,3 +60,9 @@ class GridEventHandler(
 
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
     startPosition + direction.getDelta
+
+  private def getHoverColor(token: Token): Color =
+    token match
+      case Fire      => Color.DarkOrange
+      case Firebreak => Color.Blue
+      case _         => Color.Gray
