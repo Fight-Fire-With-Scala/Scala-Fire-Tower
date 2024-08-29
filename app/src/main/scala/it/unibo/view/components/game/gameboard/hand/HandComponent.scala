@@ -62,5 +62,13 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
       cardToPlay = None
       observable.onNext(ResetPatternComputation())
     else
+      cardToPlay match
+        case None    => observable.onNext(ResolvePatternComputation(cardId))
+        case Some(_) =>
+          observable.onNext(ResetPatternComputation())
+          observable.onNext(ResolvePatternComputation(cardId))
+          cardToPlay.get.toggleHighlight()
       cardToPlay = cardComponent
-      observable.onNext(ResolvePatternComputation(cardId))
+
+  override def generalToggle(): Unit = super.generalToggle()
+//    cardComponents.foreach(card => card.generalToggle())

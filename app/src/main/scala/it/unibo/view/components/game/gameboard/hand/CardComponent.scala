@@ -5,6 +5,7 @@ import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
 import it.unibo.view.GUIType
+import it.unibo.view.components.{ICanBeDisabled, IHaveView}
 import it.unibo.view.components.{ICanBeDisabled, IHaveView, IMainComponent}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -16,7 +17,8 @@ import scalafx.Includes.*
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class CardComponent(using internalObservable: InternalViewSubject) extends IHaveView with ICanBeDisabled:
+final class CardComponent(using internalObservable: InternalViewSubject)
+    extends IHaveView with ICanBeDisabled:
 
   override val fxmlPath: String = GUIType.Card.fxmlPath
 
@@ -32,9 +34,9 @@ final class CardComponent(using internalObservable: InternalViewSubject) extends
   var discardable: Boolean = uninitialized
 
   private val playCardHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) => 
+    (_: MouseEvent) =>
       internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
-      
+
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
     toggleHighlight()
@@ -84,3 +86,12 @@ final class CardComponent(using internalObservable: InternalViewSubject) extends
   def toggleHighlight(): Unit =
     if cardPane.getStyleClass.contains("highlight") then cardPane.getStyleClass.remove("highlight")
     else cardPane.getStyleClass.add("highlight")
+
+  override def generalToggle(): Unit =
+    super.generalToggle()
+    toggleActivation(
+      cardPane,
+      () => cardPane.getStyleClass.add("disabled"),
+      () => cardPane.getStyleClass.add("disabled"),
+      MouseEvent.MOUSE_CLICKED -> activeEventHandler
+    )

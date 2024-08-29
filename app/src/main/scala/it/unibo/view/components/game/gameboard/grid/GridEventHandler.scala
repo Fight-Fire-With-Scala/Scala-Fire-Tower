@@ -1,10 +1,10 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.{ResolvePatternChoice, ViewSubject}
+import it.unibo.controller.{EndWindPhase, InternalViewSubject, ResolvePatternChoice, UpdateGamePhase, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.Direction
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.controller.{InternalViewSubject, SetupActionPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import scalafx.scene.paint.Color
 
@@ -31,7 +31,8 @@ class GridEventHandler(
     if matchedPatterns.nonEmpty then
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
-      internalObservable.onNext(SetupActionPhase())
+      internalObservable.onNext(UpdateGamePhase(WaitingPhase))
+      observableSubject.onNext(EndWindPhase())
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     resetHoverColors()

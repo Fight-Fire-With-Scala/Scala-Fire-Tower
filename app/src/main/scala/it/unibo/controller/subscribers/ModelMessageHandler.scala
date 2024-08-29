@@ -4,33 +4,28 @@ import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
 import it.unibo.controller.{
+  logger,
   DiscardTheseCardsMessage,
   DrawCardMessage,
   EndWindPhase,
-  GameController,
+  ResetPatternComputation,
   ResolvePatternChoice,
+  ResolvePatternComputation,
   SettingsMessage,
   SetupWindPhase,
-  ShowAvailablePatterns,
   UpdateWindDirection,
-  ResolvePatternComputation,
   ViewMessage
 }
 import it.unibo.model.ModelModule.Model
-import it.unibo.controller.logger
-import it.unibo.model.cards.resolvers.PatternComputationResolver
+import it.unibo.model.TurnModelController
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{WaitingPhase, WindPhase}
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
 
 import scala.concurrent.Future
-import it.unibo.model.prolog.Rule
-import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import alice.tuprolog.{Struct, Var}
-import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.gameboard.Direction
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
-class ModelMessageHandler(model: Model, controller: GameController) extends Subscriber[ViewMessage]:
+class ModelMessageHandler(model: Model, controller: TurnModelController) extends Subscriber[ViewMessage]:
   override def scheduler: Scheduler = Scheduler.global
 
   override def onNext(msg: ViewMessage): Future[Ack] =
@@ -50,7 +45,7 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
       case EndWindPhase() =>
         logger.info(s"Received EndWindPhase Message")
         val gameBoard = model.getGameBoard
-        gameBoard.changeTurnPhase(WaitingPhase)
+        model.setGameBoard(gameBoard.changeTurnPhase(WaitingPhase))
 
       case UpdateWindDirection(windDirection: Direction) =>
         logger.info(s"Received UpdateWindDirection Message")
@@ -74,6 +69,9 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
       case DiscardTheseCardsMessage(cards) =>
         logger.info(s"Received DiscardTheseCardsMessage with cards: $cards")
         model.discardCards(cards)
+
+      case ResetPatternComputation() => logger.info(s"Received ResetPatternComputation")
+
     Continue
 
   override def onError(ex: Throwable): Unit =

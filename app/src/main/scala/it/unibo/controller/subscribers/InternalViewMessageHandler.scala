@@ -7,25 +7,27 @@ import it.unibo.controller.{
   ConfirmDiscardMessage,
   InitializeDiscardProcedureMessage,
   InternalViewMessage,
+  UpdateGamePhase,
   SetupActionPhase,
   ToggleCardInListMessage
 }
-import it.unibo.view.GameBoardController
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.view.TurnViewController
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
 
 import scala.concurrent.Future
 
-class InternalViewMessageHandler(gameBoardController: GameBoardController)
+class InternalViewMessageHandler(gameBoardController: TurnViewController)
     extends Subscriber[InternalViewMessage]:
   override def scheduler: Scheduler = Scheduler.global
 
   override def onNext(msg: InternalViewMessage): Future[Ack] =
     msg match
-      case SetupActionPhase()                  =>
-        logger.info("Received SetupActionPhase")
-        gameBoardController.handleStartActionPhase()
+      case UpdateGamePhase(phase: GamePhase)   =>
+        logger.info("Received UpdateGamePhase")
+        gameBoardController.updateGamePhase(phase)
       case InitializeDiscardProcedureMessage() =>
         logger.info("Received InitializeDiscardProcedureMessage")
         gameBoardController.initDiscardProcedure()

@@ -3,6 +3,7 @@ package it.unibo.view
 import it.unibo.controller.subscribers.InternalViewMessageHandler
 import it.unibo.controller.{ControllerModule, InternalViewMessage, InternalViewSubject, SetupWindPhase, ViewMessage, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
+import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.view.components.{IMainComponent, IUpdateView}
@@ -33,7 +34,7 @@ object ViewModule:
   trait Component:
     context: Requirements =>
     class ViewImpl extends View:
-      private val gameBoardController = GameBoardController()
+      private val gameBoardController = TurnViewController()
       private val observableSubject = PublishSubject[ViewMessage]()
       private val internalObservableSubject = PublishSubject[InternalViewMessage]()
       private val gui = GameUIManager(1280, 1024, observableSubject)
@@ -55,7 +56,7 @@ object ViewModule:
           setTurnPlayer(gameBoard.currentPlayer.name)
           refresh(gameBoard)
           internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
-          gameBoardController.handleStartWindPhase()
+          gameBoardController.updateGamePhase(WindPhase)
           observableSubject.onNext(SetupWindPhase())
         })
 

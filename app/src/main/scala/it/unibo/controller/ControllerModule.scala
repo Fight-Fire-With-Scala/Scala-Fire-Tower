@@ -2,7 +2,7 @@ package it.unibo.controller
 
 import it.unibo.controller.subscribers.ViewMessageHandler
 import it.unibo.controller.subscribers.ModelMessageHandler
-import it.unibo.model.ModelModule
+import it.unibo.model.{ModelModule, TurnModelController}
 import it.unibo.view.ViewModule
 
 object ControllerModule:
@@ -21,7 +21,7 @@ object ControllerModule:
     class ControllerImpl extends Controller:
       def notifyStartGame(): Unit =
         context.model.getObservable.subscribe(new ViewMessageHandler(context.view))
-        context.view.getObservable.subscribe(new ModelMessageHandler(context.model, new GameController))
+        context.view.getObservable.subscribe(new ModelMessageHandler(context.model, new TurnModelController))
 
   trait Interface extends Provider with Component:
     self: Requirements =>

@@ -10,14 +10,23 @@ import it.unibo.controller.{
 }
 import it.unibo.view.GUIType
 import it.unibo.view.components.ISidebarComponent
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, Spinner, SpinnerValueFactory}
+import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Pane
 
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class DeckComponent(using observable: ViewSubject, internalObservable: InternalViewSubject)
     extends ISidebarComponent:
+
+  @FXML
+  private var deckPane: Pane = uninitialized
+
+  @FXML
+  private var drawButton: Button = uninitialized
 
   @FXML
   private var numberInput: Spinner[Integer] = uninitialized
@@ -39,10 +48,27 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
     maxCards = value
     updateSpinnerValueFactory()
 
+  private val spinnerEventHandler: EventHandler[MouseEvent] =
+    (_: MouseEvent) => updateSpinnerValueFactory()
+
+  private val okButtonEventHandler: EventHandler[MouseEvent] =
+    (_: MouseEvent) => discard()
+
+  private val cancelButtonEventHandler: EventHandler[MouseEvent] = (_: MouseEvent) => cancel()
+
+  private val discardButtonEventHandler: EventHandler[MouseEvent] = (_: MouseEvent) => startDiscardProcedure()
+
+  private val drawButtonEventHandler: EventHandler[MouseEvent] = (_: MouseEvent) => handleDrawCard()
   @FXML
   private def initialize(): Unit =
     updateSpinnerValueFactory()
     setDiscardProcedureButtonsEnabled(false)
+
+    numberInput.addEventHandler(MouseEvent.MOUSE_CLICKED, spinnerEventHandler)
+    okButton.addEventHandler(MouseEvent.MOUSE_CLICKED, okButtonEventHandler)
+    cancelButton.addEventHandler(MouseEvent.MOUSE_CLICKED, cancelButtonEventHandler)
+    discardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, discardButtonEventHandler)
+    drawButton.addEventHandler(MouseEvent.MOUSE_CLICKED, drawButtonEventHandler)
 
   private def updateSpinnerValueFactory(): Unit =
     val valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, maxCards, 1)
@@ -54,20 +80,36 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
     cancelButton.setDisable(!enabled)
     discardButton.setDisable(enabled)
 
-  @FXML
+
   private def handleDrawCard(): Unit = observable.onNext(DrawCardMessage(numberInput.getValue))
 
-  @FXML
+
   private def startDiscardProcedure(): Unit =
     internalObservable.onNext(InitializeDiscardProcedureMessage())
     setDiscardProcedureButtonsEnabled(true)
 
-  @FXML
+
   private def discard(): Unit =
     internalObservable.onNext(ConfirmDiscardMessage())
     setDiscardProcedureButtonsEnabled(false)
 
-  @FXML
+
   private def cancel(): Unit =
     internalObservable.onNext(CancelDiscardMessage())
     setDiscardProcedureButtonsEnabled(false)
+
+  override def generalToggle(): Unit =
+    val handlers = Seq(
+      spinnerEventHandler,
+      okButtonEventHandler,
+      cancelButtonEventHandler,
+      discardButtonEventHandler,
+      drawButtonEventHandler
+    ).map(h => MouseEvent.MOUSE_CLICKED -> h)
+    
+    toggleActivation(
+      deckPane,
+      () => deckPane.getStyleClass.add("disabled"),
+      () => deckPane.getStyleClass.add("disabled"),
+      handlers*
+    )

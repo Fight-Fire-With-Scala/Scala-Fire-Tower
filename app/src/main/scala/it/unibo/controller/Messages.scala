@@ -39,7 +39,7 @@ case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
  */
 sealed trait InternalViewMessage extends Message
 
-case class SetupActionPhase() extends InternalViewMessage
+case class UpdateGamePhase(gamePhase: GamePhase) extends InternalViewMessage
 case class InitializeDiscardProcedureMessage() extends InternalViewMessage
 case class ToggleCardInListMessage(cardId: Int) extends InternalViewMessage
 case class ConfirmDiscardMessage() extends InternalViewMessage
