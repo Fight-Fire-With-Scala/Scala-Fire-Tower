@@ -4,10 +4,8 @@ import alice.tuprolog.{Struct, Var}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.cards.resolvers.PatternComputationResolver
-import it.unibo.model.gameboard.ActionPhaseChoice.{PlayCard, RedrawCards}
-import it.unibo.model.gameboard.GamePhase.{ActionPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import it.unibo.model.gameboard.{ActionPhaseChoice, GamePhase}
+import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.prolog.Rule
 import it.unibo.model.cards.choices.StepChoice
 
@@ -38,10 +36,11 @@ case class GameController():
 
     model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))
 
-  def handleActionPhase(cardId: Int, model: Model, choice: ActionPhaseChoice): Unit =
+  def handleActionPhase(cardId: Int, model: Model, choice: GamePhase): Unit =
     handleActionPhaseChoice(cardId, model, choice)
+    //model.getGameBoard.changeTurn()
 
-  private def handleActionPhaseChoice(cardId: Int, model: Model, choice: ActionPhaseChoice): Unit = ???
+  private def handleActionPhaseChoice(cardId: Int, model: Model, choice: GamePhase): Unit = ???
 //    choice match
 //      case RedrawCards => ???
 //      case PlayCard    =>

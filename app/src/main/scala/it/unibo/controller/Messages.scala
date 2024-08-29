@@ -1,6 +1,6 @@
 package it.unibo.controller
 
-import it.unibo.model.gameboard.{Direction, GameBoard}
+import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.settings.Settings
 import monix.reactive.subjects.PublishSubject
@@ -30,7 +30,13 @@ case class DiscardTheseCardsMessage(cards: List[Int]) extends ViewMessage
 sealed trait ModelMessage extends Message
 case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
 case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMessage
+case class ChangeTurnPhase(gamePhase: GamePhase) extends ModelMessage
 case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
+
+// potrebbe estendere in una qualche maniera ResolvePatternChoice ?
+// al massimo la risoluzione di resolvepatternchoice è un metodo privato che viene richiamato  da entrambe
+// chiami lo stesso metodo al limite 
+// sì esatto lo facciamo come metodo in comune
 
 /*
  * This refers to messages sent to the view from the view

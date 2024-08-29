@@ -2,7 +2,7 @@ package it.unibo.model
 
 import monix.reactive.subjects.PublishSubject
 import it.unibo.controller.{ModelMessage, ModelSubject, RefreshMessage, StartGameBoardMessage}
-import it.unibo.model.gameboard.{CardSet, GameBoard}
+import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.players.Player
 import it.unibo.model.settings.Settings
 
@@ -32,7 +32,7 @@ object ModelModule:
       def initialiseModel(settings: Settings): Unit =
         val playerOne = settings.getPlayerOne
         val playerTwo = settings.getPlayerTwo
-        gameBoard = GameBoard(playerOne, playerTwo)
+        gameBoard = GameBoard(playerOne, playerTwo, observerSubject)
         observerSubject.onNext(StartGameBoardMessage(gameBoard))
 
       def drawCards(nCards: Int): Unit =

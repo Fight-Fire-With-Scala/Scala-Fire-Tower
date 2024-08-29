@@ -1,5 +1,6 @@
 package it.unibo.model.gameboard
 
+import it.unibo.controller.ModelSubject
 import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
@@ -21,12 +22,10 @@ import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.logger
 import it.unibo.model.players.Player
+import it.unibo.controller.ChangeTurnPhase
 
 enum GamePhase:
-  case WindPhase, ActionPhase
-
-enum ActionPhaseChoice:
-  case RedrawCards, PlayCard
+  case WindPhase, RedrawCards, PlayCard, WaitingPhase
 
 case class GameBoard(
     board: Board,
@@ -34,10 +33,15 @@ case class GameBoard(
     private val player1: Player,
     private val player2: Player,
     currentPlayer: Player = null,
-    var gamePhase: GamePhase = WindPhase
+    observable: ModelSubject,
+    gamePhase: GamePhase = WindPhase
 ):
   def changeTurn(): GameBoard =
     copy(currentPlayer = if currentPlayer == player1 then player2 else player1)
+
+  def changeTurnPhase(gamePhase: GamePhase): GameBoard =
+    observable.onNext(ChangeTurnPhase(gamePhase))
+    copy(gamePhase = gamePhase)
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
@@ -70,9 +74,9 @@ case class GameBoard(
     case sr: PatternApplicationResolver => Some(sr.applyMove(board))
 
 object GameBoard:
-  def apply(player1: Player, player2: Player): GameBoard =
+  def apply(player1: Player, player2: Player, observableSubject: ModelSubject): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
     logger.info(s"Wind Direction: ${b.windDirection}")
-    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2, player1)
+    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2, player1, observableSubject)
     logger.info(s"Player turn: ${gb.currentPlayer}")
     gb

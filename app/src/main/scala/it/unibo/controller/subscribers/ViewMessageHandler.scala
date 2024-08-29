@@ -8,7 +8,8 @@ import it.unibo.controller.{
   ModelMessage,
   RefreshMessage,
   ShowAvailablePatterns,
-  StartGameBoardMessage
+  StartGameBoardMessage,
+  ChangeTurnPhase
 }
 
 import scala.concurrent.Future
@@ -28,6 +29,11 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
         logger.info(s"patterns $patterns")
         // Enable the hovering of the grid considering the available patterns
         view.setAvailablePatterns(patterns)
+
+      case ChangeTurnPhase(gamePhase) =>
+        logger.info(s"Received ChangeTurnPhase")
+        view.setTurnPhase(gamePhase.toString)
+        
       case RefreshMessage(gameBoard)        =>
         logger.info(s"Received RefreshMessage")
         view.refresh(gameBoard)

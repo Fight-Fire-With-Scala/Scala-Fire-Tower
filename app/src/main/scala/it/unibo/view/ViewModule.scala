@@ -65,7 +65,6 @@ object ViewModule:
               setTurnPlayer(gameBoard.currentPlayer.name)
               refresh(gameBoard)
               internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
-//              gameBoardController.handleStartWindPhase()
               observableSubject.onNext(SetupWindPhase())
         )
 
