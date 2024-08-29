@@ -3,31 +3,13 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{
-  DiscardTheseCardsMessage,
-  DrawCardMessage,
-  EndWindPhase,
-  GameController,
-  ResolvePatternChoice,
-  SettingsMessage,
-  SetupWindPhase,
-  ShowAvailablePatterns,
-  UpdateWindDirection,
-  ViewMessage
-}
+import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, EndWindPhase, GameController, ResolvePatternChoice, ResolvePatternComputation, SettingsMessage, SetupWindPhase, UpdateWindDirection, ViewMessage}
 import it.unibo.model.ModelModule.Model
 import it.unibo.controller.logger
-import it.unibo.model.cards.resolvers.PatternComputationResolver
-import it.unibo.model.gameboard.GamePhase.{ActionPhase, WindPhase}
+import it.unibo.model.gameboard.GamePhase.ActionPhase
 
 import scala.concurrent.Future
-import it.unibo.model.prolog.Rule
-import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import alice.tuprolog.{Struct, Var}
-import it.unibo.controller.subscribers.ModelMessageHandler.resolveWindPhase
-import it.unibo.model.cards.effects.VerySmallEffect
-import it.unibo.model.gameboard.ActionPhaseChoice.PlayCard
-import it.unibo.model.gameboard.Direction
+import it.unibo.model.gameboard.{ActionPhaseChoice, Direction}
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 class ModelMessageHandler(model: Model, controller: GameController) extends Subscriber[ViewMessage]:
@@ -57,9 +39,14 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
         val gameBoard = model.getGameBoard
         val board = gameBoard.board
         model.setGameBoard(gameBoard.copy(board = board.copy(windDirection = windDirection)))
-        resolveWindPhase(model)
+        controller.handleWindPhase(model)
+
+      case ResolvePatternComputation(cardId: Int) =>
+        logger.info(s"Received ResolvePatternComputation Message")
+        controller.handleActionPhase(cardId, model, ActionPhaseChoice.PlayCard)
 
       case ResolvePatternChoice(pattern) =>
+        logger.info(s"Received ResolvePatternChoice Message")
         val gameBoard = model.getGameBoard
         val board = gameBoard.board
         model.setGameBoard(
@@ -67,7 +54,7 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
         )
 
       case DiscardTheseCardsMessage(cards) =>
-        println(s"Received DiscardTheseCardsMessage with cards: $cards")
+        logger.info(s"Received DiscardTheseCardsMessage with cards: $cards")
         model.discardCards(cards)
     Continue
 
@@ -80,16 +67,3 @@ class ModelMessageHandler(model: Model, controller: GameController) extends Subs
     logger.error(s"Full description: ${ex.toString}")
 
   override def onComplete(): Unit = println(s"Received final event")
-
-object ModelMessageHandler:
-  def resolveWindPhase(model: Model): Future[Ack] =
-    val board = model.getGameBoard.board
-    val direction = board.windDirection
-
-    val availablePatterns = PatternComputationResolver(
-      VerySmallEffect(Map("a" -> Fire)),
-      Rule(Struct.of("fire", Var.of("R"))),
-      List(direction)
-    ).getAvailableMoves(board).patterns
-
-    model.getObservable.onNext(ShowAvailablePatterns(availablePatterns))
