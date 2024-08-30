@@ -10,6 +10,7 @@ import javafx.event.EventHandler
 
 import scala.compiletime.uninitialized
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import javafx.scene.control.TextField
@@ -37,7 +38,6 @@ final class GameInfoComponent(using observable: ViewSubject)
     turnPhase.setEditable(false)
 
     dicePane.getChildren.add(diceFace.svgPath)
-    generalToggle()
 
   private val diceEventHandler: EventHandler[MouseEvent] =
     ev => diceFace.updateDirection(Random.shuffle(Direction.values).head)
@@ -51,11 +51,12 @@ final class GameInfoComponent(using observable: ViewSubject)
   def updateTurnPhase(currentTurnPhase: String): Unit =
     runOnUIThread(turnPhase.setText(s"Phase: $currentTurnPhase"))
 
-  override def generalToggle(): Unit =
-    super.generalToggle()  
-    toggleActivation(
-    dicePane,
-    () => dicePane.getStyleClass.add("disabled"),
-    () => dicePane.getStyleClass.remove("disabled"),
-    MouseEvent.MOUSE_CLICKED -> diceEventHandler
-  )
+  override def onEnableView(): Unit =
+    super.onEnableView()
+    dicePane.addEventHandler(MouseEvent.MOUSE_CLICKED, diceEventHandler)
+
+  override def onDisableView(): Unit =
+    super.onDisableView()
+    dicePane.removeEventHandler(MouseEvent.MOUSE_CLICKED, diceEventHandler)
+
+  override protected def getPane: Node = dicePane

@@ -8,6 +8,7 @@ import scalafx.scene.text.{Font, Text}
 import javafx.scene.input.MouseEvent
 import javafx.animation.PauseTransition
 import javafx.event.EventHandler
+import javafx.scene.Node
 import javafx.util.Duration
 import scalafx.scene.layout.Pane
 
@@ -27,11 +28,7 @@ final case class GridSquare(
     (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
   private val onMouseClickedFun: EventHandler[MouseEvent] = (_: MouseEvent) => handleMouseClicked()
-  private val eventHandlers = List(
-    MouseEvent.MOUSE_MOVED -> onMouseMovedFun,
-    MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
-    MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
-  )
+  private val eventHandlers = List(onMouseMovedFun, onMouseExitedFun, onMouseClickedFun)
 
   private val rectangle: Rectangle = new Rectangle:
     width = size
@@ -79,13 +76,13 @@ final case class GridSquare(
     rectangle.setFill(color)
 
   def getColor: Color = squareColor
+  
+  override def enableView(): Unit =
+    rectangle.setOpacity(0.9)
+    eventHandlers.foreach(h => pane.addEventHandler(MouseEvent.MOUSE_CLICKED, h))
 
-  override def generalToggle(): Unit =
-    super.generalToggle()
-    toggleActivation(
-      pane,
-      () => rectangle.setOpacity(0.7),
-      () => rectangle.setOpacity(0.9),
-      eventHandlers*
-    )
+  override def disableView(): Unit =
+    rectangle.setOpacity(0.7)
+    eventHandlers.foreach(h => pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, h))
 
+  override protected def getPane: Node = pane

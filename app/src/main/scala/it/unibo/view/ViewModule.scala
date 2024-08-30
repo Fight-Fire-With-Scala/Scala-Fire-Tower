@@ -13,7 +13,7 @@ import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.{IMainComponent, IUpdateView}
+import it.unibo.view.components.{IViewComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, WindRoseComponent}
 import monix.reactive.subjects.PublishSubject
 import it.unibo.view.components.game.GameComponent
@@ -49,7 +49,7 @@ object ViewModule:
       override def show(): Unit = gui.main(Array.empty)
 
       override def startGame(gameBoard: GameBoard): Unit =
-        val task: Task[IMainComponent] = gui.loadGUIRoot(GameComponent())
+        val task: Task[IViewComponent] = gui.loadGUIRoot(GameComponent())
 
         given observable: ViewSubject = observableSubject
         given internalObservable: InternalViewSubject = internalObservableSubject

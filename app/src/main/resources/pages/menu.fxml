@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.collections.FXCollections?>
-<StackPane xmlns:fx="http://javafx.com/fxml/">
+<StackPane fx:id="menuPane" xmlns:fx="http://javafx.com/fxml/">
     <HBox spacing="20.0" alignment="CENTER">
         <VBox fx:id="leftSpacer" HBox.hgrow="ALWAYS"/>
         <VBox alignment="CENTER" spacing="20.0">

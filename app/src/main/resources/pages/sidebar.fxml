@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <Pane xmlns:fx="http://javafx.com/fxml">
-    <VBox fx:id="sidebarContainer" spacing="12"/>
+    <VBox fx:id="sidebarPane" spacing="12"/>
 </Pane>

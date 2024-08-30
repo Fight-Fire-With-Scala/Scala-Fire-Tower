@@ -4,8 +4,9 @@ import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.model.logger
 import it.unibo.view.GUIType
-import it.unibo.view.components.{IMainComponent, IUpdateView}
+import it.unibo.view.components.{IGridComponent, IUpdateView}
 import javafx.fxml.FXML
+import javafx.scene.Node
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
@@ -16,7 +17,7 @@ import scala.compiletime.uninitialized
 //noinspection VarCouldBeVal
 final class GridComponent(observableSubject: ViewSubject)(using
     internalObservable: InternalViewSubject
-) extends IMainComponent with IUpdateView:
+) extends IGridComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
 
@@ -46,11 +47,15 @@ final class GridComponent(observableSubject: ViewSubject)(using
   def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
     gridEventHandler.updateAvailablePatterns(patterns)
     logger.info(s"Available patterns: $patterns")
+  
+  override def onEnableView(): Unit =
+    squareMap.foreach { case (_, square) => square.enableView() }
+    
+  override def onDisableView(): Unit =
+    squareMap.foreach { case (_, square) => square.disableView() }
 
-  override def generalToggle(): Unit =
-    super.generalToggle()
-    squareMap.foreach { case (_, square) => square.generalToggle() }
-
+  override protected def getPane: Node = gridPane
+  
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 

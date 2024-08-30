@@ -1,20 +1,24 @@
 package it.unibo.view.components.menu
 
 import it.unibo.model.settings.{BotBehaviour, CardSet, GameMode, Settings}
-import it.unibo.view.components.IMainComponent
+import it.unibo.view.components.IViewComponent
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
 import scalafx.application.Platform
 import it.unibo.controller.{SettingsMessage, ViewSubject}
 import it.unibo.view.GUIType
+import javafx.scene.Node
+import javafx.scene.layout.Pane
 
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class MenuComponent(observableSubject: ViewSubject) extends IMainComponent:
+final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent:
   override val fxmlPath: String = GUIType.Menu.fxmlPath
   
+  @FXML
+  private var menuPane: Pane = uninitialized
   @FXML
   private var gameModeToggleGroup: ToggleGroup = uninitialized
   @FXML
@@ -69,3 +73,5 @@ final class MenuComponent(observableSubject: ViewSubject) extends IMainComponent
       playerOneName = playerOneNameInput,
       playerTwoName = playerTwoNameInput
     )))
+
+  override protected def getPane: Node = menuPane

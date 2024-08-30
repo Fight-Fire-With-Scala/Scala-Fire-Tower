@@ -3,7 +3,7 @@ package it.unibo.controller.subscribers
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, EndWindPhase, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, SettingsMessage, SetupWindPhase, ShowAvailablePatterns, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage, logger}
+import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, SettingsMessage, SetupWindPhase, ShowAvailablePatterns, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage, logger}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.TurnModelController
 import it.unibo.model.cards.choices.StepChoice
@@ -18,7 +18,7 @@ import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.cards.effects.PatternChoiceEffect
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
-class ModelMessageHandler(model: Model, controller: TurnModelController)
+final class ModelMessageHandler(model: Model, controller: TurnModelController)
     extends Subscriber[ViewMessage]:
   override def scheduler: Scheduler = Scheduler.global
 

@@ -5,7 +5,7 @@ import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.players.Player
 import it.unibo.view.GUIType
-import it.unibo.view.components.{IMainComponent, IUpdateView}
+import it.unibo.view.components.{IUpdateView, IViewComponent}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
 import it.unibo.view.components.game.gameboard.hand.HandComponent
 import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, SidebarComponent}
@@ -16,7 +16,7 @@ import monix.eval.Task
 
 import scala.compiletime.uninitialized
 
-final class GameComponent extends IMainComponent with IUpdateView:
+final class GameComponent extends IViewComponent with IUpdateView:
   override val fxmlPath: String = GUIType.Game.fxmlPath
 
   @FXML
@@ -30,35 +30,58 @@ final class GameComponent extends IMainComponent with IUpdateView:
   var sidebarComponent: SidebarComponent = uninitialized
   var handComponent: HandComponent = uninitialized
 
-  private def setupComponent[T <: IMainComponent](
+  override def onEnableView(): Unit =
+    super.onEnableView()
+    gridComponent.enableView()
+    sidebarComponent.enableView()
+    handComponent.enableView()
+
+  override def onDisableView(): Unit =
+    super.onDisableView()
+    gridComponent.disableView()
+    sidebarComponent.disableView()
+    handComponent.disableView()
+
+  override protected def getPane: Node = grid
+
+  private def setupComponent[T <: IViewComponent](
       pane: Pane,
       componentPane: Node,
-      assignComponent: () => IMainComponent
-  ): Task[IMainComponent] = runOnUIThread {
-      pane.getChildren.add(componentPane)
-      assignComponent()
+      assignComponent: () => IViewComponent
+  ): Task[IViewComponent] = runOnUIThread {
+    pane.getChildren.add(componentPane)
+    assignComponent()
   }
 
-  def setupGrid(gc: GridComponent): Task[IMainComponent] =
+  def setupGrid(gc: GridComponent): Task[IViewComponent] =
     val gridView: Node = gc.getView
-    setupComponent(grid, gridView, () => {
-      gridComponent = gc
-      gc
-    })
+    setupComponent(
+      grid,
+      gridView,
+      () =>
+        gridComponent = gc
+        gc
+    )
 
-  def setupSidebar(sc: SidebarComponent): Task[IMainComponent] =
+  def setupSidebar(sc: SidebarComponent): Task[IViewComponent] =
     val sidebarView: Node = sc.getView
-    setupComponent(sidebar, sidebarView, () => {
-      sidebarComponent = sc
-      sc
-    })
+    setupComponent(
+      sidebar,
+      sidebarView,
+      () =>
+        sidebarComponent = sc
+        sc
+    )
 
-  def setupHand(hc: HandComponent): Task[IMainComponent] =
+  def setupHand(hc: HandComponent): Task[IViewComponent] =
     val handView: Node = hc.getView
-    setupComponent(hand, handView, () => {
-      handComponent = hc
-      hc
-    })
+    setupComponent(
+      hand,
+      handView,
+      () =>
+        handComponent = hc
+        hc
+    )
 
   def updateGrid(grid: Grid): Unit = runOnUIThread(gridComponent.updateGrid(grid))
 
@@ -71,7 +94,7 @@ final class GameComponent extends IMainComponent with IUpdateView:
     gameInfoComponent.updateTurnPhase(newGamePhase.toString)
 
 object GameComponent extends GameComponentInitializer:
-  override def initialize(
-      gameComponent: GameComponent
-  )(using viewObservable: ViewSubject, internalViewObservable: InternalViewSubject): Task[GameComponent] =
-    loadGame(gameComponent)
+  override def initialize(gameComponent: GameComponent)(using
+      viewObservable: ViewSubject,
+      internalViewObservable: InternalViewSubject
+  ): Task[GameComponent] = loadGame(gameComponent)

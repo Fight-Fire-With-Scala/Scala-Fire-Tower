@@ -9,6 +9,7 @@ import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 
@@ -18,6 +19,9 @@ import scala.compiletime.uninitialized
 final class WindRoseComponent(using observable: ViewSubject)
     extends ISidebarComponent with IUpdateView:
   override val fxmlPath: String = GUIType.WindRose.fxmlPath
+
+  @FXML
+  private var basePane: Pane = uninitialized
 
   @FXML
   private var northPane, westPane, centerPane, eastPane, southPane: Pane = uninitialized
@@ -39,18 +43,16 @@ final class WindRoseComponent(using observable: ViewSubject)
     windRosePanes = Map(North -> northPane, South -> southPane, West -> westPane, East -> eastPane)
     windRosePanes.foreach((dir, pane) => pane.getChildren.add(windRoseDirections(dir).svgPath))
     centerPane.getChildren.add(windRoseArrow.svgPath)
-    generalToggle()
 
   def updateWindRoseDirection(direction: Direction): Unit =
     runOnUIThread(windRoseArrow.updateDirection(direction))
 
-  override def generalToggle(): Unit =
-    super.generalToggle()  
-    windRosePanes.foreach((dir, pane) =>
-    windRoseDirections(dir).toggleActivation(
-      pane,
-      () => pane.getStyleClass.add("disabled"),
-      () => pane.getStyleClass.remove("disabled"),
-      MouseEvent.MOUSE_CLICKED -> windRoseEventHandler(dir)
-    )
-  )
+  override def onEnableView(): Unit =
+    super.onEnableView()
+    windRosePanes.foreach((dir, _) => windRoseDirections(dir).enableView())
+
+  override def onDisableView(): Unit =
+    super.onDisableView()
+    windRosePanes.foreach((dir, _) => windRoseDirections(dir).disableView())
+
+  override protected def getPane: Node = basePane

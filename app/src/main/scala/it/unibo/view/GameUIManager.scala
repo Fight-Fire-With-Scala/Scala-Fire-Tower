@@ -5,7 +5,7 @@ import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
 import it.unibo.controller.ViewSubject
-import it.unibo.view.components.IMainComponent
+import it.unibo.view.components.IViewComponent
 import it.unibo.view.components.menu.MenuComponent
 import javafx.concurrent.Task as JFXTask
 import monix.eval.Task
@@ -37,7 +37,7 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
 
     loadGUIRoot(MenuComponent(viewObservable)).runAsyncAndForget
 
-  def loadGUIRoot(componentInstance: IMainComponent): Task[IMainComponent] =
+  def loadGUIRoot(componentInstance: IViewComponent): Task[IViewComponent] =
     val root = FXMLViewLoader.load(componentInstance)
     wrapInMonixTask { () =>
       pane.children.clear()

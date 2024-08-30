@@ -1,23 +1,18 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{
-  DiscardTheseCardsMessage,
-  DrawCardMessage,
-  ResetPatternComputation,
-  UpdateGamePhaseModel,
-  ViewSubject
-}
+import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ResetPatternComputation, UpdateGamePhaseModel, ViewSubject}
 import it.unibo.model.gameboard.GamePhase.PlayCard
 import it.unibo.view.GUIType
-import it.unibo.view.components.{IMainComponent, IUpdateView}
+import it.unibo.view.components.{IHandComponent, IUpdateView}
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.layout.Pane
 
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class HandComponent(val cardComponents: List[CardComponent])(using observable: ViewSubject)
-    extends IMainComponent with IUpdateView:
+    extends IHandComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
 
@@ -73,6 +68,13 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
 //          observable.onNext(ResolvePatternComputation(cardId))
           cardToPlay.get.toggleHighlight()
       cardToPlay = cardComponent
+    
+  override def onEnableView(): Unit =
+    super.onEnableView()
+    cardComponents.foreach(card => card.enableView())
 
-  override def generalToggle(): Unit = super.generalToggle()
-//    cardComponents.foreach(card => card.generalToggle())
+  override def onDisableView(): Unit =
+    super.onDisableView()
+    cardComponents.foreach(card => card.disableView())
+
+  override protected def getPane: Node = handPane
