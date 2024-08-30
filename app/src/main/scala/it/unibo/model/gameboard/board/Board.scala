@@ -1,18 +1,23 @@
 package it.unibo.model.gameboard.board
 
-import it.unibo.model.cards.effects.{GameEffect, PatternComputationEffect, WindEffect}
+import it.unibo.model.cards.effects.{GameEffect, PatternChoiceEffect, PatternComputationEffect, WindEffect}
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 
 import scala.util.Random
 
-case class Board(grid: Grid, windDirection: Direction):
+case class Board(grid: Grid, availablePatterns: List[Map[Position, Token]], windDirection: Direction):
   private def updateWind(newWindEffect: WindEffect): Board =
     copy(windDirection = newWindEffect.direction)
+
+  private def applyPatternChoice(p: PatternChoiceEffect): Board =
+    copy(grid = grid.setTokens(p.pattern.toSeq*))
+
   def applyEffect(gameEffect: Option[GameEffect]): Board = gameEffect match
     case Some(wd: WindEffect)              => updateWind(wd)
     // Is not said that the pattern will be applied to the grid because it could be invalid.
-    case Some(p: PatternComputationEffect) => this
+    case Some(p: PatternComputationEffect) => copy(availablePatterns = p.patterns)
+    case Some(p: PatternChoiceEffect) => applyPatternChoice(p)
     case Some(_)                           => this
     case None                              => this
 
@@ -22,4 +27,4 @@ case class Board(grid: Grid, windDirection: Direction):
 object Board:
   def withRandomWindAndStandardGrid: Board =
     val randomWindDirection = Random.shuffle(Direction.values).head
-    Board(Grid.standard, randomWindDirection)
+    Board(Grid.standard, List.empty, randomWindDirection)

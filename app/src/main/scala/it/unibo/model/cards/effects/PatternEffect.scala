@@ -3,6 +3,8 @@ package it.unibo.model.cards.effects
 import it.unibo.model.gameboard.grid.{Position, TemplateToken, Token}
 import it.unibo.model.cards.patterns.*
 
+case class PatternChoiceEffect(pattern: Map[Position, Token]) extends CardEffect
+
 trait PatternEffect extends CardEffect:
   val tokens: Map[String, Token]
   val template: Map[Position, Token]

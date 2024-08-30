@@ -1,12 +1,12 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage, ViewSubject}
+import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage, UpdateGamePhaseView}
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
+import it.unibo.model.gameboard.GamePhase.PlayCard
 import it.unibo.view.GUIType
 import it.unibo.view.components.{ICanBeDisabled, IHaveView}
-import it.unibo.view.components.{ICanBeDisabled, IHaveView, IMainComponent}
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.input.MouseEvent
@@ -33,9 +33,9 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   @FXML
   var discardable: Boolean = uninitialized
 
-  private val playCardHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) =>
-      internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+  private val playCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
+    internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+    internalObservable.onNext(UpdateGamePhaseView(PlayCard))
 
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))

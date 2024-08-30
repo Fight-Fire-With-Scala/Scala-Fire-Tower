@@ -1,12 +1,12 @@
 package it.unibo.model.cards.choices
 
-import it.unibo.model.cards.effects.PatternEffect
+import it.unibo.model.cards.effects.{PatternChoiceEffect, PatternEffect}
 
 sealed trait GameChoice
 
 enum StepChoice extends GameChoice:
   case PatternComputation
-  case PatternApplication(p: PatternEffect)
+  case PatternApplication(p: PatternChoiceEffect)
 
 sealed trait CardChoice extends GameChoice
 

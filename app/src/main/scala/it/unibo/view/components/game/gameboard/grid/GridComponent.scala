@@ -2,6 +2,7 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
+import it.unibo.model.logger
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IMainComponent, IUpdateView}
 import javafx.fxml.FXML
@@ -42,8 +43,9 @@ final class GridComponent(observableSubject: ViewSubject)(using
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
-    .updateAvailablePatterns(patterns)
+  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
+    gridEventHandler.updateAvailablePatterns(patterns)
+    logger.info(s"Available patterns: $patterns")
 
   override def generalToggle(): Unit =
     super.generalToggle()

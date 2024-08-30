@@ -58,8 +58,8 @@ trait EnableDisableManager extends ComponentManager:
           component.handComponent.enableView()
           component.sidebarComponent.components.foreach {
             case d: DeckComponent => d.disableView()
-            case cp: WindRoseComponent => // if wind yes, otherwise no
-            case cp: GameInfoComponent => // if wind yes, otherwise no
+            case cp: WindRoseComponent => cp.enableView() // TODO if wind yes, otherwise no
+            case cp: GameInfoComponent => cp.enableView() // TODO if wind yes, otherwise no
           }
         }
       case WindPhase =>

@@ -4,9 +4,10 @@ import it.unibo.controller.{
   DiscardTheseCardsMessage,
   DrawCardMessage,
   ResetPatternComputation,
-  ResolvePatternComputation,
+  UpdateGamePhaseModel,
   ViewSubject
 }
+import it.unibo.model.gameboard.GamePhase.PlayCard
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IMainComponent, IUpdateView}
 import javafx.fxml.FXML
@@ -63,10 +64,13 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
       observable.onNext(ResetPatternComputation())
     else
       cardToPlay match
-        case None    => observable.onNext(ResolvePatternComputation(cardId))
+        case None    =>
+//          observable.onNext(ResolvePatternComputation(cardId))
+          observable.onNext(UpdateGamePhaseModel(PlayCard))
         case Some(_) =>
           observable.onNext(ResetPatternComputation())
-          observable.onNext(ResolvePatternComputation(cardId))
+          observable.onNext(UpdateGamePhaseModel(PlayCard))
+//          observable.onNext(ResolvePatternComputation(cardId))
           cardToPlay.get.toggleHighlight()
       cardToPlay = cardComponent
 

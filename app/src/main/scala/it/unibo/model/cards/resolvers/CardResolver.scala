@@ -1,6 +1,6 @@
 package it.unibo.model.cards.resolvers
 
-import it.unibo.model.cards.effects.{BoardEffect, PatternComputationEffect, PatternEffect}
+import it.unibo.model.cards.effects.{BoardEffect, PatternChoiceEffect, PatternComputationEffect, PatternEffect}
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.prolog.{BoardTheory, PrologEngine, Rule}
@@ -26,5 +26,5 @@ sealed case class PatternComputationResolver(
     val computedPatterns = engine.solve(goal).map(i => parseComputedPatterns(i)).toList
     PatternComputationEffect(computedPatterns)
 
-sealed case class PatternApplicationResolver(pattern: PatternEffect) extends StepResolver:
+sealed case class PatternApplicationResolver(pattern: PatternChoiceEffect) extends StepResolver:
   def applyMove: Board => BoardEffect = (b: Board) => BoardEffect(b.applyEffect(Some(pattern)))

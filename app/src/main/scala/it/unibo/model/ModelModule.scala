@@ -5,6 +5,7 @@ import it.unibo.controller.{ModelMessage, ModelSubject, RefreshMessage, StartGam
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.players.Player
 import it.unibo.model.settings.Settings
+import scala.compiletime.uninitialized
 
 object ModelModule:
   trait Model:
@@ -20,7 +21,7 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      private var gameBoard: GameBoard = _
+      private var gameBoard: GameBoard = uninitialized
       private val observerSubject = PublishSubject[ModelMessage]()
 
       def getObservable: ModelSubject = observerSubject

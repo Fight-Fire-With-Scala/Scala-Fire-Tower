@@ -1,6 +1,6 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.{EndWindPhase, InternalViewSubject, ResolvePatternChoice, UpdateGamePhase, ViewSubject}
+import it.unibo.controller.{InternalViewSubject, ResolvePatternChoice, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
@@ -31,8 +31,8 @@ class GridEventHandler(
     if matchedPatterns.nonEmpty then
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
-      internalObservable.onNext(UpdateGamePhase(WaitingPhase))
-      observableSubject.onNext(EndWindPhase())
+      internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
+      observableSubject.onNext(UpdateGamePhaseModel(WaitingPhase))
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     resetHoverColors()
