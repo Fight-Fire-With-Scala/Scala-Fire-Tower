@@ -28,8 +28,12 @@ final case class GridSquare(
     (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
   private val onMouseClickedFun: EventHandler[MouseEvent] = (_: MouseEvent) => handleMouseClicked()
-  private val eventHandlers = List(onMouseMovedFun, onMouseExitedFun, onMouseClickedFun)
-
+  private val eventHandlers = List(
+    MouseEvent.MOUSE_MOVED -> onMouseMovedFun,
+    MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
+    MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
+  )
+  
   private val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
@@ -79,10 +83,10 @@ final case class GridSquare(
   
   override def enableView(): Unit =
     rectangle.setOpacity(0.9)
-    eventHandlers.foreach(h => pane.addEventHandler(MouseEvent.MOUSE_CLICKED, h))
+    eventHandlers.foreach((ev, h) => pane.addEventHandler(ev, h))
 
   override def disableView(): Unit =
     rectangle.setOpacity(0.7)
-    eventHandlers.foreach(h => pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, h))
+    eventHandlers.foreach((ev, h) => pane.removeEventHandler(ev, h))
 
   override protected def getPane: Node = pane
