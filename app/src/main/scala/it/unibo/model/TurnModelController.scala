@@ -25,7 +25,7 @@ case class TurnModelController():
     
     val b = board.applyEffect(Some(availablePatternsEffect))
     model.setGameBoard(gameBoard.copy(board = b))
-    model.getObservable.onNext(ShowAvailablePatterns(gameBoard.board.availablePatterns))
+    model.getObservable.onNext(ShowAvailablePatterns(model.getGameBoard.board.availablePatterns))
 
   def updateGamePhase(model: Model, choice: GamePhase): Unit =
     val gameBoard = model.getGameBoard
