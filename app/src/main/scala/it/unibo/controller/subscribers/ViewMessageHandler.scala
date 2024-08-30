@@ -24,10 +24,10 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
       case StartGameBoardMessage(gameBoard) =>
         logger.info(s"Received StartGameBoardMessage")
         view.startGame(gameBoard)
+        
       case ShowAvailablePatterns(patterns)  =>
         logger.info(s"Received ShowAvailablePatterns")
         logger.info(s"patterns $patterns")
-        // Enable the hovering of the grid considering the available patterns
         view.setAvailablePatterns(patterns)
 
       case ChangeTurnPhase(gamePhase) =>

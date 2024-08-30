@@ -1,6 +1,6 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ResetPatternComputation, UpdateGamePhaseModel, ViewSubject}
+import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ResetPatternComputation, ResolvePatternComputation, UpdateGamePhaseModel, ViewSubject}
 import it.unibo.model.gameboard.GamePhase.PlayCard
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IHandComponent, IUpdateView}
@@ -60,12 +60,12 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     else
       cardToPlay match
         case None    =>
-//          observable.onNext(ResolvePatternComputation(cardId))
+          observable.onNext(ResolvePatternComputation(cardId))
           observable.onNext(UpdateGamePhaseModel(PlayCard))
         case Some(_) =>
           observable.onNext(ResetPatternComputation())
           observable.onNext(UpdateGamePhaseModel(PlayCard))
-//          observable.onNext(ResolvePatternComputation(cardId))
+          observable.onNext(ResolvePatternComputation(cardId))
           cardToPlay.get.toggleHighlight()
       cardToPlay = cardComponent
     

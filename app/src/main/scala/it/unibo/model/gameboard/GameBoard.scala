@@ -45,7 +45,8 @@ case class GameBoard(
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
-    copy(board = board.applyEffect(getGameEffect(resolver, choice)))
+    val effect = getGameEffect(resolver, choice)
+    copy(board = board.applyEffect(effect))
 
   private def getGameEffect(
       resolver: MetaResolver[? <: GameChoice, ? <: EffectResolver],

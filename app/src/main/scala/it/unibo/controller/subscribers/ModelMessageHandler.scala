@@ -6,7 +6,7 @@ import monix.reactive.observers.Subscriber
 import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, SettingsMessage, SetupWindPhase, ShowAvailablePatterns, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage, logger}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.TurnModelController
-import it.unibo.model.cards.choices.StepChoice
+import it.unibo.model.cards.choices.{StepChoice, WindChoice}
 import it.unibo.model.cards.effects.{CardEffect, PatternComputationEffect}
 import it.unibo.model.cards.resolvers.PatternApplicationResolver
 import it.unibo.model.gameboard.GamePhase
@@ -16,6 +16,7 @@ import scala.concurrent.Future
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.cards.effects.PatternChoiceEffect
+import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 final class ModelMessageHandler(model: Model, controller: TurnModelController)
@@ -52,9 +53,15 @@ final class ModelMessageHandler(model: Model, controller: TurnModelController)
         val gameBoard = model.getGameBoard
         val card = gameBoard.currentPlayer.hand.find(_.id == cardId)
         card match
-          case Some(c) => 
-            val gb = gameBoard.resolveCardPlayed(c, StepChoice.PatternComputation)
-            model.getObservable.onNext(ShowAvailablePatterns(gb.board.availablePatterns))
+          case Some(c)=>
+            c.cardType.effectType match
+              case card: FireCard => ???
+              case card: FirebreakCard => ???
+              case card: WaterCard => ???
+              case card: WindCard =>
+                val gb = gameBoard.resolveCardPlayed(c, WindChoice.PlaceFire)
+                model.getObservable.onNext(ShowAvailablePatterns(gb.board.availablePatterns))
+              case _ => ???
           case None    => logger.warn("No card found")
 
       case ResolvePatternChoice(pattern) =>
