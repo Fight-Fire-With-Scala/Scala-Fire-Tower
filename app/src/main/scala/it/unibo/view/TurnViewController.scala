@@ -5,7 +5,6 @@ import it.unibo.model.gameboard.{GameBoard, GamePhase}
 import it.unibo.view.components.game.GameComponent
 import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
 
-//change name into InternalViewController
 class TurnViewController extends RefreshManager with DiscardManager with EnableDisableManager
 
 trait ComponentManager:
@@ -66,12 +65,12 @@ trait EnableDisableManager extends ComponentManager:
       case WindPhase =>
         gameComponent.fold(()) { component =>
           component.gridComponent.enableView()
-//          component.handComponent.disableView()
-//          component.sidebarComponent.components.foreach {
-//            case d: DeckComponent => d.disableView()
-//            case cp: WindRoseComponent => cp.disableView()
-//            case cp: GameInfoComponent =>  cp.disableView()
-//          }
+          component.handComponent.disableView()
+          component.sidebarComponent.components.foreach {
+            case d: DeckComponent => d.disableView()
+            case cp: WindRoseComponent => cp.disableView()
+            case cp: GameInfoComponent =>  cp.disableView()
+          }
         }
 
 trait RefreshManager extends ComponentManager:

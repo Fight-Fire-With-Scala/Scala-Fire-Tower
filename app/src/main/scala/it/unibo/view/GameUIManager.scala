@@ -39,7 +39,7 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
 
   def loadGUIRoot(componentInstance: IMainComponent): Task[IMainComponent] =
     val root = FXMLViewLoader.load(componentInstance)
-    wrapInMonixTask[IMainComponent] { () =>
+    wrapInMonixTask { () =>
       pane.children.clear()
       pane.children.add(root)
       stage.show()

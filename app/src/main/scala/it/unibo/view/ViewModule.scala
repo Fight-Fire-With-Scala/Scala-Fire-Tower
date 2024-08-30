@@ -1,7 +1,14 @@
 package it.unibo.view
 
 import it.unibo.controller.subscribers.InternalViewMessageHandler
-import it.unibo.controller.{ControllerModule, InternalViewMessage, InternalViewSubject, SetupWindPhase, ViewMessage, ViewSubject}
+import it.unibo.controller.{
+  ControllerModule,
+  InternalViewMessage,
+  InternalViewSubject,
+  SetupWindPhase,
+  ViewMessage,
+  ViewSubject
+}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.{Direction, GameBoard}
@@ -47,18 +54,25 @@ object ViewModule:
         given observable: ViewSubject = observableSubject
         given internalObservable: InternalViewSubject = internalObservableSubject
 
-        task.runToFuture.onComplete(res => {
-          val gameComponent = res.get.asInstanceOf[GameComponent]
-          GameComponent.initialize(gameComponent)
-          gameBoardController.initialize(gameComponent)
-          setWindDirection(gameBoard.board.windDirection)
-          setTurnNumber(0)
-          setTurnPlayer(gameBoard.currentPlayer.name)
-          refresh(gameBoard)
-          internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
-          gameBoardController.updateGamePhase(WindPhase)
-          observableSubject.onNext(SetupWindPhase())
-        })
+        val compositeTask = task.flatMap { res1 =>
+          val gameComponent = res1.asInstanceOf[GameComponent]
+          val gameComponentInitTask = GameComponent.initialize(gameComponent)
+          logger.info(s"Root game ui init completed")
+          gameComponentInitTask.map { res2 =>
+            logger.info(s"Game ui components init completed")
+            val gameComponent = res2
+            gameBoardController.initialize(gameComponent)
+            setWindDirection(gameBoard.board.windDirection)
+            setTurnNumber(0)
+            setTurnPlayer(gameBoard.currentPlayer.name)
+            refresh(gameBoard)
+            internalObservableSubject.subscribe(InternalViewMessageHandler(gameBoardController))
+            gameBoardController.updateGamePhase(WindPhase)
+            observableSubject.onNext(SetupWindPhase())
+          }
+        }
+
+        compositeTask.runAsyncAndForget
 
       override def refresh(gameBoard: GameBoard): Unit = gameBoardController.refresh(gameBoard)
 

@@ -12,6 +12,7 @@ import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, Sideb
 import javafx.fxml.FXML
 import javafx.scene.layout.Pane
 import javafx.scene.Node
+import monix.eval.Task
 
 import scala.compiletime.uninitialized
 
@@ -32,23 +33,32 @@ final class GameComponent extends IMainComponent with IUpdateView:
   private def setupComponent[T <: IMainComponent](
       pane: Pane,
       componentPane: Node,
-      assignComponent: () => Unit
-  ): Unit = runOnUIThread {
-    pane.getChildren.add(componentPane)
-    assignComponent()
+      assignComponent: () => IMainComponent
+  ): Task[IMainComponent] = runOnUIThread {
+      pane.getChildren.add(componentPane)
+      assignComponent()
   }
 
-  def setupGrid(gc: GridComponent): Unit =
+  def setupGrid(gc: GridComponent): Task[IMainComponent] =
     val gridView: Node = gc.getView
-    setupComponent(grid, gridView, () => gridComponent = gc)
+    setupComponent(grid, gridView, () => {
+      gridComponent = gc
+      gc
+    })
 
-  def setupSidebar(sc: SidebarComponent): Unit =
+  def setupSidebar(sc: SidebarComponent): Task[IMainComponent] =
     val sidebarView: Node = sc.getView
-    setupComponent(sidebar, sidebarView, () => sidebarComponent = sc)
+    setupComponent(sidebar, sidebarView, () => {
+      sidebarComponent = sc
+      sc
+    })
 
-  def setupHand(hc: HandComponent): Unit =
+  def setupHand(hc: HandComponent): Task[IMainComponent] =
     val handView: Node = hc.getView
-    setupComponent(hand, handView, () => handComponent = hc)
+    setupComponent(hand, handView, () => {
+      handComponent = hc
+      hc
+    })
 
   def updateGrid(grid: Grid): Unit = runOnUIThread(gridComponent.updateGrid(grid))
 
@@ -63,5 +73,5 @@ final class GameComponent extends IMainComponent with IUpdateView:
 object GameComponent extends GameComponentInitializer:
   override def initialize(
       gameComponent: GameComponent
-  )(using viewObservable: ViewSubject, internalViewObservable: InternalViewSubject): GameComponent =
+  )(using viewObservable: ViewSubject, internalViewObservable: InternalViewSubject): Task[GameComponent] =
     loadGame(gameComponent)

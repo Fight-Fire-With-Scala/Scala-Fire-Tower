@@ -1,17 +1,7 @@
 package it.unibo.controller.subscribers
 
-import it.unibo.controller.{
-  logger,
-  CancelDiscardMessage,
-  CandidateCardToPlayMessage,
-  ConfirmDiscardMessage,
-  InitializeDiscardProcedureMessage,
-  InternalViewMessage,
-  UpdateGamePhase,
-  SetupActionPhase,
-  ToggleCardInListMessage
-}
-import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.controller.{CancelDiscardMessage, CandidateCardToPlayMessage, ConfirmDiscardMessage, InitializeDiscardProcedureMessage, InternalViewMessage, ToggleCardInListMessage, UpdateGamePhase, logger}
+import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.TurnViewController
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
