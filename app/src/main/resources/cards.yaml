@@ -37,7 +37,7 @@ cardSets:
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Sud di un'altra gemma di fuoco."
     effectCode: 5
-    amount: 0
+    amount: 1
   - title: "Est"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Est. OPPURE
@@ -51,7 +51,7 @@ cardSets:
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Ovest di un'altra gemma di fuoco."
     effectCode: 7
-    amount: 1
+    amount: 2
   - title: "Linea di bulldozer"
     typeName: "Firebreak"
     description: "Piazza due segnalini tagliafuoco adiacenti sul tabellone."
@@ -90,4 +90,4 @@ cardSets:
     description: "Rimuovi fino a tre gemme di fuoco adiacenti e allineate sul tabellone.
     Almeno una di esse deve trovarsi nell'area della tua torre antincendio."
     effectCode: 14
-    amount: 0
+    amount: 1
