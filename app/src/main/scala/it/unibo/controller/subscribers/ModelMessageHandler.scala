@@ -1,5 +1,6 @@
 package it.unibo.controller.subscribers
 
+import it.unibo.controller.subscribers.SubscriberUtils.{onCompleteHandler, onErrorHandler}
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
@@ -79,12 +80,5 @@ final class ModelMessageHandler(model: Model, controller: TurnModelController)
 
     Continue
 
-  override def onError(ex: Throwable): Unit =
-    logger.error(s"Received error: ${ex.getMessage}")
-    ex.getStackTrace.foreach { traceElement =>
-      logger.error(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
-          .getFileName}:${traceElement.getLineNumber})")
-    }
-    logger.error(s"Full description: ${ex.toString}")
-
-  override def onComplete(): Unit = println(s"Received final event")
+  override def onError(ex: Throwable): Unit = onErrorHandler(ex)
+  override def onComplete(): Unit = onCompleteHandler()
