@@ -1,16 +1,25 @@
 package it.unibo.controller.subscribers
 
 import it.unibo.controller.subscribers.SubscriberUtils.{onCompleteHandler, onErrorHandler}
-import it.unibo.controller.{CancelDiscardMessage, CandidateCardToPlayMessage, ConfirmDiscardMessage, InitializeDiscardProcedureMessage, InternalViewMessage, ToggleCardInListMessage, UpdateGamePhaseView, logger}
+import it.unibo.controller.{
+  logger,
+  CancelDiscardMessage,
+  CandidateCardToPlayMessage,
+  ConfirmDiscardMessage,
+  InitializeDiscardProcedureMessage,
+  InternalViewMessage,
+  ToggleCardInListMessage,
+  UpdateGamePhaseView
+}
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.view.controller.TurnController
+import it.unibo.view.TurnViewController
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
 
 import scala.concurrent.Future
 
-class InternalViewMessageHandler(turnViewController: TurnController)
+class InternalViewMessageHandler(turnViewController: TurnViewController)
     extends Subscriber[InternalViewMessage]:
   override def scheduler: Scheduler = Scheduler.global
 

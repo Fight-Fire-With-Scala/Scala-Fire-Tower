@@ -4,7 +4,20 @@ import it.unibo.controller.subscribers.SubscriberUtils.{onCompleteHandler, onErr
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
-import it.unibo.controller.{DiscardTheseCardsMessage, DrawCardMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, SettingsMessage, SetupWindPhase, ShowAvailablePatterns, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage, logger}
+import it.unibo.controller.{
+  logger,
+  DiscardTheseCardsMessage,
+  DrawCardMessage,
+  ResetPatternComputation,
+  ResolvePatternChoice,
+  ResolvePatternComputation,
+  SettingsMessage,
+  SetupWindPhase,
+  ShowAvailablePatterns,
+  UpdateGamePhaseModel,
+  UpdateWindDirection,
+  ViewMessage
+}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.TurnModelController
 import it.unibo.model.cards.choices.{StepChoice, WindChoice}
@@ -37,11 +50,11 @@ final class ModelMessageHandler(model: Model, controller: TurnModelController)
       case SetupWindPhase() =>
         logger.info(s"Received ResolveWindPhase Message")
         controller.handleWindPhase(model)
-        
+
       case UpdateGamePhaseModel(choice: GamePhase) =>
         logger.info(s"Received UpdateGamePhaseModel Message")
         controller.updateGamePhase(model, choice)
-        
+
       case UpdateWindDirection(windDirection: Direction) =>
         logger.info(s"Received UpdateWindDirection Message")
         val gameBoard = model.getGameBoard
@@ -51,32 +64,20 @@ final class ModelMessageHandler(model: Model, controller: TurnModelController)
 
       case ResolvePatternComputation(cardId: Int) =>
         logger.info(s"Received ResolvePatternComputation Message")
-        val gameBoard = model.getGameBoard
-        val card = gameBoard.currentPlayer.hand.find(_.id == cardId)
-        card match
-          case Some(c)=>
-            c.cardType.effectType match
-              case card: FireCard => ???
-              case card: FirebreakCard => ???
-              case card: WaterCard => ???
-              case card: WindCard =>
-                val gb = gameBoard.resolveCardPlayed(c, WindChoice.PlaceFire)
-                model.getObservable.onNext(ShowAvailablePatterns(gb.board.availablePatterns))
-              case _ => ???
-          case None    => logger.warn("No card found")
+        model.setCurrentCardId(cardId)
+        model.resolvePatternComputation(cardId)
 
       case ResolvePatternChoice(pattern) =>
         logger.info(s"Received ResolvePatternChoice Message")
-        val gameBoard = model.getGameBoard
-        val effect = PatternChoiceEffect(pattern)
-        val board = gameBoard.board.applyEffect(Some(effect))
-        model.setGameBoard(gameBoard.copy(board = board))
+        model.resolvePatternChoice(pattern)
 
       case DiscardTheseCardsMessage(cards) =>
         logger.info(s"Received DiscardTheseCardsMessage with cards: $cards")
         model.discardCards(cards)
 
-      case ResetPatternComputation() => logger.info(s"Received ResetPatternComputation")
+      case ResetPatternComputation() =>
+        logger.info(s"Received ResetPatternComputation")
+        model.getObservable.onNext(ShowAvailablePatterns(List.empty))
 
     Continue
 

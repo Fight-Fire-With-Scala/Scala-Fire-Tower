@@ -4,6 +4,7 @@ import it.unibo.controller.{
   DiscardTheseCardsMessage,
   DrawCardMessage,
   ResetPatternComputation,
+  ResolvePatternChoice,
   ResolvePatternComputation,
   UpdateGamePhaseModel,
   ViewSubject
@@ -59,7 +60,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     observable.onNext(DrawCardMessage(cardToRemove.size))
     endDiscardProcedure()
 
-  def confirmCardPlay(): Unit = cardToPlay = None
+  def confirmCardPlay(): Unit =
+    cardToPlay.foreach(_.highlightManager.toggle(Some(CardHighlightState.Unhighlighted)))
+    cardToPlay = None
 
   def cardToPlay_=(cardId: Int): Unit =
     logger.info(s"Card to play: $cardToPlay")
@@ -74,6 +77,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
             .toggle(Some(CardHighlightState.Unhighlighted))
         case None            =>
       cardToPlay = cardComponent
+      observable.onNext(ResolvePatternComputation(cardId))
 
   override def onEnableView(): Unit =
     super.onEnableView()

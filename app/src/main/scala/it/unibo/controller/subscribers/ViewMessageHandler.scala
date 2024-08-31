@@ -5,15 +5,16 @@ import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber
 import it.unibo.controller.{
+  logger,
+  ChangeTurnPhase,
+  ConfirmCardPlayMessage,
   ModelMessage,
   RefreshMessage,
   ShowAvailablePatterns,
-  StartGameBoardMessage,
-  ChangeTurnPhase
+  StartGameBoardMessage
 }
 
 import scala.concurrent.Future
-import it.unibo.controller.logger
 import it.unibo.controller.subscribers.SubscriberUtils.{onCompleteHandler, onErrorHandler}
 
 /** This class is subscribed to the Model updates and changes the View accordingly */
@@ -25,8 +26,8 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
       case StartGameBoardMessage(gameBoard) =>
         logger.info(s"Received StartGameBoardMessage")
         view.startGame(gameBoard)
-        
-      case ShowAvailablePatterns(patterns)  =>
+
+      case ShowAvailablePatterns(patterns) =>
         logger.info(s"Received ShowAvailablePatterns")
         logger.info(s"patterns $patterns")
         view.setAvailablePatterns(patterns)
@@ -34,10 +35,14 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
       case ChangeTurnPhase(gamePhase) =>
         logger.info(s"Received ChangeTurnPhase")
         view.setTurnPhase(gamePhase.toString)
-        
-      case RefreshMessage(gameBoard)        =>
+
+      case RefreshMessage(gameBoard) =>
         logger.info(s"Received RefreshMessage")
         view.refresh(gameBoard)
+
+      case ConfirmCardPlayMessage() =>
+        logger.info(s"Received ConfirmCardPlayMessage")
+        view.confirmCardPlay()
     Continue
 
   override def onError(ex: Throwable): Unit = onErrorHandler(ex)

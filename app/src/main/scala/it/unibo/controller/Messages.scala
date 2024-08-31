@@ -33,7 +33,7 @@ case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
 case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMessage
 case class ChangeTurnPhase(gamePhase: GamePhase) extends ModelMessage
 case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
-
+case class ConfirmCardPlayMessage() extends ModelMessage
 /*
  * This refers to messages sent to the view from the view
  */

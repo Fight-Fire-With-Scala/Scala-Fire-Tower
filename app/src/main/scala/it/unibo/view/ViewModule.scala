@@ -13,7 +13,7 @@ import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.{Direction, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.{IViewComponent, IUpdateView}
+import it.unibo.view.components.{IUpdateView, IViewComponent}
 import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, WindRoseComponent}
 import monix.reactive.subjects.PublishSubject
 import it.unibo.view.components.game.GameComponent
@@ -32,6 +32,7 @@ object ViewModule:
     def setTurnPhase(currentTurnPhase: String): Unit
     def setTurnPlayer(currentPlayer: String): Unit
     def setTurnNumber(currentTurnNumber: Int): Unit
+    def confirmCardPlay(): Unit
 
   trait Provider:
     val view: View
@@ -109,6 +110,8 @@ object ViewModule:
 
       override def setWindDirection(windDirection: Direction): Unit =
         updateOnUIThreadWindRoseComponent(_.updateWindRoseDirection(windDirection))
+
+      override def confirmCardPlay(): Unit = gameBoardController.confirmCardPlay()
 
   trait Interface extends Provider with Component:
     self: Requirements =>
