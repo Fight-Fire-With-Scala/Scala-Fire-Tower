@@ -14,6 +14,7 @@ import it.unibo.controller.{
 
 import scala.concurrent.Future
 import it.unibo.controller.logger
+import it.unibo.controller.subscribers.SubscriberUtils.{onCompleteHandler, onErrorHandler}
 
 /** This class is subscribed to the Model updates and changes the View accordingly */
 class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
@@ -39,12 +40,5 @@ class ViewMessageHandler(view: View) extends Subscriber[ModelMessage]:
         view.refresh(gameBoard)
     Continue
 
-  override def onError(ex: Throwable): Unit =
-    println(s"Received error: ${ex.getMessage}")
-    ex.getStackTrace.foreach { traceElement =>
-      println(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
-          .getFileName}:${traceElement.getLineNumber})")
-    }
-    println(s"Full description: ${ex.toString}")
-
-  override def onComplete(): Unit = println(s"Received final event")
+  override def onError(ex: Throwable): Unit = onErrorHandler(ex)
+  override def onComplete(): Unit = onCompleteHandler()
