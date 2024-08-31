@@ -13,8 +13,9 @@ object ModelModule:
     def getObservable: ModelSubject
     def getGameBoard: GameBoard
     def setGameBoard(newGameBoard: GameBoard): Unit
-    def drawCards(nCards: Int): Unit
+    def drawCards(nCards: Int, player: Option[Player] = None): Unit
     def discardCards(cards: List[Int]): Unit
+    def fillPlayerHand(): Unit
 
   trait Provider:
     val model: Model
@@ -34,12 +35,13 @@ object ModelModule:
         val playerOne = settings.getPlayerOne
         val playerTwo = settings.getPlayerTwo
         gameBoard = GameBoard(playerOne, playerTwo, observerSubject)
+        fillPlayerHand()
         observerSubject.onNext(StartGameBoardMessage(gameBoard))
 
-      def drawCards(nCards: Int): Unit =
+      def drawCards(nCards: Int, player: Option[Player] = None): Unit =
+        val currentPlayer = player.getOrElse(gameBoard.currentPlayer)
         val deck = gameBoard.deck
-        val player = gameBoard.currentPlayer
-        val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, player)) {
+        val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, currentPlayer)) {
           case ((currentDeck, currentPlayer), _) =>
             val (card, newDeck) = currentDeck.drawCard()
             val newPlayer = currentPlayer.drawCardFromDeck(card)
@@ -50,5 +52,9 @@ object ModelModule:
       def discardCards(cards: List[Int]): Unit =
         val player = gameBoard.currentPlayer
         setGameBoard(gameBoard.copy(currentPlayer = player.discardCards(cards)))
+
+      def fillPlayerHand(): Unit =
+        val cardToDraw = 5 - gameBoard.currentPlayer.hand.size
+        drawCards(cardToDraw)
 
   trait Interface extends Provider with Component

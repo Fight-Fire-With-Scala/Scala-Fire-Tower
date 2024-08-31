@@ -32,5 +32,7 @@ case class TurnModelController():
     choice match
       case RedrawCards  => ???
       case PlayCard     => model.setGameBoard(gameBoard.changeTurnPhase(PlayCard))
-      case WindPhase    => handleWindPhase(model)
+      case WindPhase    =>
+        handleWindPhase(model)
+        model.fillPlayerHand()
       case WaitingPhase => model.setGameBoard(gameBoard.changeTurnPhase(WaitingPhase))
