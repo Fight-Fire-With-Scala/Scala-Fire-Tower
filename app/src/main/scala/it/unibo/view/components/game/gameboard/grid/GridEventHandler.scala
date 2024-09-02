@@ -1,18 +1,14 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.{
-  InternalViewSubject,
-  ResolvePatternChoice,
-  UpdateGamePhaseModel,
-  UpdateGamePhaseView,
-  ViewSubject
-}
+import it.unibo.controller.{InternalViewSubject, ResolvePatternChoice, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.{Direction, GamePhase}
 import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, WaitingPhase}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
+import it.unibo.view.logger
 import scalafx.scene.paint.Color
+
 import scala.collection.mutable
 
 class GridEventHandler(
@@ -48,14 +44,14 @@ class GridEventHandler(
         val positionToCheck = checkNeighbor(Position(row, col), dir)
         val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
         candidatePositions.foreach { pattern =>
-          if pattern.keys.exists(_ == positionToCheck) then
-            val square = squareMap(positionToCheck)
-            val hoverColor = getHoverColor(pattern(positionToCheck))
-            runOnUIThread {
-              hoveredCellsOriginalColors += positionToCheck -> square.getColor
-              square.updateColor(hoverColor)
-            }
+          val square = squareMap(positionToCheck)
+          val hoverColor = getHoverColor(pattern(positionToCheck))
+          runOnUIThread {
+            hoveredCellsOriginalColors += positionToCheck -> square.getColor
+            square.updateColor(hoverColor)
+          }
         }
+        logger.info(s"$candidatePositions")
       case None      =>
 
   private def resetHoverColors(): Unit =
