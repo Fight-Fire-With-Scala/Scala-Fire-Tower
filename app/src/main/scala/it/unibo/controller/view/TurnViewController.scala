@@ -17,9 +17,8 @@ final case class TurnViewController(
     val currentGamePhase = gameBoard.gamePhase
     updateGamePhase(currentGamePhase)
     gameComponent.fold(()) { component =>
-      component.updateGrid(gameBoard.board.grid)
+      component.updateGrid(gameBoard.board.grid, currentGamePhase)
       component.updatePlayer(gameBoard.currentPlayer)
-      if(currentGamePhase == WaitingPhase) component.gridComponent.updateGridState(GridState.CardPhase)
       component.gridComponent.setAvailablePatterns(gameBoard.board.availablePatterns)
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>

@@ -34,20 +34,27 @@ final class GridComponent(using
 
   @FXML
   def initialize(): Unit =
-    gridInitializer = new GridInitializer(gridSize, squareSize, handleCellHover, handleCellClick)
+    gridInitializer = new GridInitializer(
+      gridSize,
+      squareSize,
+      handleCellHover,
+      handleCellClickForWindPhase,
+      handleCellClickForCards
+    )
     gridPane = new GridPane
 
     squareMap = gridInitializer.initializeGridSquares(gridPane)
     gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
     container.getChildren.add(gridPane)
 
-  private def handleCellClick(): Unit = gridEventHandler.handleCellClick()
+  private def handleCellClickForWindPhase(): Unit = gridEventHandler.handleCellClickForWindPhase()
+  private def handleCellClickForCards(): Unit = gridEventHandler.handleCellClickForCardPhase()
 
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
-    gridEventHandler.updateAvailablePatterns(patterns)
+  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
+    .updateAvailablePatterns(patterns)
 
   override def onEnableView(): Unit = squareMap.foreach { case (_, square) => square.enableView() }
 
@@ -55,25 +62,25 @@ final class GridComponent(using
     square.disableView()
   }
 
-  def updateGridState(state: GridState): Unit =
-    squareMap.foreach { case (_ , square) => square.toggle(state) }
-
   override protected def getPane: Node = gridPane
 
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 
-  def updateGrid(grid: Grid): Unit = squareMap.foreach { case (position, square) =>
-    val cellColor = grid.getCell(position) match
-      case Some(_: Woods.type)       => Color.DarkGreen
-      case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
-      case Some(_: EternalFire.type) => Color.Red
-      case _                         => Color.White
+  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
+    .foreach { case (position, square) =>
 
-    val tokenColor = grid.getToken(position) match
-      case Some(Fire)      => Color.Orange
-      case Some(Firebreak) => Color.Blue
-      case _               => cellColor
+      square.toggle(gamePhase)
+      val cellColor = grid.getCell(position) match
+        case Some(_: Woods.type)       => Color.DarkGreen
+        case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
+        case Some(_: EternalFire.type) => Color.Red
+        case _                         => Color.White
 
-    runOnUIThread(square.updateColor(tokenColor))
-  }
+      val tokenColor = grid.getToken(position) match
+        case Some(Fire)      => Color.Orange
+        case Some(Firebreak) => Color.Blue
+        case _               => cellColor
+
+      runOnUIThread(square.updateColor(tokenColor))
+    }

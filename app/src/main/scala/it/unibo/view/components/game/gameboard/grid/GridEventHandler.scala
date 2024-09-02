@@ -3,9 +3,10 @@ package it.unibo.view.components.game.gameboard.grid
 import it.unibo.controller.{InternalViewSubject, ResolvePatternChoice, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, WaitingPhase}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
+import it.unibo.view.logger
 import scalafx.scene.paint.Color
 
 import scala.collection.mutable
@@ -21,7 +22,8 @@ class GridEventHandler(
   def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit =
     availablePatterns = ap
 
-  def handleCellClick(): Unit =
+  def handleCellClickForWindPhase(): Unit =
+    logger.info("Handle cell click for wind phase")
     val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
       .flatMap { position =>
         availablePatterns.collect {
@@ -33,6 +35,20 @@ class GridEventHandler(
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
       internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
       observableSubject.onNext(UpdateGamePhaseModel(WaitingPhase))
+
+  def handleCellClickForCardPhase(): Unit =
+    logger.info("Handle cell click for card phase")
+    val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
+      .flatMap { position =>
+        availablePatterns.collect {
+          case pattern if pattern.contains(position) => position -> pattern(position)
+        }
+      }.toMap
+    if matchedPatterns.nonEmpty then
+      hoveredCellsOriginalColors.clear()
+      observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
+      internalObservable.onNext(UpdateGamePhaseView(ExtraActionPhase))
+      observableSubject.onNext(UpdateGamePhaseModel(ExtraActionPhase))
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     resetHoverColors()
