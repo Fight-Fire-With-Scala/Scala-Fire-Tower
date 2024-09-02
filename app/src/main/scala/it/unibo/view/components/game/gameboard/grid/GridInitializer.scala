@@ -18,7 +18,14 @@ class GridInitializer(
       row <- 0 until gridSize
       col <- 0 until gridSize
     } {
-      val square = GridSquare(row, col, squareSize, handleCellHover, handleCellClickForWindPhase, handleCellClickForCardPhase)
+      val square = GridSquare(
+        row,
+        col,
+        squareSize,
+        handleCellHover,
+        handleCellClickForWindPhase,
+        handleCellClickForCardPhase
+      )
       GridPane.setRowIndex(square.getGraphicPane, row)
       GridPane.setColumnIndex(square.getGraphicPane, col)
       gridPane.children.add(square.getGraphicPane)

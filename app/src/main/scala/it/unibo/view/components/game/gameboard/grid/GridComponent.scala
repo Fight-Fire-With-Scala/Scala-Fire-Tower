@@ -3,19 +3,14 @@ package it.unibo.view.components.game.gameboard.grid
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
-import it.unibo.model.logger
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IGridComponent, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.Node
-import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
-import scalafx.scene.paint.Color
 
-import scala.collection.mutable
 import scala.compiletime.uninitialized
 
-//noinspection VarCouldBeVal
 final class GridComponent(using
     internalObservable: InternalViewSubject,
     observableSubject: ViewSubject
@@ -23,64 +18,29 @@ final class GridComponent(using
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
 
+  private val cellNumber = 16
+  private val cellSize = 42
+
   @FXML
   private var container: StackPane = uninitialized
-  private var gridPane: GridPane = uninitialized
-  private val gridSize = 16
-  private val squareSize = 42
-  private var squareMap: mutable.Map[Position, GridSquare] = uninitialized
-  private var gridInitializer: GridInitializer = uninitialized
-  private var gridEventHandler: GridEventHandler = uninitialized
+  private var gridManager: GridManager = uninitialized
 
   @FXML
   def initialize(): Unit =
-    gridInitializer = new GridInitializer(
-      gridSize,
-      squareSize,
-      handleCellHover,
-      handleCellClickForWindPhase,
-      handleCellClickForCards
-    )
-    gridPane = new GridPane
+    gridManager = new GridManager(cellNumber, cellSize, internalObservable, observableSubject)
+    gridManager.initialize(container)
 
-    squareMap = gridInitializer.initializeGridSquares(gridPane)
-    gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
-    container.getChildren.add(gridPane)
+  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridManager
+    .setAvailablePatterns(patterns)
 
-  private def handleCellClickForWindPhase(): Unit = gridEventHandler.handleCellClickForWindPhase()
-  private def handleCellClickForCards(): Unit = gridEventHandler.handleCellClickForCardPhase()
+  override def onEnableView(): Unit = gridManager.squareMap.foreach { case (_, square) =>
+    square.enableView()
+  }
 
-  private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
-    gridEventHandler.handleCellHover(row, col, hoverDirection)
-
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
-    .updateAvailablePatterns(patterns)
-
-  override def onEnableView(): Unit = squareMap.foreach { case (_, square) => square.enableView() }
-
-  override def onDisableView(): Unit = squareMap.foreach { case (_, square) =>
+  override def onDisableView(): Unit = gridManager.squareMap.foreach { case (_, square) =>
     square.disableView()
   }
 
-  override protected def getPane: Node = gridPane
+  override protected def getPane: Node = container
 
-  import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
-  import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
-
-  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
-    .foreach { case (position, square) =>
-
-      square.toggle(gamePhase)
-      val cellColor = grid.getCell(position) match
-        case Some(_: Woods.type)       => Color.DarkGreen
-        case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
-        case Some(_: EternalFire.type) => Color.Red
-        case _                         => Color.White
-
-      val tokenColor = grid.getToken(position) match
-        case Some(Fire)      => Color.Orange
-        case Some(Firebreak) => Color.Blue
-        case _               => cellColor
-
-      runOnUIThread(square.updateColor(tokenColor))
-    }
+  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = gridManager.updateGrid(grid, gamePhase)

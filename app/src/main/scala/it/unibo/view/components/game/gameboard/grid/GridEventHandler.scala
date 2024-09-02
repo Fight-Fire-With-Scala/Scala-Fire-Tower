@@ -1,14 +1,18 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.{InternalViewSubject, ResolvePatternChoice, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
+import it.unibo.controller.{
+  InternalViewSubject,
+  ResolvePatternChoice,
+  UpdateGamePhaseModel,
+  UpdateGamePhaseView,
+  ViewSubject
+}
 import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.gameboard.Direction
+import it.unibo.model.gameboard.{Direction, GamePhase}
 import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, WaitingPhase}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
-import it.unibo.view.logger
 import scalafx.scene.paint.Color
-
 import scala.collection.mutable
 
 class GridEventHandler(
@@ -19,11 +23,9 @@ class GridEventHandler(
   private val hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
   private var availablePatterns: List[Map[Position, Token]] = List.empty
 
-  def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit =
-    availablePatterns = ap
+  def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit = availablePatterns = ap
 
-  def handleCellClickForWindPhase(): Unit =
-    logger.info("Handle cell click for wind phase")
+  private def handleCellClick(gamePhaseToChange: GamePhase): Unit =
     val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
       .flatMap { position =>
         availablePatterns.collect {
@@ -33,22 +35,11 @@ class GridEventHandler(
     if matchedPatterns.nonEmpty then
       hoveredCellsOriginalColors.clear()
       observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
-      internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
-      observableSubject.onNext(UpdateGamePhaseModel(WaitingPhase))
+      internalObservable.onNext(UpdateGamePhaseView(gamePhaseToChange))
+      observableSubject.onNext(UpdateGamePhaseModel(gamePhaseToChange))
 
-  def handleCellClickForCardPhase(): Unit =
-    logger.info("Handle cell click for card phase")
-    val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
-      .flatMap { position =>
-        availablePatterns.collect {
-          case pattern if pattern.contains(position) => position -> pattern(position)
-        }
-      }.toMap
-    if matchedPatterns.nonEmpty then
-      hoveredCellsOriginalColors.clear()
-      observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
-      internalObservable.onNext(UpdateGamePhaseView(ExtraActionPhase))
-      observableSubject.onNext(UpdateGamePhaseModel(ExtraActionPhase))
+  def handleCellClickForWindPhase(): Unit = handleCellClick(WaitingPhase)
+  def handleCellClickForCardPhase(): Unit = handleCellClick(ExtraActionPhase)
 
   def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     resetHoverColors()
@@ -59,14 +50,13 @@ class GridEventHandler(
         candidatePositions.foreach { pattern =>
           if pattern.keys.exists(_ == positionToCheck) then
             val square = squareMap(positionToCheck)
-            val token = pattern(positionToCheck)
-            val hoverColor = getHoverColor(token)
+            val hoverColor = getHoverColor(pattern(positionToCheck))
             runOnUIThread {
               hoveredCellsOriginalColors += positionToCheck -> square.getColor
               square.updateColor(hoverColor)
             }
         }
-      case None =>
+      case None      =>
 
   private def resetHoverColors(): Unit =
     hoveredCellsOriginalColors.foreach { case (position, color) =>
@@ -78,8 +68,7 @@ class GridEventHandler(
   private def checkNeighbor(startPosition: Position, direction: Direction): Position =
     startPosition + direction.getDelta
 
-  private def getHoverColor(token: Token): Color =
-    token match
-      case Fire      => Color.DarkOrange
-      case Firebreak => Color.Blue
-      case _         => Color.Gray
+  private def getHoverColor(token: Token): Color = token match
+    case Fire      => Color.DarkOrange
+    case Firebreak => Color.Blue
+    case _         => Color.Gray

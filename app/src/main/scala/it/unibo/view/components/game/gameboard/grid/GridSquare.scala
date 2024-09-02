@@ -27,20 +27,21 @@ final case class GridSquare(
 ) extends ICanBeDisabled, ICanToggleHandler[GamePhase]:
 
   protected var currentState: GamePhase = uninitialized
-  private var dynamicEventHandlers: Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]] = Map()
+  private var dynamicEventHandlers: Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]] =
+    Map()
 
   private val hoverDelayMillis = 5
   private var squareColor: Color = Color.White
   private val onMouseMovedFun: EventHandler[MouseEvent] =
     (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
-  private val onMouseClickedFunWindPhase: EventHandler[MouseEvent] = (_: MouseEvent) => onClickWindPhase()
-  private val onMouseClickedFunCardPhase: EventHandler[MouseEvent] = (_: MouseEvent) => onClickCardPhase()
+  private val onMouseClickedFunWindPhase: EventHandler[MouseEvent] =
+    (_: MouseEvent) => onClickWindPhase()
+  private val onMouseClickedFunCardPhase: EventHandler[MouseEvent] =
+    (_: MouseEvent) => onClickCardPhase()
 
-  private val fixedEventHandlers = List(
-    MouseEvent.MOUSE_MOVED -> onMouseMovedFun,
-    MouseEvent.MOUSE_EXITED -> onMouseExitedFun
-  )
+  private val fixedEventHandlers =
+    List(MouseEvent.MOUSE_MOVED -> onMouseMovedFun, MouseEvent.MOUSE_EXITED -> onMouseExitedFun)
 
   addHandler(GamePhase.WindPhase, MouseEvent.MOUSE_CLICKED, onMouseClickedFunWindPhase)
   addHandler(GamePhase.PlayCardPhase, MouseEvent.MOUSE_CLICKED, onMouseClickedFunCardPhase)
@@ -49,7 +50,7 @@ final case class GridSquare(
 
   protected def onToggle(state: GamePhase): Unit =
     dynamicEventHandlers.get(MouseEvent.MOUSE_CLICKED)
-    .foreach(_.foreach(pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
+      .foreach(_.foreach(pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
     dynamicEventHandlers += MouseEvent.MOUSE_CLICKED -> getHandlers(state, MouseEvent.MOUSE_CLICKED)
     dynamicEventHandlers(MouseEvent.MOUSE_CLICKED)
       .foreach(pane.addEventHandler(MouseEvent.MOUSE_CLICKED, _))
@@ -109,5 +110,5 @@ final case class GridSquare(
     rectangle.setFill(color)
 
   def getColor: Color = squareColor
-  
+
   override protected def getPane: Node = pane
