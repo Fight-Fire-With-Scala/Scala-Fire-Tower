@@ -1,15 +1,16 @@
 package it.unibo.view.components.game.gameboard.hand
 
 import it.unibo.controller.{
-  DiscardTheseCardsMessage,
+  DiscardCardMessage,
   DrawCardMessage,
+  InternalViewSubject,
   ResetPatternComputation,
-  ResolvePatternChoice,
   ResolvePatternComputation,
   UpdateGamePhaseModel,
+  UpdateGamePhaseView,
   ViewSubject
 }
-import it.unibo.model.gameboard.GamePhase.PlayCard
+import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, PlayCardPhase, WaitingPhase}
 import it.unibo.view.{logger, GUIType}
 import it.unibo.view.components.{IHandComponent, IUpdateView}
 import javafx.fxml.FXML
@@ -18,8 +19,10 @@ import javafx.scene.layout.Pane
 
 import scala.compiletime.uninitialized
 
-final class HandComponent(val cardComponents: List[CardComponent])(using observable: ViewSubject)
-    extends IHandComponent with IUpdateView:
+final class HandComponent(val cardComponents: List[CardComponent])(using
+    observable: ViewSubject,
+    internalObservable: InternalViewSubject
+) extends IHandComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
 
@@ -34,7 +37,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     (component: CardComponent) => handPane.getChildren.add(component.getView)
 
   @FXML
-  def initialize(): Unit = cardComponents.foreach(addComponent)
+  def initialize(): Unit =
+    cardComponents.foreach(addComponent)
+    enableView()
 
   def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = runOnUIThread {
     cardComponents.foreach(_.reset())
@@ -47,7 +52,11 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     cardToPlay = None
   }
 
-  def endDiscardProcedure(): Unit =
+  def cancelDiscardProcedure(): Unit =
+    observable.onNext(UpdateGamePhaseModel(WaitingPhase))
+    endDiscardProcedure()
+  
+  private def endDiscardProcedure(): Unit =
     cardComponents.foreach(_.toggle(CardState.PlayCard))
     cardToRemove = List.empty
 
@@ -56,8 +65,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     else cardId :: cardToRemove
 
   def discardCards(): Unit =
-    observable.onNext(DiscardTheseCardsMessage(cardToRemove))
+    observable.onNext(DiscardCardMessage(cardToRemove))
     observable.onNext(DrawCardMessage(cardToRemove.size))
+    observable.onNext(UpdateGamePhaseModel(ExtraActionPhase))
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =
@@ -65,19 +75,24 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     cardToPlay = None
 
   def cardToPlay_=(cardId: Int): Unit =
-    logger.info(s"Card to play: $cardToPlay")
     val cardComponent = cardComponents.find(_.cardId == cardId.toString)
     cardComponent.get.highlightManager.toggle()
     if cardToPlay == cardComponent then
       cardToPlay = None
+      logger.info(s"Card not to play: $cardToPlay")
       observable.onNext(ResetPatternComputation())
+      observable.onNext(UpdateGamePhaseModel(WaitingPhase))
+      internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
     else
       cardToPlay match
         case Some(component) => component.highlightManager
             .toggle(Some(CardHighlightState.Unhighlighted))
         case None            =>
       cardToPlay = cardComponent
+      logger.info(s"Card to play: $cardToPlay")
       observable.onNext(ResolvePatternComputation(cardId))
+      observable.onNext(UpdateGamePhaseModel(PlayCardPhase))
+      internalObservable.onNext(UpdateGamePhaseView(PlayCardPhase))
 
   override def onEnableView(): Unit =
     super.onEnableView()

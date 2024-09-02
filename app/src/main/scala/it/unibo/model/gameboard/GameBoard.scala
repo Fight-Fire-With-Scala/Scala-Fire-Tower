@@ -5,27 +5,13 @@ import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
 import it.unibo.model.cards.effects.GameEffect
-import it.unibo.model.cards.resolvers.{
-  ChoiceResultResolver,
-  EffectResolver,
-  FirebreakResolver,
-  InstantResolver,
-  InstantWindResolver,
-  MetaResolver,
-  MultiStepResolver,
-  PatternApplicationResolver,
-  PatternComputationResolver,
-  StepResolver,
-  WindResolver
-}
+import it.unibo.model.cards.resolvers.{ChoiceResultResolver, EffectResolver, FirebreakResolver, InstantResolver, InstantWindResolver, MetaResolver, MultiStepResolver, PatternApplicationResolver, PatternComputationResolver, StepResolver, WindResolver}
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
-import it.unibo.model.logger
-import it.unibo.model.players.Player
-import it.unibo.controller.ChangeTurnPhase
+import it.unibo.model.gameboard.player.Player
 
 enum GamePhase:
-  case WindPhase, RedrawCards, PlayCard, WaitingPhase
+  case WindPhase, RedrawCardsPhase, PlayCardPhase, WaitingPhase, ExtraActionPhase
 
 case class GameBoard(
     board: Board,
@@ -33,15 +19,15 @@ case class GameBoard(
     private val player1: Player,
     private val player2: Player,
     currentPlayer: Player = null,
-    observable: ModelSubject,
+//    observable: ModelSubject,
     gamePhase: GamePhase = WindPhase
 ):
   def changeTurn(): GameBoard =
     copy(currentPlayer = if currentPlayer == player1 then player2 else player1)
 
-  def changeTurnPhase(gamePhase: GamePhase): GameBoard =
-    observable.onNext(ChangeTurnPhase(gamePhase))
-    copy(gamePhase = gamePhase)
+//  def changeTurnPhase(gamePhase: GamePhase): GameBoard =
+//    observable.onNext(ChangeTurnPhase(gamePhase))
+//    copy(gamePhase = gamePhase)
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
@@ -75,9 +61,12 @@ case class GameBoard(
     case sr: PatternApplicationResolver => Some(sr.applyMove(board))
 
 object GameBoard:
-  def apply(player1: Player, player2: Player, observableSubject: ModelSubject): GameBoard =
+  def apply(): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
-    logger.info(s"Wind Direction: ${b.windDirection}")
-    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2, player1, observableSubject)
-    logger.info(s"Player turn: ${gb.currentPlayer}")
+    val gb = GameBoard(b, Deck("cards.yaml"), Player(""), Player(""), Player(""))
+    gb
+
+  def apply(player1: Player, player2: Player): GameBoard =
+    val b = Board.withRandomWindAndStandardGrid
+    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2, player1)
     gb

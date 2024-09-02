@@ -15,25 +15,28 @@ sealed trait Message
  * This refers to messages sent to the model from the view
  */
 sealed trait ViewMessage extends Message
-case class SettingsMessage(settings: Settings) extends ViewMessage
-case class DrawCardMessage(nCards: Int) extends ViewMessage
-case class SetupWindPhase() extends ViewMessage
+
+case class GameBoardInitialization(settings: Settings) extends ViewMessage
+
 case class UpdateWindDirection(windDirection: Direction) extends ViewMessage
+case class UpdateGamePhaseModel(gamePhase: GamePhase) extends ViewMessage
+
 case class ResolvePatternComputation(cardId: Int) extends ViewMessage
 case class ResetPatternComputation() extends ViewMessage
 case class ResolvePatternChoice(pattern: Map[Position, Token]) extends ViewMessage
-case class DiscardTheseCardsMessage(cards: List[Int]) extends ViewMessage
-case class UpdateGamePhaseModel(gamePhase: GamePhase) extends ViewMessage
+
+case class DrawCardMessage(nCards: Int) extends ViewMessage
+case class DiscardCardMessage(cards: List[Int]) extends ViewMessage
 
 /*
  * This refers to messages sent to the view from the model
  */
 sealed trait ModelMessage extends Message
+
 case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
-case class ShowAvailablePatterns(p: List[Map[Position, Token]]) extends ModelMessage
-case class ChangeTurnPhase(gamePhase: GamePhase) extends ModelMessage
 case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
 case class ConfirmCardPlayMessage() extends ModelMessage
+
 /*
  * This refers to messages sent to the view from the view
  */

@@ -6,7 +6,7 @@ import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
 import scalafx.application.Platform
-import it.unibo.controller.{SettingsMessage, ViewSubject}
+import it.unibo.controller.{GameBoardInitialization, ViewSubject}
 import it.unibo.view.GUIType
 import javafx.scene.Node
 import javafx.scene.layout.Pane
@@ -66,7 +66,7 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
       if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
 
-    observableSubject.onNext(SettingsMessage(Settings(
+    observableSubject.onNext(GameBoardInitialization(Settings(
       gameMode = selectedGameMode,
       cardSet = selectedCardSet,
       botBehaviour = selectedBotBehaviour,

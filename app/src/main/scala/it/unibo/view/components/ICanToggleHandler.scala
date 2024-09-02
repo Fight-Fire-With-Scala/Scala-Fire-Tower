@@ -1,5 +1,6 @@
 package it.unibo.view.components
 
+import it.unibo.view.logger
 import javafx.event.{EventHandler, EventType}
 import javafx.scene.input.MouseEvent
 
@@ -40,6 +41,7 @@ trait ICanToggleHandler[T] extends Toggleable[T]:
 
   override def toggle(toState: T): Unit =
     currentState = toState
+    logger.info(s"Current state $currentState")
     applyState(toState)
     onToggle(toState)
 

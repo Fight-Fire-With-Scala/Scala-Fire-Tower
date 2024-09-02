@@ -1,9 +1,11 @@
 package it.unibo.controller
 
-import it.unibo.controller.subscribers.ViewMessageHandler
-import it.unibo.controller.subscribers.ModelMessageHandler
-import it.unibo.model.{ModelModule, TurnModelController}
+import it.unibo.controller.model.ModelController
+import it.unibo.controller.subscribers.ModelSubscriber
+import it.unibo.controller.subscribers.ViewSubscriber
+import it.unibo.model.ModelModule
 import it.unibo.view.ViewModule
+import monix.reactive.subjects.PublishSubject
 
 object ControllerModule:
 
@@ -13,15 +15,19 @@ object ControllerModule:
   trait Provider:
     val controller: Controller
 
-  type Requirements = ModelModule.Provider & ViewModule.Provider
+  private type Requirements = ModelModule.Provider & ViewModule.Provider
 
   trait Component:
     context: Requirements =>
 
     class ControllerImpl extends Controller:
+      private val modelObserver = PublishSubject[ModelMessage]()
+      
       def notifyStartGame(): Unit =
-        context.model.getObservable.subscribe(new ViewMessageHandler(context.view))
-        context.view.getObservable.subscribe(new ModelMessageHandler(context.model, new TurnModelController))
+        modelObserver.subscribe(new ModelSubscriber(context.view))
+        context.view.getObservable
+          .subscribe(new ViewSubscriber(context.model, modelObserver, ModelController()))
+        context.view.startMenu()
 
   trait Interface extends Provider with Component:
     self: Requirements =>
