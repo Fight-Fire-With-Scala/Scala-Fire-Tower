@@ -1,5 +1,6 @@
 package it.unibo.controller.model
 
+import it.unibo.model.cards.choices.StepChoice
 import it.unibo.model.cards.choices.WindChoice.PlaceFire
 import it.unibo.model.cards.effects.PatternChoiceEffect
 import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
@@ -31,7 +32,7 @@ trait CardController:
     val card = gb.currentPlayer.hand.find(_.id == cardId)
     card match
       case Some(c) => c.cardType.effectType match
-          case card: FireCard      => ???
+          case card: FireCard      => gb.resolveCardPlayed(c, StepChoice.PatternComputation)
           case card: FirebreakCard => ???
           case card: WaterCard     => ???
           case card: WindCard      => gb.resolveCardPlayed(c, PlaceFire)
