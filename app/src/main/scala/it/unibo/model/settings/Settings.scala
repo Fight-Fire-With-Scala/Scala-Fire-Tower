@@ -1,6 +1,6 @@
 package it.unibo.model.settings
 
-import it.unibo.model.players.{Person, Player}
+import it.unibo.model.gameboard.player.{Person, Player}
 
 enum CardSet:
   case Base, Expanded, Full

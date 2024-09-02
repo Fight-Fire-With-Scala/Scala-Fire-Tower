@@ -2,7 +2,7 @@ package it.unibo.model.gameboard.grid
 
 import scala.annotation.targetName
 
-case class Position(row: Int, col: Int):
+final case class Position(row: Int, col: Int):
   @targetName("plus")
   def +(other: Position): Position =
     Position(this.row + other.row, this.col + other.col)

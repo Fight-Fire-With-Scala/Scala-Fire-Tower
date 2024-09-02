@@ -15,8 +15,9 @@ import scala.collection.mutable
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class GridComponent(observableSubject: ViewSubject)(using
-    internalObservable: InternalViewSubject
+final class GridComponent(using
+    internalObservable: InternalViewSubject,
+    observableSubject: ViewSubject
 ) extends IGridComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
@@ -46,16 +47,15 @@ final class GridComponent(observableSubject: ViewSubject)(using
 
   def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
     gridEventHandler.updateAvailablePatterns(patterns)
-    logger.info(s"Available patterns: $patterns")
-  
-  override def onEnableView(): Unit =
-    squareMap.foreach { case (_, square) => square.enableView() }
-    
-  override def onDisableView(): Unit =
-    squareMap.foreach { case (_, square) => square.disableView() }
+
+  override def onEnableView(): Unit = squareMap.foreach { case (_, square) => square.enableView() }
+
+  override def onDisableView(): Unit = squareMap.foreach { case (_, square) =>
+    square.disableView()
+  }
 
   override protected def getPane: Node = gridPane
-  
+
   import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
   import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 

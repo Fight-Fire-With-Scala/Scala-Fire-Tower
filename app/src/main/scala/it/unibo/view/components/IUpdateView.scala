@@ -7,7 +7,7 @@ trait IUpdateView:
   def runOnUIThread(action: => Unit): Unit =
     Platform.runLater { () => action }
 
-  def runOnUIThread[A](task: => A): Task[A] = {
+  def runTaskOnUIThread[A](task: => A): Task[A] = {
     Task.async { callback =>
       Platform.runLater(() => {
         try {

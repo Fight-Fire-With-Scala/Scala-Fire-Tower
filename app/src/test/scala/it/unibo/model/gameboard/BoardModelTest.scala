@@ -6,7 +6,7 @@ import it.unibo.model.cards.types.WindCard
 import it.unibo.model.cards.choices.WindChoice
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.grid.Grid
-import it.unibo.model.players.Person
+import it.unibo.model.gameboard.player.Person
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

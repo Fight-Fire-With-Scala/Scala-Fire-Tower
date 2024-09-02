@@ -31,10 +31,8 @@ final class WindRoseComponent(using observable: ViewSubject)
   private val windRoseDirections: Map[Direction, WindRoseDirection] = Direction.values
     .map(d => d -> WindRoseDirection.create(d)).toMap
 
-  private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
-    ev =>
-      windRoseArrow.updateDirection(dir)
-      observable.onNext(UpdateWindDirection(dir))
+  private val windRoseEventHandler: Direction => EventHandler[MouseEvent] =
+    dir => ev => observable.onNext(UpdateWindDirection(dir))
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
 
@@ -47,12 +45,19 @@ final class WindRoseComponent(using observable: ViewSubject)
   def updateWindRoseDirection(direction: Direction): Unit =
     runOnUIThread(windRoseArrow.updateDirection(direction))
 
+  def onWindDirectionRequest(direction: Direction): Unit = windRosePanes
+    .filter((dir, pane) => dir == direction).foreach((dir, pane) =>
+      pane.addEventHandler(MouseEvent.MOUSE_CLICKED, windRoseEventHandler(dir))
+    )
+
   override def onEnableView(): Unit =
     super.onEnableView()
+    windRoseArrow.enableView()
     windRosePanes.foreach((dir, _) => windRoseDirections(dir).enableView())
 
   override def onDisableView(): Unit =
     super.onDisableView()
+    windRoseArrow.disableView()
     windRosePanes.foreach((dir, _) => windRoseDirections(dir).disableView())
 
   override protected def getPane: Node = basePane

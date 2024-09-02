@@ -1,17 +1,18 @@
 package it.unibo.view.components
 
-import javafx.event.{EventHandler, EventType}
+import it.unibo.view.logger
 import javafx.scene.Node
-import javafx.scene.input.MouseEvent
 
 trait ICanBeDisabled:
   protected var enabled: Boolean = false
 
-  def enableView(): Unit = if !enabled then 
+  def enableView(): Unit = if !enabled then
+//    logger.info(s"[Activation] Enabled ${this.getClass.getName}")
     enabled = true
     onEnableView()
 
-  def disableView(): Unit = if enabled then 
+  def disableView(): Unit = if enabled then
+//    logger.info(s"[Activation] Disabled ${this.getClass.getName}")
     enabled = false
     onDisableView()
 

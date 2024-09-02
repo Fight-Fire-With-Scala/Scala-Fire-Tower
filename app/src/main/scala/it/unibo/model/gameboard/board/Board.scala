@@ -11,7 +11,7 @@ import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 
 import scala.util.Random
 
-case class Board(
+final case class Board(
     grid: Grid,
     currentCardId: Option[Int],
     availablePatterns: List[Map[Position, Token]],

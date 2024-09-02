@@ -93,7 +93,6 @@ final case class BasicGrid(
         case _: Woods.type       => "W"
         case _: Tower.type       => "T"
         case _: EternalFire.type => "E"
-        case _                   => " " // Default character for empty cells
       tokenChar = token match
         case Some(Fire)      => "f"
         case Some(Firebreak) => "b"

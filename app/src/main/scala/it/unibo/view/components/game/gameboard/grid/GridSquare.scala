@@ -1,6 +1,5 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.view.components.ICanBeDisabled
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle

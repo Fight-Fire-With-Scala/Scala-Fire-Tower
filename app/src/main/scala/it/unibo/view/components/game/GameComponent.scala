@@ -3,7 +3,7 @@ package it.unibo.view.components.game
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Grid
-import it.unibo.model.players.Player
+import it.unibo.model.gameboard.player.Player
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IUpdateView, IViewComponent}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
@@ -48,7 +48,7 @@ final class GameComponent extends IViewComponent with IUpdateView:
       pane: Pane,
       componentPane: Node,
       assignComponent: () => IViewComponent
-  ): Task[IViewComponent] = runOnUIThread {
+  ): Task[IViewComponent] = runTaskOnUIThread {
     pane.getChildren.add(componentPane)
     assignComponent()
   }

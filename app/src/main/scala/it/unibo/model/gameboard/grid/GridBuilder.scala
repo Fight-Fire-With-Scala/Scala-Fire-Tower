@@ -5,7 +5,7 @@ import it.unibo.model.gameboard.grid.Cell.*
 import scala.annotation.{tailrec, targetName}
 
 /** Builder of a grid. */
-class GridBuilder:
+final class GridBuilder:
   private var grid: Grid = Grid.empty
   private var indexOfNextCell = GridBuilder.MinIndex
 

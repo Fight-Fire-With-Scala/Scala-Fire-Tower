@@ -1,7 +1,7 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
 import it.unibo.view.GUIType
-import it.unibo.view.components.{ISidebarComponent, IUpdateView, IViewComponent}
+import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.VBox
@@ -21,14 +21,14 @@ final class SidebarComponent(val components: List[ISidebarComponent])
     (component: ISidebarComponent) => sidebarPane.getChildren.add(component.getView)
 
   @FXML
-  def initialize(): Unit = components.foreach(addComponent)
+  def initialize(): Unit =
+    components.foreach(addComponent)
+    enableView()
 
   override def onEnableView(): Unit =
-    super.onEnableView()
     components.foreach(c => c.enableView())
 
   override def onDisableView(): Unit =
-    super.onDisableView()
     components.foreach(c => c.disableView())
 
   override protected def getPane: Node = sidebarPane

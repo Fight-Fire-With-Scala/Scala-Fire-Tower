@@ -53,10 +53,12 @@ final class GameInfoComponent(using observable: ViewSubject)
 
   override def onEnableView(): Unit =
     super.onEnableView()
+    diceFace.svgPath.setOpacity(0.9)
     dicePane.addEventHandler(MouseEvent.MOUSE_CLICKED, diceEventHandler)
 
   override def onDisableView(): Unit =
     super.onDisableView()
+    diceFace.svgPath.setOpacity(0.7)
     dicePane.removeEventHandler(MouseEvent.MOUSE_CLICKED, diceEventHandler)
 
   override protected def getPane: Node = dicePane

@@ -1,6 +1,6 @@
 package it.unibo.model.settings
 
-import it.unibo.model.players.{Bot, Person}
+import it.unibo.model.gameboard.player.{Bot, Person}
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

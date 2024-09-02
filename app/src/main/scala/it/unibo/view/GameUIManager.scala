@@ -10,16 +10,10 @@ import it.unibo.view.components.menu.MenuComponent
 import javafx.concurrent.Task as JFXTask
 import monix.eval.Task
 import scalafx.scene.image.Image
-import monix.execution.Scheduler.Implicits.global
 
 import scala.compiletime.uninitialized
 import scala.jdk.CollectionConverters.*
-
-def wrapInMonixTask[T](jfxTask: JFXTask[T]): Task[T] = Task.async { cb =>
-  jfxTask.setOnSucceeded(_ => cb.onSuccess(jfxTask.getValue))
-  jfxTask.setOnFailed(_ => cb.onError(jfxTask.getException))
-  jfxTask.run()
-}
+import monix.execution.Scheduler.Implicits.global
 
 final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) extends JFXApp3:
 
@@ -45,3 +39,9 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
       stage.show()
       componentInstance
     }
+
+  private def wrapInMonixTask[T](jfxTask: JFXTask[T]): Task[T] = Task.async { cb =>
+    jfxTask.setOnSucceeded(_ => cb.onSuccess(jfxTask.getValue))
+    jfxTask.setOnFailed(_ => cb.onError(jfxTask.getException))
+    jfxTask.run()
+  }
