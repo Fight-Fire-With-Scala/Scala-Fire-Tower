@@ -41,7 +41,7 @@ trait ICanToggleHandler[T] extends Toggleable[T]:
 
   override def toggle(toState: T): Unit =
     currentState = toState
-    logger.info(s"Current state $currentState")
+    //logger.info(s"Current state $currentState")
     applyState(toState)
     onToggle(toState)
 

@@ -1,6 +1,7 @@
 package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
+import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.model.logger
 import it.unibo.view.GUIType
@@ -53,6 +54,9 @@ final class GridComponent(using
   override def onDisableView(): Unit = squareMap.foreach { case (_, square) =>
     square.disableView()
   }
+
+  def updateGridState(state: GridState): Unit =
+    squareMap.foreach { case (_ , square) => square.toggle(state) }
 
   override protected def getPane: Node = gridPane
 
