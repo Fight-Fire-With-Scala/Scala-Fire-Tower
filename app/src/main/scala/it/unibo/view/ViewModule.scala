@@ -1,6 +1,6 @@
 package it.unibo.view
 
-import it.unibo.controller.view.TurnViewController
+import it.unibo.controller.view.ViewController
 import it.unibo.controller.{InternalViewMessage, InternalViewSubject, ViewMessage, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.ViewInitialization.getGuiInitTask
@@ -25,7 +25,7 @@ object ViewModule:
       private val viewObservable = PublishSubject[ViewMessage]()
       private val intObservable = PublishSubject[InternalViewMessage]()
       private val gui = GameUIManager(1280, 1024, viewObservable)
-      private val gameController = TurnViewController(intObservable, viewObservable)
+      private val gameController = ViewController(intObservable, viewObservable)
 
       override def startMenu(): Unit = gui.main(Array.empty)
 

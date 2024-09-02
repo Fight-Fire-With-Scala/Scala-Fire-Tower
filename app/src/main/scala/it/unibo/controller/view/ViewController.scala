@@ -2,15 +2,11 @@ package it.unibo.controller.view
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.view.components.game.gameboard.sidebar.{
-  DeckComponent,
-  GameInfoComponent,
-  WindRoseComponent
-}
+import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
 
 // TODO avoid reference to the controller in the view
 // TODO avoid passing observables here
-final case class TurnViewController(
+final case class ViewController(
     internalObservable: InternalViewSubject,
     viewObservable: ViewSubject
 ) extends DiscardController with ActivationController with PlayCardController:
@@ -18,7 +14,7 @@ final case class TurnViewController(
   def refreshView(gameBoard: GameBoard): Unit =
     val currentGamePhase = gameBoard.gamePhase
     updateGamePhase(currentGamePhase)
-    
+
     gameComponent.fold(()) { component =>
       component.updateGrid(gameBoard.board.grid)
       component.updatePlayer(gameBoard.currentPlayer)

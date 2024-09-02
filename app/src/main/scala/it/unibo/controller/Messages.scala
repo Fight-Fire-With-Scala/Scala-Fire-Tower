@@ -33,7 +33,8 @@ case class DiscardCardMessage(cards: List[Int]) extends ViewMessage
  */
 sealed trait ModelMessage extends Message
 
-case class StartGameBoardMessage(gameBoard: GameBoard) extends ModelMessage
+case class StartGameMessage(gameBoard: GameBoard) extends ModelMessage
+case class StartMenuMessage() extends ModelMessage
 case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
 case class ConfirmCardPlayMessage() extends ModelMessage
 

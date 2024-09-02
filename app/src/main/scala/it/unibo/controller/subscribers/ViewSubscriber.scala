@@ -11,7 +11,7 @@ import it.unibo.controller.{
   ResetPatternComputation,
   ResolvePatternChoice,
   ResolvePatternComputation,
-  StartGameBoardMessage,
+  StartGameMessage,
   UpdateGamePhaseModel,
   UpdateWindDirection,
   ViewMessage
@@ -34,7 +34,7 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val gameBoard = GameBoard(playerOne, playerTwo)
       val newGb = controller.fillPlayerHand(gameBoard)
       model.setGameBoard(newGb)
-      modelObserver.onNext(StartGameBoardMessage(newGb))
+      modelObserver.onNext(StartGameMessage(newGb))
 
     case DrawCardMessage(nCards: Int) => model.setGameBoard(controller.drawCards(model, nCards))
 

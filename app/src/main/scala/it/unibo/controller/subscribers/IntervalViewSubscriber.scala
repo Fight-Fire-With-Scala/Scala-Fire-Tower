@@ -1,7 +1,7 @@
 package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.view.TurnViewController
+import it.unibo.controller.view.ViewController
 import it.unibo.controller.{
   CancelDiscardMessage,
   CandidateCardToPlayMessage,
@@ -13,7 +13,7 @@ import it.unibo.controller.{
 }
 import it.unibo.model.gameboard.GamePhase
 
-final class IntervalViewSubscriber(turnViewController: TurnViewController)
+final class IntervalViewSubscriber(turnViewController: ViewController)
     extends BaseSubscriber[InternalViewMessage]:
 
   override val logger: Logger = Logger("View -> IntervalView")

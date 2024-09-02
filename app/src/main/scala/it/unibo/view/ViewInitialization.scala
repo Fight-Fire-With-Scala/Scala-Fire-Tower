@@ -1,6 +1,6 @@
 package it.unibo.view
 
-import it.unibo.controller.view.TurnViewController
+import it.unibo.controller.view.ViewController
 import it.unibo.controller.subscribers.IntervalViewSubscriber
 import it.unibo.controller.{InternalViewSubject, UpdateGamePhaseModel, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
@@ -10,7 +10,7 @@ import monix.eval.Task
 
 object ViewInitialization:
   def getGuiInitTask(
-      gameController: TurnViewController,
+      gameController: ViewController,
       task: Task[IViewComponent],
       gameBoard: GameBoard
   )(using viewObservable: ViewSubject, internalObservable: InternalViewSubject): Task[Unit] = task
