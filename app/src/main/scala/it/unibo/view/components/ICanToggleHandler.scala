@@ -56,9 +56,11 @@ trait ICanToggleHandler[T] extends Toggleable[T]:
     stateHandlers.getOrElse(state, Map()).getOrElse(eventType, List())
 
   override def toggle(toState: T): Unit =
-    currentState = toState
-    applyState(toState)
-    onToggle(toState)
+    stateHandlers.find(_._1 == toState).foreach { case (state, _) =>
+      applyState(state)
+      onToggle(state)
+      currentState = state
+    }
 
   override def getCurrentState: T = currentState
 

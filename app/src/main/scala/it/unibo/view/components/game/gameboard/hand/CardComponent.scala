@@ -1,13 +1,10 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{
-  CandidateCardToPlayMessage,
-  InternalViewSubject,
-  ToggleCardInListMessage
-}
+import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage}
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
+import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
 import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
 import it.unibo.view.components.{ICanBeDisabled, ICanToggleHandler, IHandComponent}
@@ -21,14 +18,11 @@ import scalafx.Includes.*
 
 import scala.compiletime.uninitialized
 
-enum CardState:
-  case PlayCard, DiscardCard
-
 enum CardHighlightState:
   case Highlighted, Unhighlighted
 
 final class CardComponent(using internalObservable: InternalViewSubject)
-    extends IHandComponent, ICanToggleHandler[CardState], ICanBeDisabled:
+    extends IHandComponent, ICanToggleHandler[GamePhase], ICanBeDisabled:
 
   override val fxmlPath: String = GUIType.Card.fxmlPath
 
@@ -48,20 +42,22 @@ final class CardComponent(using internalObservable: InternalViewSubject)
 
   var highlightManager = CardHighlightManager()
 
-  protected var currentState: CardState = CardState.PlayCard
-  protected val defaultState: CardState = CardState.PlayCard
+  protected var currentState: GamePhase = GamePhase.PlayCardPhase
+
 
   private val playCardHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) => internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+    (_: MouseEvent) =>
+      internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
 
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
     highlightManager.toggle()
 
-  addHandler(CardState.PlayCard, MouseEvent.MOUSE_CLICKED, playCardHandler)
-  addHandler(CardState.DiscardCard, MouseEvent.MOUSE_CLICKED, discardCardHandler)
+  addHandler(GamePhase.PlayCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+  addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+  addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
-  protected def applyState(state: CardState): Unit = highlightManager.toggle(Some(Unhighlighted))
+  protected def applyState(state: GamePhase): Unit = highlightManager.toggle(Some(Unhighlighted))
 
   def setCard(card: Card): Unit =
     cardPane.getStyleClass.clear()
@@ -70,7 +66,6 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardTitle.setText(card.cardType.title)
     cardDescription.setText(card.cardType.description)
     cardId = card.id.toString
-    toggle(currentState)
     card.cardType.effectType match
       case _: CanBeDiscarded => discardable = true
       case _                 => discardable = false
@@ -89,11 +84,11 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardDescription.setText("")
     cardId = ""
     discardable = false
-    toggle(defaultState)
     disableActualHandlers()
 
   override def onEnableView(): Unit =
     super.onEnableView()
+    println(s"Enable $currentState")
     enableActualHandlers()
 
   override def onDisableView(): Unit =

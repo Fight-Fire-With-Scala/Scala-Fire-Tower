@@ -3,7 +3,7 @@ package it.unibo.controller.view
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
-import it.unibo.view.components.game.gameboard.grid.GridState
+
 import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
 
 // TODO avoid reference to the controller in the view
@@ -18,7 +18,7 @@ final case class TurnViewController(
     updateGamePhase(currentGamePhase)
     gameComponent.fold(()) { component =>
       component.updateGrid(gameBoard.board.grid, currentGamePhase)
-      component.updatePlayer(gameBoard.currentPlayer)
+      component.updatePlayer(gameBoard.currentPlayer)(currentGamePhase)
       component.gridComponent.setAvailablePatterns(gameBoard.board.availablePatterns)
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>
