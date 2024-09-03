@@ -2,20 +2,7 @@ package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
 import it.unibo.controller.model.ModelController
-import it.unibo.controller.{
-  DiscardCardMessage,
-  DrawCardMessage,
-  GameBoardInitialization,
-  ModelSubject,
-  RefreshMessage,
-  ResetPatternComputation,
-  ResolvePatternChoice,
-  ResolvePatternComputation,
-  StartGameBoardMessage,
-  UpdateGamePhaseModel,
-  UpdateWindDirection,
-  ViewMessage
-}
+import it.unibo.controller.{ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, ModelSubject, RefreshMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, StartGameBoardMessage, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage}
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
 
@@ -61,7 +48,7 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val gb = model.getGameBoard
       val newGb = controller.resolvePatternChoice(gb, pattern)
       model.setGameBoard(newGb)
-//      modelObserver.onNext(ConfirmCardPlayMessage())
+      modelObserver.onNext(ConfirmCardPlayMessage())
       modelObserver.onNext(RefreshMessage(newGb))
 
     case DiscardCardMessage(cards) =>
