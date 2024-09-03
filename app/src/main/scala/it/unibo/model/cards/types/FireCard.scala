@@ -20,12 +20,12 @@ enum FireCard(
   case Flare
       extends FireCard(
         id = 1,
-        effect = MultiStepResolver(MediumEffect(FireCard.defaultTokens), Rule("fire"))
+        effect = MultiStepResolver(MediumEffect(Map("a" -> Fire)), Rule("fire"))
       )
   case BurningSnag
       extends FireCard(
         id = 2,
-        effect = MultiStepResolver(LargeEffect(FireCard.defaultTokens), Rule("fire"))
+        effect = MultiStepResolver(LargeEffect(Map("a" -> Fire)), Rule("fire"))
       )
 //  case Ember
 //      extends FireCard(
@@ -35,6 +35,3 @@ enum FireCard(
 //          List(AtLeast("neigh", "cell", "[]", "[]"))
 //        )
 //      )
-
-object FireCard:
-  val defaultTokens: Map[String, Token] = Map("a" -> Fire)
