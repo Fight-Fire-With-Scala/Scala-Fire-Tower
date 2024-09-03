@@ -8,8 +8,7 @@ class GridInitializer(
     gridSize: Int,
     squareSize: Double,
     handleCellHover: (Int, Int, HoverDirection) => Unit,
-    handleCellClickForWindPhase: () => Unit,
-    handleCellClickForCardPhase: () => Unit
+    handleCellClick: (Int, Int) => Unit,
 ):
   private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
 
@@ -23,8 +22,7 @@ class GridInitializer(
         col,
         squareSize,
         handleCellHover,
-        handleCellClickForWindPhase,
-        handleCellClickForCardPhase
+        handleCellClick
       )
       GridPane.setRowIndex(square.getGraphicPane, row)
       GridPane.setColumnIndex(square.getGraphicPane, col)

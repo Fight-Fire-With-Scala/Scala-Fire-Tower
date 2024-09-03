@@ -1,7 +1,10 @@
 package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.model.gameboard.GamePhase
+import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
+import it.unibo.view.components.game.gameboard.hand.CardState
 import it.unibo.view.components.{ICanBeDisabled, ICanToggleHandler}
+import it.unibo.view.logger
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.{Font, Text}
@@ -19,46 +22,28 @@ final case class GridSquare(
     col: Int,
     size: Double,
     onHover: (Int, Int, HoverDirection) => Unit,
-    onClickWindPhase: () => Unit,
-    onClickCardPhase: () => Unit
-) extends ICanBeDisabled, ICanToggleHandler[GamePhase]:
-
-  protected var currentState: GamePhase = GamePhase.WindPhase
+    onClick: (Int, Int) => Unit,
+) extends ICanBeDisabled:
 
   private val hoverDelayMillis = 5
   private var squareColor: Color = Color.White
+  private val onMouseMovedFun: EventHandler[MouseEvent] =
+    (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
-  private val onMouseMovedFun: EventHandler[MouseEvent] = (event: MouseEvent) => handleMouseMoved(event)
-  private val onMouseClickedFunWindPhase: EventHandler[MouseEvent] =
-    (_: MouseEvent) => onClickWindPhase()
-  private val onMouseClickedFunCardPhase: EventHandler[MouseEvent] =
-    (_: MouseEvent) => onClickCardPhase()
+  private val onMouseClickedFun: EventHandler[MouseEvent] =
+    (_: MouseEvent) => onClick(row, col)
 
   private val fixedEventHandlers =
-    List(MouseEvent.MOUSE_MOVED -> onMouseMovedFun, MouseEvent.MOUSE_EXITED -> onMouseExitedFun)
-
-  addHandler(GamePhase.WindPhase, MouseEvent.MOUSE_CLICKED, onMouseClickedFunWindPhase)
-  addHandler(GamePhase.PlayCardPhase, MouseEvent.MOUSE_CLICKED, onMouseClickedFunCardPhase)
-
-  protected def applyState(state: GamePhase): Unit = ()
-
-  override protected def disableActualHandlers(): Unit =
-    fixedEventHandlers.foreach { case (ev, h) => pane.removeEventHandler(ev, h)}
-    super.disableActualHandlers()
-
-  override protected def enableActualHandlers(): Unit =
-    fixedEventHandlers.foreach { case (ev, h) => pane.addEventHandler(ev, h)}
-    super.enableActualHandlers()
-
+    List(MouseEvent.MOUSE_MOVED -> onMouseMovedFun, MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
+      MouseEvent.MOUSE_CLICKED -> onMouseClickedFun)
 
   override def enableView(): Unit =
     rectangle.setOpacity(0.9)
-    enableActualHandlers()
+    fixedEventHandlers.foreach((ev, h) => pane.addEventHandler(ev, h))
 
   override def disableView(): Unit =
     rectangle.setOpacity(0.7)
-    disableActualHandlers()
-
+    fixedEventHandlers.foreach((ev, h) => pane.removeEventHandler(ev, h))
 
   private val rectangle: Rectangle = new Rectangle:
     width = size

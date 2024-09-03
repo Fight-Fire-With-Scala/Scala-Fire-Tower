@@ -19,6 +19,7 @@ class GridManager(
     internalObservable: InternalViewSubject,
     observableSubject: ViewSubject
 ):
+  private var gamePhase: GamePhase = uninitialized
   var squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
   private var gridEventHandler: GridEventHandler = uninitialized
 
@@ -27,25 +28,24 @@ class GridManager(
       gridSize,
       squareSize,
       handleCellHover,
-      handleCellClickForWindPhase,
-      handleCellClickForCardPhase
+      handleCellClick
     )
     val gridPane = new GridPane
     squareMap = gridInitializer.initializeGridSquares(gridPane)
     gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
     container.getChildren.add(gridPane)
 
-  private def handleCellClickForWindPhase(): Unit = gridEventHandler.handleCellClickForWindPhase()
-  private def handleCellClickForCardPhase(): Unit = gridEventHandler.handleCellClickForCardPhase()
+  private def handleCellClick(row: Int, col: Int): Unit = gridEventHandler.handleCellClick(row, col, gamePhase)
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
-    gridEventHandler.handleCellHover(row, col, hoverDirection)
+    gridEventHandler.handleCellHover(row, col, hoverDirection, gamePhase)
 
   def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
     .updateAvailablePatterns(patterns)
 
   def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
     .foreach { case (position, square) =>
-      square.toggle(gamePhase)
+      //gridEventHandler.updateGamePhase(gamePhase)
+      this.gamePhase = gamePhase
       val cellColor = grid.getCell(position) match
         case Some(_: Woods.type)       => Color.DarkGreen
         case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
