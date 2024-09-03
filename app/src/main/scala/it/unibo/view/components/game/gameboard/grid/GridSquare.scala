@@ -1,10 +1,7 @@
 package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
-import it.unibo.view.components.game.gameboard.hand.CardState
 import it.unibo.view.components.{ICanBeDisabled, ICanToggleHandler}
-import it.unibo.view.logger
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.{Font, Text}
@@ -26,15 +23,12 @@ final case class GridSquare(
     onClickCardPhase: () => Unit
 ) extends ICanBeDisabled, ICanToggleHandler[GamePhase]:
 
-  protected var currentState: GamePhase = uninitialized
-  private var dynamicEventHandlers: Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]] =
-    Map()
+  protected var currentState: GamePhase = GamePhase.WindPhase
 
   private val hoverDelayMillis = 5
   private var squareColor: Color = Color.White
-  private val onMouseMovedFun: EventHandler[MouseEvent] =
-    (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
+  private val onMouseMovedFun: EventHandler[MouseEvent] = (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseClickedFunWindPhase: EventHandler[MouseEvent] =
     (_: MouseEvent) => onClickWindPhase()
   private val onMouseClickedFunCardPhase: EventHandler[MouseEvent] =
@@ -48,23 +42,23 @@ final case class GridSquare(
 
   protected def applyState(state: GamePhase): Unit = ()
 
-  protected def onToggle(state: GamePhase): Unit =
-    dynamicEventHandlers.get(MouseEvent.MOUSE_CLICKED)
-      .foreach(_.foreach(pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
-    dynamicEventHandlers += MouseEvent.MOUSE_CLICKED -> getHandlers(state, MouseEvent.MOUSE_CLICKED)
-    dynamicEventHandlers(MouseEvent.MOUSE_CLICKED)
-      .foreach(pane.addEventHandler(MouseEvent.MOUSE_CLICKED, _))
+  override protected def disableActualHandlers(): Unit =
+    fixedEventHandlers.foreach { case (ev, h) => pane.removeEventHandler(ev, h)}
+    super.disableActualHandlers()
+
+  override protected def enableActualHandlers(): Unit =
+    fixedEventHandlers.foreach { case (ev, h) => pane.addEventHandler(ev, h)}
+    super.enableActualHandlers()
+
 
   override def enableView(): Unit =
     rectangle.setOpacity(0.9)
-    fixedEventHandlers.foreach((ev, h) => pane.addEventHandler(ev, h))
-    toggle(currentState)
+    enableActualHandlers()
 
   override def disableView(): Unit =
     rectangle.setOpacity(0.7)
-    fixedEventHandlers.foreach((ev, h) => pane.removeEventHandler(ev, h))
-    dynamicEventHandlers.get(MouseEvent.MOUSE_CLICKED)
-      .foreach(_.foreach(pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
+    disableActualHandlers()
+
 
   private val rectangle: Rectangle = new Rectangle:
     width = size

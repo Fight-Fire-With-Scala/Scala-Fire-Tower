@@ -1,6 +1,10 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage}
+import it.unibo.controller.{
+  CandidateCardToPlayMessage,
+  InternalViewSubject,
+  ToggleCardInListMessage
+}
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
@@ -47,8 +51,8 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   protected var currentState: CardState = CardState.PlayCard
   protected val defaultState: CardState = CardState.PlayCard
 
-  private val playCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
-    internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+  private val playCardHandler: EventHandler[MouseEvent] =
+    (_: MouseEvent) => internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
 
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
@@ -57,16 +61,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   addHandler(CardState.PlayCard, MouseEvent.MOUSE_CLICKED, playCardHandler)
   addHandler(CardState.DiscardCard, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
-  private var eventHandlers: Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]] = Map()
-
   protected def applyState(state: CardState): Unit = highlightManager.toggle(Some(Unhighlighted))
-
-  protected def onToggle(state: CardState): Unit =
-    eventHandlers.get(MouseEvent.MOUSE_CLICKED)
-      .foreach(_.foreach(cardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
-    eventHandlers += MouseEvent.MOUSE_CLICKED -> getHandlers(state, MouseEvent.MOUSE_CLICKED)
-    eventHandlers(MouseEvent.MOUSE_CLICKED)
-      .foreach(cardPane.addEventHandler(MouseEvent.MOUSE_CLICKED, _))
 
   def setCard(card: Card): Unit =
     cardPane.getStyleClass.clear()
@@ -95,17 +90,15 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardId = ""
     discardable = false
     toggle(defaultState)
-    highlightManager.toggle(Some(CardHighlightState.Unhighlighted))
-    eventHandlers.get(MouseEvent.MOUSE_CLICKED)
-      .foreach(_.foreach(cardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
+    disableActualHandlers()
 
   override def onEnableView(): Unit =
     super.onEnableView()
-    toggle(currentState)
+    enableActualHandlers()
 
   override def onDisableView(): Unit =
     super.onDisableView()
-    eventHandlers.get(MouseEvent.MOUSE_CLICKED)
-      .foreach(_.foreach(cardPane.removeEventHandler(MouseEvent.MOUSE_CLICKED, _)))
+    disableActualHandlers()
 
   override protected def getPane: Node = cardPane
+  
