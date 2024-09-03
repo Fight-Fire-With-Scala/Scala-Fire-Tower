@@ -30,7 +30,7 @@ trait ICanToggleHandler[T] extends Toggleable[T]:
   protected def enableActualHandlers(): Unit = updateHandlers(currentState, getPane.addEventHandler)
 
   protected def onToggle(state: T): Unit =
-    disableActualHandlers()
+    updateHandlers(currentState, getPane.removeEventHandler)
     updateHandlers(state, getPane.addEventHandler)
 
   def addHandler(
