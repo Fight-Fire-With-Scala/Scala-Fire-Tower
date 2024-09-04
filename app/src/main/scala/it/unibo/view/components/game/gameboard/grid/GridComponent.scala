@@ -1,6 +1,7 @@
 package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
+import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.view.GUIType
@@ -30,8 +31,8 @@ final class GridComponent(using
     gridManager = new GridManager(cellNumber, cellSize, internalObservable, observableSubject)
     gridManager.initialize(container)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridManager
-    .setAvailablePatterns(patterns)
+  def setAvailablePatterns(patterns: List[Map[Position, Token]], card: Option[Card]): Unit = gridManager
+    .setAvailablePatterns(patterns, card)
 
   override def onEnableView(): Unit = gridManager.squareMap.foreach { case (_, square) =>
     square.enableView()

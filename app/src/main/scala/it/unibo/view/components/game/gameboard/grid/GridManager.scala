@@ -2,6 +2,7 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
+import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
@@ -39,8 +40,10 @@ class GridManager(
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection, gamePhase)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit = gridEventHandler
-    .updateAvailablePatterns(patterns)
+  def setAvailablePatterns(patterns: List[Map[Position, Token]], card: Option[Card] = None): Unit = 
+    gridEventHandler.updateAvailablePatterns(patterns)
+    gridEventHandler.setActualCard(card)
+  
 
   def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
     .foreach { case (position, square) =>

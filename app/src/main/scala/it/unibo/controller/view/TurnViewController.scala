@@ -4,7 +4,11 @@ import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
 
-import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
+import it.unibo.view.components.game.gameboard.sidebar.{
+  DeckComponent,
+  GameInfoComponent,
+  WindRoseComponent
+}
 
 // TODO avoid reference to the controller in the view
 // TODO avoid passing observables here
@@ -19,7 +23,12 @@ final case class TurnViewController(
     gameComponent.fold(()) { component =>
       component.updateGrid(gameBoard.board.grid, currentGamePhase)
       component.updatePlayer(gameBoard.currentPlayer)(currentGamePhase)
-      component.gridComponent.setAvailablePatterns(gameBoard.board.availablePatterns)
+      component.gridComponent.setAvailablePatterns(
+        gameBoard.board.availablePatterns,
+        gameBoard.board.currentCardId match
+          case Some(id) => gameBoard.currentPlayer.hand.find(_.id == id)
+          case _        => None
+      )
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>
           c.updateTurnPhase(currentGamePhase.toString)
