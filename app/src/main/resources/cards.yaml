@@ -4,7 +4,7 @@ cardSets:
     description: "Scegli una gemma fuoco esistente e sostituiscila
      con un segnalino tagliafuoco. Metti gemme di fuoco sugli spazi circostanti."
     effectCode: 0
-    amount: 1
+    amount: 0
   - title: "Vampata"
     typeName: "Fire"
     description: "Piazza fino a tre gemme di fuoco adiacenti e allineate. 
@@ -30,7 +30,7 @@ cardSets:
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Nord di un'altra gemma di fuoco."
     effectCode: 4
-    amount: 0
+    amount: 1
   - title: "Sud"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Sud. OPPURE
