@@ -71,5 +71,5 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
     case ResetPatternComputation() =>
       val gb = model.getGameBoard
       val newGb = gb
-        .copy(board = gb.board.copy(currentCardId = None, availablePatterns = List.empty))
+        .copy(board = gb.board.copy(currentCardId = None, availablePatterns = Set.empty))
       modelObserver.onNext(RefreshMessage(newGb))

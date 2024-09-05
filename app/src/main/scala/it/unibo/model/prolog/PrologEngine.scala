@@ -11,7 +11,7 @@ final case class PrologEngine(theory: Theory):
   def solve(goal: Term): LazyList[SolveInfo] = engine(goal)
 
   def solveAsPatterns(goal: Term): Set[Map[Position, Token]] =
-    solve(goal).map(i => parseComputedPatterns(i)).toSet
+    solve(goal).map(i => parseComputedPatterns(i)).map(_.toSet).distinct.map(_.toMap).toSet
   
   def isSolvedWithSuccess(goal: Term): Boolean = 
     engine(goal).map(_.isSuccess).headOption.contains(true)

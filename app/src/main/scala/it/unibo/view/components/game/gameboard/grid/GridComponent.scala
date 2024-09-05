@@ -45,7 +45,7 @@ final class GridComponent(using
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]]): Unit =
+  def setAvailablePatterns(patterns: Set[Map[Position, Token]]): Unit =
     gridEventHandler.updateAvailablePatterns(patterns)
 
   override def onEnableView(): Unit = squareMap.foreach { case (_, square) => square.enableView() }

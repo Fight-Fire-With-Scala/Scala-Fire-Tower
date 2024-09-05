@@ -14,7 +14,7 @@ import scala.util.Random
 final case class Board(
     grid: Grid,
     currentCardId: Option[Int],
-    availablePatterns: List[Map[Position, Token]],
+    availablePatterns: Set[Map[Position, Token]],
     windDirection: Direction
 ):
   private def updateWind(newWindEffect: WindEffect): Board =
@@ -37,4 +37,4 @@ final case class Board(
 object Board:
   def withRandomWindAndStandardGrid: Board =
     val randomWindDirection = Random.shuffle(Direction.values).head
-    Board(Grid.standard, None, List.empty, randomWindDirection)
+    Board(Grid.standard, None, Set.empty, randomWindDirection)

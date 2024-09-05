@@ -12,6 +12,6 @@ sealed case class GameboardEffect(gameboard: GameBoard) extends GameEffect
 
 trait CardEffect extends GameEffect
 
-sealed case class PatternComputationEffect(patterns: List[Map[Position, Token]]) extends CardEffect
+sealed case class PatternComputationEffect(patterns: Set[Map[Position, Token]]) extends CardEffect
 
 case class WindEffect(direction: Direction) extends CardEffect

@@ -48,5 +48,5 @@ trait CardController:
         case Some(cardId) => currentPlayer.playCard(cardId)._1
         case None         => currentPlayer
       ,
-      board = board.copy(currentCardId = None, availablePatterns = List.empty)
+      board = board.copy(currentCardId = None, availablePatterns = Set.empty)
     )

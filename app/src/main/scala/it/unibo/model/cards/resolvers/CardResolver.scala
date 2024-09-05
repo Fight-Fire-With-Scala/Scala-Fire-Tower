@@ -23,7 +23,7 @@ sealed case class PatternComputationResolver(
     theory.append(cardsProgram)
     theory.append(solverProgram)
     val engine = PrologEngine(theory)
-    val computedPatterns = engine.solve(goal).map(i => parseComputedPatterns(i)).toList
+    val computedPatterns = engine.solveAsPatterns(goal)
     PatternComputationEffect(computedPatterns)
 
 sealed case class PatternApplicationResolver(pattern: PatternChoiceEffect) extends StepResolver:

@@ -16,9 +16,9 @@ class GridEventHandler(
     squareMap: mutable.Map[Position, GridSquare]
 ):
   private val hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
-  private var availablePatterns: List[Map[Position, Token]] = List.empty
+  private var availablePatterns: Set[Map[Position, Token]] = Set.empty
 
-  def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit =
+  def updateAvailablePatterns(ap: Set[Map[Position, Token]]): Unit =
     availablePatterns = ap
 
   def handleCellClick(): Unit =
