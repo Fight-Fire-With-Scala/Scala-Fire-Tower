@@ -1,17 +1,9 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{
-  DiscardCardMessage,
-  DrawCardMessage,
-  InternalViewSubject,
-  ResetPatternComputation,
-  ResolvePatternComputation,
-  UpdateGamePhaseModel,
-  UpdateGamePhaseView,
-  ViewSubject
-}
+import it.unibo.controller.{DiscardCardMessage, DrawCardMessage, InternalViewSubject, ResetPatternComputation, ResolvePatternComputation, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
+import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, PlayCardPhase, WaitingPhase}
-import it.unibo.view.{logger, GUIType}
+import it.unibo.view.{GUIType, logger}
 import it.unibo.view.components.{IHandComponent, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -41,14 +33,16 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     cardComponents.foreach(addComponent)
     enableView()
 
-  def updateHand(cards: List[it.unibo.model.cards.Card]): Unit = runOnUIThread {
+  def updateHand(cards: List[it.unibo.model.cards.Card])(gamePhase: GamePhase): Unit = runOnUIThread {
     cardComponents.foreach(_.reset())
-    cardComponents.zip(cards).foreach { case (cardComponent, card) => cardComponent.setCard(card) }
+    cardComponents.zip(cards).foreach { case (cardComponent, card) => 
+      cardComponent.setCard(card) 
+      cardComponent.toggle(gamePhase)
+    }
     cardToPlay.foreach(_.highlightManager.toggle(Some(CardHighlightState.Highlighted)))
   }
 
   def initDiscardProcedure(): Unit = cardComponents.foreach { cardComponent =>
-    if cardComponent.discardable then cardComponent.toggle(CardState.DiscardCard)
     cardToPlay = None
   }
 
@@ -57,7 +51,6 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     endDiscardProcedure()
   
   private def endDiscardProcedure(): Unit =
-    cardComponents.foreach(_.toggle(CardState.PlayCard))
     cardToRemove = List.empty
 
   def toggleCardInDiscardList(cardId: Int): Unit = cardToRemove =

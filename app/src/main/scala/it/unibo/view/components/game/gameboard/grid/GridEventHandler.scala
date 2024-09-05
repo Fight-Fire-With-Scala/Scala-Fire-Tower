@@ -2,68 +2,174 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ResolvePatternChoice, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.model.cards.Card
+import it.unibo.model.cards.Card.allCards
+import it.unibo.model.cards.types.{FireCard, WindCard}
+import it.unibo.model.gameboard.{Direction, GamePhase}
+import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, PlayCardPhase, RedrawCardsPhase, WaitingPhase, WindPhase}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
+import it.unibo.view.components.game.gameboard.grid.FigurePattern.{Row3, SingleCell, Square, Void}
+import it.unibo.view.logger
 import scalafx.scene.paint.Color
-
 import scala.collection.mutable
+import scala.compiletime.uninitialized
+
+enum FigurePattern:
+  case SingleCell
+  case Row3
+  case Square
+  case Void
 
 class GridEventHandler(
-    observableSubject: ViewSubject,
-    internalObservable: InternalViewSubject,
-    squareMap: mutable.Map[Position, GridSquare]
-):
-  private val hoveredCellsOriginalColors: mutable.Map[Position, Color] = mutable.Map()
+                        observableSubject: ViewSubject,
+                        internalObservable: InternalViewSubject,
+                        squareMap: mutable.Map[Position, GridSquare]
+                      ):
+  private val hoveredCells: mutable.Map[Position, Color] = mutable.Map()
+  private val starterPatternCell: mutable.Map[Position, Color] = mutable.Map()
+  private var currentGamePhase: GamePhase = uninitialized
   private var availablePatterns: Set[Map[Position, Token]] = Set.empty
+  private var actualCard: Option[Card] = None
+  private var actualPatternResolved: FigurePattern = Void
 
-  def updateAvailablePatterns(ap: Set[Map[Position, Token]]): Unit =
-    availablePatterns = ap
+  def updateGamePhase(gamePhase: GamePhase): Unit = currentGamePhase = gamePhase
+  def setActualCard(card: Option[Card]): Unit =
+    actualCard = card
+    card match
+      case None       => actualPatternResolved = FigurePattern.Void
+      case Some(card) => card.cardType.effectType.id match
+        case 4 | 5 | 6 | 7 => actualPatternResolved = SingleCell
+        case 1             => actualPatternResolved = Row3
 
-  def handleCellClick(): Unit =
-    val matchedPatterns: Map[Position, Token] = hoveredCellsOriginalColors.keys
-      .flatMap { position =>
-        availablePatterns.collect {
-          case pattern if pattern.contains(position) => position -> pattern(position)
+  def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit = availablePatterns = ap
+
+  def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit =
+    val position = Position(row, col)
+    gamePhase match
+      case WindPhase        => if (hoveredCells.contains(position))
+        val pattern = availablePatterns.find(_.contains(position)).get
+        observableSubject.onNext(ResolvePatternChoice(pattern))
+        internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
+        observableSubject.onNext(UpdateGamePhaseModel(WaitingPhase))
+        hoveredCells.clear()
+      case RedrawCardsPhase => ???
+      case PlayCardPhase    =>
+        actualPatternResolved match
+          case SingleCell =>
+            if(hoveredCells.contains(position))
+              val pattern = availablePatterns.find(_.contains(position)).get
+                observableSubject.onNext(ResolvePatternChoice(pattern))
+                internalObservable.onNext(UpdateGamePhaseView(ExtraActionPhase))
+                observableSubject.onNext(UpdateGamePhaseModel(ExtraActionPhase))
+                hoveredCells.clear()
+          case Row3       =>
+            handleClickForRowPattern(position)
+          case Square => ???
+          case Void => ???
+
+      case WaitingPhase     => ???
+      case ExtraActionPhase => ???
+
+  private def handleClickForRowPattern(position: Position): Unit =
+    //if i click on the starter of the pattern clicked cell
+    if starterPatternCell.contains(position) then
+      //and if there are cells in hover
+      if hoveredCells.nonEmpty then
+        val pattern = (hoveredCells.keys ++ starterPatternCell.keys).map { pos =>
+          pos -> availablePatterns.flatMap(_.get(pos)).head
+        }.toMap
+        logger.info(s"Pattern to resolve: $pattern")
+        observableSubject.onNext(ResolvePatternChoice(pattern))
+        internalObservable.onNext(UpdateGamePhaseView(ExtraActionPhase))
+        observableSubject.onNext(UpdateGamePhaseModel(ExtraActionPhase))
+        hoveredCells.clear()
+        starterPatternCell.clear()
+      else
+        runOnUIThread {
+          squareMap(position).updateColor(starterPatternCell(position))
+          starterPatternCell.clear()
         }
-      }.toMap
-    if matchedPatterns.nonEmpty then
-      hoveredCellsOriginalColors.clear()
-      observableSubject.onNext(ResolvePatternChoice(matchedPatterns))
-      internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
-      observableSubject.onNext(UpdateGamePhaseModel(WaitingPhase))
+    //if u click on a cell that can become the starter of the pattern
+    else if hoveredCells.contains(position) && starterPatternCell.isEmpty then
+      val pattern = availablePatterns.find(_.contains(position)).get
+      val hoverColor = getHoverColor(pattern(position))
+      runOnUIThread {
+        // Clicked cell has to keep the old color of the cell before hovering
+        starterPatternCell += position -> hoveredCells(position)
+        squareMap(position).updateColor(hoverColor.deriveColor(1, 1, 1, 0.5))
+        hoveredCells.clear()
+      }
+      logger.info(s"ActualPattern = $actualPatternResolved")
 
-  def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
+  //if u go on a cell that is an available patterns starts hovering
+  private def hoverForAvailablePatterns(row: Int, col: Int): Unit =
     resetHoverColors()
-    hoverDirection.direction match
-      case Some(dir) =>
-        val positionToCheck = checkNeighbor(Position(row, col), dir)
-        val candidatePositions = availablePatterns.filter(_.contains(positionToCheck))
-        candidatePositions.foreach { pattern =>
-          if pattern.keys.exists(_ == positionToCheck) then
-            val square = squareMap(positionToCheck)
-            val token = pattern(positionToCheck)
+    val position = Position(row, col)
+    availablePatterns.find(_.contains(position)) match
+      case Some(pattern) =>
+        val hoverColor = getHoverColor(pattern(position))
+        runOnUIThread {
+          hoveredCells += position -> squareMap(position).getColor
+          squareMap(position).updateColor(hoverColor)
+        }
+      case None          =>
+
+  private def hoverForClickedCells(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
+    val position = Position(row, col)
+    //if we are hovering on the starter pattern cell
+    if (starterPatternCell.contains(position))
+      resetHoverColors()
+      val uniquePatterns = availablePatterns.filter { pattern =>
+        pattern.contains(position) && pattern.keys.forall { pos =>
+          val delta = pos - position
+
+          hoverDirection.direction match
+            case Some(Direction.North) => delta.row < 0 || (delta.row == 0 && delta.col == 0)
+            case Some(Direction.South) => delta.row > 0 || (delta.row == 0 && delta.col == 0)
+            case Some(Direction.West)  => delta.col < 0 || (delta.row == 0 && delta.col == 0)
+            case Some(Direction.East)  => delta.col > 0 || (delta.row == 0 && delta.col == 0)
+            case None                  => false
+        }
+      }.map(_.toSet).distinct.map(_.toMap)
+      // TODO: why distinct is needed if mapped into a set ?
+
+      // Unique patterns should be always unique
+      uniquePatterns.foreach { pattern =>
+        pattern.foreach { case (pos, token) =>
+          if pos != position then
             val hoverColor = getHoverColor(token)
             runOnUIThread {
-              hoveredCellsOriginalColors += positionToCheck -> square.getColor
-              square.updateColor(hoverColor)
+              hoveredCells += pos -> squareMap(pos).getColor
+              squareMap(pos).updateColor(hoverColor)
             }
         }
-      case None =>
+      }
+
+  def handleCellHover(
+                       row: Int,
+                       col: Int,
+                       hoverDirection: HoverDirection,
+                       gamePhase: GamePhase
+                     ): Unit = gamePhase match
+    case GamePhase.WindPhase        => hoverForAvailablePatterns(row, col)
+    case GamePhase.RedrawCardsPhase => ???
+    case GamePhase.PlayCardPhase    =>
+      actualPatternResolved match
+        case SingleCell => hoverForAvailablePatterns(row, col)
+        case Row3       =>
+          if starterPatternCell.isEmpty then hoverForAvailablePatterns(row, col)
+          else hoverForClickedCells(row, col, hoverDirection)
+        case Square => ???
+        case Void => ???
+    case WaitingPhase =>
+    case ExtraActionPhase =>
 
   private def resetHoverColors(): Unit =
-    hoveredCellsOriginalColors.foreach { case (position, color) =>
-      val square = squareMap(position)
-      runOnUIThread(square.updateColor(color))
-    }
-    hoveredCellsOriginalColors.clear()
+    hoveredCells.foreach((position, color) => runOnUIThread(squareMap(position).updateColor(color)))
+    hoveredCells.clear()
 
-  private def checkNeighbor(startPosition: Position, direction: Direction): Position =
-    startPosition + direction.getDelta
-
-  private def getHoverColor(token: Token): Color =
-    token match
-      case Fire      => Color.DarkOrange
-      case Firebreak => Color.Blue
-      case _         => Color.Gray
+  private def getHoverColor(token: Token): Color = token match
+    case Fire      => Color.DarkOrange
+    case Firebreak => Color.Blue
+    case _         => Color.Gray

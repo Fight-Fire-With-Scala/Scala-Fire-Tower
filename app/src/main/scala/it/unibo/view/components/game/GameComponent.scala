@@ -82,12 +82,13 @@ final class GameComponent extends IViewComponent with IUpdateView:
         handComponent = hc
         hc
     )
+ 
+  
+  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = gridComponent.updateGrid(grid, gamePhase)
 
-  def updateGrid(grid: Grid): Unit = runOnUIThread(gridComponent.updateGrid(grid))
-
-  def updatePlayer(player: Player): Unit = runOnUIThread {
+  def updatePlayer(player: Player)(gamePhase: GamePhase): Unit = runOnUIThread {
     val updatedHand = player.extraCard.fold(player.hand)(card => player.hand :+ card)
-    handComponent.updateHand(updatedHand)
+    handComponent.updateHand(updatedHand)(gamePhase)
   }
 
   def updateSidebar(gameInfoComponent: GameInfoComponent, newGamePhase: GamePhase): Unit =

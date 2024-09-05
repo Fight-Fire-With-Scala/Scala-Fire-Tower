@@ -1,12 +1,15 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.view.components.ICanBeDisabled
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
+import it.unibo.view.components.{ICanBeDisabled, ICanToggleHandler}
+import it.unibo.view.logger
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.{Font, Text}
 import javafx.scene.input.MouseEvent
 import javafx.animation.PauseTransition
-import javafx.event.EventHandler
+import javafx.event.{EventHandler, EventType}
 import javafx.scene.Node
 import javafx.util.Duration
 import scalafx.scene.layout.Pane
@@ -18,7 +21,7 @@ final case class GridSquare(
     col: Int,
     size: Double,
     onHover: (Int, Int, HoverDirection) => Unit,
-    onClick: () => Unit
+    onClick: (Int, Int) => Unit,
 ) extends ICanBeDisabled:
 
   private val hoverDelayMillis = 5
@@ -26,13 +29,21 @@ final case class GridSquare(
   private val onMouseMovedFun: EventHandler[MouseEvent] =
     (event: MouseEvent) => handleMouseMoved(event)
   private val onMouseExitedFun: EventHandler[MouseEvent] = (_: MouseEvent) => cancelHoverDelay()
-  private val onMouseClickedFun: EventHandler[MouseEvent] = (_: MouseEvent) => handleMouseClicked()
-  private val eventHandlers = List(
-    MouseEvent.MOUSE_MOVED -> onMouseMovedFun,
-    MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
-    MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
-  )
-  
+  private val onMouseClickedFun: EventHandler[MouseEvent] =
+    (_: MouseEvent) => onClick(row, col)
+
+  private val fixedEventHandlers =
+    List(MouseEvent.MOUSE_MOVED -> onMouseMovedFun, MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
+      MouseEvent.MOUSE_CLICKED -> onMouseClickedFun)
+
+  override def enableView(): Unit =
+    rectangle.setOpacity(0.9)
+    fixedEventHandlers.foreach((ev, h) => pane.addEventHandler(ev, h))
+
+  override def disableView(): Unit =
+    rectangle.setOpacity(0.7)
+    fixedEventHandlers.foreach((ev, h) => pane.removeEventHandler(ev, h))
+
   private val rectangle: Rectangle = new Rectangle:
     width = size
     height = size
@@ -70,8 +81,6 @@ final case class GridSquare(
       .fromCoordinates(lastEvent.getX, lastEvent.getY, rectangle.getWidth, rectangle.getHeight)
     onHover(row, col, direction)
 
-  private def handleMouseClicked(): Unit = onClick()
-
   def getGraphicPane: Pane = pane
 
   def updateColor(color: Color): Unit =
@@ -79,13 +88,5 @@ final case class GridSquare(
     rectangle.setFill(color)
 
   def getColor: Color = squareColor
-  
-  override def enableView(): Unit =
-    rectangle.setOpacity(0.9)
-    eventHandlers.foreach((ev, h) => pane.addEventHandler(ev, h))
-
-  override def disableView(): Unit =
-    rectangle.setOpacity(0.7)
-    eventHandlers.foreach((ev, h) => pane.removeEventHandler(ev, h))
 
   override protected def getPane: Node = pane
