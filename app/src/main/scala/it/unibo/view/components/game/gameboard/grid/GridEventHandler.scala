@@ -50,11 +50,11 @@ class GridEventHandler(
     val position = Position(row, col)
     gamePhase match
       case WindPhase        => if (hoveredCells.contains(position))
-        hoveredCells.clear()
         val pattern = availablePatterns.find(_.contains(position)).get
         observableSubject.onNext(ResolvePatternChoice(pattern))
         internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
         observableSubject.onNext(UpdateGamePhaseModel(WaitingPhase))
+        hoveredCells.clear()
       case RedrawCardsPhase => ???
       case PlayCardPhase    =>
         actualPatternResolved match
@@ -66,7 +66,6 @@ class GridEventHandler(
                 observableSubject.onNext(UpdateGamePhaseModel(ExtraActionPhase))
                 hoveredCells.clear()
           case Row3       =>
-            logger.info(s"Row3 pattern resolving")
             handleClickForRowPattern(position)
           case Square => ???
           case Void => ???
@@ -160,9 +159,8 @@ class GridEventHandler(
           else hoverForClickedCells(row, col, hoverDirection)
         case Square => ???
         case Void => ???
-
-    case GamePhase.WaitingPhase     => ???
-    case GamePhase.ExtraActionPhase => ???
+    case WaitingPhase =>
+    case ExtraActionPhase =>
 
   private def resetHoverColors(): Unit =
     hoveredCells.foreach((position, color) => runOnUIThread(squareMap(position).updateColor(color)))
