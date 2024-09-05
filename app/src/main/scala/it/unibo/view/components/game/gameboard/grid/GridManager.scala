@@ -40,7 +40,7 @@ class GridManager(
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection, gamePhase)
 
-  def setAvailablePatterns(patterns: List[Map[Position, Token]], card: Option[Card] = None): Unit = 
+  def setAvailablePatterns(patterns: Set[Map[Position, Token]], card: Option[Card] = None): Unit = 
     gridEventHandler.updateAvailablePatterns(patterns)
     gridEventHandler.setActualCard(card)
   

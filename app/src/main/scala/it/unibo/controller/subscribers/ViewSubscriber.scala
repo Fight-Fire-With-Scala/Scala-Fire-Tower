@@ -2,8 +2,8 @@ package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
 import it.unibo.controller.model.ModelController
-import it.unibo.controller.{ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, ModelSubject, RefreshMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, StartGameBoardMessage, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage}
 import it.unibo.controller.{
+  ConfirmCardPlayMessage,
   DiscardCardMessage,
   DrawCardMessage,
   GameBoardInitialization,
@@ -12,11 +12,12 @@ import it.unibo.controller.{
   ResetPatternComputation,
   ResolvePatternChoice,
   ResolvePatternComputation,
-  StartGameMessage,
   UpdateGamePhaseModel,
   UpdateWindDirection,
   ViewMessage
 }
+import it.unibo.controller.StartGameMessage
+
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
 

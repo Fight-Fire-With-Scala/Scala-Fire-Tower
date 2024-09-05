@@ -42,7 +42,7 @@ class GridEventHandler(
         case 4 | 5 | 6 | 7 => actualPatternResolved = SingleCell
         case 1             => actualPatternResolved = Row3
 
-  def updateAvailablePatterns(ap: List[Map[Position, Token]]): Unit = availablePatterns = ap
+  def updateAvailablePatterns(ap: Set[Map[Position, Token]]): Unit = availablePatterns = ap
 
   def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit =
     val position = Position(row, col)
@@ -131,7 +131,7 @@ class GridEventHandler(
             case Some(Direction.East)  => delta.col > 0 || (delta.row == 0 && delta.col == 0)
             case None                  => false
         }
-      }.map(_.toSet).distinct.map(_.toMap)
+      }.map(_.toSet).map(_.toMap)
       // TODO: why distinct is needed if mapped into a set ?
 
       // Unique patterns should be always unique
