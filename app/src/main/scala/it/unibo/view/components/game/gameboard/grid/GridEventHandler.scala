@@ -12,8 +12,6 @@ import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.view.components.game.gameboard.grid.FigurePattern.{Row3, SingleCell, Square, Void}
 import it.unibo.view.logger
 import scalafx.scene.paint.Color
-
-import java.util.Optional
 import scala.collection.mutable
 import scala.compiletime.uninitialized
 
@@ -29,7 +27,7 @@ class GridEventHandler(
                         squareMap: mutable.Map[Position, GridSquare]
                       ):
   private val hoveredCells: mutable.Map[Position, Color] = mutable.Map()
-  private val clickedCell: mutable.Map[Position, Color] = mutable.Map()
+  private val starterPatternCell: mutable.Map[Position, Color] = mutable.Map()
   private var currentGamePhase: GamePhase = uninitialized
   private var availablePatterns: List[Map[Position, Token]] = List.empty
   private var actualCard: Option[Card] = None
@@ -74,9 +72,11 @@ class GridEventHandler(
       case ExtraActionPhase => ???
 
   private def handleClickForRowPattern(position: Position): Unit =
-    if clickedCell.contains(position) then
+    //if i click on the starter of the pattern clicked cell
+    if starterPatternCell.contains(position) then
+      //and if there are cells in hover
       if hoveredCells.nonEmpty then
-        val pattern = (hoveredCells.keys ++ clickedCell.keys).map { pos =>
+        val pattern = (hoveredCells.keys ++ starterPatternCell.keys).map { pos =>
           pos -> availablePatterns.flatMap(_.get(pos)).head
         }.toMap
         logger.info(s"Pattern to resolve: $pattern")
@@ -84,23 +84,25 @@ class GridEventHandler(
         internalObservable.onNext(UpdateGamePhaseView(ExtraActionPhase))
         observableSubject.onNext(UpdateGamePhaseModel(ExtraActionPhase))
         hoveredCells.clear()
-        clickedCell.clear()
+        starterPatternCell.clear()
       else
         runOnUIThread {
-          squareMap(position).updateColor(clickedCell(position))
-          clickedCell.clear()
+          squareMap(position).updateColor(starterPatternCell(position))
+          starterPatternCell.clear()
         }
-    else if hoveredCells.contains(position) && clickedCell.isEmpty then
+    //if u click on a cell that can become the starter of the pattern
+    else if hoveredCells.contains(position) && starterPatternCell.isEmpty then
       val pattern = availablePatterns.find(_.contains(position)).get
       val hoverColor = getHoverColor(pattern(position))
       runOnUIThread {
         // Clicked cell has to keep the old color of the cell before hovering
-        clickedCell += position -> hoveredCells(position)
+        starterPatternCell += position -> hoveredCells(position)
         squareMap(position).updateColor(hoverColor.deriveColor(1, 1, 1, 0.5))
         hoveredCells.clear()
       }
       logger.info(s"ActualPattern = $actualPatternResolved")
 
+  //if u go on a cell that is an available patterns starts hovering
   private def hoverForAvailablePatterns(row: Int, col: Int): Unit =
     resetHoverColors()
     val position = Position(row, col)
@@ -115,7 +117,8 @@ class GridEventHandler(
 
   private def hoverForClickedCells(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     val position = Position(row, col)
-    if (clickedCell.contains(position))
+    //if we are hovering on the starter pattern cell
+    if (starterPatternCell.contains(position))
       resetHoverColors()
       val uniquePatterns = availablePatterns.filter { pattern =>
         pattern.contains(position) && pattern.keys.forall { pos =>
@@ -155,7 +158,7 @@ class GridEventHandler(
       actualPatternResolved match
         case SingleCell => hoverForAvailablePatterns(row, col)
         case Row3       =>
-          if clickedCell.isEmpty then hoverForAvailablePatterns(row, col)
+          if starterPatternCell.isEmpty then hoverForAvailablePatterns(row, col)
           else hoverForClickedCells(row, col, hoverDirection)
         case Square => ???
         case Void => ???
