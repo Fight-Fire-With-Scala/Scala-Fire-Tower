@@ -17,7 +17,7 @@ object PatternEffect:
       skeleton: Map[Position, Token],
       tokens: Map[String, Token]
   ): Map[Position, Token] = skeleton.map {
-    case (pos, TemplateToken(id: String)) if tokens.contains(id) => pos -> tokens(id)
+    case (pos, TemplateToken(id: String, _)) if tokens.contains(id) => pos -> tokens(id)
     case (pos, token)                                            => pos -> token
   }
 
