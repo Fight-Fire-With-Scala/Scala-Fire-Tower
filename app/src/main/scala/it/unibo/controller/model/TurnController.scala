@@ -23,7 +23,7 @@ trait TurnController:
 
     val availablePatternsEffect = PatternComputationResolver(
       VerySmallEffect(Map("a" -> Fire)),
-      Rule(Struct.of("fire", Var.of("R"))),
+      List(Rule(Struct.of("fire", Var.of("R")))),
       List(direction)
     ).getAvailableMoves(board)
 

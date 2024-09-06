@@ -13,6 +13,7 @@ import it.unibo.model.gameboard.{Dice, Direction}
 import it.unibo.model.cards.choices.WindChoice.*
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.prolog.Rule
+import it.unibo.model.cards.resolvers.given_Conversion_Rule_List
 
 enum WindCard(
     override val id: Int,

@@ -3,9 +3,9 @@ package it.unibo.model.cards.types
 import it.unibo.model.cards.resolvers.{EffectResolver, MetaResolver, MultiStepResolver}
 import it.unibo.model.cards.choices.GameChoice
 import it.unibo.model.cards.effects.{LargeEffect, MediumEffect, VeryLargeEffect}
-import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.model.prolog.Rule
+import it.unibo.model.cards.resolvers.given_Conversion_Rule_List
 
 enum FireCard(
     override val id: Int,

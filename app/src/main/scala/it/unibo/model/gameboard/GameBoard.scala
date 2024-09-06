@@ -1,11 +1,21 @@
 package it.unibo.model.gameboard
 
-import it.unibo.controller.ModelSubject
 import it.unibo.model.cards.Card
-import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
+import it.unibo.model.cards.choices.{GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
 import it.unibo.model.cards.effects.GameEffect
-import it.unibo.model.cards.resolvers.{ChoiceResultResolver, EffectResolver, FirebreakResolver, InstantResolver, InstantWindResolver, MetaResolver, MultiStepResolver, PatternApplicationResolver, PatternComputationResolver, StepResolver, WindResolver}
+import it.unibo.model.cards.resolvers.{
+  ChoiceResultResolver,
+  EffectResolver,
+  InstantResolver,
+  InstantWindResolver,
+  MetaResolver,
+  MultiStepResolver,
+  PatternApplicationResolver,
+  PatternComputationResolver,
+  StepResolver,
+  WindResolver
+}
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.player.Player
@@ -20,15 +30,10 @@ case class GameBoard(
     private val player2: Player,
     currentPlayer: Player = null,
     turnNumber: Int = 0,
-//    observable: ModelSubject,
     gamePhase: GamePhase = WindPhase
 ):
   def changeTurn(): GameBoard =
     copy(currentPlayer = if currentPlayer == player1 then player2 else player1, gamePhase = WindPhase, turnNumber = turnNumber + 1)
-
-//  def changeTurnPhase(gamePhase: GamePhase): GameBoard =
-//    observable.onNext(ChangeTurnPhase(gamePhase))
-//    copy(gamePhase = gamePhase)
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
@@ -42,9 +47,6 @@ case class GameBoard(
     case r: WindResolver      => choice match
         case c: WindChoice => handleWind(r.resolve(c))
         case _             => None
-    case r: FirebreakResolver => choice match
-        case c: FirebreakChoice => handleFirebreak(r.resolve(c))
-        case _                  => None
     case r: MultiStepResolver => choice match
         case c: StepChoice => handleStep(r.resolve(c))
         case _             => None

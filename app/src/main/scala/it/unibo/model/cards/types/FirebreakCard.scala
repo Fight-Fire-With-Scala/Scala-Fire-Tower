@@ -1,17 +1,11 @@
 package it.unibo.model.cards.types
 
-import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice}
-import it.unibo.model.cards.choices.FirebreakChoice.{Deforest, Reforest}
+import it.unibo.model.cards.choices.GameChoice
 import it.unibo.model.cards.effects.{MediumAltEffect, SmallEffect, VerySmallEffect}
-import it.unibo.model.cards.resolvers.{
-  EffectResolver,
-  FirebreakResolver,
-  MetaResolver,
-  MultiStepResolver
-}
+import it.unibo.model.cards.resolvers.{EffectResolver, MetaResolver, MultiStepResolver}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Firebreak}
-import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.prolog.Rule
+import it.unibo.model.cards.resolvers.given_Conversion_Rule_List
 
 enum FirebreakCard(
     override val id: Int,
@@ -20,12 +14,10 @@ enum FirebreakCard(
   case DeReforest
       extends FirebreakCard(
         id = 10,
-        effect = FirebreakResolver {
-          case Deforest =>
-            MultiStepResolver(VerySmallEffect(Map("a" -> Firebreak)), Rule("deforest"))
-          case Reforest =>
-            MultiStepResolver(VerySmallEffect(Map("a" -> Firebreak)), Rule("reforest"))
-        }
+        effect = MultiStepResolver(
+          VerySmallEffect(Map("a" -> Firebreak)),
+          List(Rule("deforest"), Rule("reforest"))
+        )
       )
   case ScratchLine
       extends FirebreakCard(

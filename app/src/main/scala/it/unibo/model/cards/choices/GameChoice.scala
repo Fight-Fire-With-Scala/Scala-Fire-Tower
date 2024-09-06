@@ -1,6 +1,6 @@
 package it.unibo.model.cards.choices
 
-import it.unibo.model.cards.effects.{PatternChoiceEffect, PatternEffect}
+import it.unibo.model.cards.effects.PatternChoiceEffect
 
 sealed trait GameChoice
 
@@ -14,7 +14,3 @@ enum WindChoice extends CardChoice:
   case UpdateWind
   case RandomUpdateWind
   case PlaceFire
-
-enum FirebreakChoice extends CardChoice:
-  case Reforest
-  case Deforest

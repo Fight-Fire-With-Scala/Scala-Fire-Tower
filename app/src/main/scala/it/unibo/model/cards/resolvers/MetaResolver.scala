@@ -1,7 +1,7 @@
 package it.unibo.model.cards.resolvers
 
 import it.unibo.model.cards.choices.StepChoice.{PatternApplication, PatternComputation}
-import it.unibo.model.cards.choices.{FirebreakChoice, GameChoice, StepChoice, WindChoice}
+import it.unibo.model.cards.choices.{GameChoice, StepChoice, WindChoice}
 import it.unibo.model.cards.effects.{CardEffect, PatternEffect, WindEffect}
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.prolog.Rule
@@ -12,10 +12,6 @@ sealed trait MetaResolver[C <: GameChoice, R <: EffectResolver] extends EffectRe
 final case class WindResolver(private val resolver: WindChoice => ChoiceResultResolver)
     extends MetaResolver[WindChoice, ChoiceResultResolver]:
   override def resolve(choice: WindChoice): ChoiceResultResolver = resolver(choice)
-
-final case class FirebreakResolver(private val resolver: FirebreakChoice => ChoiceResultResolver)
-    extends MetaResolver[FirebreakChoice, ChoiceResultResolver]:
-  override def resolve(choice: FirebreakChoice): ChoiceResultResolver = resolver(choice)
 
 sealed trait ChoiceResultResolver extends EffectResolver
 
@@ -30,12 +26,14 @@ final case class MultiStepResolver(private val resolver: StepChoice => StepResol
     extends MetaResolver[StepChoice, StepResolver] with ChoiceResultResolver:
   override def resolve(choice: StepChoice): StepResolver = resolver(choice)
 
+given Conversion[Rule, List[Rule]] = List(_)
+
 object MultiStepResolver:
   def apply(
       pattern: PatternEffect,
-      goal: Rule,
+      goals: List[Rule],
       directions: List[Direction] = Direction.values.toList
   ): MultiStepResolver = new MultiStepResolver({
-    case PatternComputation    => PatternComputationResolver(pattern, goal, directions)
+    case PatternComputation    => PatternComputationResolver(pattern, goals, directions)
     case PatternApplication(p) => PatternApplicationResolver(p)
   })
