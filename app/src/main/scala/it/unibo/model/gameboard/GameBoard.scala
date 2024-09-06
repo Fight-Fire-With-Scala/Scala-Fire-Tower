@@ -11,7 +11,7 @@ import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.player.Player
 
 enum GamePhase:
-  case WindPhase, RedrawCardsPhase, PlayCardPhase, WaitingPhase, ExtraActionPhase
+  case WindPhase, RedrawCardsPhase, PlayStandardCardPhase, WaitingPhase, PlaySpecialCardPhase, EndTurnPhase
 
 case class GameBoard(
     board: Board,
@@ -19,11 +19,12 @@ case class GameBoard(
     private val player1: Player,
     private val player2: Player,
     currentPlayer: Player = null,
+    turnNumber: Int = 0,
 //    observable: ModelSubject,
     gamePhase: GamePhase = WindPhase
 ):
   def changeTurn(): GameBoard =
-    copy(currentPlayer = if currentPlayer == player1 then player2 else player1)
+    copy(currentPlayer = if currentPlayer == player1 then player2 else player1, gamePhase = WindPhase, turnNumber = turnNumber + 1)
 
 //  def changeTurnPhase(gamePhase: GamePhase): GameBoard =
 //    observable.onNext(ChangeTurnPhase(gamePhase))
