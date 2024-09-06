@@ -42,7 +42,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
 
   var highlightManager = CardHighlightManager()
 
-  protected var currentState: GamePhase = GamePhase.PlayCardPhase
+  protected var currentState: GamePhase = GamePhase.PlayStandardCardPhase
 
 
   private val playCardHandler: EventHandler[MouseEvent] =
@@ -53,7 +53,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
     highlightManager.toggle()
 
-  addHandler(GamePhase.PlayCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+  addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
   addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
   addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 

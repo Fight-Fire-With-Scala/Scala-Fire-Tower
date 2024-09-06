@@ -5,8 +5,8 @@ import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.cards.resolvers.PatternComputationResolver
 import it.unibo.model.gameboard.{GameBoard, GamePhase}
 import it.unibo.model.gameboard.GamePhase.{
-  ExtraActionPhase,
-  PlayCardPhase,
+  PlaySpecialCardPhase,
+  PlayStandardCardPhase,
   RedrawCardsPhase,
   WaitingPhase,
   WindPhase
@@ -16,9 +16,9 @@ import it.unibo.model.prolog.Rule
 
 trait TurnController:
   def updateGamePhase(gb: GameBoard, choice: GamePhase): GameBoard = choice match
-    case ExtraActionPhase => handleWindPhase(gb)
+    case PlaySpecialCardPhase => handleWindPhase(gb)
     case RedrawCardsPhase => gb.copy(gamePhase = RedrawCardsPhase)
-    case PlayCardPhase    => gb.copy(gamePhase = PlayCardPhase)
+    case PlayStandardCardPhase    => gb.copy(gamePhase = PlayStandardCardPhase)
     case WindPhase        => handleWindPhase(gb)
     case WaitingPhase     => gb.copy(gamePhase = WaitingPhase)
 

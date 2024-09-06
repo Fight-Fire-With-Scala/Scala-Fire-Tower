@@ -1,8 +1,8 @@
 package it.unibo.controller.view
 
 import it.unibo.model.gameboard.GamePhase.{
-  ExtraActionPhase,
-  PlayCardPhase,
+  PlaySpecialCardPhase,
+  PlayStandardCardPhase,
   RedrawCardsPhase,
   WaitingPhase,
   WindPhase
@@ -25,7 +25,7 @@ trait ActivationController extends GameController:
           case cp: GameInfoComponent => cp.disableView()
         }
       }
-    case PlayCardPhase                   => gameComponent.fold(()) { component =>
+    case PlayStandardCardPhase                   => gameComponent.fold(()) { component =>
         component.gridComponent.enableView()
         component.handComponent.enableView()
         component.sidebarComponent.components.foreach {
@@ -39,7 +39,7 @@ trait ActivationController extends GameController:
         component.handComponent.disableView()
         component.sidebarComponent.disableView()
       }
-    case ExtraActionPhase                => gameComponent.fold(()) { component =>
+    case PlaySpecialCardPhase                => gameComponent.fold(()) { component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
         component.sidebarComponent.disableView()

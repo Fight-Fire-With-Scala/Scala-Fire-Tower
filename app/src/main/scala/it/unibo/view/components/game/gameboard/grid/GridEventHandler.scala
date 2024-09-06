@@ -10,8 +10,8 @@ import it.unibo.controller.{
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.{Direction, GamePhase}
 import it.unibo.model.gameboard.GamePhase.{
-  ExtraActionPhase,
-  PlayCardPhase,
+  PlaySpecialCardPhase,
+  PlayStandardCardPhase,
   RedrawCardsPhase,
   WaitingPhase,
   WindPhase
@@ -52,9 +52,9 @@ class GridEventHandler(
           val pattern = availablePatterns.find(_.contains(position)).get
           placePattern(pattern, WaitingPhase)
       case RedrawCardsPhase => ???
-      case PlayCardPhase    => handleCardPlay(position)
+      case PlayStandardCardPhase    => handleCardPlay(position)
       case WaitingPhase     => ???
-      case ExtraActionPhase => ???
+      case PlaySpecialCardPhase => ???
 
   private def handleCardPlay(position: Position): Unit =
     if hoveredCells.contains(position) then
@@ -68,12 +68,12 @@ class GridEventHandler(
 
   private def placeSinglePattern(position: Position): Unit =
     val pattern = availablePatterns.find(_.contains(position)).get
-    placePattern(pattern, ExtraActionPhase)
+    placePattern(pattern, PlaySpecialCardPhase)
 
   private def placeFixedPattern(position: Position): Unit =
     fixedCell.clear()
     val pattern = availablePatternsClickFixed.find(_.contains(position)).get
-    placePattern(pattern, ExtraActionPhase)
+    placePattern(pattern, PlaySpecialCardPhase)
 
   private def activateFixedCellMode(position: Position): Unit =
     val pattern = availablePatterns.find(_.contains(position)).get
@@ -112,7 +112,7 @@ class GridEventHandler(
       gamePhase: GamePhase
   ): Unit = gamePhase match
     case WindPhase     => hoverForAvailablePatterns(row, col)
-    case PlayCardPhase =>
+    case PlayStandardCardPhase =>
       if fixedCell.nonEmpty then
         resetHoverColors()
         val neighbourPosition = getNeighbor(Position(row, col), hoverDirection)
@@ -131,7 +131,7 @@ class GridEventHandler(
 
     case RedrawCardsPhase => ???
     case WaitingPhase     => ???
-    case ExtraActionPhase => ???
+    case PlaySpecialCardPhase => ???
 
   private def resetHoverColors(): Unit =
     hoveredCells.foreach((position, color) => runOnUIThread(squareMap(position).updateColor(color)))

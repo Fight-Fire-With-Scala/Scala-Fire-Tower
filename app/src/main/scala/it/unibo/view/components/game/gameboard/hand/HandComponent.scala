@@ -2,7 +2,7 @@ package it.unibo.view.components.game.gameboard.hand
 
 import it.unibo.controller.{DiscardCardMessage, DrawCardMessage, InternalViewSubject, ResetPatternComputation, ResolvePatternComputation, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{ExtraActionPhase, PlayCardPhase, WaitingPhase}
+import it.unibo.model.gameboard.GamePhase.{PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase}
 import it.unibo.view.{GUIType, logger}
 import it.unibo.view.components.{IHandComponent, IUpdateView}
 import javafx.fxml.FXML
@@ -60,7 +60,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
   def discardCards(): Unit =
     observable.onNext(DiscardCardMessage(cardToRemove))
     observable.onNext(DrawCardMessage(cardToRemove.size))
-    observable.onNext(UpdateGamePhaseModel(ExtraActionPhase))
+    observable.onNext(UpdateGamePhaseModel(PlaySpecialCardPhase))
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =
@@ -84,8 +84,8 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
       cardToPlay = cardComponent
       logger.info(s"Card to play: $cardToPlay")
       observable.onNext(ResolvePatternComputation(cardId))
-      observable.onNext(UpdateGamePhaseModel(PlayCardPhase))
-      internalObservable.onNext(UpdateGamePhaseView(PlayCardPhase))
+      observable.onNext(UpdateGamePhaseModel(PlayStandardCardPhase))
+      internalObservable.onNext(UpdateGamePhaseView(PlayStandardCardPhase))
 
   override def onEnableView(): Unit =
     super.onEnableView()
