@@ -10,6 +10,7 @@ import it.unibo.model.gameboard.GamePhase.{
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.components.game.gameboard.sidebar.{
   DeckComponent,
+  DiceComponent,
   GameInfoComponent,
   WindRoseComponent
 }
@@ -20,18 +21,20 @@ trait ActivationController extends GameController:
         component.gridComponent.disableView()
         component.handComponent.enableView()
         component.sidebarComponent.components.foreach {
-          case d: DeckComponent      => d.enableView()
-          case cp: WindRoseComponent => cp.disableView()
-          case cp: GameInfoComponent => cp.disableView()
+          case c: DeckComponent     => c.enableView()
+          case c: DiceComponent     => c.disableView()
+          case c: WindRoseComponent => c.disableView()
+          case c: GameInfoComponent => c.disableView()
         }
       }
     case PlayCardPhase                   => gameComponent.fold(()) { component =>
         component.gridComponent.enableView()
         component.handComponent.enableView()
         component.sidebarComponent.components.foreach {
-          case d: DeckComponent      => d.disableView()
-          case cp: WindRoseComponent => cp.enableView() // TODO if wind yes, otherwise no
-          case cp: GameInfoComponent => cp.enableView() // TODO if wind yes, otherwise no
+          case c: DeckComponent     => c.disableView()
+          case c: DiceComponent     => c.enableView()
+          case c: WindRoseComponent => c.enableView() // TODO if wind yes, otherwise no
+          case c: GameInfoComponent => c.enableView() // TODO if wind yes, otherwise no
         }
       }
     case WindPhase                       => gameComponent.fold(()) { component =>
@@ -42,5 +45,10 @@ trait ActivationController extends GameController:
     case ExtraActionPhase                => gameComponent.fold(()) { component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
-        component.sidebarComponent.disableView()
+        component.sidebarComponent.components.foreach {
+          case c: DeckComponent     => c.disableView()
+          case c: DiceComponent     => c.disableView()
+          case c: WindRoseComponent => c.disableView()
+          case c: GameInfoComponent => c.disableView()
+        }
       }

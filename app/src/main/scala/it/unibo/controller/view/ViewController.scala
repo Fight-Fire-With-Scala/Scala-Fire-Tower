@@ -2,11 +2,9 @@ package it.unibo.controller.view
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, GameInfoComponent, WindRoseComponent}
-import it.unibo.model.gameboard.GamePhase.WaitingPhase
-
 import it.unibo.view.components.game.gameboard.sidebar.{
   DeckComponent,
+  DiceComponent,
   GameInfoComponent,
   WindRoseComponent
 }
@@ -37,5 +35,6 @@ final case class ViewController(
           c.updateTurnPlayer(gameBoard.currentPlayer.name)
         case c: WindRoseComponent => c.updateWindRoseDirection(gameBoard.board.windDirection)
         case c: DeckComponent     =>
+        case c: DiceComponent     =>
       }
     }

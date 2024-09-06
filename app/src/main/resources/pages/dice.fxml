@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+
+<StackPane styleClass="sidebarPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <StackPane style="-fx-padding: 21 21 21 21;">
+        <Pane>
+            <StackPane styleClass="sidebarPane" fx:id="dicePane" layoutX="125.0" prefHeight="75" prefWidth="75" />
+        </Pane>
+    </StackPane>
+</StackPane>

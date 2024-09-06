@@ -24,7 +24,7 @@ object ViewModule:
     class ViewImpl extends View:
       private val viewObservable = PublishSubject[ViewMessage]()
       private val intObservable = PublishSubject[InternalViewMessage]()
-      private val gui = GameUIManager(1280, 1024, viewObservable)
+      private val gui = GameUIManager(1280, 1280, viewObservable)
       private val gameController = ViewController(intObservable, viewObservable)
 
       override def startMenu(): Unit = gui.main(Array.empty)

@@ -4,12 +4,7 @@ import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
 import it.unibo.view.components.ISidebarComponent
 import it.unibo.view.components.game.gameboard.hand.{CardComponent, HandComponent}
-import it.unibo.view.components.game.gameboard.sidebar.{
-  DeckComponent,
-  GameInfoComponent,
-  SidebarComponent,
-  WindRoseComponent
-}
+import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, DiceComponent, GameInfoComponent, SidebarComponent, WindRoseComponent}
 import monix.eval.Task
 
 trait GameComponentInitializer:
@@ -26,7 +21,7 @@ trait GameComponentInitializer:
       internalViewObservable: InternalViewSubject
   ): SidebarComponent =
     val subComponents: List[ISidebarComponent] =
-      List(WindRoseComponent(), DeckComponent(), GameInfoComponent())
+      List(WindRoseComponent(), DeckComponent(), GameInfoComponent(), DiceComponent())
     SidebarComponent(subComponents)
 
   private def loadGrid(using

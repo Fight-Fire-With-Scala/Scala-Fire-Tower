@@ -82,7 +82,6 @@ final class GameComponent extends IViewComponent with IUpdateView:
         handComponent = hc
         hc
     )
- 
   
   def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = gridComponent.updateGrid(grid, gamePhase)
 
