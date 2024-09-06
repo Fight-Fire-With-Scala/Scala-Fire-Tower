@@ -32,11 +32,10 @@ trait CardController:
     val card = gb.currentPlayer.hand.find(_.id == cardId)
     card match
       case Some(c) => c.cardType.effectType match
-          case card: FireCard      => gb.resolveCardPlayed(c, PatternComputation)
-          case card: FirebreakCard => ???
-          case card: WaterCard     => ???
-          case card: WindCard      => gb.resolveCardPlayed(c, PlaceFire)
-          case _                   => gb
+          case _: FireCard | _: FirebreakCard | _: WaterCard => gb
+              .resolveCardPlayed(c, PatternComputation)
+          case card: WindCard                                => gb.resolveCardPlayed(c, PlaceFire)
+          case _                                             => gb
       case None    => gb
 
   def resolvePatternChoice(gb: GameBoard, pattern: Map[Position, Token]): GameBoard =

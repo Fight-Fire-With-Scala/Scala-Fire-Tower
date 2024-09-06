@@ -10,13 +10,13 @@ cardSets:
     description: "Piazza fino a tre gemme di fuoco adiacenti e allineate. 
     Almeno una di esse deve toccare ortogonalmente una gemma fuoco preesistente."
     effectCode: 1
-    amount: 1
+    amount: 0
   - title: "Albero morto che brucia"
     typeName: "Fire"
     description: "Piazza fino a quattro gemme di fuoco a forma di quadrato.
     Almeno una di esse deve toccare ortogonalmente una gemma fuoco preesistente."
     effectCode: 2
-    amount: 0
+    amount: 1
 #  - title: "Tizzone"
 #    typeName: "Fire"
 #    description: "Sposta una gemma di fuoco sul tabellone in un qualunque spazio
@@ -37,7 +37,7 @@ cardSets:
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Sud di un'altra gemma di fuoco."
     effectCode: 5
-    amount: 1
+    amount: 0
   - title: "Est"
     typeName: "Wind"
     description: "Cambia la direzione del vento verso Est. OPPURE
@@ -51,7 +51,7 @@ cardSets:
      Tira il dado per scegliere una nuova direzione del vento. OPPURE
      Metti una gemma di fuoco a Ovest di un'altra gemma di fuoco."
     effectCode: 7
-    amount: 2
+    amount: 0
   - title: "Linea di bulldozer"
     typeName: "Firebreak"
     description: "Piazza due segnalini tagliafuoco adiacenti sul tabellone."

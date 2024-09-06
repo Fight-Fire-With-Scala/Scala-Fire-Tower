@@ -22,9 +22,9 @@ enum FirebreakCard(
         id = 10,
         effect = FirebreakResolver {
           case Deforest =>
-            MultiStepResolver(VerySmallEffect(FirebreakCard.defaultTokens), Rule("deforest"))
+            MultiStepResolver(VerySmallEffect(Map("a" -> Firebreak)), Rule("deforest"))
           case Reforest =>
-            MultiStepResolver(VerySmallEffect(FirebreakCard.defaultTokens), Rule("reforest"))
+            MultiStepResolver(VerySmallEffect(Map("a" -> Firebreak)), Rule("reforest"))
         }
       )
   case ScratchLine
@@ -38,8 +38,5 @@ enum FirebreakCard(
   case DozerLine
       extends FirebreakCard(
         id = 8,
-        effect = MultiStepResolver(SmallEffect(FirebreakCard.defaultTokens), Rule("dozer_line"))
+        effect = MultiStepResolver(SmallEffect(Map("a" -> Firebreak)), Rule("dozer_line"))
       )
-
-object FirebreakCard:
-  val defaultTokens: Map[String, Token] = Map("a" -> Firebreak)
