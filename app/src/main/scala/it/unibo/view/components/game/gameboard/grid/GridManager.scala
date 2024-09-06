@@ -40,9 +40,9 @@ class GridManager(
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection, gamePhase)
 
-  def setAvailablePatterns(patterns: Set[Map[Position, Token]], card: Option[Card] = None): Unit = 
+  def setAvailablePatterns(patterns: Set[Map[Position, Token]], cardEffect: Int): Unit =
     gridEventHandler.updateAvailablePatterns(patterns)
-  
+    gridEventHandler.setEffectCode(cardEffect)
 
   def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
     .foreach { case (position, square) =>

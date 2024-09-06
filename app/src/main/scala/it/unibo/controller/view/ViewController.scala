@@ -22,11 +22,13 @@ final case class ViewController(
     gameComponent.fold(()) { component =>
       component.updateGrid(gameBoard.board.grid, currentGamePhase)
       component.updatePlayer(gameBoard.currentPlayer)(currentGamePhase)
+      
+      // TODO: when the enum of cardEffects will be done we will pass that instead of the Int
       component.gridComponent.setAvailablePatterns(
         gameBoard.board.availablePatterns,
         gameBoard.board.currentCardId match
-          case Some(id) => gameBoard.currentPlayer.hand.find(_.id == id)
-          case _        => None
+          case Some(id) => gameBoard.currentPlayer.hand.find(_.id == id).get.cardType.effectType.id
+          case _        => -1
       )
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>

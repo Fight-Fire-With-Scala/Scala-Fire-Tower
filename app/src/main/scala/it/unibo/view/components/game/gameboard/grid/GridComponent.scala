@@ -31,8 +31,8 @@ final class GridComponent(using
     gridManager = new GridManager(cellNumber, cellSize, internalObservable, observableSubject)
     gridManager.initialize(container)
 
-  def setAvailablePatterns(patterns: Set[Map[Position, Token]], card: Option[Card]): Unit = gridManager
-    .setAvailablePatterns(patterns, card)
+  def setAvailablePatterns(patterns: Set[Map[Position, Token]], cardEffect: Int): Unit = gridManager
+    .setAvailablePatterns(patterns, cardEffect)
 
   override def onEnableView(): Unit = gridManager.squareMap.foreach { case (_, square) =>
     square.enableView()
