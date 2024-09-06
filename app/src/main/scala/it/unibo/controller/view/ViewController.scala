@@ -33,7 +33,7 @@ final case class ViewController(
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>
           c.updateTurnPhase(currentGamePhase.toString)
-          c.updateTurnNumber(0)
+          c.updateTurnNumber(gameBoard.turnNumber)
           c.updateTurnPlayer(gameBoard.currentPlayer.name)
         case c: WindRoseComponent => c.updateWindRoseDirection(gameBoard.board.windDirection)
         case c: DeckComponent     =>

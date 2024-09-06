@@ -4,23 +4,18 @@ import alice.tuprolog.{Struct, Var}
 import it.unibo.model.cards.effects.VerySmallEffect
 import it.unibo.model.cards.resolvers.PatternComputationResolver
 import it.unibo.model.gameboard.{GameBoard, GamePhase}
-import it.unibo.model.gameboard.GamePhase.{
-  PlaySpecialCardPhase,
-  PlayStandardCardPhase,
-  RedrawCardsPhase,
-  WaitingPhase,
-  WindPhase
-}
+import it.unibo.model.gameboard.GamePhase.{EndTurnPhase, PlaySpecialCardPhase, PlayStandardCardPhase, RedrawCardsPhase, WaitingPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.prolog.Rule
 
 trait TurnController:
   def updateGamePhase(gb: GameBoard, choice: GamePhase): GameBoard = choice match
-    case PlaySpecialCardPhase => handleWindPhase(gb)
-    case RedrawCardsPhase => gb.copy(gamePhase = RedrawCardsPhase)
-    case PlayStandardCardPhase    => gb.copy(gamePhase = PlayStandardCardPhase)
     case WindPhase        => handleWindPhase(gb)
     case WaitingPhase     => gb.copy(gamePhase = WaitingPhase)
+    case PlayStandardCardPhase => gb.copy(gamePhase = PlayStandardCardPhase)
+    case RedrawCardsPhase => gb.copy(gamePhase = RedrawCardsPhase)
+    case PlaySpecialCardPhase => gb.copy(gamePhase = PlaySpecialCardPhase)
+    case EndTurnPhase     => gb.changeTurn()
 
   private def handleWindPhase(gb: GameBoard): GameBoard =
     val board = gb.board
@@ -34,3 +29,5 @@ trait TurnController:
 
     val b = board.applyEffect(Some(availablePatternsEffect))
     gb.copy(gamePhase = WindPhase, board = b)
+    
+  
