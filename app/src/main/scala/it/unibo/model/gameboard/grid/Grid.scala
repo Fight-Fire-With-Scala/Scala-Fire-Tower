@@ -69,12 +69,18 @@ final case class BasicGrid(
   override def cells: Map[Position, Cell] = this._cells
   override def tokens: Map[Position, Token] = this._tokens
 
-  override def setToken(position: Position, token: Token): Grid =
-    getCell(position) match
-      case Some(_: EternalFire.type) => this
-      case Some(_: Fire.type) if token == Water =>
-        BasicGrid(this._cells, this._tokens - position)
-      case _ => BasicGrid(this._cells, this._tokens + (position -> token))
+  override def setToken(position: Position, token: Token): Grid = getCell(position) match
+    case Some(_: EternalFire.type) => this
+    case Some(_: Woods.type)       => getToken(position) match
+        case Some(Fire)                                                   =>
+          if token == Water then BasicGrid(this._cells, this._tokens - position)
+          else BasicGrid(this._cells, this._tokens + (position -> token))
+        case Some(Firebreak) | Some(Water) | Some(Reforest) | Some(Empty) =>
+          BasicGrid(this._cells, this._tokens + (position -> token))
+        case _                                                            =>
+          if token == Water then this
+          else BasicGrid(this._cells, this._tokens + (position -> token))
+    case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
   override def getToken(position: Position): Option[Token] = this._tokens.get(position)
 
