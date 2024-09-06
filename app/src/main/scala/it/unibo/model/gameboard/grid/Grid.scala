@@ -78,7 +78,7 @@ final case class BasicGrid(
         case Some(Firebreak) | Some(Water) | Some(Reforest) | Some(Empty) =>
           BasicGrid(this._cells, this._tokens + (position -> token))
         case _                                                            =>
-          if token == Water then this
+          if token == Water || token == Empty then this
           else BasicGrid(this._cells, this._tokens + (position -> token))
     case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
