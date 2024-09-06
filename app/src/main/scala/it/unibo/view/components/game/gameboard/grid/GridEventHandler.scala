@@ -77,11 +77,10 @@ class GridEventHandler(
 
   private def activateFixedCellMode(position: Position): Unit =
     val pattern = availablePatterns.find(_.contains(position)).get
-    val hoverColor = getHoverColor(pattern(position))
     availablePatternsClickFixed = availablePatterns.filter(_.contains(position))
     runOnUIThread {
       fixedCell += position -> hoveredCells(position)
-      squareMap(position).updateColor(hoverColor.deriveColor(1, 1, 1, 0.5))
+      squareMap(position).updateColor(pattern(position).color.deriveColor(1, 1, 1, 0.7))
       hoveredCells.clear()
     }
 
@@ -100,10 +99,9 @@ class GridEventHandler(
     val position = Position(row, col)
     availablePatterns.find(_.contains(position)) match
       case Some(pattern) => if (!fixedCell.contains(position))
-          val hoverColor = getHoverColor(pattern(position))
-          runOnUIThread {
+        runOnUIThread {
             hoveredCells += position -> squareMap(position).getColor
-            squareMap(position).updateColor(hoverColor)
+            squareMap(position).updateColor(pattern(position).color)
           }
       case None          =>
 
@@ -120,14 +118,14 @@ class GridEventHandler(
         val neighbourPosition = getNeighbor(Position(row, col), hoverDirection)
         val candidatePatterns = availablePatternsClickFixed.filter(_.contains(neighbourPosition))
         if (candidatePatterns.size == 1)
+          availablePatternsClickFixed = candidatePatterns
           val pattern = candidatePatterns.head
           pattern.foreach { case (position, token) =>
             if !fixedCell.contains(position) then
-              val hoverColor = getHoverColor(token)
               runOnUIThread {
-                hoveredCells += position -> squareMap(position).getColor
-                squareMap(position).updateColor(hoverColor)
-              }
+                  hoveredCells += position -> squareMap(position).getColor
+                  squareMap(position).updateColor(token.color)
+                }
           }
       else hoverForAvailablePatterns(row, col)
 
@@ -138,11 +136,6 @@ class GridEventHandler(
   private def resetHoverColors(): Unit =
     hoveredCells.foreach((position, color) => runOnUIThread(squareMap(position).updateColor(color)))
     hoveredCells.clear()
-
-  private def getHoverColor(token: Token): Color = token match
-    case Fire      => Color.DarkOrange
-    case Firebreak => Color.Blue
-    case _         => Color.Gray
 
   private def getNeighbor(startPosition: Position, hoverDirection: HoverDirection): Position =
     hoverDirection.direction match

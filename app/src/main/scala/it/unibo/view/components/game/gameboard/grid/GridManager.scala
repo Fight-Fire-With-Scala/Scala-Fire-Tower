@@ -5,8 +5,8 @@ import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
-import it.unibo.model.gameboard.grid.{Grid, Position, Token}
+import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak, Water}
+import it.unibo.model.gameboard.grid.{ConcreteToken, Grid, Position, Token}
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
@@ -55,9 +55,8 @@ class GridManager(
         case _                         => Color.White
 
       val tokenColor = grid.getToken(position) match
-        case Some(Fire)      => Color.Orange
-        case Some(Firebreak) => Color.Purple
-        case _               => cellColor
+        case Some(token: Token) => token.color
+        case _ => cellColor
 
       runOnUIThread(square.updateColor(tokenColor))
     }
