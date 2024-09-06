@@ -42,7 +42,6 @@ class GridManager(
 
   def setAvailablePatterns(patterns: Set[Map[Position, Token]], card: Option[Card] = None): Unit = 
     gridEventHandler.updateAvailablePatterns(patterns)
-    gridEventHandler.setActualCard(card)
   
 
   def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
@@ -57,7 +56,7 @@ class GridManager(
 
       val tokenColor = grid.getToken(position) match
         case Some(Fire)      => Color.Orange
-        case Some(Firebreak) => Color.Blue
+        case Some(Firebreak) => Color.Purple
         case _               => cellColor
 
       runOnUIThread(square.updateColor(tokenColor))

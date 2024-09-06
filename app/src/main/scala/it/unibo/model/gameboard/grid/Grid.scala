@@ -69,11 +69,12 @@ final case class BasicGrid(
   override def cells: Map[Position, Cell] = this._cells
   override def tokens: Map[Position, Token] = this._tokens
 
-  /**
-   * TODO: add controls to not place token in illegal areas
-   */
   override def setToken(position: Position, token: Token): Grid =
-    BasicGrid(this._cells, this._tokens + (position -> token))
+    getCell(position) match
+      case Some(_: EternalFire.type) => this
+      case Some(_: Fire.type) if token == Water =>
+        BasicGrid(this._cells, this._tokens - position)
+      case _ => BasicGrid(this._cells, this._tokens + (position -> token))
 
   override def getToken(position: Position): Option[Token] = this._tokens.get(position)
 
