@@ -1,6 +1,10 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage}
+import it.unibo.controller.{
+  CandidateCardToPlayMessage,
+  InternalViewSubject,
+  ToggleCardInListMessage
+}
 import it.unibo.model.cards.Card.allCards
 import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
 import it.unibo.model.cards.{Card, CardType}
@@ -35,7 +39,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   @FXML
   var cardId: String = uninitialized
   @FXML
-  var discardable: Boolean = uninitialized
+  var containSpecialCard: Boolean = uninitialized
 
   @FXML
   def initialize(): Unit = highlightManager.initialize(cardPane)
@@ -44,10 +48,8 @@ final class CardComponent(using internalObservable: InternalViewSubject)
 
   protected var currentState: GamePhase = GamePhase.PlayStandardCardPhase
 
-
   private val playCardHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) =>
-      internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+    (_: MouseEvent) => internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
 
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
@@ -67,8 +69,8 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardDescription.setText(card.cardType.description)
     cardId = card.id.toString
     card.cardType.effectType match
-      case _: CanBeDiscarded => discardable = true
-      case _                 => discardable = false
+      case _: CanBeDiscarded => containSpecialCard = true
+      case _                 => containSpecialCard = false
 
   private def getStyleClassForCardType(cardType: CardType): String =
     allCards.find(_.id == cardType.effectType.id) match
@@ -83,12 +85,11 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardTitle.setText("")
     cardDescription.setText("")
     cardId = ""
-    discardable = false
+    containSpecialCard = false
     disableActualHandlers()
 
   override def onEnableView(): Unit =
     super.onEnableView()
-    println(s"Enable $currentState")
     enableActualHandlers()
 
   override def onDisableView(): Unit =
@@ -96,4 +97,3 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     disableActualHandlers()
 
   override protected def getPane: Node = cardPane
-  

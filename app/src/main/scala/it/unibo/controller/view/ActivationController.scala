@@ -27,14 +27,15 @@ trait ActivationController extends GameController:
           case c: GameInfoComponent => c.disableView()
         }
       }
-    case PlayStandardCardPhase                   => gameComponent.fold(()) { component =>
+    case PlayStandardCardPhase           => gameComponent.fold(()) { component =>
         component.gridComponent.enableView()
         component.handComponent.enableView()
+        component.handComponent.handleSpecialCardComponents(choice)
         component.sidebarComponent.components.foreach {
           case c: DeckComponent     => c.disableView()
-          case c: DiceComponent     => c.enableView()
+          case c: DiceComponent     => c.enableView() // TODO if wind yes, otherwise no
           case c: WindRoseComponent => c.enableView() // TODO if wind yes, otherwise no
-          case c: GameInfoComponent => c.enableView() // TODO if wind yes, otherwise no
+          case c: GameInfoComponent => c.disableView()
         }
       }
     case WindPhase                       => gameComponent.fold(()) { component =>
@@ -42,13 +43,14 @@ trait ActivationController extends GameController:
         component.handComponent.disableView()
         component.sidebarComponent.disableView()
       }
-    case PlaySpecialCardPhase                => gameComponent.fold(()) { component =>
+    case PlaySpecialCardPhase            => gameComponent.fold(()) { component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
+        component.handComponent.handleSpecialCardComponents(choice)
         component.sidebarComponent.components.foreach {
           case c: DeckComponent     => c.disableView()
           case c: DiceComponent     => c.disableView()
           case c: WindRoseComponent => c.disableView()
-          case c: GameInfoComponent => c.disableView()
+          case c: GameInfoComponent => c.enableView()
         }
       }

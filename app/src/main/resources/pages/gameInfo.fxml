@@ -9,6 +9,7 @@
             <TextField fx:id="turnNumber" prefWidth="80" text="Turn Number"/>
             <TextField fx:id="turnPlayer" prefWidth="80" text="Turn Player"/>
             <TextField fx:id="turnPhase" prefWidth="80" text="Turn Phase"/>
+            <Button fx:id="endTurnButton" prefWidth="121.0" text="End Turn"/>
         </VBox>
     </StackPane>
 </StackPane>

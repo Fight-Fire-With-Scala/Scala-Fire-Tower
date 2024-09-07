@@ -1,9 +1,22 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{DiscardCardMessage, DrawCardMessage, InternalViewSubject, ResetPatternComputation, ResolvePatternComputation, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
+import it.unibo.controller.{
+  DiscardCardMessage,
+  DrawCardMessage,
+  InternalViewSubject,
+  ResetPatternComputation,
+  ResolvePatternComputation,
+  UpdateGamePhaseModel,
+  UpdateGamePhaseView,
+  ViewSubject
+}
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase}
-import it.unibo.view.{GUIType, logger}
+import it.unibo.model.gameboard.GamePhase.{
+  PlaySpecialCardPhase,
+  PlayStandardCardPhase,
+  WaitingPhase
+}
+import it.unibo.view.{logger, GUIType}
 import it.unibo.view.components.{IHandComponent, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -33,25 +46,24 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     cardComponents.foreach(addComponent)
     enableView()
 
-  def updateHand(cards: List[it.unibo.model.cards.Card])(gamePhase: GamePhase): Unit = runOnUIThread {
-    cardComponents.foreach(_.reset())
-    cardComponents.zip(cards).foreach { case (cardComponent, card) => 
-      cardComponent.setCard(card) 
-      cardComponent.toggle(gamePhase)
-    }
-    cardToPlay.foreach(_.highlightManager.toggle(Some(CardHighlightState.Highlighted)))
-  }
+  def updateHand(cards: List[it.unibo.model.cards.Card])(gamePhase: GamePhase): Unit =
+    runOnUIThread {
+      cardComponents.foreach(_.reset())
+      cardComponents.zip(cards).foreach { case (cardComponent, card) =>
+        cardComponent.setCard(card)
+        cardComponent.toggle(gamePhase)
+      }
+      cardToPlay.foreach(_.highlightManager.toggle(Some(CardHighlightState.Highlighted)))
 
-  def initDiscardProcedure(): Unit = cardComponents.foreach { cardComponent =>
-    cardToPlay = None
-  }
+    }
+
+  def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 
   def cancelDiscardProcedure(): Unit =
     observable.onNext(UpdateGamePhaseModel(WaitingPhase))
     endDiscardProcedure()
-  
-  private def endDiscardProcedure(): Unit =
-    cardToRemove = List.empty
+
+  private def endDiscardProcedure(): Unit = cardToRemove = List.empty
 
   def toggleCardInDiscardList(cardId: Int): Unit = cardToRemove =
     if cardToRemove.contains(cardId) then cardToRemove.filterNot(_ == cardId)
@@ -94,5 +106,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
   override def onDisableView(): Unit =
     super.onDisableView()
     cardComponents.foreach(card => card.disableView())
+
+  def handleSpecialCardComponents(gamePhase: GamePhase): Unit = gamePhase match
+    case PlaySpecialCardPhase => cardComponents.find(_.containSpecialCard).foreach(_.enableView())
+    case _                    => cardComponents.foreach(_.disableView())
 
   override protected def getPane: Node = handPane

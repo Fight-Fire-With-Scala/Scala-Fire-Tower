@@ -6,7 +6,7 @@
 <StackPane fx:id="cardPane" xmlns:fx="http://javafx.com/fxml">
     <fx:define>
         <String fx:id="cardId" fx:value=""/>
-        <Boolean fx:id="discardable" fx:value="true"/>
+        <Boolean fx:id="containSpecialCard" fx:value="true"/>
     </fx:define>
     <Pane>
         <VBox alignment="CENTER" spacing="10">

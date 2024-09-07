@@ -1,14 +1,17 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.ViewSubject
+import it.unibo.controller.{UpdateGamePhaseModel, ViewSubject}
+import it.unibo.model.gameboard.GamePhase.{EndTurnPhase, PlaySpecialCardPhase}
 import it.unibo.view.GUIType
 import it.unibo.view.components.{ISidebarComponent, IUpdateView}
+import javafx.event.EventHandler
 
 import scala.compiletime.uninitialized
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.Pane
-import javafx.scene.control.TextField
+import javafx.scene.control.{Button, TextField}
+import javafx.scene.input.MouseEvent
 
 //noinspection VarCouldBeVal
 final class GameInfoComponent(using observable: ViewSubject)
@@ -20,6 +23,12 @@ final class GameInfoComponent(using observable: ViewSubject)
 
   @FXML
   private var turnNumber, turnPlayer, turnPhase: TextField = uninitialized
+
+  @FXML
+  private var endTurnButton: Button = uninitialized
+
+  private val endTurnButtonEventHandler: EventHandler[MouseEvent] =
+    (_: MouseEvent) => observable.onNext(UpdateGamePhaseModel(EndTurnPhase))
 
   @FXML
   def initialize(): Unit =
@@ -35,3 +44,11 @@ final class GameInfoComponent(using observable: ViewSubject)
     runOnUIThread(turnPhase.setText(s"Phase: $currentTurnPhase"))
 
   override protected def getPane: Node = gameInfoPane
+
+  override def onEnableView(): Unit =
+    super.onEnableView()
+    endTurnButton.addEventHandler(MouseEvent.MOUSE_CLICKED, endTurnButtonEventHandler)
+
+  override def onDisableView(): Unit =
+    super.onDisableView()
+    endTurnButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, endTurnButtonEventHandler)

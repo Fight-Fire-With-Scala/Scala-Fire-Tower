@@ -22,7 +22,8 @@ import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.player.Player
 
 enum GamePhase:
-  case WindPhase, RedrawCardsPhase, PlayStandardCardPhase, WaitingPhase, PlaySpecialCardPhase, EndTurnPhase
+  case WindPhase, RedrawCardsPhase, PlayStandardCardPhase, WaitingPhase, PlaySpecialCardPhase,
+    EndTurnPhase
 
 case class GameBoard(
     board: Board,
@@ -33,8 +34,11 @@ case class GameBoard(
     turnNumber: Int = 0,
     gamePhase: GamePhase = WindPhase
 ):
-  def changeTurn(): GameBoard =
-    copy(currentPlayer = if currentPlayer == player1 then player2 else player1, gamePhase = WindPhase, turnNumber = turnNumber + 1)
+  def changeTurn(): GameBoard = copy(
+    currentPlayer = if currentPlayer == player1 then player2 else player1,
+    gamePhase = WindPhase,
+    turnNumber = turnNumber + 1
+  )
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
