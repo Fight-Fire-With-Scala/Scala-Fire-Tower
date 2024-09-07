@@ -11,6 +11,7 @@ import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.{Direction, GamePhase}
 import it.unibo.model.gameboard.GamePhase.{
+  DecisionPhase,
   PlaySpecialCardPhase,
   PlayStandardCardPhase,
   RedrawCardsPhase,
@@ -52,12 +53,12 @@ class GridEventHandler(
   def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit =
     val position = Position(row, col)
     gamePhase match
-      case WindPhase        => if (hoveredCells.contains(position))
+      case WindPhase             => if (hoveredCells.contains(position))
           placePattern(availablePatterns.find(_.contains(position)).get, WaitingPhase)
-      case RedrawCardsPhase => ???
-      case PlayStandardCardPhase    => handleCardPlay(position)
-      case WaitingPhase     => ???
-      case PlaySpecialCardPhase => ???
+      case RedrawCardsPhase      => ???
+      case PlayStandardCardPhase => handleCardPlay(position)
+      case WaitingPhase          => ???
+      case PlaySpecialCardPhase  => ???
 
   private def handleCardPlay(position: Position): Unit =
     if hoveredCells.contains(position) then
@@ -78,22 +79,22 @@ class GridEventHandler(
   private def placeExplosionPattern(position: Position): Unit = effectCode match
     case EffectType.Esplosione                  => placePattern(
         availablePatterns.find(_.exists((pos, tkn) => pos == position && tkn == Firebreak)).get,
-      PlaySpecialCardPhase
+        DecisionPhase
       )
     case EffectType.VigileDelFuocoParacadutista => placePattern(
         availablePatterns.find(_.exists((pos, tkn) => pos == position && tkn == Fire)).get,
-      PlaySpecialCardPhase
+        DecisionPhase
       )
     case _                                      => logger.error("Error in explosion pattern")
 
   private def placeSinglePattern(position: Position): Unit =
     val pattern = availablePatterns.find(_.contains(position)).get
-    placePattern(pattern, PlaySpecialCardPhase)
+    placePattern(pattern, DecisionPhase)
 
   private def placeFixedPattern(position: Position): Unit =
     fixedCell.clear()
     val pattern = availablePatternsClickFixed.find(_.contains(position)).get
-    placePattern(pattern, PlaySpecialCardPhase)
+    placePattern(pattern, DecisionPhase)
 
   private def activateFixedCellMode(position: Position): Unit =
     val pattern = availablePatterns.find(_.contains(position)).get
@@ -119,7 +120,7 @@ class GridEventHandler(
       hoverDirection: HoverDirection,
       gamePhase: GamePhase
   ): Unit = gamePhase match
-    case WindPhase     => hoverForAvailablePatterns(row, col)
+    case WindPhase             => hoverForAvailablePatterns(row, col)
     case PlayStandardCardPhase =>
       if fixedCell.nonEmpty then
         resetHoverColors()
@@ -137,8 +138,8 @@ class GridEventHandler(
           }
       else hoverForAvailablePatterns(row, col)
 
-    case RedrawCardsPhase => ???
-    case WaitingPhase     => ???
+    case RedrawCardsPhase     => ???
+    case WaitingPhase         => ???
     case PlaySpecialCardPhase => ???
 
   // if u go on a cell that is an available patterns starts hovering

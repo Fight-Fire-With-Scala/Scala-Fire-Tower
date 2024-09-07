@@ -12,6 +12,8 @@ import it.unibo.controller.{
 }
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.{
+  DecisionPhase,
+  EndTurnPhase,
   PlaySpecialCardPhase,
   PlayStandardCardPhase,
   WaitingPhase
@@ -72,7 +74,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
   def discardCards(): Unit =
     observable.onNext(DiscardCardMessage(cardToRemove))
     observable.onNext(DrawCardMessage(cardToRemove.size))
-    observable.onNext(UpdateGamePhaseModel(PlaySpecialCardPhase))
+    observable.onNext(UpdateGamePhaseModel(DecisionPhase))
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =

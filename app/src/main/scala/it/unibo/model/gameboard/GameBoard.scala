@@ -23,7 +23,7 @@ import it.unibo.model.gameboard.player.Player
 
 enum GamePhase:
   case WindPhase, RedrawCardsPhase, PlayStandardCardPhase, WaitingPhase, PlaySpecialCardPhase,
-    EndTurnPhase
+    EndTurnPhase, DecisionPhase
 
 case class GameBoard(
     board: Board,
