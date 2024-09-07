@@ -6,6 +6,7 @@ import it.unibo.model.gameboard.GamePhase.{PlayStandardCardPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare, GridState, HoverDirection}
+import it.unibo.view.logger
 
 import scala.collection.mutable
 
@@ -28,9 +29,10 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
     val neighbourPosition = getNeighbor(position, hoverDirection)
     val candidatePatterns = gridState.availablePatternsClickFixed
       .filter(_.contains(neighbourPosition))
+    logger.info(candidatePatterns.toString)
     candidatePatterns.toList match
       case pattern :: Nil =>
-        gridState.availablePatternsClickFixed = candidatePatterns
+        gridState.availablePatternsClickHovered = candidatePatterns
         pattern.foreach { case (position, token) =>
           if !gridState.fixedCell.contains(position) then
             runOnUIThread {

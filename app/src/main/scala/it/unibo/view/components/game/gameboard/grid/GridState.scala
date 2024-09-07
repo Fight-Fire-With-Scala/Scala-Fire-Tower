@@ -14,6 +14,7 @@ class GridState(val squareMap: mutable.Map[Position, GridSquare]):
   val fixedCell: mutable.Map[Position, Color] = mutable.Map()
   var availablePatterns: Set[Map[Position, Token]] = Set.empty
   var availablePatternsClickFixed: Set[Map[Position, Token]] = Set.empty
+  var availablePatternsClickHovered: Set[Map[Position, Token]] = Set.empty
   var effectCode: EffectType = uninitialized
   var currentGamePhase: GamePhase = uninitialized
 
