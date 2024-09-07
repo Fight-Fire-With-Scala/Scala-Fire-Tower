@@ -1,4 +1,4 @@
-package it.unibo.view.components.game.gameboard.grid.handler
+package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase

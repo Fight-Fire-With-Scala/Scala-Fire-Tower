@@ -6,7 +6,7 @@ import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.{PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare}
+import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare, GridState}
 import it.unibo.view.logger
 
 import scala.collection.mutable

@@ -5,7 +5,7 @@ import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.{PlayStandardCardPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare, HoverDirection}
+import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare, GridState, HoverDirection}
 
 import scala.collection.mutable
 
