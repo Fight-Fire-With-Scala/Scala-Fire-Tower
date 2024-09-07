@@ -16,6 +16,7 @@ import it.unibo.model.cards.resolvers.{
   StepResolver,
   WindResolver
 }
+import it.unibo.model.cards.types.CanBePlayedAsExtra
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
 import it.unibo.model.gameboard.player.Player
@@ -38,7 +39,10 @@ case class GameBoard(
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
     val effect = getGameEffect(resolver, choice)
-    copy(board = board.applyEffect(effect))
+    val newDeck = card.cardType.effectType match
+      case _: CanBePlayedAsExtra => deck
+      case _                     => deck.copy(playedCards = card :: deck.playedCards)
+    copy(board = board.applyEffect(effect), deck = newDeck)
 
   private def getGameEffect(
       resolver: MetaResolver[? <: GameChoice, ? <: EffectResolver],
