@@ -34,11 +34,13 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val playerOne = settings.getPlayerOne
       val playerTwo = settings.getPlayerTwo
       val gameBoard = GameBoard(playerOne, playerTwo)
-      val newGb = controller.fillPlayerHand(gameBoard)
-      model.setGameBoard(newGb)
+      val (newGb, newPlayer) = controller.initializePlayer(gameBoard, playerOne)
+      model.setGameBoard(newGb.copy(player1 = newPlayer, currentPlayer = newPlayer))
       modelObserver.onNext(StartGameMessage(newGb))
 
-    case DrawCardMessage(nCards: Int) => model.setGameBoard(controller.drawCards(model, nCards))
+    case DrawCardMessage(nCards: Int) =>
+      val (gb, player) = controller.drawCards(model, nCards)(model.getGameBoard.currentPlayer)
+      model.setGameBoard(gb.copy(currentPlayer = player))
 
     case UpdateGamePhaseModel(choice: GamePhase) =>
       model.setGameBoard(controller.updateGamePhase(model, choice))

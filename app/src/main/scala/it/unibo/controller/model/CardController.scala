@@ -1,24 +1,32 @@
 package it.unibo.controller.model
 
+import it.unibo.model.cards.Card
 import it.unibo.model.cards.choices.StepChoice.PatternComputation
 import it.unibo.model.cards.choices.WindChoice.PlaceFire
 import it.unibo.model.cards.effects.PatternChoiceEffect
 import it.unibo.model.cards.types.{FireCard, FirebreakCard, WaterCard, WindCard}
-import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.{Deck, GameBoard}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.player.Player
 
 trait CardController:
-  def drawCards(gb: GameBoard, nCards: Int, player: Option[Player] = None): GameBoard =
-    val currentPlayer = player.getOrElse(gb.currentPlayer)
+  private def drawCardsFromDeck(gb: GameBoard, nCards: Int, drawCardFunc: Deck => (Card, Deck))(
+      player: Player
+  ): (GameBoard, Player) =
     val deck = gb.deck
-    val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, currentPlayer)) {
-      case ((currentDeck, currentPlayer), _) =>
-        val (card, newDeck) = currentDeck.drawCard()
-        val newPlayer = currentPlayer.drawCardFromDeck(card)
+    val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, player)) {
+      case ((currentDeck, player), _) =>
+        val (card, newDeck) = drawCardFunc(currentDeck)
+        val newPlayer = player.drawCardFromDeck(card)
         (newDeck, newPlayer)
     }
-    gb.copy(deck = finalDeck, currentPlayer = finalPlayer)
+    (gb.copy(deck = finalDeck), finalPlayer)
+
+  def drawCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =
+    drawCardsFromDeck(gb, nCards, _.drawCard())(player)
+
+  def drawSpecialCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =
+    drawCardsFromDeck(gb, nCards, _.drawSpecialCard())(player)
 
   def discardCards(gb: GameBoard, cards: List[Int]): GameBoard =
     val player = gb.currentPlayer
