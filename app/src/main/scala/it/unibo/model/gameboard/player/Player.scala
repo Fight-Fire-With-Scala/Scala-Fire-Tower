@@ -2,12 +2,14 @@ package it.unibo.model.gameboard.player
 
 import it.unibo.model.cards.Card
 import it.unibo.model.cards.types.CanBePlayedAsExtra
+import it.unibo.model.gameboard.grid.{Position, TowerPosition}
 
 trait Player:
   val name: String
   def moves: List[Move]
   def hand: List[Card]
   def extraCard: Option[Card]
+  def towerPosition: TowerPosition
 
   def drawCardFromDeck(card: Card): Player = card.cardType.effectType match
     case _: CanBePlayedAsExtra if extraCard.isEmpty =>
@@ -34,4 +36,6 @@ trait Player:
 
 object Player:
   def apply(name: String): Player = Person(name, List.empty, List.empty)
+  def apply(name: String, towerPosition: TowerPosition): Player =
+    Person(name, List.empty, List.empty, towerPosition)
   def bot: Player = Bot(List.empty, List.empty)
