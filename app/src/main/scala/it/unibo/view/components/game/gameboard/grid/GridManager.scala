@@ -63,18 +63,19 @@ class GridManager(
       runOnUIThread(square.updateColor(tokenColor))
     }
 
-  def updateTowerColors(currentTower: TowerPosition, otherTowers: Set[TowerPosition]): Unit =
+
+  def updateTowerColors(currentTower: TowerPosition, otherTower: TowerPosition): Unit =
     val currentColor = Color.Blue
     val otherColor = Color.Gray
-    logger.info(currentTower.squarePositions.toString)
+  
     // Update the color for the current tower position
-    currentTower.squarePositions.foreach { pos =>
-      squareMap.get(pos).foreach(_.updateColor(currentColor))
-    }
-
-    // Update the color for the other tower positions
-    otherTowers.foreach { tower =>
+    updateTowerColor(currentTower, currentColor)
+    updateTowerColor(otherTower, otherColor)
+  
+  private def updateTowerColor(tower: TowerPosition, color: Color): Unit =
+    runOnUIThread {
       tower.squarePositions.foreach { pos =>
-        squareMap.get(pos).foreach(_.updateColor(otherColor))
+        squareMap.get(pos).foreach(_.updateColor(color))
       }
     }
+

@@ -48,5 +48,5 @@ final class GridComponent(using
 
   def updatePlayerTowers(currentTower: TowerPosition): Unit =
     val allTowers = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT)
-    val otherTowers = allTowers - currentTower
-    gridManager.updateTowerColors(currentTower, otherTowers)
+    val otherTower = (allTowers - currentTower).head
+    gridManager.updateTowerColors(currentTower, otherTower)
