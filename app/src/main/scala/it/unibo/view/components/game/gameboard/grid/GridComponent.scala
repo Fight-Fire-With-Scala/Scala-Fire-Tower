@@ -3,7 +3,7 @@ package it.unibo.view.components.game.gameboard.grid
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.grid.{Grid, Position, Token}
+import it.unibo.model.gameboard.grid.{Grid, Position, Token, TowerPosition}
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IGridComponent, IUpdateView}
 import javafx.fxml.FXML
@@ -45,3 +45,8 @@ final class GridComponent(using
   override protected def getPane: Node = container
 
   def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = gridManager.updateGrid(grid, gamePhase)
+
+  def updatePlayerTowers(currentTower: TowerPosition): Unit =
+    val allTowers = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT)
+    val otherTowers = allTowers - currentTower
+    gridManager.updateTowerColors(currentTower, otherTowers)

@@ -6,8 +6,9 @@ import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak, Water}
-import it.unibo.model.gameboard.grid.{ConcreteToken, Grid, Position, Token}
+import it.unibo.model.gameboard.grid.{ConcreteToken, Grid, Position, Token, TowerPosition}
 import it.unibo.view.components.game.gameboard.grid.handler.GridEventHandler
+import it.unibo.view.logger
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
@@ -60,4 +61,20 @@ class GridManager(
         case _ => cellColor
 
       runOnUIThread(square.updateColor(tokenColor))
+    }
+
+  def updateTowerColors(currentTower: TowerPosition, otherTowers: Set[TowerPosition]): Unit =
+    val currentColor = Color.Blue
+    val otherColor = Color.Gray
+    logger.info(currentTower.squarePositions.toString)
+    // Update the color for the current tower position
+    currentTower.squarePositions.foreach { pos =>
+      squareMap.get(pos).foreach(_.updateColor(currentColor))
+    }
+
+    // Update the color for the other tower positions
+    otherTowers.foreach { tower =>
+      tower.squarePositions.foreach { pos =>
+        squareMap.get(pos).foreach(_.updateColor(otherColor))
+      }
     }

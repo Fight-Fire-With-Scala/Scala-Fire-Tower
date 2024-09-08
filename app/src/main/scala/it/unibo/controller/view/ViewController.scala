@@ -20,7 +20,7 @@ final case class ViewController(
     val currentGamePhase = gameBoard.gamePhase
     updateGamePhase(currentGamePhase)
     gameComponent.fold(()) { component =>
-      component.updateGrid(gameBoard.board.grid, currentGamePhase)
+      component.updateGrid(gameBoard, currentGamePhase)
       component.updatePlayer(gameBoard.currentPlayer)(currentGamePhase)
       
       // TODO: when the enum of cardEffects will be done we will pass that instead of the Int

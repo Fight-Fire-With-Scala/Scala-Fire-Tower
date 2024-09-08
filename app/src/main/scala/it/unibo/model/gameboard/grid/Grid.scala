@@ -2,6 +2,8 @@ package it.unibo.model.gameboard.grid
 
 import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.model.gameboard.grid.Cell.*
+import it.unibo.model.gameboard.grid.Grid.Size
+import it.unibo.model.gameboard.grid.TowerPosition.{BOTTOM_LEFT, TOP_RIGHT}
 
 trait Grid:
   def cells: Map[Position, Cell]
@@ -15,9 +17,9 @@ trait Grid:
   def setCell(position: Position, cell: Cell): Grid
 
   def setToken(position: Position, token: Token): Grid
-  
-  def setTokens(tokens: (Position, Token)*): Grid =
-    tokens.foldLeft(this) { case (grid, (position, token)) => grid.setToken(position, token) }
+
+  def setTokens(tokens: (Position, Token)*): Grid = tokens
+    .foldLeft(this) { case (grid, (position, token)) => grid.setToken(position, token) }
 
   def update(updates: (Position, Cell)*): Grid = updates
     .foldLeft(this) { case (grid, (position, cell)) => grid.setCell(position, cell) }
@@ -28,12 +30,6 @@ object Grid:
   export GridBuilder.*
   val Size: Int = 16
   val positionNumber: Int = Grid.Size * Grid.Size
-
-  lazy val Positions: Iterable[Position] =
-    for
-      i <- 0 until Grid.Size
-      j <- 0 until Grid.Size
-    yield Position(i, j)
 
   def apply(): Grid = Grid.empty
 
@@ -74,21 +70,18 @@ final case class BasicGrid(
     case Some(_: Woods.type)       => handleTokenForWoods(position, token)
     case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
-  private def handleTokenForWoods(position: Position, token: Token): Grid =
-    getToken(position) match
-      case Some(Fire) =>
-        token match
-          case Water => BasicGrid(this._cells, this._tokens - position)
-          case _ => BasicGrid(this._cells, this._tokens + (position -> token))
-      case Some(Firebreak)   =>
-        token match
-          case Fire => this
-          case _ => BasicGrid(this._cells, this._tokens + (position -> token))
-      case Some(Water) | Some(Reforest) | Some(Empty) =>
-        BasicGrid(this._cells, this._tokens + (position -> token))
-      case _ =>
-        if token == Water || token == Empty then this
-        else BasicGrid(this._cells, this._tokens + (position -> token))
+  private def handleTokenForWoods(position: Position, token: Token): Grid = getToken(position) match
+    case Some(Fire)                                 => token match
+        case Water => BasicGrid(this._cells, this._tokens - position)
+        case _     => BasicGrid(this._cells, this._tokens + (position -> token))
+    case Some(Firebreak)                            => token match
+        case Fire => this
+        case _    => BasicGrid(this._cells, this._tokens + (position -> token))
+    case Some(Water) | Some(Reforest) | Some(Empty) =>
+      BasicGrid(this._cells, this._tokens + (position -> token))
+    case _                                          =>
+      if token == Water || token == Empty then this
+      else BasicGrid(this._cells, this._tokens + (position -> token))
 
   override def getToken(position: Position): Option[Token] = this._tokens.get(position)
 

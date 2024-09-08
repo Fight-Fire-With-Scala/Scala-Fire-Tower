@@ -1,9 +1,10 @@
 package it.unibo.view.components.game
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
-import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.{GameBoard, GamePhase}
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.player.Player
+import it.unibo.model.logger
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IUpdateView, IViewComponent}
 import it.unibo.view.components.game.gameboard.grid.GridComponent
@@ -83,7 +84,9 @@ final class GameComponent extends IViewComponent with IUpdateView:
         hc
     )
   
-  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = gridComponent.updateGrid(grid, gamePhase)
+  def updateGrid(gameBoard: GameBoard, gamePhase: GamePhase): Unit =
+    gridComponent.updateGrid(gameBoard.board.grid, gamePhase)
+    gridComponent.updatePlayerTowers(gameBoard.currentPlayer.towerPosition)
 
   def updatePlayer(player: Player)(gamePhase: GamePhase): Unit = runOnUIThread {
     val updatedHand = player.extraCard.fold(player.hand)(card => player.hand :+ card)
