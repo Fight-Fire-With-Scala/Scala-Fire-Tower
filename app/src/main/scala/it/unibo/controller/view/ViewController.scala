@@ -21,9 +21,6 @@ final case class ViewController(
     updateGamePhase(currentGamePhase)
     gameComponent.fold(()) { component =>
       component.updateGrid(gameBoard, currentGamePhase)
-      component.updatePlayer(gameBoard.currentPlayer)(currentGamePhase)
-      
-      component.updateGrid(gameBoard.board.grid, currentGamePhase)
       component.updatePlayer(gameBoard.getCurrentPlayer())(currentGamePhase)
 
       // TODO: when the enum of cardEffects will be done we will pass that instead of the Int
@@ -31,8 +28,8 @@ final case class ViewController(
         gameBoard.board.availablePatterns,
         gameBoard.board.currentCardId match
           case Some(id) => gameBoard.getCurrentPlayer().hand.find(_.id == id).get.cardType
-              .effectType.id
-          case _        => -1
+            .effectType.id
+          case _ => -1
       )
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>
@@ -40,7 +37,7 @@ final case class ViewController(
           c.updateTurnNumber(gameBoard.turnNumber)
           c.updateTurnPlayer(gameBoard.getCurrentPlayer().name)
         case c: WindRoseComponent => c.updateWindRoseDirection(gameBoard.board.windDirection)
-        case c: DeckComponent     =>
-        case c: DiceComponent     =>
+        case c: DeckComponent =>
+        case c: DiceComponent =>
       }
     }
