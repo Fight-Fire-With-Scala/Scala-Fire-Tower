@@ -11,7 +11,7 @@ import it.unibo.model.cards.{Card, CardType}
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
 import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
-import it.unibo.view.components.{ICanBeDisabled, ICanToggleHandler, IHandComponent}
+import it.unibo.view.components.{ICanBeDisabled, ICanSwitchHandler, IHandComponent}
 import javafx.event.{EventHandler, EventType}
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -26,7 +26,7 @@ enum CardHighlightState:
   case Highlighted, Unhighlighted
 
 final class CardComponent(using internalObservable: InternalViewSubject)
-    extends IHandComponent, ICanToggleHandler[GamePhase], ICanBeDisabled:
+    extends IHandComponent, ICanSwitchHandler[GamePhase], ICanBeDisabled:
 
   override val fxmlPath: String = GUIType.Card.fxmlPath
 
@@ -53,13 +53,13 @@ final class CardComponent(using internalObservable: InternalViewSubject)
 
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
-    highlightManager.toggle()
+    highlightManager.switch()
 
   addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
   addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
   addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
-  protected def applyState(state: GamePhase): Unit = highlightManager.toggle(Some(Unhighlighted))
+  protected def applyState(state: GamePhase): Unit = highlightManager.switch(Some(Unhighlighted))
 
   def setCard(card: Card): Unit =
     cardPane.getStyleClass.clear()
