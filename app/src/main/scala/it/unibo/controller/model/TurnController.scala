@@ -24,10 +24,12 @@ trait TurnController:
     case RedrawCardsPhase      => gb.copy(gamePhase = RedrawCardsPhase)
     case DecisionPhase         =>
       val nextPhase =
-        if gb.currentPlayer.extraCard.isDefined then PlaySpecialCardPhase else EndTurnPhase
+        if gb.getCurrentPlayer().extraCard.isDefined then PlaySpecialCardPhase else EndTurnPhase
       updateGamePhase(gb, nextPhase)
     case PlaySpecialCardPhase  => gb.copy(gamePhase = PlaySpecialCardPhase)
-    case EndTurnPhase          => gb.changeTurn()
+    case EndTurnPhase          => handleWindPhase(gb.changeTurn())
+      
+    
 
   private def handleWindPhase(gb: GameBoard): GameBoard =
     val board = gb.board

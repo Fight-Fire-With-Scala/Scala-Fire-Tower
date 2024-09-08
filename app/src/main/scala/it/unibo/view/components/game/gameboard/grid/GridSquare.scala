@@ -2,7 +2,7 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
-import it.unibo.view.components.{ICanBeDisabled, ICanToggleHandler}
+import it.unibo.view.components.{ICanBeDisabled, ICanSwitchHandler}
 import it.unibo.view.logger
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle

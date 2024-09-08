@@ -8,8 +8,9 @@ import it.unibo.model.cards.resolvers.{ChoiceResultResolver, EffectResolver, Ins
 import it.unibo.model.cards.types.CanBePlayedAsExtra
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
+
 import it.unibo.model.gameboard.grid.{Grid, Position, TowerPosition}
-import it.unibo.model.gameboard.player.{Bot, Person, Player}
+import it.unibo.model.gameboard.player.{Bot, Person, Player, PlayerInstance, PlayerManager}
 
 enum GamePhase:
   case WindPhase, RedrawCardsPhase, PlayStandardCardPhase, WaitingPhase, PlaySpecialCardPhase,
@@ -20,15 +21,22 @@ case class GameBoard(
     deck: Deck,
     private val player1: Player,
     private val player2: Player,
-    currentPlayer: Player = null,
+    playerManager: PlayerManager = PlayerManager(),
     turnNumber: Int = 0,
     gamePhase: GamePhase = WindPhase
 ):
-  def changeTurn(): GameBoard = copy(
-    currentPlayer = if currentPlayer == player1 then player2 else player1,
-    gamePhase = WindPhase,
-    turnNumber = turnNumber + 1
-  )
+
+  def getCurrentPlayer(): Player = playerManager.getCurrentState match
+    case PlayerInstance.Player1 => player1
+    case PlayerInstance.Player2 => player2
+
+  def updateCurrentPlayer(player: Player): GameBoard = playerManager.getCurrentState match
+    case PlayerInstance.Player1 => copy(player1 = player)
+    case PlayerInstance.Player2 => copy(player2 = player)
+
+  def changeTurn(): GameBoard =
+    playerManager.toggle()
+    copy(gamePhase = WindPhase, turnNumber = turnNumber + 1)
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
@@ -66,10 +74,13 @@ object GameBoard:
     val b = Board.withRandomWindAndStandardGrid
     val player1 = Person("", List.empty, List.empty, TowerPosition.TOP_RIGHT)
     val player2 = Person("", List.empty, List.empty, TowerPosition.BOTTOM_LEFT)
-    GameBoard(b, Deck("cards.yaml"), player1, player2, player1)
+    GameBoard(b, Deck("cards.yaml"), player1, player2)
+
 
   def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
+    GameBoard(b, Deck("cards.yaml"), player1, player2)
+
 
     def updateTowerPosition(player: Player, position: TowerPosition): Player = player match
       case p: Person => p.copy(towerPosition = position)
@@ -78,5 +89,4 @@ object GameBoard:
     val updatedPlayer1 = updateTowerPosition(player1, TowerPosition.TOP_RIGHT)
     val updatedPlayer2 = updateTowerPosition(player2, TowerPosition.BOTTOM_LEFT)
 
-    GameBoard(b, Deck("cards.yaml"), updatedPlayer1, updatedPlayer2, updatedPlayer1)
-    
+    GameBoard(b, Deck("cards.yaml"), updatedPlayer1, updatedPlayer2)

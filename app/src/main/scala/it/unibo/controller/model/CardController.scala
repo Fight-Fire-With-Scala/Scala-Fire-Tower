@@ -29,15 +29,15 @@ trait CardController:
     drawCardsFromDeck(gb, nCards, _.drawSpecialCard())(player)
 
   def discardCards(gb: GameBoard, cards: List[Int]): GameBoard =
-    val player = gb.currentPlayer
-    gb.copy(currentPlayer = player.discardCards(cards))
+    val player = gb.getCurrentPlayer()
+    gb.updateCurrentPlayer(player.discardCards(cards))
 
   def setCurrentCardId(gb: GameBoard, cardId: Int): GameBoard =
     val newBoard = gb.board.copy(currentCardId = Some(cardId))
     gb.copy(board = newBoard)
 
   def resolvePatternComputation(gb: GameBoard, cardId: Int): GameBoard =
-    val card = gb.currentPlayer.hand.find(_.id == cardId)
+    val card = gb.getCurrentPlayer().hand.find(_.id == cardId)
     card match
       case Some(c) => c.cardType.effectType match
           case _: FireCard | _: FirebreakCard | _: WaterCard => gb
@@ -49,11 +49,8 @@ trait CardController:
   def resolvePatternChoice(gb: GameBoard, pattern: Map[Position, Token]): GameBoard =
     val effect = PatternChoiceEffect(pattern)
     val board = gb.board.applyEffect(Some(effect))
-    val currentPlayer = gb.currentPlayer
-    gb.copy(
-      currentPlayer = board.currentCardId match
-        case Some(cardId) => currentPlayer.playCard(cardId)._1
-        case None         => currentPlayer
-      ,
-      board = board.copy(currentCardId = None, availablePatterns = Set.empty)
-    )
+    val currentPlayer = gb.getCurrentPlayer()
+    val newGb = board.currentCardId match
+      case Some(cardId) => gb.updateCurrentPlayer(currentPlayer.playCard(cardId)._1)
+      case None         => gb
+    newGb.copy(board = board.copy(currentCardId = None, availablePatterns = Set.empty))

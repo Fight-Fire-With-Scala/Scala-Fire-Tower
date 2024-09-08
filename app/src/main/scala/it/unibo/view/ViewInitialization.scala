@@ -24,6 +24,6 @@ object ViewInitialization:
         gameController.refreshView(gameBoard) // just to avoid a flash the first time
         viewObservable.onNext(UpdateGamePhaseModel(gameBoard.gamePhase)) // get the updated gameboard
         logger.info(s"Wind Direction: ${gameBoard.board.windDirection}")
-        logger.info(s"Player turn: ${gameBoard.currentPlayer.name}")
+        logger.info(s"Player turn: ${gameBoard.getCurrentPlayer().name}")
       }
     }

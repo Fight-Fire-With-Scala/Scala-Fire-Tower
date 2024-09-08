@@ -53,9 +53,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
       cardComponents.foreach(_.reset())
       cardComponents.zip(cards).foreach { case (cardComponent, card) =>
         cardComponent.setCard(card)
-        cardComponent.toggle(gamePhase)
+        cardComponent.switch(gamePhase)
       }
-      cardToPlay.foreach(_.highlightManager.toggle(Some(CardHighlightState.Highlighted)))
+      cardToPlay.foreach(_.highlightManager.switch(Some(CardHighlightState.Highlighted)))
 
     }
 
@@ -78,12 +78,12 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =
-    cardToPlay.foreach(_.highlightManager.toggle(Some(CardHighlightState.Unhighlighted)))
+    cardToPlay.foreach(_.highlightManager.switch(Some(CardHighlightState.Unhighlighted)))
     cardToPlay = None
 
   def cardToPlay_=(cardId: Int): Unit =
     val cardComponent = cardComponents.find(_.cardId == cardId.toString)
-    cardComponent.get.highlightManager.toggle()
+    cardComponent.get.highlightManager.switch()
     if cardToPlay == cardComponent then
       cardToPlay = None
       logger.info(s"Card not to play: $cardToPlay")
@@ -93,7 +93,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     else
       cardToPlay match
         case Some(component) => component.highlightManager
-            .toggle(Some(CardHighlightState.Unhighlighted))
+            .switch(Some(CardHighlightState.Unhighlighted))
         case None            =>
       cardToPlay = cardComponent
       logger.info(s"Card to play: $cardToPlay")
