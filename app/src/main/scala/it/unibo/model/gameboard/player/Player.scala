@@ -10,9 +10,7 @@ trait Player:
   def extraCard: Option[Card]
 
   def drawCardFromDeck(card: Card): Player = card.cardType.effectType match
-    case _: CanBePlayedAsExtra if extraCard.isEmpty =>
-      println("bucket")
-      updatePlayer(extraCard = Some(card))
+    case _: CanBePlayedAsExtra if extraCard.isEmpty => updatePlayer(extraCard = Some(card))
     case _ if hand.size < 5                         => updatePlayer(hand = hand :+ card)
     case _                                          => this
 

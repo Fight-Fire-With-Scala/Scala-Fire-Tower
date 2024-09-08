@@ -35,12 +35,13 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val playerTwo = settings.getPlayerTwo
       val gameBoard = GameBoard(playerOne, playerTwo)
       val (newGb, newPlayer) = controller.initializePlayer(gameBoard, playerOne)
-      model.setGameBoard(newGb.copy(player1 = newPlayer, currentPlayer = newPlayer))
+      model.setGameBoard(newGb.copy(player1 = newPlayer))
       modelObserver.onNext(StartGameMessage(newGb))
 
     case DrawCardMessage(nCards: Int) =>
-      val (gb, player) = controller.drawCards(model, nCards)(model.getGameBoard.currentPlayer)
-      model.setGameBoard(gb.copy(currentPlayer = player))
+      val (gb, player) = controller.drawCards(model, nCards)(model.getGameBoard.getCurrentPlayer())
+      val newGb = gb.updateCurrentPlayer(player)
+      model.setGameBoard(newGb)
 
     case UpdateGamePhaseModel(choice: GamePhase) =>
       model.setGameBoard(controller.updateGamePhase(model, choice))
@@ -58,7 +59,6 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val currentGb = controller.setCurrentCardId(gb, cardId)
       val newGb = controller.resolvePatternComputation(currentGb, cardId)
       model.setGameBoard(newGb)
-      logger.info(s"Available patterns: ${newGb.board.availablePatterns}")
       modelObserver.onNext(RefreshMessage(newGb))
 
     case ResolvePatternChoice(pattern) =>

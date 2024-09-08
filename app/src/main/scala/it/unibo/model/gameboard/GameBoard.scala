@@ -19,7 +19,7 @@ import it.unibo.model.cards.resolvers.{
 import it.unibo.model.cards.types.CanBePlayedAsExtra
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.board.Board
-import it.unibo.model.gameboard.player.Player
+import it.unibo.model.gameboard.player.{Player, PlayerInstance, PlayerManager}
 
 enum GamePhase:
   case WindPhase, RedrawCardsPhase, PlayStandardCardPhase, WaitingPhase, PlaySpecialCardPhase,
@@ -30,15 +30,22 @@ case class GameBoard(
     deck: Deck,
     private val player1: Player,
     private val player2: Player,
-    currentPlayer: Player = null,
+    playerManager: PlayerManager = PlayerManager(),
     turnNumber: Int = 0,
     gamePhase: GamePhase = WindPhase
 ):
-  def changeTurn(): GameBoard = copy(
-    currentPlayer = if currentPlayer == player1 then player2 else player1,
-    gamePhase = WindPhase,
-    turnNumber = turnNumber + 1
-  )
+
+  def getCurrentPlayer(): Player = playerManager.getCurrentState match
+    case PlayerInstance.Player1 => player1
+    case PlayerInstance.Player2 => player2
+
+  def updateCurrentPlayer(player: Player): GameBoard = playerManager.getCurrentState match
+    case PlayerInstance.Player1 => copy(player1 = player)
+    case PlayerInstance.Player2 => copy(player2 = player)
+
+  def changeTurn(): GameBoard =
+    playerManager.toggle()
+    copy(gamePhase = WindPhase, turnNumber = turnNumber + 1)
 
   def resolveCardPlayed(card: Card, choice: GameChoice): GameBoard =
     val resolver = card.cardType.effectType.effect
@@ -74,10 +81,10 @@ case class GameBoard(
 object GameBoard:
   def apply(): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
-    val gb = GameBoard(b, Deck("cards.yaml"), Player(""), Player(""), Player(""))
+    val gb = GameBoard(b, Deck("cards.yaml"), Player(""), Player(""))
     gb
 
   def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
-    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2, player1)
+    val gb = GameBoard(b, Deck("cards.yaml"), player1, player2)
     gb
