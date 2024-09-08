@@ -54,3 +54,13 @@ trait ActivationController extends GameController:
           case c: GameInfoComponent => c.enableView()
         }
       }
+    case _                               => gameComponent.fold(()) { component =>
+        component.gridComponent.disableView()
+        component.handComponent.disableView()
+        component.sidebarComponent.components.foreach {
+          case c: DeckComponent     => c.disableView()
+          case c: DiceComponent     => c.disableView()
+          case c: WindRoseComponent => c.disableView()
+          case c: GameInfoComponent => c.disableView()
+        }
+      }

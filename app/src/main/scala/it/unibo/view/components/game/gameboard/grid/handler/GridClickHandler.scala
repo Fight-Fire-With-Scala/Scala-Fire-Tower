@@ -3,7 +3,7 @@ package it.unibo.view.components.game.gameboard.grid.handler
 import it.unibo.controller.*
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
+import it.unibo.model.gameboard.GamePhase.{DecisionPhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare, GridState}
@@ -45,23 +45,23 @@ class GridClickHandler(
     case EffectType.Esplosione                  => placePattern(
         gridState.availablePatterns
           .find(_.exists((pos, tkn) => pos == position && tkn == Firebreak)).get,
-        PlaySpecialCardPhase
+        DecisionPhase
       )
     case EffectType.VigileDelFuocoParacadutista => placePattern(
         gridState.availablePatterns.find(_.exists((pos, tkn) => pos == position && tkn == Fire))
           .get,
-        PlaySpecialCardPhase
+        DecisionPhase
       )
     case _                                      => logger.error("Error in explosion pattern")
 
   private def placeSinglePattern(position: Position): Unit =
     val pattern = gridState.availablePatterns.find(_.contains(position)).get
-    placePattern(pattern, PlaySpecialCardPhase)
+    placePattern(pattern, DecisionPhase)
 
   private def placeFixedPattern(position: Position): Unit =
     gridState.fixedCell.clear()
     val pattern = gridState.availablePatternsClickFixed.find(_.contains(position)).get
-    placePattern(pattern, PlaySpecialCardPhase)
+    placePattern(pattern, DecisionPhase)
 
   private def activateFixedCellMode(position: Position): Unit =
     val pattern = gridState.availablePatterns.find(_.contains(position)).get
