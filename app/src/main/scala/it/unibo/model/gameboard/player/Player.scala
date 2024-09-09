@@ -9,7 +9,7 @@ trait Player:
   def moves: List[Move]
   def hand: List[Card]
   def extraCard: Option[Card]
-  def towerPosition: TowerPosition
+  def towerPositions: Set[TowerPosition]
 
   def drawCardFromDeck(card: Card): Player = card.cardType.effectType match
     case _: CanBePlayedAsExtra if extraCard.isEmpty => updatePlayer(extraCard = Some(card))
@@ -34,6 +34,6 @@ trait Player:
 
 object Player:
   def apply(name: String): Player = Person(name, List.empty, List.empty)
-  def apply(name: String, towerPosition: TowerPosition): Player =
-    Person(name, List.empty, List.empty, towerPosition)
+  def apply(name: String, towerPositions: Set[TowerPosition]): Player =
+    Person(name, List.empty, List.empty, towerPositions)
   def bot: Player = Bot(List.empty, List.empty)

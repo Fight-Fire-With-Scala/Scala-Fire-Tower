@@ -19,8 +19,8 @@ enum GamePhase:
 case class GameBoard(
     board: Board,
     deck: Deck,
-    private val player1: Player,
-    private val player2: Player,
+    player1: Player,
+    player2: Player,
     playerManager: PlayerManager = PlayerManager(),
     turnNumber: Int = 0,
     gamePhase: GamePhase = WindPhase
@@ -72,19 +72,22 @@ case class GameBoard(
 object GameBoard:
   def apply(): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
-    val player1 = Person("", List.empty, List.empty, TowerPosition.RIGHT)
-    val player2 = Person("", List.empty, List.empty, TowerPosition.LEFT)
+    val player1 = Person("", List.empty, List.empty)
+    val player2 = Person("", List.empty, List.empty)
     GameBoard(b, Deck("cards.yaml"), player1, player2)
-
 
   def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
-    GameBoard(b, Deck("cards.yaml"), player1, player2)
-    val updatedPlayer1 = updateTowerPosition(player1, TowerPosition.LEFT)
-    val updatedPlayer2 = updateTowerPosition(player2, TowerPosition.RIGHT)
+    val updatedPlayer1 = player1 match
+      case p: Person => p.copy(towerPositions = Set(TowerPosition.TOP_LEFT, TowerPosition.BOTTOM_RIGHT))
+      case b: Bot => b.copy(towerPositions = Set(TowerPosition.TOP_LEFT, TowerPosition.BOTTOM_RIGHT))
+
+    val updatedPlayer2 = player2 match
+      case p: Person => p.copy(towerPositions = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT))
+      case b: Bot => b.copy(towerPositions = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT))
 
     GameBoard(b, Deck("cards.yaml"), updatedPlayer1, updatedPlayer2)
 
-  private def updateTowerPosition(player: Player, position: TowerPosition): Player = player match
-    case p: Person => p.copy(towerPosition = position)
-    case b: Bot => b.copy(towerPosition = position)
+  private def updateTowerPosition(player: Player, positions: Set[TowerPosition]): Player = player match
+    case p: Person => p.copy(towerPositions = positions)
+    case b: Bot => b.copy(towerPositions = positions)

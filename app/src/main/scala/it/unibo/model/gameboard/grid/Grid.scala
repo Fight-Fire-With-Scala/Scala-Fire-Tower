@@ -4,8 +4,11 @@ import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.Grid.Size
 
-enum TowerPosition:
-  case LEFT, RIGHT
+enum TowerPosition(position: Position):
+  case TOP_LEFT extends TowerPosition(Position(0, 0))
+  case BOTTOM_RIGHT extends TowerPosition(Position(Grid.Size, Grid.Size))
+  case TOP_RIGHT extends TowerPosition(Position(0, Grid.Size))
+  case BOTTOM_LEFT extends TowerPosition(Position(Grid.Size, 0))
 
 trait Grid:
   def cells: Map[Position, Cell]
@@ -16,7 +19,7 @@ trait Grid:
 
   def getToken(position: Position): Option[Token]
 
-  def getTowerCells(towerPosition: TowerPosition): Set[Position]
+  def getTowerCells(towerPositions: Set[TowerPosition]): Set[Position]
 
   def setCell(position: Position, cell: Cell): Grid
 
@@ -94,17 +97,17 @@ final case class BasicGrid(
 
   override def getCell(position: Position): Option[Cell] = this._cells.get(position)
 
-  override def getTowerCells(towerPosition: TowerPosition): Set[Position] =
+  override def getTowerCells(towerPositions: Set[TowerPosition]): Set[Position] =
     val halfSize = Grid.Size / 2
-    val isLeft = towerPosition match
-      case TowerPosition.LEFT => true
-      case TowerPosition.RIGHT => false
+
+    def isInDiagonal(position: Position, towerPosition: TowerPosition): Boolean = towerPosition match
+      case TowerPosition.TOP_LEFT => position.row < halfSize && position.col < halfSize
+      case TowerPosition.BOTTOM_RIGHT => position.row >= halfSize && position.col >= halfSize
+      case TowerPosition.TOP_RIGHT => position.row < halfSize && position.col >= halfSize
+      case TowerPosition.BOTTOM_LEFT => position.row >= halfSize && position.col < halfSize
 
     _cells.collect {
-      case (position, cell) if cell.isInstanceOf[Tower.type] && (
-        if isLeft then position.col < halfSize
-        else position.col >= halfSize
-      ) => position
+      case (position, cell) if cell.isInstanceOf[Tower.type] && towerPositions.exists(isInDiagonal(position, _)) => position
     }.toSet
 
   override def toString: String =
