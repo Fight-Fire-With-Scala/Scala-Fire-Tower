@@ -10,3 +10,5 @@ object PrologProgram:
   val solverProgram: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/solver.pl"))
 
   val cardsProgram: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/cards.pl"))
+  
+  val distanceProgram: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/distance.pl"))
