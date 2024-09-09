@@ -21,7 +21,7 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val playerOne = settings.getPlayerOne
       val playerTwo = settings.getPlayerTwo
       val gameBoard = GameBoard(playerOne, playerTwo)
-      val (newGb, newPlayer) = controller.initializePlayer(gameBoard, playerOne)
+      val (newGb, newPlayer) = controller.initializePlayer(gameBoard, gameBoard.getCurrentPlayer())
       model.setGameBoard(newGb.copy(player1 = newPlayer))
       modelObserver.onNext(StartGameMessage(newGb))
 
