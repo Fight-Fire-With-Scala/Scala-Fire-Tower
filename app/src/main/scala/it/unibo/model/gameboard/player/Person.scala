@@ -7,7 +7,7 @@ final case class Person(
     override val name: String,
     moves: List[Move],
     hand: List[Card],
-    towerPosition: TowerPosition = TowerPosition.TOP_RIGHT,
+    towerPosition: TowerPosition = TowerPosition.LEFT,
     extraCard: Option[Card] = None
 ) extends Player:
   override protected def updatePlayer(

@@ -46,12 +46,12 @@ class GridManager(
     gridEventHandler.updateAvailablePatterns(patterns)
     gridEventHandler.setEffectCode(cardEffect)
 
-  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = squareMap
-    .foreach { case (position, square) =>
-      //gridEventHandler.updateGamePhase(gamePhase)
+  def updateGrid(grid: Grid, currentTowerPositions: Set[Position], gamePhase: GamePhase): Unit =
+    squareMap.foreach { case (position, square) =>
       this.gamePhase = gamePhase
       val cellColor = grid.getCell(position) match
         case Some(_: Woods.type)       => Color.DarkGreen
+        case Some(_: Tower.type) if currentTowerPositions.contains(position) => Color.Yellow
         case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
         case Some(_: EternalFire.type) => Color.Red
         case _                         => Color.White
@@ -62,20 +62,3 @@ class GridManager(
 
       runOnUIThread(square.updateColor(tokenColor))
     }
-
-
-  def updateTowerColors(currentTower: TowerPosition, otherTower: TowerPosition): Unit =
-    val currentColor = Color.Blue
-    val otherColor = Color.Gray
-  
-    // Update the color for the current tower position
-    updateTowerColor(currentTower, currentColor)
-    updateTowerColor(otherTower, otherColor)
-  
-  private def updateTowerColor(tower: TowerPosition, color: Color): Unit =
-    runOnUIThread {
-      tower.squarePositions.foreach { pos =>
-        squareMap.get(pos).foreach(_.updateColor(color))
-      }
-    }
-

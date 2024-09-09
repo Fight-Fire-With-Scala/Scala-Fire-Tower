@@ -3,7 +3,9 @@ package it.unibo.model.gameboard.grid
 import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.Grid.Size
-import it.unibo.model.gameboard.grid.TowerPosition.{BOTTOM_LEFT, TOP_RIGHT}
+
+enum TowerPosition:
+  case LEFT, RIGHT
 
 trait Grid:
   def cells: Map[Position, Cell]
@@ -13,6 +15,8 @@ trait Grid:
   def getCell(position: Position): Option[Cell]
 
   def getToken(position: Position): Option[Token]
+
+  def getTowerCells(towerPosition: TowerPosition): Set[Position]
 
   def setCell(position: Position, cell: Cell): Grid
 
@@ -89,6 +93,19 @@ final case class BasicGrid(
     BasicGrid(this._cells + (position -> cell), this._tokens)
 
   override def getCell(position: Position): Option[Cell] = this._cells.get(position)
+
+  override def getTowerCells(towerPosition: TowerPosition): Set[Position] =
+    val halfSize = Grid.Size / 2
+    val isLeft = towerPosition match
+      case TowerPosition.LEFT => true
+      case TowerPosition.RIGHT => false
+
+    _cells.collect {
+      case (position, cell) if cell.isInstanceOf[Tower.type] && (
+        if isLeft then position.col < halfSize
+        else position.col >= halfSize
+      ) => position
+    }.toSet
 
   override def toString: String =
     val gridRepresentation = (for
