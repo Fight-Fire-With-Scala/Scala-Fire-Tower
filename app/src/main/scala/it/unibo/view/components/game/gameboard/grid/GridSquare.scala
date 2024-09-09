@@ -37,7 +37,7 @@ final case class GridSquare(
       MouseEvent.MOUSE_CLICKED -> onMouseClickedFun)
 
   override def enableView(): Unit =
-    rectangle.setOpacity(0.9)
+    rectangle.setOpacity(1)
     fixedEventHandlers.foreach((ev, h) => pane.addEventHandler(ev, h))
 
   override def disableView(): Unit =
