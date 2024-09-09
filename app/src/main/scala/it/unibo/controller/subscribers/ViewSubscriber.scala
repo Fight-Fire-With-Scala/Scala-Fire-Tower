@@ -2,23 +2,10 @@ package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
 import it.unibo.controller.model.ModelController
-import it.unibo.controller.{
-  ConfirmCardPlayMessage,
-  DiscardCardMessage,
-  DrawCardMessage,
-  GameBoardInitialization,
-  ModelSubject,
-  RefreshMessage,
-  ResetPatternComputation,
-  ResolvePatternChoice,
-  ResolvePatternComputation,
-  UpdateGamePhaseModel,
-  UpdateWindDirection,
-  ViewMessage
-}
+import it.unibo.controller.{ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, ModelSubject, RefreshMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage}
 import it.unibo.controller.StartGameMessage
-
 import it.unibo.model.ModelModule.Model
+import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
@@ -45,6 +32,9 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
 
     case UpdateGamePhaseModel(choice: GamePhase) =>
       model.setGameBoard(controller.updateGamePhase(model, choice))
+      model.getGameBoard.getCurrentPlayer() match
+        case bot: Bot => bot.think()
+        case _ =>
       modelObserver.onNext(RefreshMessage(model.getGameBoard))
 
     case UpdateWindDirection(windDirection: Direction) =>
