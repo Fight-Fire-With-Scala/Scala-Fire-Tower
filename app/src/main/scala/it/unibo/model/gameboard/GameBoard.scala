@@ -30,6 +30,10 @@ case class GameBoard(
     case PlayerInstance.Player1 => player1
     case PlayerInstance.Player2 => player2
 
+  def getOpponent(): Player = playerManager.getCurrentState match
+    case PlayerInstance.Player1 => player2
+    case PlayerInstance.Player2 => player1
+
   def updateCurrentPlayer(player: Player): GameBoard = playerManager.getCurrentState match
     case PlayerInstance.Player1 => copy(player1 = player)
     case PlayerInstance.Player2 => copy(player2 = player)

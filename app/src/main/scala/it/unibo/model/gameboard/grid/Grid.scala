@@ -4,11 +4,11 @@ import it.unibo.model.gameboard.grid.ConcreteToken.*
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.Grid.Size
 
-enum TowerPosition(position: Position):
+enum TowerPosition(val position: Position):
   case TOP_LEFT extends TowerPosition(Position(0, 0))
-  case BOTTOM_RIGHT extends TowerPosition(Position(Grid.Size, Grid.Size))
-  case TOP_RIGHT extends TowerPosition(Position(0, Grid.Size))
-  case BOTTOM_LEFT extends TowerPosition(Position(Grid.Size, 0))
+  case BOTTOM_RIGHT extends TowerPosition(Position(Grid.Size - 1, Grid.Size - 1))
+  case TOP_RIGHT extends TowerPosition(Position(0, Grid.Size - 1))
+  case BOTTOM_LEFT extends TowerPosition(Position(Grid.Size - 1, 0))
 
 trait Grid:
   def cells: Map[Position, Cell]
