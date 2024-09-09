@@ -44,9 +44,5 @@ final class GridComponent(using
 
   override protected def getPane: Node = container
 
-  def updateGrid(grid: Grid, gamePhase: GamePhase): Unit = gridManager.updateGrid(grid, gamePhase)
-
-  def updatePlayerTowers(currentTower: TowerPosition): Unit =
-    val allTowers = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT)
-    val otherTower = (allTowers - currentTower).head
-    gridManager.updateTowerColors(currentTower, otherTower)
+  def updateGrid(grid: Grid, currentTowerPositions: Set[Position], gamePhase: GamePhase): Unit =
+    gridManager.updateGrid(grid, currentTowerPositions, gamePhase)

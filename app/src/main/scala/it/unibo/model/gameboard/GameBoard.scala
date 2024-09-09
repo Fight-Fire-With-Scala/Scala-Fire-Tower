@@ -72,21 +72,19 @@ case class GameBoard(
 object GameBoard:
   def apply(): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
-    val player1 = Person("", List.empty, List.empty, TowerPosition.TOP_RIGHT)
-    val player2 = Person("", List.empty, List.empty, TowerPosition.BOTTOM_LEFT)
+    val player1 = Person("", List.empty, List.empty, TowerPosition.RIGHT)
+    val player2 = Person("", List.empty, List.empty, TowerPosition.LEFT)
     GameBoard(b, Deck("cards.yaml"), player1, player2)
 
 
   def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
     GameBoard(b, Deck("cards.yaml"), player1, player2)
-
-
-    def updateTowerPosition(player: Player, position: TowerPosition): Player = player match
-      case p: Person => p.copy(towerPosition = position)
-      case b: Bot    => b.copy(towerPosition = position)
-
-    val updatedPlayer1 = updateTowerPosition(player1, TowerPosition.TOP_RIGHT)
-    val updatedPlayer2 = updateTowerPosition(player2, TowerPosition.BOTTOM_LEFT)
+    val updatedPlayer1 = updateTowerPosition(player1, TowerPosition.LEFT)
+    val updatedPlayer2 = updateTowerPosition(player2, TowerPosition.RIGHT)
 
     GameBoard(b, Deck("cards.yaml"), updatedPlayer1, updatedPlayer2)
+
+  private def updateTowerPosition(player: Player, position: TowerPosition): Player = player match
+    case p: Person => p.copy(towerPosition = position)
+    case b: Bot => b.copy(towerPosition = position)
