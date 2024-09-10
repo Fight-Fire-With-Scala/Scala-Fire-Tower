@@ -15,7 +15,9 @@ object DecisionMaker:
   
   def computeAttackOrDefense(gameBoard: GameBoard): Unit =
     val myTowerPositions = gameBoard.getCurrentPlayer().towerPositions.map(_.position)
+    println(myTowerPositions)
     val opponentPositions = gameBoard.getOpponent().towerPositions.map(_.position)
+    println(opponentPositions)
     val theory = AttackDefenseTheory(
       gameBoard.board.grid,
       myTowerPositions,
@@ -33,6 +35,6 @@ object DecisionMaker:
           closestTower.substring(1, closestTower.indexOf(',')).toInt,
           closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt
         )
-        attackOrDefense = if !myTowerPositions.contains(objectiveTower) then AttackDefense.Defense else AttackDefense.Attack
+        attackOrDefense = if myTowerPositions.contains(objectiveTower) then AttackDefense.Defense else AttackDefense.Attack
       case None =>
         println("No solution found")

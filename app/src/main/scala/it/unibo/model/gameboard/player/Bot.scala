@@ -21,13 +21,15 @@ final case class Bot(
       extraCard: Option[Card]
   ): Player = copy(moves = moves, hand = hand, extraCard = extraCard)
 
-  def think(gameBoard: GameBoard, gamePhase: GamePhase): Unit =
-    gamePhase match
-      case WindPhase =>
-        computeAttackOrDefense(gameBoard)
-        logger.info(s"Bot is thinking... Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
-        logger.info(s"Objective tower: ${DecisionMaker.getObjectiveTower}")
-      case _ =>
+  def think(gameBoard: GameBoard, gamePhase: GamePhase): Unit = gamePhase match
+    // In WindPhase the bot has just to decide from the available patterns the one that gets closer to one tower of the opponent
+
+    // Should be Waiting Phase
+    case WindPhase =>
+      computeAttackOrDefense(gameBoard)
+      logger.info(s"Bot is thinking... Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
+      logger.info(s"Objective tower: ${DecisionMaker.getObjectiveTower}")
+    case _         =>
 
 object Bot:
   def apply(moves: List[Move], hand: List[Card]) = new Bot(List.empty, List.empty, Set.empty)
