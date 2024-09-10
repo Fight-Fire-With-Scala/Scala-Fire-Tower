@@ -33,7 +33,7 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
     case UpdateGamePhaseModel(choice: GamePhase) =>
       model.setGameBoard(controller.updateGamePhase(model, choice))
       model.getGameBoard.getCurrentPlayer() match
-        case bot: Bot => bot.think()
+        case bot: Bot => bot.think(model.getGameBoard, model.gamePhase)
         case _ =>
       modelObserver.onNext(RefreshMessage(model.getGameBoard))
 

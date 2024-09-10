@@ -3,12 +3,13 @@ package it.unibo
 import PerformanceUtils.measure
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
-import it.unibo.model.gameboard.player.{Bot, Person, Player}
-import it.unibo.model.prolog.{PrologEngine, Rule}
+import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.player.{Person, Player}
+import it.unibo.model.prolog.PrologEngine
 import it.unibo.model.prolog.PrologProgram.distanceProgram
 import it.unibo.model.prolog.decisionmaking.AttackDefenseTheory
-import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
+import it.unibo.model.prolog.decisionmaking.AttackDefense
+import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.FiniteDuration
 
@@ -43,13 +44,22 @@ object Test:
       opponentPositions
     )
     theory.append(distanceProgram)
-    print(theory)
     val engine = PrologEngine(theory)
-    val rule: Rule = Rule("closest_tower_to_fire")
-    val res = engine.solve(rule).headOption
-    res match
-      case Some(value) => println(value.getBindingVars)
-      case None => println("No solution found")
+    val goal = "closest_tower_to_fire(ClosestTower)"
+    val result = engine.solve(goal).headOption
+
+    result match
+      case Some(solution) =>
+        val closestTower = solution.getTerm("ClosestTower").toString
+        val towerPosition = Position(
+          closestTower.substring(1, closestTower.indexOf(',')).toInt,
+          closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt
+        )
+        val attackDefense = if myTowerPositions.contains(towerPosition) then AttackDefense.Defense else AttackDefense.Attack
+        val resultTuple = (attackDefense, towerPosition)
+        println(s"Result: $resultTuple")
+      case None =>
+        println("No solution found")
 
   @main
   def main(): Unit = println(s"Took ${measure(run()).duration.toSeconds} seconds")

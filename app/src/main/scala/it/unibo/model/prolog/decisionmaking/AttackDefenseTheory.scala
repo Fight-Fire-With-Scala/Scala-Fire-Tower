@@ -6,6 +6,10 @@ import it.unibo.model.prolog.PrologUtils.{size, given}
 
 import scala.jdk.CollectionConverters.*
 
+enum AttackDefense:
+  case Attack 
+  case Defense
+
 final case class AttackDefenseTheory(
                               private val grid: Grid,
                               private val myTowerPosition: Set[Position],

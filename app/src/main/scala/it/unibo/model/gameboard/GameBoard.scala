@@ -91,7 +91,3 @@ object GameBoard:
       case b: Bot => b.copy(towerPositions = Set(TowerPosition.TOP_LEFT, TowerPosition.BOTTOM_RIGHT))
 
     GameBoard(b, Deck("cards.yaml"), updatedPlayer1, updatedPlayer2)
-
-  private def updateTowerPosition(player: Player, positions: Set[TowerPosition]): Player = player match
-    case p: Person => p.copy(towerPositions = positions)
-    case b: Bot => b.copy(towerPositions = positions)
