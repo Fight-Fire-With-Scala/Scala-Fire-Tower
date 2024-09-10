@@ -37,13 +37,16 @@ object Test:
     val grid = gb.board.grid
     val myTowerPositions = gb.getCurrentPlayer().towerPositions.map(_.position)
     val opponentPositions = gb.getOpponent().towerPositions.map(_.position)
-    val updatedGrid = grid.setToken(Position(6,7), Fire)
+    println(myTowerPositions)
+    println(opponentPositions)
+    val updatedGrid = grid.setToken(Position(6,7), Fire).setToken(Position(9,8), Fire).setToken(Position(10,10), Fire)
     val theory = AttackDefenseTheory(
       updatedGrid,
       myTowerPositions,
       opponentPositions
     )
     theory.append(distanceProgram)
+    //print(theory)
     val engine = PrologEngine(theory)
     val goal = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
