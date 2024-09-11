@@ -25,8 +25,7 @@ final case class InternalViewController(
     gameComponent.fold(()) { component =>
       component.updateGrid(gb, currentGamePhase)
       component.updatePlayer(gb.getCurrentPlayer)(currentGamePhase)
-
-      logger.info(s"Refreshing gameboard hand ${gb.getCurrentPlayer.hand}")
+      
       logger.info(s"Refreshing gameboard deck ${gb.deck}")
 
       val lastCardChosenMove = gb.getCurrentPlayer.lastCardChosen

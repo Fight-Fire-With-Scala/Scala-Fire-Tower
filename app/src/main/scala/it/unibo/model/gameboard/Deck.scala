@@ -29,8 +29,8 @@ final case class Deck(
         (None, this)
       case None                        =>
         logger.warn("Looping here")
-        regenerate()
-        drawCard()
+        val newDeck = regenerate()
+        newDeck.drawCard()
   def drawSpecialCard(): (Option[Card], Deck) = specialCards.headOption match
     case Some(card) => (Some(card), copy(specialCards = specialCards.tail))
     case None       =>
