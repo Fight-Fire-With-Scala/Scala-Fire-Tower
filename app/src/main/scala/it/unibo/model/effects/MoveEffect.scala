@@ -16,4 +16,5 @@ object MoveEffect:
   def resolveMove(effect: MoveEffect, gb: GameBoard): GameBoardEffect =
     val move = Move(gb.turnNumber, effect)
     val currentPlayer = gb.getCurrentPlayer.logMove(move)
-    GameBoardEffect(gb.updateCurrentPlayer(currentPlayer))
+    val newGb = gb.updateCurrentPlayer(currentPlayer)
+    GameBoardEffect(newGb)

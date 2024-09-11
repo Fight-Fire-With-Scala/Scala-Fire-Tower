@@ -9,7 +9,7 @@ import it.unibo.model.effects.core.{
   IGameEffect,
   ILogicEffect
 }
-import it.unibo.model.gameboard.{Deck, GameBoard}
+import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.player.{Bot, Move, Person}
 import it.unibo.model.logger
@@ -61,14 +61,16 @@ object PatternEffect:
       val b = gb.board
       val newGrid = b.grid.setTokens(pattern.toSeq*)
       // Update the deck
-      val lastMove = gb.getCurrentPlayer.lastPatternChosen
+      val lastMove = gb.getCurrentPlayer.lastCardChosen
       lastMove match
         case Some(m) =>
-          val newDeck = getUpdatedDeckFromEffect(gb.deck, m.effect)
           // Log the move
           val move = PatternApplied(pattern)
+          logger.info(s"$m")
           // Save the result
-          val newGb = gb.copy(deck = newDeck, board = b.copy(grid = newGrid))
+          val newGb = updateDeckAndHand(gb, m.effect).copy(board = b.copy(grid = newGrid))
+          logger.info(s"${newGb.deck}")
+          logger.info(s"${newGb.getCurrentPlayer.hand}")
           MoveEffect.resolveMove(move, newGb)
         case None    =>
           logger.warn("Could not find the last card chosen, deck not updated and move not logged")
@@ -76,11 +78,18 @@ object PatternEffect:
           GameBoardEffect(newGb)
   }
 
-  private def getUpdatedDeckFromEffect(deck: Deck, move: MoveEffect) = move match
-    case MoveEffect.CardChosen(card, _) => card.effect match
-        case _: CanBePlayedAsExtra => deck
-        case _                     => deck.copy(playedCards = card :: deck.playedCards)
-    case _                              => deck
+  private def updateDeckAndHand(gb: GameBoard, move: MoveEffect): GameBoard =
+    val deck = gb.deck
+    val currentPlayer = gb.getCurrentPlayer
+    move match
+      case MoveEffect.CardChosen(card, _) => card.effect match
+          case _: CanBePlayedAsExtra => gb
+          case _                     =>
+            val playedCards = card :: deck.playedCards
+            val (player, _) = currentPlayer.playCard(card.id)
+            val newDeck = deck.copy(playedCards = playedCards)
+            gb.updateCurrentPlayer(player).copy(deck = newDeck)
+      case _                              => gb
 
   private def getUpdatedCurrentPlayer(gb: GameBoard, move: Move) =
     val updatedPlayerMoves = gb.getCurrentPlayer.moves.filter(m => m != move)
@@ -105,6 +114,9 @@ object PatternEffect:
 
   val patternEffectResolver: GameEffectResolver[IGameEffect, GameBoardEffectResolver] =
     GameEffectResolver {
+      case e: GameBoardEffect               => GameBoardEffectResolver { (gbe: GameBoardEffect) =>
+          GameBoardEffect(gbe.gameBoard)
+        }
       case CardComputation(id, logicEffect) => resolveCardComputation(id, logicEffect)
       case PatternComputation(logicEffect)  => resolvePatternComputation(logicEffect)
       case PatternApplication(pattern)      => resolvePatternApplication(pattern)

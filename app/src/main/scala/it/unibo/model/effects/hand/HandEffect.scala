@@ -27,34 +27,33 @@ object HandEffect extends HandManager:
       GameBoardEffect(newGb)
     }
 
-  private def resolveCardEffect(cardId: Int, effect: IStandardCardEffect) =
-    GameLogicEffectResolver { (gbe: GameBoardEffect) =>
-      val logicEffect = effect match
-        case effect: FireEffect      => FireEffect.fireEffectResolver.resolve(effect)
-        case effect: FirebreakEffect => FirebreakEffect.fireBreakEffectResolver.resolve(effect)
-        case effect: WaterEffect     => WaterEffect.waterEffectResolver.resolve(effect)
-        case effect: WindEffect      => WindEffect.windEffectResolver.resolve(effect)
-      CardComputation(cardId, logicEffect)
-    }
-
-  private def resolveCardEffect(cardId: Int, effect: ISpecialCardEffect) =
-    GameLogicEffectResolver { (gbe: GameBoardEffect) =>
-      val logicEffect = effect match
-        case BucketEffect => BucketEffect.bucketEffect
-      CardComputation(cardId, logicEffect)
-    }
-
-  private def resolveCardPlay(cardId: Int) = GameEffectResolver { (gbe: GameBoardEffect) =>
-    val card = gbe.gameBoard.getCurrentPlayer.hand.find(_.id == cardId)
+  private def resolveCardEffect(cardId: Int) = GameLogicEffectResolver { (gbe: GameBoardEffect) =>
+    val gb = gbe.gameBoard
+    val card = gb.getCurrentPlayer.hand.find(_.id == cardId)
     card match
-      case None    => gbe
-      case Some(c) => c.effect match
-          case effect: IStandardCardEffect => resolveCardEffect(cardId, effect)
-          case effect: ISpecialCardEffect  => resolveCardEffect(cardId, effect)
+      case Some(c) =>
+        c.effect match
+          case effect: FireEffect      =>
+            val logicEffect = FireEffect.fireEffectResolver.resolve(effect)
+            CardComputation(cardId, logicEffect)
+          case effect: FirebreakEffect =>
+            val logicEffect = FirebreakEffect.fireBreakEffectResolver.resolve(effect)
+            CardComputation(cardId, logicEffect)
+          case effect: WaterEffect     =>
+            val logicEffect = WaterEffect.waterEffectResolver.resolve(effect)
+            CardComputation(cardId, logicEffect)
+          case effect: WindEffect      => 
+            val logicEffect = WindEffect.windEffectResolver.resolve(effect)
+            CardComputation(cardId, logicEffect)
+          case BucketEffect            =>
+            val logicEffect = BucketEffect.bucketEffect
+            CardComputation(cardId, logicEffect)
+          case _ => GameBoardEffect(gb)
+      case None    => GameBoardEffect(gb)
   }
 
   val handEffectResolver: GameEffectResolver[IGameEffect, IGameEffect] = GameEffectResolver {
     case DrawCard(nCards)   => resolveDrawCard(nCards)
     case DiscardCard(cards) => resolveDiscardCard(cards)
-    case PlayCard(cardId)   => resolveCardPlay(cardId)
+    case PlayCard(cardId)   => resolveCardEffect(cardId)
   }

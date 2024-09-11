@@ -4,6 +4,8 @@ import it.unibo.controller.{logger, InternalViewSubject, RefreshType, ViewSubjec
 import it.unibo.model.effects.MoveEffect
 import it.unibo.model.effects.MoveEffect.CardChosen
 import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.player.Move
+import it.unibo.view.components.game.GameComponent
 import it.unibo.view.components.game.gameboard.sidebar.{
   DeckComponent,
   DiceComponent,
@@ -24,19 +26,16 @@ final case class InternalViewController(
       component.updateGrid(gb, currentGamePhase)
       component.updatePlayer(gb.getCurrentPlayer)(currentGamePhase)
 
-      val lastMove = gb.getCurrentPlayer.lastPatternChosen
-      lastMove match
-        case Some(move) => move.effect match
-            case MoveEffect.CardChosen(card, computedPatterns) =>
-              logger.warn(s"Test ${move.turnNumber} == ${gb.turnNumber}")
-              logger.warn(s"$move")
-              if move.turnNumber == gb.turnNumber then
-                component.gridComponent.setAvailablePatterns(computedPatterns, card.id)
-            case MoveEffect.PatternChosen(computedPatterns)    =>
-              logger.warn(s"$move")
-              component.gridComponent.setAvailablePatterns(computedPatterns, -1)
-            case _                                             => // do not update the grid
-        case None       => // do not update the grid
+      logger.info(s"Refreshing gameboard hand ${gb.getCurrentPlayer.hand}")
+      logger.info(s"Refreshing gameboard deck ${gb.deck}")
+
+      val lastCardChosenMove = gb.getCurrentPlayer.lastCardChosen
+      lastCardChosenMove match
+        case Some(value) => handleMove(component, gb, lastCardChosenMove)
+        case None        =>
+          val lastPatternChosenMove = gb.getCurrentPlayer.lastPatternChosen
+          handleMove(component, gb, lastPatternChosenMove)
+
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>
           c.updateTurnPhase(currentGamePhase.toString)
@@ -47,3 +46,14 @@ final case class InternalViewController(
         case c: DiceComponent     =>
       }
     }
+
+  private def handleMove(component: GameComponent, gb: GameBoard, lastMove: Option[Move]): Unit =
+    lastMove match
+      case Some(move) => move.effect match
+          case MoveEffect.CardChosen(card, computedPatterns) =>
+            if move.turnNumber == gb.turnNumber then
+              component.gridComponent.setAvailablePatterns(computedPatterns, card.effect.effectId)
+          case MoveEffect.PatternChosen(computedPatterns)    => component.gridComponent
+              .setAvailablePatterns(computedPatterns, -1)
+          case _                                             => // do not update the grid
+      case None       => // do not update the grid

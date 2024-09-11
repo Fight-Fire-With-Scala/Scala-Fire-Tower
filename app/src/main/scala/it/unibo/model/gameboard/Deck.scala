@@ -20,14 +20,17 @@ final case class Deck(
 ):
   def shuffle(): Deck = copy(standardCards = Random.shuffle(standardCards))
   @tailrec
-  def drawCard(): (Option[Card], Deck) = standardCards.headOption match
-    case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
-    case None if playedCards.isEmpty =>
-      logger.warn("No standard cards found in deck")
-      (None, this)
-    case None                        =>
-      regenerate()
-      drawCard()
+  def drawCard(): (Option[Card], Deck) =
+    logger.warn("Drawing a card")
+    standardCards.headOption match
+      case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
+      case None if playedCards.isEmpty =>
+        logger.warn("No standard cards found in deck")
+        (None, this)
+      case None                        =>
+        logger.warn("Looping here")
+        regenerate()
+        drawCard()
   def drawSpecialCard(): (Option[Card], Deck) = specialCards.headOption match
     case Some(card) => (Some(card), copy(specialCards = specialCards.tail))
     case None       =>
@@ -50,14 +53,9 @@ object Deck:
     val deckYaml = Source.fromResource(cardsResourcePath).mkString
     parser.parse(deckYaml).flatMap(_.as[CardSet]).toOption
 
-  private def createCards(cardTypes: CardSet) =
-    val allCards = cardTypes.cardSets.flatMap { c =>
-      c.effect match
-        case Some(ef) => List.fill(c.amount)(c).zipWithIndex.map { case (c, index) =>
-            Card(index + 1, c.title, c.description, ef)
-          }
-        case None     => Nil
-    }
+  private def createCards(cardTypes: CardSet): (List[Card], List[Card]) =
+    val allCards = cardTypes.cardSets.flatMap(c => List.fill(c.amount)(c)).zipWithIndex
+      .map { case (c, index) => Card(index + 1, c.title, c.description, c.effect) }
 
     allCards.partition(_.effect.isInstanceOf[ISpecialCardEffect])
 

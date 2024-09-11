@@ -12,7 +12,7 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      private var gameBoard: GameBoard = GameBoard()
+      private var gameBoard: GameBoard = _
 
       override def getGameBoard: GameBoard = gameBoard
       override def setGameBoard(gb: GameBoard): Unit = gameBoard = gb

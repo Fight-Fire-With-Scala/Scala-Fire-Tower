@@ -6,9 +6,9 @@ import it.unibo.model.effects.core.{GameBoardEffectResolver, GameLogicEffectReso
 import it.unibo.model.effects.hand.HandEffect
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase.WindPhase
-
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.gameboard.player.{Bot, Person, Player, PlayerInstance, PlayerManager}
+import it.unibo.model.logger
 
 case class GameBoard(
     board: Board,
@@ -39,21 +39,19 @@ case class GameBoard(
   def resolveEffect(effect: IGameEffect): GameBoard = getEffectResolver(effect)
     .resolve(GameBoardEffect(this)).gameBoard
 
-  private def getEffectResolver(effect: IGameEffect): GameBoardEffectResolver = effect match
-    case ef: PhaseEffect             => PhaseEffect.phaseEffectResolver.resolve(ef)
-    case ef: HandEffect              => HandEffect.handEffectResolver.resolve(ef) match
-        case e: GameLogicEffectResolver => PatternEffect.patternEffectResolver.resolve(e)
-        case e: GameBoardEffectResolver => e
-    case ef: PatternEffect           => PatternEffect.patternEffectResolver.resolve(ef)
-    case ef: GameBoardEffectResolver => ef
+  private def getEffectResolver(effect: IGameEffect): GameBoardEffectResolver =
+    logger.info(s"Effect to resolve $effect")
+    effect match
+      case ef: PhaseEffect             => PhaseEffect.phaseEffectResolver.resolve(ef)
+      case ef: HandEffect              => HandEffect.handEffectResolver.resolve(ef) match
+          case e: GameLogicEffectResolver =>
+            val patternEffect = e.resolve(GameBoardEffect(this))
+            PatternEffect.patternEffectResolver.resolve(patternEffect)
+          case e: GameBoardEffectResolver => e
+      case ef: PatternEffect           => PatternEffect.patternEffectResolver.resolve(ef)
+      case ef: GameBoardEffectResolver => ef
 
 object GameBoard:
-  def apply(): GameBoard =
-    val b = Board.withRandomWindAndStandardGrid
-    val player1 = Person("", List.empty, List.empty)
-    val player2 = Person("", List.empty, List.empty)
-    GameBoard(b, Deck("cards.yaml"), player1, player2)
-
   def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
     val updatedPlayer1 = player1 match
@@ -68,4 +66,5 @@ object GameBoard:
       case b: Bot    => b
           .copy(towerPositions = Set(TowerPosition.TOP_LEFT, TowerPosition.BOTTOM_RIGHT))
 
-    GameBoard(b, Deck("cards.yaml"), updatedPlayer1, updatedPlayer2)
+    val deck = Deck("cards.yaml")
+    GameBoard(b, deck, updatedPlayer1, updatedPlayer2)

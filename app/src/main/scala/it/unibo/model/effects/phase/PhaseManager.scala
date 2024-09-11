@@ -32,5 +32,5 @@ trait PhaseManager:
     val patternComputation = PatternEffect.PatternComputation(logicEffect)
     val gbEffectResolver = PatternEffect.patternEffectResolver.resolve(patternComputation)
     val newGb = gbEffectResolver.resolve(GameBoardEffect(gb)).gameBoard
-    logger.info(s"New GB $newGb")
+//    logger.info(s"New GB $newGb")
     newGb

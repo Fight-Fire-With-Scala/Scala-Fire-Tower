@@ -7,8 +7,8 @@ case class GameEffectResolver[InputEffect <: IGameEffect, OutputEffect <: IGameE
     override val resolver: InputEffect => OutputEffect
 ) extends IResolveGameEffect[InputEffect, OutputEffect]
 
-case class GameLogicEffectResolver(override val resolver: GameBoardEffect => CardComputation)
-    extends IResolveGameEffect[GameBoardEffect, CardComputation]
+case class GameLogicEffectResolver(override val resolver: GameBoardEffect => CardComputation | GameBoardEffect)
+    extends IResolveGameEffect[GameBoardEffect, CardComputation | GameBoardEffect]
 
 case class GameBoardEffectResolver(override val resolver: GameBoardEffect => GameBoardEffect)
     extends IResolveGameEffect[GameBoardEffect, GameBoardEffect]

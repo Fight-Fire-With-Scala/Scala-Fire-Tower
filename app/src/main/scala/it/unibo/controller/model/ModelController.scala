@@ -2,7 +2,6 @@ package it.unibo.controller.model
 
 import it.unibo.controller.{ModelSubject, RefreshType}
 import it.unibo.model.ModelModule.Model
-import it.unibo.model.effects.MoveEffect
 import it.unibo.model.effects.core.IGameEffect
 import it.unibo.model.effects.hand.HandManager
 import it.unibo.model.effects.phase.PhaseManager

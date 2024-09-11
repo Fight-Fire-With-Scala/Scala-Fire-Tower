@@ -91,6 +91,7 @@ class GridClickHandler(
     gridState.availablePatternsClickFixed = gridState.availablePatterns
 
   private def placePattern(pattern: Map[Position, Token], newPhase: GamePhase): Unit =
+    val effect = PatternApplication(pattern)
     observableSubject.onNext(ResolvePatternChoice(PatternApplication(pattern)))
     internalObservable.onNext(UpdateGamePhaseView(newPhase))
     observableSubject.onNext(UpdateGamePhaseModel(PhaseEffect(newPhase)))
