@@ -6,10 +6,11 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.{Person, Player}
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.distanceProgram
+import it.unibo.model.prolog.PrologProgram.{distanceProgram, manhattanDistance}
 import it.unibo.model.prolog.decisionmaking.AttackDefenseTheory
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.FiniteDuration
 
@@ -37,8 +38,7 @@ object Test:
     val grid = gb.board.grid
     val myTowerPositions = gb.getCurrentPlayer.towerPositions.map(_.position)
     val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
-    println(myTowerPositions)
-    println(opponentPositions)
+
     val updatedGrid = grid.setToken(Position(6,7), Fire).setToken(Position(9,8), Fire).setToken(Position(10,10), Fire)
     val theory = AttackDefenseTheory(
       updatedGrid,
@@ -46,7 +46,8 @@ object Test:
       opponentPositions
     )
     theory.append(distanceProgram)
-    //print(theory)
+    theory.append(manhattanDistance)
+    println(theory)
     val engine = PrologEngine(theory)
     val goal = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption

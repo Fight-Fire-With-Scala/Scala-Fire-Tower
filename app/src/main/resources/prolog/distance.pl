@@ -28,6 +28,8 @@ min_distance_to_fire(TowerPositions, ClosestTowerPos, MinDist) :-
     min_member_2((MinDist, ClosestTowerPos), Dists).
 
 closest_tower_to_fire(ClosestTower) :-
-    min_distance_to_fire([my_tower1, my_tower2], ClosestMyTower, MyTowersDist),
-    min_distance_to_fire([opponent_tower1, opponent_tower2], ClosestOpponentTower, OpponentTowersDist),
-    (MyTowersDist < OpponentTowersDist -> ClosestTower = ClosestMyTower ; ClosestTower = ClosestOpponentTower).
+    findall(Pos, towerPosition(Pos), MyTowerPositions),
+    findall(Pos, enemyTowerPosition(Pos), EnemyTowerPositions),
+    min_distance_to_fire(MyTowerPositions, ClosestMyTowerPos, MyTowersDist),
+    min_distance_to_fire(EnemyTowerPositions, ClosestEnemyTowerPos, EnemyTowersDist),
+    (MyTowersDist < EnemyTowersDist -> ClosestTower = ClosestMyTowerPos ; ClosestTower = ClosestEnemyTowerPos).
