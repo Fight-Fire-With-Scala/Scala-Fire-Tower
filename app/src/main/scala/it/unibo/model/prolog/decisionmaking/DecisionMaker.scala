@@ -3,7 +3,7 @@ package it.unibo.model.prolog.decisionmaking
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.distanceProgram
+import it.unibo.model.prolog.PrologProgram.{distanceProgram, manhattanDistance}
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 
 object DecisionMaker:
@@ -20,6 +20,7 @@ object DecisionMaker:
     println(opponentPositions)
     val theory = AttackDefenseTheory(gameBoard.board.grid, myTowerPositions, opponentPositions)
     theory.append(distanceProgram)
+    theory.append(manhattanDistance)
     val engine = PrologEngine(theory)
     val goal = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
