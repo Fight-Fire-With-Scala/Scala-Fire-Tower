@@ -3,7 +3,6 @@ package it.unibo.view.components.game.gameboard.grid
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare}
 import scalafx.scene.paint.Color
 
 import scala.collection.mutable
@@ -15,7 +14,7 @@ class GridState(val squareMap: mutable.Map[Position, GridSquare]):
   var availablePatterns: Set[Map[Position, Token]] = Set.empty
   var availablePatternsClickFixed: Set[Map[Position, Token]] = Set.empty
   var availablePatternsClickHovered: Set[Map[Position, Token]] = Set.empty
-  var effectCode: EffectType = uninitialized
+  var effectCode: Int = uninitialized
   var currentGamePhase: GamePhase = uninitialized
 
   def resetHoverColors(): Unit =

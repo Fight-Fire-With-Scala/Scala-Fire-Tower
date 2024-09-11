@@ -4,8 +4,8 @@ import it.unibo.controller.{
   DiscardCardMessage,
   DrawCardMessage,
   InternalViewSubject,
-  ResetPatternComputation,
-  ResolvePatternComputation,
+  ChoseCardToPlay,
+  ResolvePatternReset,
   UpdateGamePhaseModel,
   UpdateGamePhaseView,
   ViewSubject
@@ -13,7 +13,6 @@ import it.unibo.controller.{
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.{
   DecisionPhase,
-  EndTurnPhase,
   PlaySpecialCardPhase,
   PlayStandardCardPhase,
   WaitingPhase
@@ -23,6 +22,8 @@ import it.unibo.view.components.{IHandComponent, IUpdateView}
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.Pane
+import it.unibo.model.effects.hand.HandEffect.{DiscardCard, DrawCard, PlayCard}
+import it.unibo.model.effects.phase.PhaseEffect
 
 import scala.compiletime.uninitialized
 
@@ -62,7 +63,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
   def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 
   def cancelDiscardProcedure(): Unit =
-    observable.onNext(UpdateGamePhaseModel(WaitingPhase))
+    observable.onNext(UpdateGamePhaseModel(PhaseEffect(WaitingPhase)))
     endDiscardProcedure()
 
   private def endDiscardProcedure(): Unit = cardToRemove = List.empty
@@ -72,9 +73,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     else cardId :: cardToRemove
 
   def discardCards(): Unit =
-    observable.onNext(DiscardCardMessage(cardToRemove))
-    observable.onNext(DrawCardMessage(cardToRemove.size))
-    observable.onNext(UpdateGamePhaseModel(DecisionPhase))
+    observable.onNext(DiscardCardMessage(DiscardCard(cardToRemove)))
+    observable.onNext(DrawCardMessage(DrawCard(cardToRemove.size)))
+    observable.onNext(UpdateGamePhaseModel(PhaseEffect(DecisionPhase)))
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =
@@ -87,8 +88,8 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     if cardToPlay == cardComponent then
       cardToPlay = None
       logger.info(s"Card not to play: $cardToPlay")
-      observable.onNext(ResetPatternComputation())
-      observable.onNext(UpdateGamePhaseModel(WaitingPhase))
+      observable.onNext(ResolvePatternReset())
+      observable.onNext(UpdateGamePhaseModel(PhaseEffect(WaitingPhase)))
       internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
     else
       cardToPlay match
@@ -97,8 +98,8 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
         case None            =>
       cardToPlay = cardComponent
       logger.info(s"Card to play: $cardToPlay")
-      observable.onNext(ResolvePatternComputation(cardId))
-      observable.onNext(UpdateGamePhaseModel(PlayStandardCardPhase))
+      observable.onNext(ChoseCardToPlay(PlayCard(cardId)))
+      observable.onNext(UpdateGamePhaseModel(PhaseEffect(PlayStandardCardPhase)))
       internalObservable.onNext(UpdateGamePhaseView(PlayStandardCardPhase))
 
   override def onEnableView(): Unit =

@@ -1,6 +1,16 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{CancelDiscardMessage, ConfirmDiscardMessage, DrawCardMessage, InitializeDiscardProcedureMessage, InternalViewSubject, UpdateGamePhaseModel, ViewSubject}
+import it.unibo.controller.{
+  CancelDiscardMessage,
+  ConfirmDiscardMessage,
+  DrawCardMessage,
+  InitializeDiscardProcedureMessage,
+  InternalViewSubject,
+  UpdateGamePhaseModel,
+  ViewSubject
+}
+import it.unibo.model.effects.hand.HandEffect.DrawCard
+import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
 import it.unibo.view.components.ISidebarComponent
@@ -86,12 +96,12 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
     cancelButton.setDisable(!enabled)
     discardButton.setDisable(enabled)
 
-  private def handleDrawCard(): Unit = 
-    observable.onNext(DrawCardMessage(numberInput.getValue))
+  private def handleDrawCard(): Unit = observable
+    .onNext(DrawCardMessage(DrawCard(numberInput.getValue)))
 
   private def startDiscardProcedure(): Unit =
     internalObservable.onNext(InitializeDiscardProcedureMessage())
-    observable.onNext(UpdateGamePhaseModel(GamePhase.RedrawCardsPhase))
+    observable.onNext(UpdateGamePhaseModel(PhaseEffect(GamePhase.RedrawCardsPhase)))
     setDiscardProcedureButtonsEnabled(true)
 
   private def discard(): Unit =

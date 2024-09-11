@@ -1,6 +1,5 @@
-package it.unibo
+package it.unibo.model
 
 import com.typesafe.scalalogging.Logger
 
-package object model:
-  val logger: Logger = Logger("Model")
+val logger: Logger = Logger("Model")

@@ -2,13 +2,10 @@ package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak, Water}
-import it.unibo.model.gameboard.grid.{ConcreteToken, Grid, Position, Token, TowerPosition}
+import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.view.components.game.gameboard.grid.handler.GridEventHandler
-import it.unibo.view.logger
 import scalafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import scalafx.scene.paint.Color

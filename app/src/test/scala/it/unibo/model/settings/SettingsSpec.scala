@@ -1,5 +1,6 @@
 package it.unibo.model.settings
 
+import it.unibo.model.gameboard.{BotBehaviour, CardSet, GameMode, GameBoardConfig}
 import it.unibo.model.gameboard.player.{Bot, Person}
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec
@@ -10,7 +11,7 @@ import org.scalatestplus.junit.JUnitRunner
 class SettingsSpec extends AnyFlatSpec with Matchers:
 
   "Settings" should "correctly instantiate two Persons for HumanVsHuman mode" in {
-    val settings = Settings(
+    val settings = GameBoardConfig(
       gameMode = GameMode.HumanVsHuman,
       playerOneName = "Alice",
       playerTwoName = Some("Bob")
@@ -22,7 +23,7 @@ class SettingsSpec extends AnyFlatSpec with Matchers:
   }
 
   it should "correctly instantiate a Person and a Bot for HumanVsBot mode" in {
-    val settings = Settings(gameMode = GameMode.HumanVsBot, playerOneName = "Alice")
+    val settings = GameBoardConfig(gameMode = GameMode.HumanVsBot, playerOneName = "Alice")
     settings.getPlayerOne shouldBe a[Person]
     settings.getPlayerTwo shouldBe a[Bot]
     settings.getPlayerOne.name shouldEqual "Alice"
@@ -31,12 +32,12 @@ class SettingsSpec extends AnyFlatSpec with Matchers:
 
   it should "correctly handle bot behaviour in HumanVsBot mode" in {
     val settings =
-      Settings(gameMode = GameMode.HumanVsBot, botBehaviour = Some(BotBehaviour.Aggressive))
+      GameBoardConfig(gameMode = GameMode.HumanVsBot, botBehaviour = Some(BotBehaviour.Aggressive))
     settings.botBehaviour should contain(BotBehaviour.Aggressive)
   }
 
   it should "have correct default values" in {
-    val defaultSettings = Settings()
+    val defaultSettings = GameBoardConfig()
     defaultSettings.gameMode shouldEqual GameMode.HumanVsHuman
     defaultSettings.cardSet shouldEqual CardSet.Base
     defaultSettings.botBehaviour shouldBe None

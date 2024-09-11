@@ -1,10 +1,8 @@
 package it.unibo.model.gameboard
 
 import it.unibo.model.cards.{Card, CardType}
-import it.unibo.model.cards.effects.WindEffect
 import it.unibo.model.cards.types.WindCard
-import it.unibo.model.cards.choices.WindChoice
-import it.unibo.model.gameboard.board.Board
+import it.unibo.model.effects.cards.WindEffect
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.player.Person
 import org.junit.runner.RunWith
@@ -36,7 +34,7 @@ class BoardModelTest extends AnyFlatSpec with Matchers:
       val cardType =
         CardType(title = "Sud", description = "", amount = 2, effectType = WindCard.South)
 
-      val updatedGameBoard = gameBoard.resolveCardPlayed(Card(0, cardType), WindChoice.UpdateWind)
+      val updatedGameBoard = gameBoard.resolveChoice(Card(0, cardType), WindEffect.UpdateWind)
       updatedGameBoard.board.windDirection shouldBe Direction.South
     }
 
@@ -47,7 +45,7 @@ class BoardModelTest extends AnyFlatSpec with Matchers:
         CardType(title = "Random Wind", description = "", amount = 2, effectType = WindCard.North)
 
       val updatedGameBoard = gameBoard
-        .resolveCardPlayed(Card(0, cardType), WindChoice.RandomUpdateWind)
+        .resolveChoice(Card(0, cardType), WindEffect.RandomUpdateWind)
       Direction.values should contain(updatedGameBoard.board.windDirection)
     }
 

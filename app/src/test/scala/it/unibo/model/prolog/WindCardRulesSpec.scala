@@ -1,6 +1,6 @@
 package it.unibo.model.prolog
 
-import it.unibo.model.cards.effects.VerySmallEffect
+import it.unibo.model.effects.VerySmallEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.Position

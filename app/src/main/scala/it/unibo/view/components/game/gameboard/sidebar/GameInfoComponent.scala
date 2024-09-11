@@ -1,8 +1,9 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{InternalViewMessage, InternalViewSubject, UpdateGamePhaseModel, UpdateGamePhaseView, ViewSubject}
+import it.unibo.controller.{InternalViewSubject, UpdateGamePhaseModel, ViewSubject}
+import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{EndTurnPhase, PlaySpecialCardPhase}
+import it.unibo.model.gameboard.GamePhase.EndTurnPhase
 import it.unibo.view.GUIType
 import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import javafx.event.EventHandler
@@ -15,8 +16,10 @@ import javafx.scene.control.{Button, TextField}
 import javafx.scene.input.MouseEvent
 
 //noinspection VarCouldBeVal
-final class GameInfoComponent(using observable: ViewSubject, internalObservable: InternalViewSubject)
-    extends ISidebarComponent with IUpdateView:
+final class GameInfoComponent(using
+    observable: ViewSubject,
+    internalObservable: InternalViewSubject
+) extends ISidebarComponent with IUpdateView:
   override val fxmlPath: String = GUIType.GameInfo.fxmlPath
 
   @FXML
@@ -29,8 +32,7 @@ final class GameInfoComponent(using observable: ViewSubject, internalObservable:
   private var endTurnButton: Button = uninitialized
 
   private val endTurnButtonEventHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) =>
-      observable.onNext(UpdateGamePhaseModel(GamePhase.EndTurnPhase))
+    (_: MouseEvent) => observable.onNext(UpdateGamePhaseModel(PhaseEffect(EndTurnPhase)))
 
   @FXML
   def initialize(): Unit =

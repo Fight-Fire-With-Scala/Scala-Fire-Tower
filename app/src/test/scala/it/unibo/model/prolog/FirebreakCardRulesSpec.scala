@@ -1,6 +1,6 @@
 package it.unibo.model.prolog
 
-import it.unibo.model.cards.effects.{MediumAltEffect, SmallEffect, VerySmallEffect}
+import it.unibo.model.effects.{MediumAltEffect, SmallEffect, VerySmallEffect}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Fire, Firebreak}
 import it.unibo.model.gameboard.grid.Position
 import org.junit.runner.RunWith

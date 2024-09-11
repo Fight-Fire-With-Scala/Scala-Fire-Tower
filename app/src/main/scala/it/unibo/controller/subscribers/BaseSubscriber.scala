@@ -1,7 +1,7 @@
 package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.{logger, Message}
+import it.unibo.controller.Message
 import monix.execution.Ack.Continue
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.observers.Subscriber

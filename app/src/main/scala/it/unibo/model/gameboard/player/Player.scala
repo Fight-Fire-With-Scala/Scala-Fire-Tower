@@ -1,8 +1,9 @@
 package it.unibo.model.gameboard.player
 
 import it.unibo.model.cards.Card
-import it.unibo.model.cards.types.CanBePlayedAsExtra
-import it.unibo.model.gameboard.grid.{Position, TowerPosition}
+import it.unibo.model.effects.MoveEffect
+import it.unibo.model.effects.core.CanBePlayedAsExtra
+import it.unibo.model.gameboard.grid.TowerPosition
 
 trait Player:
   val name: String
@@ -11,7 +12,7 @@ trait Player:
   def extraCard: Option[Card]
   def towerPositions: Set[TowerPosition]
 
-  def drawCardFromDeck(card: Card): Player = card.cardType.effectType match
+  def drawCardFromDeck(card: Card): Player = card.effect match
     case _: CanBePlayedAsExtra if extraCard.isEmpty => updatePlayer(extraCard = Some(card))
     case _ if hand.size < 5                         => updatePlayer(hand = hand :+ card)
     case _                                          => this
@@ -21,6 +22,21 @@ trait Player:
     case None       => (this, None)
 
   def logMove(move: Move): Player = updatePlayer(moves = moves :+ move)
+
+  val lastCardsRedrawn: Option[Move] = moves.collect { m =>
+    m.effect match
+      case effect: MoveEffect.CardsRedrawn => m
+  }.lastOption
+
+  val lastPatternChosen: Option[Move] = moves.collect { m =>
+    m.effect match
+      case effect: MoveEffect.CardChosen => m
+  }.lastOption
+
+  val lastPatternPlayed: Option[Move] = moves.collect { m =>
+    m.effect match
+      case effect: MoveEffect.PatternApplied => m
+  }.lastOption
 
   def discardCards(cardIds: List[Int]): Player =
     val updatedHand = hand.filterNot(card => cardIds.contains(card.id))

@@ -10,7 +10,7 @@ trait Switchable[T]:
 trait ICanSwitchHandler[T] extends Switchable[T]:
 
   protected var currentState: T
-  protected var stateHandlers: Map[T, Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]]] =
+  private var stateHandlers: Map[T, Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]]] =
     Map()
 
   protected def applyState(state: T): Unit
@@ -29,7 +29,7 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
 
   protected def enableActualHandlers(): Unit = updateHandlers(currentState, getPane.addEventHandler)
 
-  protected def onSwitch(state: T): Unit =
+  private def onSwitch(state: T): Unit =
     updateHandlers(currentState, getPane.removeEventHandler)
     updateHandlers(state, getPane.addEventHandler)
 

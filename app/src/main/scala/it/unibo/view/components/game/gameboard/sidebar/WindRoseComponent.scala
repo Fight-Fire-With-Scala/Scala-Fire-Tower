@@ -1,9 +1,12 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{UpdateWindDirection, ViewSubject}
+import it.unibo.controller.{UpdateGamePhaseModel, UpdateWindDirection, ViewSubject}
+import it.unibo.model.effects.cards.WindChoiceEffect
+import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.{East, North, South, West}
+import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
 import it.unibo.view.GUIType
 import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
@@ -31,8 +34,10 @@ final class WindRoseComponent(using observable: ViewSubject)
   private val windRoseDirections: Map[Direction, WindRoseDirection] = Direction.values
     .map(d => d -> WindRoseDirection.create(d)).toMap
 
-  private val windRoseEventHandler: Direction => EventHandler[MouseEvent] =
-    dir => ev => observable.onNext(UpdateWindDirection(dir))
+  private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
+    ev =>
+      observable.onNext(UpdateWindDirection(WindChoiceEffect.UpdateWind(dir)))
+      observable.onNext(UpdateGamePhaseModel(PhaseEffect(PlaySpecialCardPhase)))
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
 
@@ -53,11 +58,14 @@ final class WindRoseComponent(using observable: ViewSubject)
   override def onEnableView(): Unit =
     super.onEnableView()
     windRoseArrow.enableView()
-    windRosePanes.foreach((dir, _) => windRoseDirections(dir).enableView())
+    windRosePanes.foreach((dir, pane) => windRoseDirections(dir).enableView())
 
   override def onDisableView(): Unit =
     super.onDisableView()
     windRoseArrow.disableView()
-    windRosePanes.foreach((dir, _) => windRoseDirections(dir).disableView())
+    windRosePanes.foreach((dir, pane) =>
+      windRoseDirections(dir).disableView()
+      pane.removeEventHandler(MouseEvent.MOUSE_CLICKED, windRoseEventHandler(dir))
+    )
 
   override protected def getPane: Node = basePane

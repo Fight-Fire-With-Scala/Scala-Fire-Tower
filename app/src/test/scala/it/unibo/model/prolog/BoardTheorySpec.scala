@@ -97,6 +97,6 @@ class BoardTheorySpec extends AnyWordSpecLike with Matchers:
       val pattern = Map(Position(0, 0) -> Fire, Position(0, 1) -> Fire)
       val directions = Direction.values.toList
 
-      val board: Theory = BoardTheory(grid, pattern, directions)
+      val board: Theory = GridTheory(grid, pattern, directions)
 
       board shouldEqual expectedBoard

@@ -1,7 +1,7 @@
 package it.unibo.model.prolog.decisionmaking
 
 import alice.tuprolog.{Struct, Term, Theory}
-import it.unibo.model.gameboard.grid.{Grid, Position, TowerPosition}
+import it.unibo.model.gameboard.grid.{Grid, Position}
 import it.unibo.model.prolog.PrologUtils.{size, given}
 
 import scala.jdk.CollectionConverters.*

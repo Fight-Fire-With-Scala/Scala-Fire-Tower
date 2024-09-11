@@ -1,16 +1,41 @@
 package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.model.ModelController
-import it.unibo.controller.{ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, ModelSubject, RefreshMessage, ResetPatternComputation, ResolvePatternChoice, ResolvePatternComputation, UpdateGamePhaseModel, UpdateWindDirection, ViewMessage}
-import it.unibo.controller.StartGameMessage
+import it.unibo.controller.{
+  ChoseCardToPlay,
+  ConfirmCardPlayMessage,
+  DiscardCardMessage,
+  DrawCardMessage,
+  GameBoardInitialization,
+  RefreshType,
+  ResolvePatternChoice,
+  ResolvePatternReset,
+  StartGameMessage,
+  UpdateGamePhaseModel,
+  UpdateWindDirection,
+  ViewMessage
+}
+import it.unibo.controller.RefreshType.{
+  CardDeselected,
+  CardDiscard,
+  CardDraw,
+  CardSelected,
+  PatternChosen,
+  PhaseUpdate,
+  WindUpdate
+}
 import it.unibo.model.ModelModule.Model
-import it.unibo.model.gameboard.player.Bot
-import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
+import it.unibo.model.effects.PatternEffect
+import it.unibo.model.effects.hand.HandEffect.{DiscardCard, DrawCard, PlayCard}
+import it.unibo.model.effects.PatternEffect.{PatternApplication, ResetPatternComputation}
+import it.unibo.model.effects.cards.WindChoiceEffect
+import it.unibo.model.effects.hand.HandEffect
+import it.unibo.model.effects.phase.PhaseEffect
+import it.unibo.model.gameboard.GameBoard
+import it.unibo.controller.model.ModelController
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
-final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller: ModelController)
-    extends BaseSubscriber[ViewMessage]:
+final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[ViewMessage]:
 
   given Conversion[Model, GameBoard] = _.getGameBoard
 
@@ -21,50 +46,26 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val playerOne = settings.getPlayerOne
       val playerTwo = settings.getPlayerTwo
       val gameBoard = GameBoard(playerOne, playerTwo)
-      val (partialGb, newPlayer) = controller.initializePlayer(gameBoard, gameBoard.getCurrentPlayer())
-      val (newGb, newPlayer2) = controller.initializePlayer(partialGb, partialGb.getOpponent())
-      model.setGameBoard(newGb.copy(player1 = newPlayer, player2= newPlayer2))
-      modelObserver.onNext(StartGameMessage(newGb))
+      val (partialGb, newPlayer) = controller
+        .initializePlayer(gameBoard, gameBoard.getCurrentPlayer)
+      val (newGb, newPlayer2) = controller.initializePlayer(partialGb, partialGb.getOpponent)
+      controller.model.setGameBoard(newGb.copy(player1 = newPlayer, player2 = newPlayer2))
+      controller.modelObserver.onNext(StartGameMessage(newGb))
 
-    case DrawCardMessage(nCards: Int) =>
-      val (gb, player) = controller.drawCards(model, nCards)(model.getGameBoard.getCurrentPlayer())
-      val newGb = gb.updateCurrentPlayer(player)
-      model.setGameBoard(newGb)
+    case UpdateGamePhaseModel(ef: PhaseEffect) =>
+      controller.applyEffect(ef, PhaseUpdate)
+      controller.activateBot()
 
-    case UpdateGamePhaseModel(choice: GamePhase) =>
-      model.setGameBoard(controller.updateGamePhase(model, choice))
-      model.getGameBoard.getCurrentPlayer() match
-        case bot: Bot => bot.think(model.getGameBoard, model.gamePhase)
-        case _ =>
-      modelObserver.onNext(RefreshMessage(model.getGameBoard))
+    case UpdateWindDirection(ef: WindChoiceEffect) => controller.applyEffect(ef, WindUpdate)
 
-    case UpdateWindDirection(windDirection: Direction) =>
-      val gb = model.getGameBoard
-      val board = gb.board
-      val newGb = gb.copy(board = board.copy(windDirection = windDirection))
-      model.setGameBoard(newGb)
-      modelObserver.onNext(RefreshMessage(newGb))
+    case ChoseCardToPlay(ef: PlayCard) => controller.applyEffect(ef, CardSelected)
 
-    case ResolvePatternComputation(cardId: Int) =>
-      val gb = model.getGameBoard
-      val currentGb = controller.setCurrentCardId(gb, cardId)
-      val newGb = controller.resolvePatternComputation(currentGb, cardId)
-      model.setGameBoard(newGb)
-      modelObserver.onNext(RefreshMessage(newGb))
+    case ResolvePatternChoice(ef: PatternApplication) =>
+      controller.applyEffect(ef, RefreshType.PatternChosen)
+      controller.modelObserver.onNext(ConfirmCardPlayMessage())
 
-    case ResolvePatternChoice(pattern) =>
-      val gb = model.getGameBoard
-      val newGb = controller.resolvePatternChoice(gb, pattern)
-      model.setGameBoard(newGb)
-      modelObserver.onNext(ConfirmCardPlayMessage())
-      modelObserver.onNext(RefreshMessage(newGb))
+    case ResolvePatternReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)
 
-    case DiscardCardMessage(cards) =>
-      val gb = controller.discardCards(model, cards)
-      model.setGameBoard(gb)
+    case DrawCardMessage(ef: DrawCard) => controller.applyEffect(ef, CardDraw)
 
-    case ResetPatternComputation() =>
-      val gb = model.getGameBoard
-      val newGb = gb
-        .copy(board = gb.board.copy(currentCardId = None, availablePatterns = Set.empty))
-      modelObserver.onNext(RefreshMessage(newGb))
+    case DiscardCardMessage(ef: DiscardCard) => controller.applyEffect(ef, CardDiscard)

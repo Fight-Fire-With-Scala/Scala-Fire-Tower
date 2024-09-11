@@ -15,7 +15,7 @@ final case class Bot(
     extraCard: Option[Card] = None
 ) extends Player:
   override val name: String = "BOT"
-  override protected def updatePlayer(
+  override def updatePlayer(
       moves: List[Move],
       hand: List[Card],
       extraCard: Option[Card]

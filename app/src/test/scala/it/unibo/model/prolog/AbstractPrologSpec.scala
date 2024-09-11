@@ -49,7 +49,7 @@ abstract class AbstractPrologSpec extends AnyWordSpecLike with Matchers:
       tokens: Map[Position, Token] = defaultTokens,
       directions: List[Direction] = defaultDirections
   ): Theory =
-    val b = BoardTheory(BasicGrid(cells, tokens), pattern, directions)
+    val b = GridTheory(BasicGrid(cells, tokens), pattern, directions)
     b.append(cardsProgram)
     b.append(solverProgram)
     b

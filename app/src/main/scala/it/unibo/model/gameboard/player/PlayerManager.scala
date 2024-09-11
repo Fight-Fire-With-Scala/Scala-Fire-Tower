@@ -1,7 +1,5 @@
 package it.unibo.model.gameboard.player
 
-import it.unibo.view.components.Switchable
-
 trait Toggle[T]:
   def toggle(): Unit
   def getCurrentState: T

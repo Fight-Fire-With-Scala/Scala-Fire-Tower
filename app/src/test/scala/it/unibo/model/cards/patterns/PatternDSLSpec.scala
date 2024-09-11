@@ -1,6 +1,7 @@
 package it.unibo.model.cards.patterns
 
 import it.unibo.model.cards.patterns.*
+import it.unibo.model.effects.{e, f, k, pattern, w}
 import it.unibo.model.gameboard.grid.ConcreteToken.*
 import org.junit.runner.RunWith
 import org.scalatest.matchers.should.Matchers

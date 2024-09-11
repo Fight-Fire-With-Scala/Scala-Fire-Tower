@@ -1,11 +1,12 @@
 package it.unibo.view.components.game.gameboard.grid.handler
 
 import it.unibo.launcher.Launcher.view.runOnUIThread
+import it.unibo.model.effects.cards.{FireEffect, WaterEffect}
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.{PlayStandardCardPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
 import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{EffectType, GridSquare, GridState, HoverDirection}
+import it.unibo.view.components.game.gameboard.grid.{GridSquare, GridState, HoverDirection}
 import it.unibo.view.logger
 
 import scala.collection.mutable
@@ -23,7 +24,7 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
       case PlayStandardCardPhase =>
         if gridState.fixedCell.nonEmpty then hoverForFixedCell(position, hoverDirection)
         else hoverForAvailablePatterns(position)
-      case _                     => 
+      case _                     =>
   private def hoverForFixedCell(position: Position, hoverDirection: HoverDirection): Unit =
     gridState.resetHoverColors()
     val neighbourPosition = getNeighbor(position, hoverDirection)
@@ -45,8 +46,8 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
   private def hoverForAvailablePatterns(position: Position): Unit =
     gridState.resetHoverColors()
     gridState.effectCode match
-      case EffectType.Esplosione                  => handleExplosionPattern(position, Firebreak)
-      case EffectType.VigileDelFuocoParacadutista => handleExplosionPattern(position, Fire)
+      case FireEffect.Explosion.effectId    => handleExplosionPattern(position, Firebreak)
+      case WaterEffect.SmokeJumper.effectId => handleExplosionPattern(position, Fire)
       case _ => gridState.availablePatterns.find(_.contains(position)) match
           case Some(pattern) => if (!gridState.fixedCell.contains(position))
               updateHoveredCells(position, pattern(position))

@@ -10,7 +10,7 @@ final case class Person(
     towerPositions: Set[TowerPosition],
     extraCard: Option[Card] = None
 ) extends Player:
-  override protected def updatePlayer(
+  override def updatePlayer(
       moves: List[Move],
       hand: List[Card],
       extraCard: Option[Card]

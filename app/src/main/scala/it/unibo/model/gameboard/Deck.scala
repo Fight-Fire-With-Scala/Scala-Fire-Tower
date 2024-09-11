@@ -2,17 +2,16 @@ package it.unibo.model.gameboard
 
 import scala.io.Source
 import scala.util.Random
-import it.unibo.model.logger
 import cats.syntax.either.*
 import io.circe.*
 import io.circe.generic.auto.*
 import io.circe.yaml
 import io.circe.yaml.parser
-import it.unibo.model.cards.types.CanBePlayedAsExtra
-import it.unibo.model.cards.{Card, CardType}
+import it.unibo.model.cards.{Card, CardSet, CardType}
+import it.unibo.model.effects.core.ISpecialCardEffect
+import it.unibo.model.logger
 
-// Used to parse the yaml file of the cards' types
-final case class CardSet(cardSets: List[CardType])
+import scala.annotation.tailrec
 
 final case class Deck(
     standardCards: List[Card],
@@ -20,10 +19,21 @@ final case class Deck(
     playedCards: List[Card] = List.empty
 ):
   def shuffle(): Deck = copy(standardCards = Random.shuffle(standardCards))
-  def drawCard(): (Card, Deck) =
-    if standardCards.isEmpty then regenerate()
-    (standardCards.head, copy(standardCards = standardCards.tail))
-  def drawSpecialCard(): (Card, Deck) = (specialCards.head, copy(specialCards = specialCards.tail))
+  @tailrec
+  def drawCard(): (Option[Card], Deck) = standardCards.headOption match
+    case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
+    case None if playedCards.isEmpty =>
+      logger.warn("No standard cards found in deck")
+      (None, this)
+    case None                        =>
+      regenerate()
+      drawCard()
+  def drawSpecialCard(): (Option[Card], Deck) = specialCards.headOption match
+    case Some(card) => (Some(card), copy(specialCards = specialCards.tail))
+    case None       =>
+      logger.warn("No special cards found in deck")
+      (None, this)
+
   private def regenerate(): Deck = copy(standardCards = playedCards, playedCards = List.empty)
     .shuffle()
 
@@ -38,12 +48,17 @@ object Deck:
 
   private def parseCardTypes(cardsResourcePath: String): Option[CardSet] =
     val deckYaml = Source.fromResource(cardsResourcePath).mkString
-    parser.parse(deckYaml).leftMap(err => err: Error).flatMap(_.as[CardSet]).toOption
+    parser.parse(deckYaml).flatMap(_.as[CardSet]).toOption
 
-  private def createCards(cardTypes: CardSet): (List[Card], List[Card]) =
-    val allCards = cardTypes.cardSets.flatMap(c => List.fill(c.amount)(c)).zipWithIndex
-      .map { case (c, index) => Card(index + 1, c) }
+  private def createCards(cardTypes: CardSet) =
+    val allCards = cardTypes.cardSets.flatMap { c =>
+      c.effect match
+        case Some(ef) => List.fill(c.amount)(c).zipWithIndex.map { case (c, index) =>
+            Card(index + 1, c.title, c.description, ef)
+          }
+        case None     => Nil
+    }
 
-    allCards.partition(_.cardType.effectType.isInstanceOf[CanBePlayedAsExtra])
+    allCards.partition(_.effect.isInstanceOf[ISpecialCardEffect])
 
   def showDeck(deck: Deck): Unit = deck.standardCards.foreach(card => logger.info(s"$card"))

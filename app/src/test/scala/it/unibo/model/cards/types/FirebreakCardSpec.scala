@@ -1,7 +1,8 @@
 package it.unibo.model.cards.types
 
-import it.unibo.model.cards.resolvers.{FirebreakResolver, MultiStepResolver}
+import it.unibo.model.cards.resolvers.FirebreakResolver
 import it.unibo.model.cards.types.FirebreakCard.*
+import it.unibo.model.effects.core.MultiStepResolver
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 

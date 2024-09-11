@@ -1,12 +1,13 @@
 package it.unibo.view.components.menu
 
-import it.unibo.model.settings.{BotBehaviour, CardSet, GameMode, Settings}
 import it.unibo.view.components.IViewComponent
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
 import scalafx.Includes.*
 import scalafx.application.Platform
 import it.unibo.controller.{GameBoardInitialization, ViewSubject}
+import it.unibo.model.gameboard.GameBoardConfig.{BotBehaviour, CardSet, GameMode}
+import it.unibo.model.gameboard.GameBoardConfig
 import it.unibo.view.GUIType
 import javafx.scene.Node
 import javafx.scene.layout.Pane
@@ -39,7 +40,7 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
   @FXML
   def initialize(): Unit =
     setOfCardsDropdown
-      .setItems(javafx.collections.FXCollections.observableArrayList(CardSet.values*))
+      .setItems(javafx.collections.FXCollections.observableArrayList(GameBoardConfig.CardSet.values*))
     botBehaviourDropdown
       .setItems(javafx.collections.FXCollections.observableArrayList(BotBehaviour.values*))
     botBehaviourDropdown.setDisable(true)
@@ -58,7 +59,7 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
   def handleStartAction(): Unit =
     val selectedGameMode =
       if (humanVsHuman.isSelected) GameMode.HumanVsHuman else GameMode.HumanVsBot
-    val selectedCardSet = Option(setOfCardsDropdown.getValue).getOrElse(CardSet.Base)
+    val selectedCardSet = Option(setOfCardsDropdown.getValue).getOrElse(GameBoardConfig.CardSet.Base)
     val selectedBotBehaviour =
       if (humanVsHuman.isSelected) None
       else Some(Option(botBehaviourDropdown.getValue).getOrElse(BotBehaviour.Balanced))
@@ -66,7 +67,7 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
       if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
 
-    observableSubject.onNext(GameBoardInitialization(Settings(
+    observableSubject.onNext(GameBoardInitialization(GameBoardConfig(
       gameMode = selectedGameMode,
       cardSet = selectedCardSet,
       botBehaviour = selectedBotBehaviour,

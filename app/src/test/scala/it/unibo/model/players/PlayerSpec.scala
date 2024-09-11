@@ -1,8 +1,8 @@
 package it.unibo.model.players
 
 import it.unibo.model.cards.{Card, CardType}
-import it.unibo.model.cards.effects.WindEffect
 import it.unibo.model.cards.types.{CanBePlayedAsExtra, WaterCard, WindCard}
+import it.unibo.model.effects.cards.WindEffect
 import it.unibo.model.gameboard.player.{Bot, Move, Person, Player}
 import org.junit.runner.RunWith
 import org.scalatest.flatspec.AnyFlatSpec

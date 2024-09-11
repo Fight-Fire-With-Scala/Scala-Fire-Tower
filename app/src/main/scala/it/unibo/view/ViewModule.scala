@@ -1,7 +1,7 @@
 package it.unibo.view
 
-import it.unibo.controller.view.ViewController
-import it.unibo.controller.{InternalViewMessage, InternalViewSubject, ViewMessage, ViewSubject}
+import it.unibo.controller.view.InternalViewController
+import it.unibo.controller.{InternalViewMessage, InternalViewSubject, RefreshType, ViewMessage, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.ViewInitialization.getGuiInitTask
 import it.unibo.view.components.IUpdateView
@@ -14,7 +14,7 @@ object ViewModule:
     def startMenu(): Unit
     def startGame(gb: GameBoard): Unit
     def getObservable: PublishSubject[ViewMessage]
-    def updateView(gb: GameBoard): Unit
+    def updateView(gb: GameBoard, refreshType: RefreshType): Unit
     def confirmCardPlay(): Unit
 
   trait Provider:
@@ -25,7 +25,7 @@ object ViewModule:
       private val viewObservable = PublishSubject[ViewMessage]()
       private val intObservable = PublishSubject[InternalViewMessage]()
       private val gui = GameUIManager(1280, 1280, viewObservable)
-      private val gameController = ViewController(intObservable, viewObservable)
+      private val gameController = InternalViewController(intObservable, viewObservable)
 
       override def startMenu(): Unit = gui.main(Array.empty)
 
@@ -38,7 +38,7 @@ object ViewModule:
         val compositeTask = getGuiInitTask(gameController, task, gb)
         compositeTask.runAsyncAndForget
 
-      override def updateView(gb: GameBoard): Unit = gameController.refreshView(gb)
+      override def updateView(gb: GameBoard, refreshType: RefreshType): Unit = gameController.refreshView(gb, refreshType)
       override def getObservable: ViewSubject = viewObservable
       override def confirmCardPlay(): Unit = gameController.confirmCardPlay()
 

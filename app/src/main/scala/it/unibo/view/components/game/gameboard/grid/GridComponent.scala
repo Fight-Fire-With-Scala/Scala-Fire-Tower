@@ -1,9 +1,8 @@
 package it.unibo.view.components.game.gameboard.grid
 
 import it.unibo.controller.{InternalViewSubject, ViewSubject}
-import it.unibo.model.cards.Card
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.grid.{Grid, Position, Token, TowerPosition}
+import it.unibo.model.gameboard.grid.{Grid, Position, Token}
 import it.unibo.view.GUIType
 import it.unibo.view.components.{IGridComponent, IUpdateView}
 import javafx.fxml.FXML

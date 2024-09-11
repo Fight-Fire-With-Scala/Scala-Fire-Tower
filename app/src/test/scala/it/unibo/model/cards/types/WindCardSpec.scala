@@ -1,6 +1,6 @@
 package it.unibo.model.cards.types
 
-import it.unibo.model.cards.resolvers.WindResolver
+import it.unibo.model.effects.core.WindResolver
 import org.junit.runner.RunWith
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

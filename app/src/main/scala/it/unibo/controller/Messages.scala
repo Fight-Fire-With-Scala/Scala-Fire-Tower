@@ -1,8 +1,10 @@
 package it.unibo.controller
 
-import it.unibo.model.gameboard.{Direction, GameBoard, GamePhase}
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.model.settings.Settings
+import it.unibo.model.effects.hand.HandEffect.{DiscardCard, DrawCard, PlayCard}
+import it.unibo.model.effects.PatternEffect.PatternApplication
+import it.unibo.model.effects.cards.WindChoiceEffect
+import it.unibo.model.effects.phase.PhaseEffect
+import it.unibo.model.gameboard.{GameBoard, GameBoardConfig, GamePhase}
 import monix.reactive.subjects.PublishSubject
 
 type ModelSubject = PublishSubject[ModelMessage]
@@ -16,17 +18,17 @@ sealed trait Message
  */
 sealed trait ViewMessage extends Message
 
-case class GameBoardInitialization(settings: Settings) extends ViewMessage
+case class GameBoardInitialization(settings: GameBoardConfig) extends ViewMessage
 
-case class UpdateWindDirection(windDirection: Direction) extends ViewMessage
-case class UpdateGamePhaseModel(gamePhase: GamePhase) extends ViewMessage
+case class UpdateWindDirection(ef: WindChoiceEffect) extends ViewMessage
+case class UpdateGamePhaseModel(ef: PhaseEffect) extends ViewMessage
 
-case class ResolvePatternComputation(cardId: Int) extends ViewMessage
-case class ResetPatternComputation() extends ViewMessage
-case class ResolvePatternChoice(pattern: Map[Position, Token]) extends ViewMessage
+case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage
+case class ResolvePatternReset() extends ViewMessage
+case class ResolvePatternChoice(ef: PatternApplication) extends ViewMessage
 
-case class DrawCardMessage(nCards: Int) extends ViewMessage
-case class DiscardCardMessage(cards: List[Int]) extends ViewMessage
+case class DrawCardMessage(ef: DrawCard) extends ViewMessage
+case class DiscardCardMessage(ef: DiscardCard) extends ViewMessage
 
 /*
  * This refers to messages sent to the view from the model
@@ -35,7 +37,7 @@ sealed trait ModelMessage extends Message
 
 case class StartGameMessage(gameBoard: GameBoard) extends ModelMessage
 case class StartMenuMessage() extends ModelMessage
-case class RefreshMessage(gameBoard: GameBoard) extends ModelMessage
+case class RefreshMessage(gameBoard: GameBoard, refreshType: RefreshType) extends ModelMessage
 case class ConfirmCardPlayMessage() extends ModelMessage
 
 /*

@@ -1,18 +1,14 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{
-  CandidateCardToPlayMessage,
-  InternalViewSubject,
-  ToggleCardInListMessage
-}
-import it.unibo.model.cards.Card.allCards
-import it.unibo.model.cards.types.{CanBeDiscarded, FireCard, FirebreakCard, WaterCard, WindCard}
-import it.unibo.model.cards.{Card, CardType}
+import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage}
+import it.unibo.model.cards.Card
+import it.unibo.model.effects.cards.{BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect}
+import it.unibo.model.effects.core.{CanBeDiscarded, ICardEffect, ISpecialCardEffect, IStandardCardEffect}
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
 import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
+import javafx.event.EventHandler
 import it.unibo.view.components.{ICanBeDisabled, ICanSwitchHandler, IHandComponent}
-import javafx.event.{EventHandler, EventType}
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
@@ -64,21 +60,24 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   def setCard(card: Card): Unit =
     cardPane.getStyleClass.clear()
     cardPane.getStyleClass.add("card")
-    cardPane.getStyleClass.add(getStyleClassForCardType(card.cardType))
-    cardTitle.setText(card.cardType.title)
-    cardDescription.setText(card.cardType.description)
+    cardPane.getStyleClass.add(getStyleClassForCardType(card.effect))
+    cardTitle.setText(card.title)
+    cardDescription.setText(card.description)
     cardId = card.id.toString
-    card.cardType.effectType match
+    card.effect match
       case _: CanBeDiscarded => containSpecialCard = true
       case _                 => containSpecialCard = false
 
-  private def getStyleClassForCardType(cardType: CardType): String =
-    allCards.find(_.id == cardType.effectType.id) match
-      case Some(_: FireCard)      => "fire"
-      case Some(_: WindCard)      => "wind"
-      case Some(_: FirebreakCard) => "firebreak"
-      case Some(_: WaterCard)     => "water"
-      case _                      => "not-found"
+  private def getStyleClassForCardType(effect: ICardEffect): String = effect match
+    case effect: IStandardCardEffect => effect match
+        case effect: FireEffect      => "fire"
+        case effect: FirebreakEffect => "firebreak"
+        case effect: WaterEffect     => "water"
+        case effect: WindEffect      => "wind"
+        case _                       => "not-found"
+    case effect: ISpecialCardEffect  => effect match
+        case BucketEffect => "water"
+        case _            => "not-found"
 
   def reset(): Unit =
     cardPane.getStyleClass.clear()

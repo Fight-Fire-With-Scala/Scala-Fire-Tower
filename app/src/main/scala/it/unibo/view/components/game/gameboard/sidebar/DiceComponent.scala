@@ -1,6 +1,8 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{UpdateWindDirection, ViewSubject}
+import it.unibo.controller.{UpdateGamePhaseModel, UpdateWindDirection, ViewSubject}
+import it.unibo.model.effects.cards.WindChoiceEffect
+import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.view.GUIType
 import it.unibo.view.components.{ISidebarComponent, IUpdateView}
 import javafx.fxml.FXML
@@ -9,6 +11,7 @@ import javafx.scene.layout.Pane
 import scala.compiletime.uninitialized
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
+import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
 import it.unibo.view.components.game.gameboard.sidebar.svg.DiceFace
 import javafx.event.EventHandler
 import javafx.scene.Node
@@ -35,7 +38,8 @@ final class DiceComponent(using observable: ViewSubject) extends ISidebarCompone
   private def diceClickHandler(): Unit =
     val updatedDirection = Random.shuffle(Direction.values).head
     diceFace.updateDirection(updatedDirection)
-    observable.onNext(UpdateWindDirection(updatedDirection))
+    observable.onNext(UpdateWindDirection(WindChoiceEffect.RandomUpdateWind))
+    observable.onNext(UpdateGamePhaseModel(PhaseEffect(PlaySpecialCardPhase)))
 
   def updateDiceFaceDirection(direction: Direction): Unit =
     runOnUIThread(diceFace.updateDirection(direction))

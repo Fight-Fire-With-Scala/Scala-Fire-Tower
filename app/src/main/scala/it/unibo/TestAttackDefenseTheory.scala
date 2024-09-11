@@ -35,8 +35,8 @@ object Test:
 
   private def run(): Unit =
     val grid = gb.board.grid
-    val myTowerPositions = gb.getCurrentPlayer().towerPositions.map(_.position)
-    val opponentPositions = gb.getOpponent().towerPositions.map(_.position)
+    val myTowerPositions = gb.getCurrentPlayer.towerPositions.map(_.position)
+    val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
     println(myTowerPositions)
     println(opponentPositions)
     val updatedGrid = grid.setToken(Position(6,7), Fire).setToken(Position(9,8), Fire).setToken(Position(10,10), Fire)

@@ -28,7 +28,8 @@ object PrologUtils:
 
   extension (g: Grid)
     def size: Int = math.sqrt(g.cells.size).toInt
-
+  
+  // TODO avoid using a ListBuffer
   private val resultBuffer: ListBuffer[String] = ListBuffer[String]()
 
   def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] =
