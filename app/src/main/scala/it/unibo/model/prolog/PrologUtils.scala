@@ -26,18 +26,15 @@ object PrologUtils:
     val y = tuple.getArg(1).toString.toInt
     (x, y)
 
-  extension (g: Grid)
-    def size: Int = math.sqrt(g.cells.size).toInt
+  extension (g: Grid) def size: Int = math.sqrt(g.cells.size).toInt
   
-  // TODO avoid using a ListBuffer
-  private val resultBuffer: ListBuffer[String] = ListBuffer[String]()
-
+  // TODO use an accumulator with a List instead of a ListBuffer
   def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] =
-    resultBuffer.clear()
+    val resultBuffer = ListBuffer[String]()
     val solutionAsStruct = solution.getSolution.asInstanceOf[Struct]
     val result = solutionAsStruct.getArg(0).asInstanceOf[Var].getLink.asInstanceOf[Struct]
     parseStruct(result, resultBuffer)
-    convertToMap(resultBuffer)
+    convertToMap(resultBuffer.toList)
 
   private def parseStruct(s: Struct, buffer: ListBuffer[String]): Unit = s match
     case s if s.isTuple =>
@@ -52,9 +49,8 @@ object PrologUtils:
     case struct: Struct if s.isTuple => parseStruct(struct, buffer)
     case atom                        => buffer += atom.toString
 
-  private def convertToMap(buffer: ListBuffer[String]): Map[Position, Token] =
-    val list = buffer.toList
-    val grouped = list.grouped(3).toList
+  private def convertToMap(buffer: List[String]): Map[Position, Token] =
+    val grouped = buffer.grouped(3).toList
     grouped.collect { case List(i1: String, i2: String, s: String) =>
       (Position(i1.toInt, i2.toInt), ConcreteToken.values.find(_.id == s).getOrElse(Empty))
     }.toMap
