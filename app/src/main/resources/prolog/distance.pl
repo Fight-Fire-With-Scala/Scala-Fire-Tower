@@ -16,26 +16,18 @@ min_member_helper([(Dist, Pos) | Tail], (CurMinDist, CurMinPos), (MinDist, MinPo
         min_member_helper(Tail, (CurMinDist, CurMinPos), (MinDist, MinPos))
     ).
 
-
-% Calculate the Manhattan distance between two points
-manhattan_distance((X1, Y1), (X2, Y2), Distance) :-
-    Distance is abs(X1 - X2) + abs(Y1 - Y2).
-
 % Find the minimum distance from a set of tower positions to any fire cell and return the closest tower position
 min_distance_to_fire(TowerPositions, ClosestTowerPos, MinDist) :-
-    findall((Dist, TowerPos), 
+    findall((Dist, TowerPos),
         (
             member(TowerPos, TowerPositions),
             token(FirePos, f),
             manhattan_distance(TowerPos, FirePos, Dist)
-        ), 
+        ),
     Dists),
     min_member_2((MinDist, ClosestTowerPos), Dists).
 
-% Determine which specific tower is closest to the fire cells
 closest_tower_to_fire(ClosestTower) :-
-    findall(Pos, towerPosition(Pos), MyTowerPositions),
-    findall(Pos, enemyTowerPosition(Pos), EnemyTowerPositions),
-    min_distance_to_fire(MyTowerPositions, ClosestMyTowerPos, MyTowersDist),
-    min_distance_to_fire(EnemyTowerPositions, ClosestEnemyTowerPos, EnemyTowersDist),
-    (MyTowersDist < EnemyTowersDist -> ClosestTower = ClosestMyTowerPos ; ClosestTower = ClosestEnemyTowerPos).
+    min_distance_to_fire([my_tower1, my_tower2], ClosestMyTower, MyTowersDist),
+    min_distance_to_fire([opponent_tower1, opponent_tower2], ClosestOpponentTower, OpponentTowersDist),
+    (MyTowersDist < OpponentTowersDist -> ClosestTower = ClosestMyTower ; ClosestTower = ClosestOpponentTower).
