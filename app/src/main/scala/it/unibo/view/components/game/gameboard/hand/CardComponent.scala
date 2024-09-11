@@ -55,9 +55,13 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
     highlightManager.switch()
 
-  addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-  addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-  addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
+  private def addHandlers(): Unit =
+    containSpecialCard match
+      case true  => addHandler(GamePhase.PlaySpecialCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+      case false =>
+        addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+        addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+        addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
   protected def applyState(state: GamePhase): Unit = highlightManager.switch(Some(Unhighlighted))
 
@@ -69,8 +73,10 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardDescription.setText(card.cardType.description)
     cardId = card.id.toString
     card.cardType.effectType match
-      case _: CanBeDiscarded => containSpecialCard = true
-      case _                 => containSpecialCard = false
+      case _: CanBeDiscarded => containSpecialCard = false
+      case _                 => containSpecialCard = true
+
+    addHandlers()
 
   private def getStyleClassForCardType(cardType: CardType): String =
     allCards.find(_.id == cardType.effectType.id) match
