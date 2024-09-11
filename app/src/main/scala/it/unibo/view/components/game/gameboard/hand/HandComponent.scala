@@ -110,8 +110,17 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     super.onDisableView()
     cardComponents.foreach(card => card.disableView())
 
-  def handleSpecialCardComponents(gamePhase: GamePhase): Unit = gamePhase match
-    case PlaySpecialCardPhase => cardComponents.find(_.containSpecialCard).foreach(_.enableView())
-    case _                    => cardComponents.foreach(_.disableView())
+  def handleSpecialCardComponents(gamePhase: GamePhase): Unit =
+    val (specialCardComponents, normalCardComponents) = cardComponents.partition(_.containSpecialCard)
+    gamePhase match
+      case PlaySpecialCardPhase =>
+          specialCardComponents.foreach(_.enableView())
+          normalCardComponents.foreach(_.disableView())
+      case PlayStandardCardPhase                    =>
+          specialCardComponents.foreach(_.disableView())
+          normalCardComponents.foreach(_.enableView())
+      case _                                         =>
+          specialCardComponents.foreach(_.disableView())
+          normalCardComponents.foreach(_.disableView())
 
   override protected def getPane: Node = handPane

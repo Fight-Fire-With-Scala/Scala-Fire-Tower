@@ -9,6 +9,7 @@ import it.unibo.view.GUIType
 import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
 import javafx.event.EventHandler
 import it.unibo.view.components.{ICanBeDisabled, ICanSwitchHandler, IHandComponent}
+import javafx.event.{EventHandler, EventType}
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
@@ -51,9 +52,13 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
     highlightManager.switch()
 
-  addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-  addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-  addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
+  private def addHandlers(): Unit =
+    containSpecialCard match
+      case true  => addHandler(GamePhase.PlaySpecialCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+      case false =>
+        addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+        addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+        addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
   protected def applyState(state: GamePhase): Unit = highlightManager.switch(Some(Unhighlighted))
 
@@ -65,8 +70,10 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardDescription.setText(card.description)
     cardId = card.id.toString
     card.effect match
-      case _: CanBeDiscarded => containSpecialCard = true
-      case _                 => containSpecialCard = false
+      case _: CanBeDiscarded => containSpecialCard = false
+      case _                 => containSpecialCard = true
+
+    addHandlers()
 
   private def getStyleClassForCardType(effect: ICardEffect): String = effect match
     case effect: IStandardCardEffect => effect match
