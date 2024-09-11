@@ -19,40 +19,64 @@ import it.unibo.model.prolog.{GridTheory, PrologEngine}
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)
   case CardComputation(cardId: Int, logicEffect: ILogicEffect)
+  case CardsComputation(cards: Map[Int, List[ILogicEffect]])
   case PatternApplication(pattern: Map[Position, Token])
   case ResetPatternComputation
 
 object PatternEffect:
   import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
 
-  private def computePatterns(gb: GameBoard, logicEffect: ILogicEffect) =
-    val theory = GridTheory(gb.board.grid, logicEffect.pattern, logicEffect.directions)
+  private def computePatterns(gb: GameBoard, cardId: Int, logicEffect: ILogicEffect) =
+    val theory = GridTheory(gb.board.grid, Map(cardId -> List(logicEffect)))
     theory.append(cardsProgram)
     theory.append(solverProgram)
     val engine = PrologEngine(theory)
-    logicEffect.goals.map(g => engine.solveAsPatterns(g)).reduce((a, b) => a.union(b))
+    logicEffect.goals.map(g => engine.solveAsPatterns(g(cardId))).reduce((a, b) => a.union(b))
+
+  private def computePatterns(gb: GameBoard, cards: Map[Int, List[ILogicEffect]]) = ???
 
   private def resolvePatternComputation(logicEffect: ILogicEffect) =
     GameBoardEffectResolver { (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
-      val availablePatterns = computePatterns(gb, logicEffect)
+      val availablePatterns = computePatterns(gb, -1, logicEffect)
       val move = PatternChosen(availablePatterns)
       MoveEffect.resolveMove(move, gb)
     }
 
+  private def resolveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
+    GameBoardEffectResolver { (gbe: GameBoardEffect) =>
+      val gb = gbe.gameBoard
+      val availablePatterns: Map[Int, Set[Map[Position, Token]]] =
+        computePatterns(gb, cards) // TODO call prolog solver
+      val player = gb.getCurrentPlayer
+      player match
+        case b: Bot => logCardsComputation(gb, availablePatterns)
+        case _      => GameBoardEffect(gb)
+    }
+
+  private def logCardsComputation(gb: GameBoard, cards: Map[Int, Set[Map[Position, Token]]]) =
+    val move = MoveEffect.CardsChosen(cards)
+    MoveEffect.resolveMove(move, gb)
+
   private def resolveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
     GameBoardEffectResolver { (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
-      val availablePatterns = computePatterns(gb, logicEffect)
+      val availablePatterns = computePatterns(gb, cardId, logicEffect)
       val card = gb.getCurrentPlayer.hand.find(_.id == cardId)
-      card match
-        case Some(c) =>
-          val move = MoveEffect.CardChosen(c, availablePatterns)
-          MoveEffect.resolveMove(move, gb)
-        case None    =>
-          logger.warn(s"No card found from given cardId: $cardId")
-          GameBoardEffect(gb)
+      logCardComputation(gb, card, availablePatterns)
     }
+
+  private def logCardComputation(
+      gb: GameBoard,
+      card: Option[Card],
+      availablePatterns: Set[Map[Position, Token]]
+  ) = card match
+    case Some(c) =>
+      val move = MoveEffect.CardChosen(c, availablePatterns)
+      MoveEffect.resolveMove(move, gb)
+    case None    =>
+      logger.warn(s"No card found")
+      GameBoardEffect(gb)
 
   private def resolvePatternApplication(pattern: Map[Position, Token]) = GameBoardEffectResolver {
     (gbe: GameBoardEffect) =>
@@ -66,11 +90,8 @@ object PatternEffect:
         case Some(m) =>
           // Log the move
           val move = PatternApplied(pattern)
-          logger.info(s"$m")
           // Save the result
           val newGb = updateDeckAndHand(gb, m.effect).copy(board = b.copy(grid = newGrid))
-          logger.info(s"${newGb.deck}")
-          logger.info(s"${newGb.getCurrentPlayer.hand}")
           MoveEffect.resolveMove(move, newGb)
         case None    =>
           logger.warn("Could not find the last card chosen, deck not updated and move not logged")
@@ -118,6 +139,7 @@ object PatternEffect:
           GameBoardEffect(gbe.gameBoard)
         }
       case CardComputation(id, logicEffect) => resolveCardComputation(id, logicEffect)
+      case CardsComputation(cards)          => resolveCardsComputation(cards)
       case PatternComputation(logicEffect)  => resolvePatternComputation(logicEffect)
       case PatternApplication(pattern)      => resolvePatternApplication(pattern)
       case ResetPatternComputation          => resolvePatternReset()

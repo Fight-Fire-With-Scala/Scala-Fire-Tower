@@ -6,6 +6,6 @@ import it.unibo.model.prolog.Rule
 
 final case class ILogicEffect(
     pattern: Map[Position, Token],
-    goals: List[Rule],
+    goals: List[Int => Rule],
     directions: List[Direction]
 ) extends IGameEffect

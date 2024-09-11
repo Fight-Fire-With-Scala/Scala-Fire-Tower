@@ -1,6 +1,8 @@
 package it.unibo.model.gameboard.player
 
 import it.unibo.model.cards.Card
+import it.unibo.model.effects.PatternEffect.CardsComputation
+import it.unibo.model.effects.core.ILogicEffect
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.{GameBoard, GamePhase}
@@ -26,6 +28,11 @@ final case class Bot(
     // Should be Waiting Phase
     case WindPhase =>
       computeAttackOrDefense(gameBoard)
+      val cardsToCompute: Map[Int, List[ILogicEffect]] = ???
+      val effect = CardsComputation(cardsToCompute)
+      val newGb = gameBoard.resolveEffect(effect)
+//    case CardsChosen(cards: Map[Card, Set[Map[Position, Token]]])
+
       logger.info(s"Bot is thinking... Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
       logger.info(s"Objective tower: ${DecisionMaker.getObjectiveTower}")
     case _         =>

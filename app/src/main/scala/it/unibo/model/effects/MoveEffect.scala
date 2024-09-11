@@ -9,6 +9,7 @@ import it.unibo.model.gameboard.player.Move
 enum MoveEffect extends IGameEffect:
   case CardsRedrawn(cards: List[Int])
   case CardChosen(card: Card, computedPatterns: Set[Map[Position, Token]])
+  case CardsChosen(cardsChosen: Map[Int, Set[Map[Position, Token]]])
   case PatternChosen(computedPatterns: Set[Map[Position, Token]])
   case PatternApplied(chosenPattern: Map[Position, Token])
 
