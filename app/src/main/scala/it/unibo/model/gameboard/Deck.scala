@@ -21,14 +21,13 @@ final case class Deck(
   def shuffle(): Deck = copy(standardCards = Random.shuffle(standardCards))
   @tailrec
   def drawCard(): (Option[Card], Deck) =
-    logger.warn("Drawing a card")
     standardCards.headOption match
       case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
       case None if playedCards.isEmpty =>
         logger.warn("No standard cards found in deck")
         (None, this)
       case None                        =>
-        logger.warn("Looping here")
+        logger.info("Regenerating deck")
         val newDeck = regenerate()
         newDeck.drawCard()
   def drawSpecialCard(): (Option[Card], Deck) = specialCards.headOption match

@@ -1,6 +1,6 @@
 package it.unibo.controller.view
 
-import it.unibo.controller.{logger, InternalViewSubject, RefreshType, ViewSubject}
+import it.unibo.controller.{InternalViewSubject, RefreshType, ViewSubject}
 import it.unibo.model.effects.MoveEffect
 import it.unibo.model.effects.MoveEffect.CardChosen
 import it.unibo.model.gameboard.GameBoard
@@ -25,15 +25,13 @@ final case class InternalViewController(
     gameComponent.fold(()) { component =>
       component.updateGrid(gb, currentGamePhase)
       component.updatePlayer(gb.getCurrentPlayer)(currentGamePhase)
-      
-      logger.info(s"Refreshing gameboard deck ${gb.deck}")
 
-      val lastCardChosenMove = gb.getCurrentPlayer.lastCardChosen
-      lastCardChosenMove match
-        case Some(value) => handleMove(component, gb, lastCardChosenMove)
+      val lastPatternChosenMove = gb.getCurrentPlayer.lastPatternChosen
+      lastPatternChosenMove match
+        case Some(value) => handleMove(component, gb, lastPatternChosenMove)
         case None        =>
-          val lastPatternChosenMove = gb.getCurrentPlayer.lastPatternChosen
-          handleMove(component, gb, lastPatternChosenMove)
+          val lastCardChosenMove = gb.getCurrentPlayer.lastCardChosen
+          handleMove(component, gb, lastCardChosenMove)
 
       component.sidebarComponent.components.foreach {
         case c: GameInfoComponent =>

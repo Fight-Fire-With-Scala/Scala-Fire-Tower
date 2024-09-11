@@ -7,6 +7,7 @@ import it.unibo.model.effects.cards.*
 import it.unibo.model.effects.core.*
 import it.unibo.model.gameboard.player.Player
 import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.logger
 
 enum HandEffect extends IGameEffect:
   case PlayCard(cardId: Int)
@@ -23,16 +24,17 @@ object HandEffect extends HandManager:
   private def resolveDiscardCard(cards: List[Int]) =
     GameBoardEffectResolver { (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
-      val newGb = discardCards(gb, cards)
-      GameBoardEffect(newGb)
+      val cardsPlayed = cards.flatMap(cId => gb.getCurrentPlayer.hand.find(_.id == cId))
+      val playedCards = cardsPlayed ++ gb.deck.playedCards
+      val newDeck = gb.deck.copy(playedCards = cardsPlayed)
+      GameBoardEffect(discardCards(gb, cards).copy(deck = newDeck))
     }
 
   private def resolveCardEffect(cardId: Int) = GameLogicEffectResolver { (gbe: GameBoardEffect) =>
     val gb = gbe.gameBoard
     val card = gb.getCurrentPlayer.hand.find(_.id == cardId)
     card match
-      case Some(c) =>
-        c.effect match
+      case Some(c) => c.effect match
           case effect: FireEffect      =>
             val logicEffect = FireEffect.fireEffectResolver.resolve(effect)
             CardComputation(cardId, logicEffect)
@@ -42,13 +44,13 @@ object HandEffect extends HandManager:
           case effect: WaterEffect     =>
             val logicEffect = WaterEffect.waterEffectResolver.resolve(effect)
             CardComputation(cardId, logicEffect)
-          case effect: WindEffect      => 
+          case effect: WindEffect      =>
             val logicEffect = WindEffect.windEffectResolver.resolve(effect)
             CardComputation(cardId, logicEffect)
           case BucketEffect            =>
             val logicEffect = BucketEffect.bucketEffect
             CardComputation(cardId, logicEffect)
-          case _ => GameBoardEffect(gb)
+          case _                       => GameBoardEffect(gb)
       case None    => GameBoardEffect(gb)
   }
 
