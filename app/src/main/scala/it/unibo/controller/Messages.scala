@@ -21,7 +21,7 @@ sealed trait ViewMessage extends Message
 case class GameBoardInitialization(settings: GameBoardConfig) extends ViewMessage
 
 case class UpdateWindDirection(ef: WindChoiceEffect) extends ViewMessage
-case class UpdateGamePhaseModel(ef: PhaseEffect) extends ViewMessage
+case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage
 
 case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage
 case class ResolvePatternReset() extends ViewMessage
@@ -45,7 +45,6 @@ case class ConfirmCardPlayMessage() extends ModelMessage
  */
 sealed trait InternalViewMessage extends Message
 
-case class UpdateGamePhaseView(gamePhase: GamePhase) extends InternalViewMessage
 case class InitializeDiscardProcedureMessage() extends InternalViewMessage
 case class ToggleCardInListMessage(cardId: Int) extends InternalViewMessage
 case class ConfirmDiscardMessage() extends InternalViewMessage

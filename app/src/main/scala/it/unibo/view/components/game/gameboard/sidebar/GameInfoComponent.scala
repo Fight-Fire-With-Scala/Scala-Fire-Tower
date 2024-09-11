@@ -1,6 +1,6 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{InternalViewSubject, UpdateGamePhaseModel, ViewSubject}
+import it.unibo.controller.{InternalViewSubject, UpdateGamePhase, ViewSubject}
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.EndTurnPhase
@@ -32,7 +32,7 @@ final class GameInfoComponent(using
   private var endTurnButton: Button = uninitialized
 
   private val endTurnButtonEventHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) => observable.onNext(UpdateGamePhaseModel(PhaseEffect(EndTurnPhase)))
+    (_: MouseEvent) => observable.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
 
   @FXML
   def initialize(): Unit =

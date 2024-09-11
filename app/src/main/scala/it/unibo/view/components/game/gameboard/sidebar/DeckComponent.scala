@@ -6,7 +6,7 @@ import it.unibo.controller.{
   DrawCardMessage,
   InitializeDiscardProcedureMessage,
   InternalViewSubject,
-  UpdateGamePhaseModel,
+  UpdateGamePhase,
   ViewSubject
 }
 import it.unibo.model.effects.hand.HandEffect.DrawCard
@@ -101,7 +101,7 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
 
   private def startDiscardProcedure(): Unit =
     internalObservable.onNext(InitializeDiscardProcedureMessage())
-    observable.onNext(UpdateGamePhaseModel(PhaseEffect(GamePhase.RedrawCardsPhase)))
+    observable.onNext(UpdateGamePhase(PhaseEffect(GamePhase.RedrawCardsPhase)))
     setDiscardProcedureButtonsEnabled(true)
 
   private def discard(): Unit =

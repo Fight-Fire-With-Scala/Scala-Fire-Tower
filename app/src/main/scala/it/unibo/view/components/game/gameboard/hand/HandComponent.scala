@@ -6,8 +6,7 @@ import it.unibo.controller.{
   InternalViewSubject,
   ChoseCardToPlay,
   ResolvePatternReset,
-  UpdateGamePhaseModel,
-  UpdateGamePhaseView,
+  UpdateGamePhase,
   ViewSubject
 }
 import it.unibo.model.gameboard.GamePhase
@@ -63,7 +62,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
   def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 
   def cancelDiscardProcedure(): Unit =
-    observable.onNext(UpdateGamePhaseModel(PhaseEffect(WaitingPhase)))
+    observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
     endDiscardProcedure()
 
   private def endDiscardProcedure(): Unit = cardToRemove = List.empty
@@ -75,7 +74,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
   def discardCards(): Unit =
     observable.onNext(DiscardCardMessage(DiscardCard(cardToRemove)))
     observable.onNext(DrawCardMessage(DrawCard(cardToRemove.size)))
-    observable.onNext(UpdateGamePhaseModel(PhaseEffect(DecisionPhase)))
+    observable.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =
@@ -89,8 +88,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
       cardToPlay = None
       logger.info(s"Card not to play: $cardToPlay")
       observable.onNext(ResolvePatternReset())
-      observable.onNext(UpdateGamePhaseModel(PhaseEffect(WaitingPhase)))
-      internalObservable.onNext(UpdateGamePhaseView(WaitingPhase))
+      observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
     else
       cardToPlay match
         case Some(component) => component.highlightManager
@@ -99,8 +97,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
       cardToPlay = cardComponent
       logger.info(s"Card to play: $cardToPlay")
       observable.onNext(ChoseCardToPlay(PlayCard(cardId)))
-      observable.onNext(UpdateGamePhaseModel(PhaseEffect(PlayStandardCardPhase)))
-      internalObservable.onNext(UpdateGamePhaseView(PlayStandardCardPhase))
+      observable.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
 
   override def onEnableView(): Unit =
     super.onEnableView()

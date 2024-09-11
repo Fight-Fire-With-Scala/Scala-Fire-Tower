@@ -8,10 +8,8 @@ import it.unibo.controller.{
   ConfirmDiscardMessage,
   InitializeDiscardProcedureMessage,
   InternalViewMessage,
-  ToggleCardInListMessage,
-  UpdateGamePhaseView
+  ToggleCardInListMessage
 }
-import it.unibo.model.gameboard.GamePhase
 
 final class InternalViewSubscriber(viewController: InternalViewController)
     extends BaseSubscriber[InternalViewMessage]:
@@ -19,7 +17,6 @@ final class InternalViewSubscriber(viewController: InternalViewController)
   override val logger: Logger = Logger("View -> IntervalView")
 
   override protected def onMessageReceived(msg: InternalViewMessage): Unit = msg match
-    case UpdateGamePhaseView(phase: GamePhase) => viewController.updateGamePhase(phase)
     case InitializeDiscardProcedureMessage()   => viewController.initDiscardProcedure()
     case ToggleCardInListMessage(cardId)       => viewController.toggleCardInDiscardList(cardId)
     case ConfirmDiscardMessage()               => viewController.confirmDiscard()

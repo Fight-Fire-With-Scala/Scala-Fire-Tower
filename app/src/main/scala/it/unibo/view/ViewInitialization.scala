@@ -3,7 +3,7 @@ package it.unibo.view
 import it.unibo.controller.RefreshType.PhaseUpdate
 import it.unibo.controller.view.InternalViewController
 import it.unibo.controller.subscribers.InternalViewSubscriber
-import it.unibo.controller.{InternalViewSubject, UpdateGamePhaseModel, ViewSubject}
+import it.unibo.controller.{InternalViewSubject, UpdateGamePhase, ViewSubject}
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.components.IViewComponent
@@ -25,7 +25,7 @@ object ViewInitialization:
         internalObservable.subscribe(InternalViewSubscriber(gameController))
         gameController.refreshView(gameBoard, PhaseUpdate) // just to avoid a flash the first time
         viewObservable
-          .onNext(UpdateGamePhaseModel(PhaseEffect(gameBoard.gamePhase))) // get the updated gameboard
+          .onNext(UpdateGamePhase(PhaseEffect(gameBoard.gamePhase))) // get the updated gameboard
         logger.info(s"Wind Direction: ${gameBoard.board.windDirection}")
         logger.info(s"Player turn: ${gameBoard.getCurrentPlayer.name}")
       }

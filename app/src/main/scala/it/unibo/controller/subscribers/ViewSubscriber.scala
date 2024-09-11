@@ -11,7 +11,7 @@ import it.unibo.controller.{
   ResolvePatternChoice,
   ResolvePatternReset,
   StartGameMessage,
-  UpdateGamePhaseModel,
+  UpdateGamePhase,
   UpdateWindDirection,
   ViewMessage
 }
@@ -52,7 +52,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
       controller.model.setGameBoard(newGb.copy(player1 = newPlayer, player2 = newPlayer2))
       controller.modelObserver.onNext(StartGameMessage(newGb))
 
-    case UpdateGamePhaseModel(ef: PhaseEffect) =>
+    case UpdateGamePhase(ef: PhaseEffect) =>
       controller.applyEffect(ef, PhaseUpdate)
       controller.activateBot()
 
@@ -62,6 +62,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
 
     case ResolvePatternChoice(ef: PatternApplication) =>
       controller.applyEffect(ef, RefreshType.PatternChosen)
+      controller.applyEffect(ResetPatternComputation, CardDeselected)
       controller.modelObserver.onNext(ConfirmCardPlayMessage())
 
     case ResolvePatternReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)

@@ -1,6 +1,6 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{UpdateGamePhaseModel, UpdateWindDirection, ViewSubject}
+import it.unibo.controller.{UpdateGamePhase, UpdateWindDirection, ViewSubject}
 import it.unibo.model.effects.cards.WindChoiceEffect
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard
@@ -37,7 +37,7 @@ final class WindRoseComponent(using observable: ViewSubject)
   private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
     ev =>
       observable.onNext(UpdateWindDirection(WindChoiceEffect.UpdateWind(dir)))
-      observable.onNext(UpdateGamePhaseModel(PhaseEffect(PlaySpecialCardPhase)))
+      observable.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
 

@@ -93,6 +93,5 @@ class GridClickHandler(
   private def placePattern(pattern: Map[Position, Token], newPhase: GamePhase): Unit =
     val effect = PatternApplication(pattern)
     observableSubject.onNext(ResolvePatternChoice(PatternApplication(pattern)))
-    internalObservable.onNext(UpdateGamePhaseView(newPhase))
-    observableSubject.onNext(UpdateGamePhaseModel(PhaseEffect(newPhase)))
+    observableSubject.onNext(UpdateGamePhase(PhaseEffect(newPhase)))
     gridState.hoveredCells.clear()
