@@ -1,9 +1,15 @@
 package it.unibo.model.effects.cards
 
-import it.unibo.model.effects.core.{GameEffectResolver, IGameEffect, ILogicEffect, IStandardCardEffect}
+import it.unibo.model.effects.core.{
+  GameEffectResolver,
+  IGameEffect,
+  ILogicEffect,
+  IOffensiveCard,
+  IStandardCardEffect
+}
 import it.unibo.model.gameboard.Direction
 
-enum WindEffect(override val effectId: Int) extends IStandardCardEffect:
+enum WindEffect(override val effectId: Int) extends IStandardCardEffect with IOffensiveCard:
   case North extends WindEffect(4)
   case South extends WindEffect(5)
   case East extends WindEffect(6)

@@ -1,12 +1,18 @@
 package it.unibo.model.effects.cards
 
-import it.unibo.model.effects.core.{GameEffectResolver, IGameEffect, ILogicEffect, IStandardCardEffect}
+import it.unibo.model.effects.core.{
+  GameEffectResolver,
+  IDefensiveCard,
+  IGameEffect,
+  ILogicEffect,
+  IStandardCardEffect
+}
 import it.unibo.model.gameboard.PatternType.{MediumAltEffect, SmallEffect, VerySmallEffect}
 import it.unibo.model.prolog.Rule
 import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Firebreak}
 import it.unibo.model.gameboard.Direction
 
-enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect:
+enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect with IDefensiveCard:
   case DozerLine extends FirebreakEffect(8)
   case ScratchLine extends FirebreakEffect(9)
   case DeReforest extends FirebreakEffect(10)

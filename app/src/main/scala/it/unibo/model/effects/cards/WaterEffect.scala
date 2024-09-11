@@ -2,6 +2,7 @@ package it.unibo.model.effects.cards
 
 import it.unibo.model.effects.core.{
   GameEffectResolver,
+  IDefensiveCard,
   IGameEffect,
   ILogicEffect,
   IStandardCardEffect
@@ -11,7 +12,7 @@ import it.unibo.model.prolog.Rule
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.PatternType.{LargeEffect, MediumEffect, VeryLargeEffect}
 
-enum WaterEffect(override val effectId: Int) extends IStandardCardEffect:
+enum WaterEffect(override val effectId: Int) extends IStandardCardEffect with IDefensiveCard:
   case SmokeJumper extends WaterEffect(11)
   case AirDrop extends WaterEffect(12)
   case FireEngine extends WaterEffect(13)

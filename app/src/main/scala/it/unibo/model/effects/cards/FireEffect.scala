@@ -4,6 +4,7 @@ import it.unibo.model.effects.core.{
   GameEffectResolver,
   IGameEffect,
   ILogicEffect,
+  IOffensiveCard,
   IStandardCardEffect
 }
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
@@ -11,7 +12,7 @@ import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.PatternType.{LargeEffect, MediumEffect, VeryLargeEffect}
 import it.unibo.model.prolog.Rule
 
-enum FireEffect(override val effectId: Int) extends IStandardCardEffect:
+enum FireEffect(override val effectId: Int) extends IStandardCardEffect with IOffensiveCard:
   case Explosion extends FireEffect(0)
   case Flare extends FireEffect(1)
   case BurningSnag extends FireEffect(2)
