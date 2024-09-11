@@ -1,16 +1,21 @@
 package it.unibo
 
 import PerformanceUtils.measure
+import it.unibo.model.prolog.PrologUtils.given
+import alice.tuprolog.{Struct, Theory}
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.player.{Person, Player}
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.{Aggressive, Defensive}
+import it.unibo.model.gameboard.player.{Bot, Person, Player}
+import it.unibo.model.logger
 import it.unibo.model.prolog.PrologEngine
 import it.unibo.model.prolog.PrologProgram.{distanceProgram, manhattanDistance}
 import it.unibo.model.prolog.decisionmaking.AttackDefenseTheory
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 
+import scala.jdk.CollectionConverters.*
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.FiniteDuration
 
@@ -31,7 +36,7 @@ object PerformanceUtils:
 
 object Test:
   val player1: Person = Person("tone", List.empty, List.empty)
-  val player2: Player = Player.bot
+  val player2: Player = Player.bot(Defensive)
   private val gb = GameBoard(player1, player2)
 
   private def run(): Unit =
@@ -39,22 +44,27 @@ object Test:
     val myTowerPositions = gb.getCurrentPlayer.towerPositions.map(_.position)
     val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
 
-    val updatedGrid = grid.setToken(Position(6,7), Fire).setToken(Position(9,8), Fire).setToken(Position(10,10), Fire)
+    val updatedGrid = grid.setToken(Position(9,8), Fire).setToken(Position(10,8), Fire)
     val theory = AttackDefenseTheory(
       updatedGrid,
       myTowerPositions,
       opponentPositions
     )
+    val variable = Struct.of("biasFactor", 5)
+    val theoryVariable = Theory.fromPrologList(Struct.list(Iterator.single(variable).asJava))
+    theory.append(theoryVariable)
     theory.append(distanceProgram)
     theory.append(manhattanDistance)
     println(theory)
     val engine = PrologEngine(theory)
-    val goal = "closest_tower_to_fire(ClosestTower)"
+    val goal = s"closest_tower_to_fire(ClosestTower, Bias, WeightedMyTowersDist)"
     val result = engine.solve(goal).headOption
 
     result match
       case Some(solution) =>
         val closestTower = solution.getTerm("ClosestTower").toString
+        logger.info("Bias = " + solution.getTerm("Bias"))
+        logger.info("WeightedMyTowersDist = " + solution.getTerm("WeightedMyTowersDist"))
         val towerPosition = Position(
           closestTower.substring(1, closestTower.indexOf(',')).toInt,
           closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt

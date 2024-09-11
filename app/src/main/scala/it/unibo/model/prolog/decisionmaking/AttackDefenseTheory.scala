@@ -7,14 +7,14 @@ import it.unibo.model.prolog.PrologUtils.{size, given}
 import scala.jdk.CollectionConverters.*
 
 enum AttackDefense:
-  case Attack 
+  case Attack
   case Defense
 
 final case class AttackDefenseTheory(
-                              private val grid: Grid,
-                              private val myTowerPosition: Set[Position],
-                              private val enemyTowerPosition: Set[Position]
-                            )
+    private val grid: Grid,
+    private val myTowerPosition: Set[Position],
+    private val enemyTowerPosition: Set[Position]
+)
 
 object AttackDefenseTheory:
   def apply(grid: Grid, myTowerPosition: Set[Position], enemyTowerPosition: Set[Position]): Theory =
@@ -41,7 +41,10 @@ object AttackDefenseTheory:
 
   private def getTowerPositions(towerPosition: Set[Position], isOpponent: Boolean): Iterator[Term] =
     val towerPositionsIterator = towerPosition.iterator.map { pos =>
-      Struct.of(if isOpponent then "towerPosition" else "enemyTowerPosition", Struct.tuple(pos.row, pos.col))
+      Struct.of(
+        if isOpponent then "enemyTowerPosition" else "towerPosition",
+        Struct.tuple(pos.row, pos.col)
+      )
     }.toSeq.sorted.iterator
 
     towerPositionsIterator

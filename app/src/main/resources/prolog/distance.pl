@@ -27,9 +27,12 @@ min_distance_to_fire(TowerPositions, ClosestTowerPos, MinDist) :-
     Dists),
     min_member_2((MinDist, ClosestTowerPos), Dists).
 
+% Main predicate that finds the closest tower to the fire, with a bias factor to make the enemy towers more or less likely
 closest_tower_to_fire(ClosestTower) :-
     findall(Pos, towerPosition(Pos), MyTowerPositions),
     findall(Pos, enemyTowerPosition(Pos), EnemyTowerPositions),
     min_distance_to_fire(MyTowerPositions, ClosestMyTowerPos, MyTowersDist),
     min_distance_to_fire(EnemyTowerPositions, ClosestEnemyTowerPos, EnemyTowersDist),
-    (MyTowersDist < EnemyTowersDist -> ClosestTower = ClosestMyTowerPos ; ClosestTower = ClosestEnemyTowerPos).
+    biasFactor(Bias), 
+	WeightedMyTowersDist is MyTowersDist + Bias,
+    (WeightedMyTowersDist < EnemyTowersDist -> ClosestTower = ClosestMyTowerPos ; ClosestTower = ClosestEnemyTowerPos).
