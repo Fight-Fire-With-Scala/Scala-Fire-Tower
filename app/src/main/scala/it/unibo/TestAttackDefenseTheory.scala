@@ -36,13 +36,14 @@ object PerformanceUtils:
 
 object Test:
   val player1: Person = Person("tone", List.empty, List.empty)
-  val player2: Player = Player.bot(Defensive)
+  val player2: Player = Player.bot(Aggressive)
   private val gb = GameBoard(player1, player2)
 
   private def run(): Unit =
     val grid = gb.board.grid
-    val myTowerPositions = gb.getCurrentPlayer.towerPositions.map(_.position)
-    val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
+    //opposite because is the bot that is thinking
+    val myTowerPositions = gb.getOpponent.towerPositions.map(_.position)
+    val opponentPositions = gb.getCurrentPlayer.towerPositions.map(_.position)
 
     val updatedGrid = grid.setToken(Position(9,8), Fire).setToken(Position(10,8), Fire)
     val theory = AttackDefenseTheory(
@@ -57,14 +58,12 @@ object Test:
     theory.append(manhattanDistance)
     println(theory)
     val engine = PrologEngine(theory)
-    val goal = s"closest_tower_to_fire(ClosestTower, Bias, WeightedMyTowersDist)"
+    val goal = s"closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
 
     result match
       case Some(solution) =>
         val closestTower = solution.getTerm("ClosestTower").toString
-        logger.info("Bias = " + solution.getTerm("Bias"))
-        logger.info("WeightedMyTowersDist = " + solution.getTerm("WeightedMyTowersDist"))
         val towerPosition = Position(
           closestTower.substring(1, closestTower.indexOf(',')).toInt,
           closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt

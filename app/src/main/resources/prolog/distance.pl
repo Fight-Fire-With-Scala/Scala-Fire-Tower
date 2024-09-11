@@ -21,18 +21,38 @@ min_distance_to_fire(TowerPositions, ClosestTowerPos, MinDist) :-
     findall((Dist, TowerPos),
         (
             member(TowerPos, TowerPositions),
-            token(FirePos, f),
+            token(FirePos, f), % Ensure token/2 retrieves the correct fire position
             manhattan_distance(TowerPos, FirePos, Dist)
         ),
     Dists),
-    min_member_2((MinDist, ClosestTowerPos), Dists).
+    (Dists = [] ->
+        % Handle the case where no distances are found (empty list)
+        MinDist = -1,
+        ClosestTowerPos = none
+    ;
+        min_member_2((MinDist, ClosestTowerPos), Dists)
+    ).
 
-% Main predicate that finds the closest tower to the fire, with a bias factor to make the enemy towers more or less likely
+% Main predicate that finds the closest tower to the fire, considering bias
 closest_tower_to_fire(ClosestTower) :-
     findall(Pos, towerPosition(Pos), MyTowerPositions),
     findall(Pos, enemyTowerPosition(Pos), EnemyTowerPositions),
+
+    % Find the minimum distance to player towers
     min_distance_to_fire(MyTowerPositions, ClosestMyTowerPos, MyTowersDist),
+
+    % Find the minimum distance to enemy towers
     min_distance_to_fire(EnemyTowerPositions, ClosestEnemyTowerPos, EnemyTowersDist),
-    biasFactor(Bias), 
-	WeightedMyTowersDist is MyTowersDist + Bias,
-    (WeightedMyTowersDist < EnemyTowersDist -> ClosestTower = ClosestMyTowerPos ; ClosestTower = ClosestEnemyTowerPos).
+
+    % Get the bias factor (hardcoded or dynamically obtained)
+    biasFactor(Bias),
+
+    % Calculate weighted distance for my towers
+    WeightedMyTowersDist is MyTowersDist + Bias,
+
+    % Decide which tower to prioritize based on distances and bias
+    (WeightedMyTowersDist < EnemyTowersDist ->
+        ClosestTower = ClosestMyTowerPos
+    ;
+        ClosestTower = ClosestEnemyTowerPos
+    ).
