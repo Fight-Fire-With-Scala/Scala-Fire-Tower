@@ -11,18 +11,22 @@ import scala.jdk.CollectionConverters.*
 
 final case class GridTheory(
     private val grid: Grid,
-    private val pattern: Map[Position, Token],
-    private val directions: List[Direction]
+    private val patternsAndDirections: Map[Int, (Map[Position, Token], List[Direction])]
 )
 
 object GridTheory:
-  def apply(grid: Grid, pattern: Map[Position, Token], directions: List[Direction]): Theory =
+  def apply(
+      grid: Grid,
+      patternsAndDirections: Map[Int, (Map[Position, Token], List[Direction])]
+  ): Theory =
     val cellIterator = getCells(grid)
-    val patternIterator = getPattern(pattern)
-    val directionIterator = getDeltas(directions)
-    val allIterators = cellIterator ++ patternIterator ++ directionIterator
+    val patternIterator = getPatterns(patternsAndDirections)
+    val directionIterator = getDirections(patternsAndDirections)
+    val deltaIterator = getDeltas(patternsAndDirections)
+    val allIterators = cellIterator ++ patternIterator ++ directionIterator ++ deltaIterator
 
-    Theory.fromPrologList(Struct.list(allIterators.asJava))
+    Theory
+      .fromPrologList(Struct.list(allIterators.toList.asJava.asInstanceOf[java.util.List[Term]]))
 
   private def getCells(grid: Grid): Iterator[Term] =
     val cells = grid.cells.iterator.map { case (pos, cell) =>
@@ -38,19 +42,34 @@ object GridTheory:
 
     cells ++ tokens ++ numRows ++ numCols
 
-  private def getPattern(patterns: Map[Position, Token]): Iterator[Term] =
-    val patternTerms = patterns.iterator.map { case (pos, pattern) =>
-      Struct.of("pattern", Struct.tuple(pos._1, pos._2), pattern)
+  private def getPatterns(
+      patternsAndDirections: Map[Int, (Map[Position, Token], List[Direction])]
+  ): Iterator[Term] = patternsAndDirections.iterator.flatMap { case (id, (pattern, _)) =>
+    pattern.iterator.map { case (pos, token) =>
+      Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, id)
     }
+  }
 
+  private def getDirections(
+      patternsAndDirections: Map[Int, (Map[Position, Token], List[Direction])]
+  ): Iterator[Term] = patternsAndDirections.iterator.flatMap { case (id, (pattern, directions)) =>
     val directionsOfApplication: List[Direction] =
-      if (patterns.size <= 1) List(Direction.North) else Direction.values.toList
+      if (pattern.size <= 1) List(Direction.North) else Direction.values.toList
     val directionNames = directionsOfApplication.map(_.getId)
-    val directionsFact = Iterator.single(Struct.of("directions", directionNames))
+    Iterator.single(Struct.of(
+      "directions",
+      Struct.list(directionNames.asJava.asInstanceOf[java.util.List[Term]]),
+      id
+    ))
+  }
 
-    patternTerms ++ directionsFact
-
-  private def getDeltas(directions: List[Direction]): Iterator[Term] =
+  private def getDeltas(
+      patternsAndDirections: Map[Int, (Map[Position, Token], List[Direction])]
+  ): Iterator[Term] = patternsAndDirections.iterator.flatMap { case (id, (_, directions)) =>
     val directionDeltas = directions.iterator.map(_.getDelta).map(d => Struct.tuple(d.row, d.col))
-
-    Iterator.single(Struct.of("deltas", directionDeltas.toList))
+    Iterator.single(Struct.of(
+      "deltas",
+      Struct.list(directionDeltas.toList.asJava.asInstanceOf[java.util.List[Term]]),
+      id
+    ))
+  }
