@@ -1,9 +1,7 @@
 % Main function to get the closest cell to the tower
 main(R) :-
     get_all_cards_result(AllResults),
-    writeln('All results: '), writeln(AllResults),
     tower_position(TowerPos),
-    writeln('Tower position: '), writeln(TowerPos),
     find_closest(AllResults, TowerPos, Closest),
     R = Closest.
 

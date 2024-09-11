@@ -50,13 +50,14 @@ object Test:
     // Generate the Prolog theory
     val dynamicTheory = AllCardsResultTheory(map)
     val theory = GridTheory(grid, map)
+
     theory.append(Theory.parseLazilyWithStandardOperators(s"tower_position((${enemyTower.row}, ${enemyTower.col}))."))
+    theory.append(manhattanDistance)
     theory.append(concatListsProgram)
     theory.append(dynamicTheory)
     theory.append(choseCardProgram)
     theory.append(cardsProgram)
     theory.append(solverProgram)
-    theory.append(manhattanDistance)
     println(theory)
     val engine = PrologEngine(theory)
     val goal = "main(R)"

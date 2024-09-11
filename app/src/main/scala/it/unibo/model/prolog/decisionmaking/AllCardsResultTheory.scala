@@ -25,8 +25,7 @@ object AllCardsResultTheory:
     val theoryString = s"""
                           |get_all_cards_result(R) :-
                           |    $findallClauses,
-                          |    $concatClause,
-                          |    writeln('All card results: '), writeln(R).
+                          |    $concatClause.
     """.stripMargin
 
     Theory.parseWithStandardOperators(theoryString)
