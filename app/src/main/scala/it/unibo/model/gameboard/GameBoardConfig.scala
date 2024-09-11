@@ -26,9 +26,9 @@ object GameBoardConfig:
     case Base, Expanded, Full
 
   enum BotBehaviour (val biasFactor: Int):
-    case Aggressive extends BotBehaviour(-5)
+    case Aggressive extends BotBehaviour(7)
     case Balanced extends BotBehaviour(0)
-    case Defensive extends BotBehaviour(5)
+    case Defensive extends BotBehaviour(7)
 
   enum GameMode:
     case HumanVsHuman, HumanVsBot
