@@ -21,8 +21,9 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
       val playerOne = settings.getPlayerOne
       val playerTwo = settings.getPlayerTwo
       val gameBoard = GameBoard(playerOne, playerTwo)
-      val (newGb, newPlayer) = controller.initializePlayer(gameBoard, gameBoard.getCurrentPlayer())
-      model.setGameBoard(newGb.copy(player1 = newPlayer))
+      val (partialGb, newPlayer) = controller.initializePlayer(gameBoard, gameBoard.getCurrentPlayer())
+      val (newGb, newPlayer2) = controller.initializePlayer(partialGb, partialGb.getOpponent())
+      model.setGameBoard(newGb.copy(player1 = newPlayer, player2= newPlayer2))
       modelObserver.onNext(StartGameMessage(newGb))
 
     case DrawCardMessage(nCards: Int) =>
@@ -33,7 +34,7 @@ final class ViewSubscriber(model: Model, modelObserver: ModelSubject, controller
     case UpdateGamePhaseModel(choice: GamePhase) =>
       model.setGameBoard(controller.updateGamePhase(model, choice))
       model.getGameBoard.getCurrentPlayer() match
-        case bot: Bot => bot.think()
+        case bot: Bot => bot.think(model.getGameBoard, model.gamePhase)
         case _ =>
       modelObserver.onNext(RefreshMessage(model.getGameBoard))
 

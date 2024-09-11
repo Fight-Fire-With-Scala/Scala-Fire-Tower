@@ -9,7 +9,7 @@ final case class PrologEngine(theory: Theory):
   private val engine = engineWithResolver(engineWithTheory(theory))
 
   def solve(goal: Term): LazyList[SolveInfo] = engine(goal)
-
+  
   def solveAsPatterns(goal: Term): Set[Map[Position, Token]] =
     solve(goal).map(i => parseComputedPatterns(i)).map(_.toSet).distinct.map(_.toMap).toSet
   

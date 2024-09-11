@@ -6,6 +6,10 @@ import it.unibo.model.prolog.PrologUtils.{size, given}
 
 import scala.jdk.CollectionConverters.*
 
+enum AttackDefense:
+  case Attack 
+  case Defense
+
 final case class AttackDefenseTheory(
                               private val grid: Grid,
                               private val myTowerPosition: Set[Position],
@@ -15,8 +19,8 @@ final case class AttackDefenseTheory(
 object AttackDefenseTheory:
   def apply(grid: Grid, myTowerPosition: Set[Position], enemyTowerPosition: Set[Position]): Theory =
     val cellIterator = getCells(grid)
-    val myTowerPositionIterator = getTowerPositions(myTowerPosition)
-    val enemyTowerPositionIterator = getTowerPositions(enemyTowerPosition)
+    val myTowerPositionIterator = getTowerPositions(myTowerPosition, false)
+    val enemyTowerPositionIterator = getTowerPositions(enemyTowerPosition, true)
     val allIterators = cellIterator ++ myTowerPositionIterator ++ enemyTowerPositionIterator
 
     Theory.fromPrologList(Struct.list(allIterators.asJava))
@@ -35,9 +39,9 @@ object AttackDefenseTheory:
 
     cells ++ tokens ++ numRows ++ numCols
 
-  private def getTowerPositions(towerPosition: Set[Position]): Iterator[Term] =
+  private def getTowerPositions(towerPosition: Set[Position], isOpponent: Boolean): Iterator[Term] =
     val towerPositionsIterator = towerPosition.iterator.map { pos =>
-      Struct.of("towerPosition", Struct.tuple(pos.row, pos.col))
+      Struct.of(if isOpponent then "towerPosition" else "enemyTowerPosition", Struct.tuple(pos.row, pos.col))
     }.toSeq.sorted.iterator
 
     towerPositionsIterator
