@@ -1,10 +1,3 @@
-%dinamically generated
-get_all_cards_result(R) :-
-    findall((Coords, 1), fire(Coords, 1), R1),
-    findall((Coords, 2), fire(Coords, 2), R2),
-    append(R1, R2, R),
-    writeln('All card results: '), writeln(R).
-
 % Main function to get the closest cell to the tower
 main(R) :-
     get_all_cards_result(AllResults),
@@ -39,3 +32,4 @@ find_min_distance([(X1,Y1,T1), (X2,Y2,T2) | Rest], TowerPos, MinDist) :-
     ;
         find_min_distance([(X2,Y2,T2) | Rest], TowerPos, MinDist)
     ).
+

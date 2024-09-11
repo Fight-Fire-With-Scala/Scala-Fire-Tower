@@ -34,6 +34,11 @@ object PatternEffect:
     logicEffect.goals.map(g => engine.solveAsPatterns(g(cardId))).reduce((a, b) => a.union(b))
 
   private def computePatterns(gb: GameBoard, cards: Map[Int, List[ILogicEffect]]) = ???
+//    val theory = GridTheory(gb.board.grid, cards)
+//    theory.append(cardsProgram)
+//    theory.append(solverProgram)
+//    val engine = PrologEngine(theory)
+    
 
   private def resolvePatternComputation(logicEffect: ILogicEffect) =
     GameBoardEffectResolver { (gbe: GameBoardEffect) =>
