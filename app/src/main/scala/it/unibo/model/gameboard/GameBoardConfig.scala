@@ -1,5 +1,6 @@
 package it.unibo.model.gameboard
 
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
 import it.unibo.model.gameboard.GameBoardConfig.{BotBehaviour, GameMode}
 import it.unibo.model.gameboard.player.{Person, Player}
 
@@ -13,7 +14,9 @@ case class GameBoardConfig(
   private val playerOne: Player = Person(playerOneName, List.empty, List.empty)
   private val playerTwo: Player = gameMode match
     case GameMode.HumanVsHuman => Player(playerTwoName.getOrElse("Player 2"))
-    case GameMode.HumanVsBot   => Player.bot
+    case GameMode.HumanVsBot   => botBehaviour match
+      case Some(b) => Player.bot(b)
+      case None => Player.bot(Balanced)
 
   def getPlayerOne: Player = playerOne
   def getPlayerTwo: Player = playerTwo

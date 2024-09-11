@@ -3,6 +3,7 @@ package it.unibo.model.gameboard.player
 import it.unibo.model.cards.Card
 import it.unibo.model.effects.MoveEffect
 import it.unibo.model.effects.core.CanBePlayedAsExtra
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.grid.TowerPosition
 
 trait Player:
@@ -57,4 +58,4 @@ object Player:
   def apply(name: String): Player = Person(name, List.empty, List.empty)
   def apply(name: String, towerPositions: Set[TowerPosition]): Player =
     Person(name, List.empty, List.empty, towerPositions)
-  def bot: Player = Bot(List.empty, List.empty)
+  def bot(botBehaviour: BotBehaviour): Player = Bot(List.empty, List.empty, botBehaviour)
