@@ -14,3 +14,7 @@ object PrologProgram:
   val distanceProgram: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/distance.pl"))
 
   val manhattanDistance: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/manhattan.pl"))
+  
+  val choseCardProgram: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/choseCard.pl"))
+  
+  val concatListsProgram: Theory = Theory.parseWithStandardOperators(parseTheory("/prolog/concatLists.pl"))

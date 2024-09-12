@@ -1,0 +1,73 @@
+import alice.tuprolog.{Struct, Term, Theory}
+import it.unibo.PerformanceUtils.measure
+import it.unibo.model.effects.cards.{BucketEffect, FireEffect, FirebreakEffect, WindEffect}
+import it.unibo.model.effects.core.{IGameEffect, ILogicEffect}
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
+import it.unibo.model.gameboard.{Deck, GameBoard}
+import it.unibo.model.gameboard.player.{Person, Player}
+import it.unibo.model.prolog.{GridTheory, PrologEngine}
+import it.unibo.model.prolog.PrologProgram.{cardsProgram, choseCardProgram, concatListsProgram, distanceProgram, manhattanDistance, solverProgram}
+import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
+import it.unibo.model.prolog.PrologUtils.given
+object Test:
+  val deck = Deck("cards.yaml")
+  val enemy: Person = Person("tone", List.empty, List.empty)
+  val player: Player = Player.bot(Balanced)
+  val (card1, newDeck) = deck.drawCard()
+  val newPlayer = player.drawCardFromDeck(card1.get)
+  val (card2, newDeck2) = newDeck.drawCard()
+  val newPlayer2 = newPlayer.drawCardFromDeck(card2.get)
+  private val gb = GameBoard(enemy, newPlayer2)
+  val newGb = gb.changePlayer()
+
+
+
+  private def resolveEffect(cardId: Int, effect: IGameEffect): ILogicEffect = effect match
+    case FireEffect.Explosion => FireEffect.fireEffectResolver.resolve(FireEffect.Explosion)
+    case FireEffect.Flare => FireEffect.fireEffectResolver.resolve(FireEffect.Flare)
+    case FireEffect.BurningSnag => FireEffect.fireEffectResolver.resolve(FireEffect.BurningSnag)
+    case FireEffect.Ember => FireEffect.fireEffectResolver.resolve(FireEffect.Ember)
+    case FirebreakEffect.DozerLine => FirebreakEffect.fireBreakEffectResolver.resolve(FirebreakEffect.DozerLine)
+    case FirebreakEffect.ScratchLine => FirebreakEffect.fireBreakEffectResolver.resolve(FirebreakEffect.ScratchLine)
+    case FirebreakEffect.DeReforest => FirebreakEffect.fireBreakEffectResolver.resolve(FirebreakEffect.DeReforest)
+    case BucketEffect => BucketEffect.bucketEffect
+    case WindEffect.North => WindEffect.windEffectResolver.resolve(WindEffect.North)
+    case WindEffect.South => WindEffect.windEffectResolver.resolve(WindEffect.South)
+    case WindEffect.East => WindEffect.windEffectResolver.resolve(WindEffect.East)
+    case WindEffect.West => WindEffect.windEffectResolver.resolve(WindEffect.West)
+    case _ => throw new MatchError(s"Unmatched effect: $effect")
+  private def run(): Unit =
+    val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
+    val enemyTower = gb.getOpponent.towerPositions.head.position
+    val grid = gb.board.grid
+
+    // Create the map with the logic effects of the two cards
+    val map: Map[Int, List[ILogicEffect]] = Map(
+      card1.get.id -> List(resolveEffect(card1.get.id, card1.get.effect)),
+      card2.get.id -> List(resolveEffect(card2.get.id, card2.get.effect))
+    )
+
+    // Generate the Prolog theory
+    val dynamicTheory = AllCardsResultTheory(map)
+    val theory = GridTheory(grid, map)
+
+    theory.append(Theory.parseLazilyWithStandardOperators(s"tower_position((${enemyTower.row}, ${enemyTower.col}))."))
+    theory.append(manhattanDistance)
+    theory.append(concatListsProgram)
+    theory.append(dynamicTheory)
+    theory.append(choseCardProgram)
+    theory.append(cardsProgram)
+    theory.append(solverProgram)
+    println(theory)
+    val engine = PrologEngine(theory)
+    val goal = "main(R)"
+    val result = engine.solve(goal).headOption
+
+    result match
+      case Some(solution) =>
+        val allCardResults = solution.getTerm("R").toString
+        println(s"All card results: $allCardResults")
+      case None           => println("No solution found")
+
+  @main
+  def main(): Unit = println(s"Took ${measure(run()).duration.toSeconds} seconds")
