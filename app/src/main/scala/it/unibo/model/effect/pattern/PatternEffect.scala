@@ -1,15 +1,30 @@
 package it.unibo.model.effect.pattern
 
+import alice.tuprolog.Theory
 import it.unibo.model.card.Card
-import it.unibo.model.effect.MoveEffect.{CardChosen, PatternApplied, PatternChosen}
+import it.unibo.model.effect.GameBoardEffect
+import it.unibo.model.effect.MoveEffect
+import it.unibo.model.effect.MoveEffect.CardChosen
+import it.unibo.model.effect.MoveEffect.PatternApplied
+import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.effect.core.*
-import it.unibo.model.effect.{GameBoardEffect, MoveEffect}
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.model.gameboard.player.{Bot, Move, Person}
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.gameboard.player.Bot
+import it.unibo.model.gameboard.player.Move
+import it.unibo.model.gameboard.player.Person
+import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 import it.unibo.model.logger
-import it.unibo.model.prolog.{GridTheory, PrologEngine}
-import it.unibo.model.prolog.PrologProgram.{cardsProgram, solverProgram}
+import it.unibo.model.prolog.{GridTheory, PrologEngine, SolverType}
+import it.unibo.model.prolog.SolverType.{
+  CardChoserSolver,
+  CardSolver,
+  ConcatListSolver,
+  ManhattanSolver
+}
+import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
+import it.unibo.model.prolog.given_Conversion_SolverType_Theory
 
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)
@@ -23,17 +38,40 @@ object PatternEffect:
 
   private def computePatterns(gb: GameBoard, cardId: Int, logicEffect: ILogicEffect) =
     val theory = GridTheory(gb.board.grid, Map(cardId -> List(logicEffect)))
-    theory.append(cardsProgram)
-    theory.append(solverProgram)
+    theory.append(SolverType.CardSolver)
+    theory.append(SolverType.BaseSolver)
     val engine = PrologEngine(theory)
     logicEffect.goals.map(g => engine.solveAsPatterns(g(cardId))).reduce((a, b) => a.union(b))
 
-  private def computePatterns(gb: GameBoard, cards: Map[Int, List[ILogicEffect]]) = ???
-//    val theory = GridTheory(gb.board.grid, cards)
-//    theory.append(cardsProgram)
-//    theory.append(solverProgram)
-//    val engine = PrologEngine(theory)
-    
+  private def computePatterns(
+      gb: GameBoard,
+      cards: Map[Int, List[ILogicEffect]]
+  ): Map[Int, Set[Map[Position, Token]]] =
+    val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
+    val enemyTower = gb.getOpponent.towerPositions.head.position
+    val grid = gb.board.grid
+
+    val dynamicTheory = AllCardsResultTheory(cards)
+    val theory = GridTheory(grid, cards)
+
+    val t = Theory
+      .parseWithStandardOperators(s"tower_position((${enemyTower.row}, ${enemyTower.col})).")
+    theory.append(SolverType.ManhattanSolver)
+    theory.append(SolverType.ConcatListSolver)
+    theory.append(dynamicTheory)
+    theory.append(SolverType.CardChoserSolver)
+    theory.append(SolverType.CardSolver)
+    theory.append(SolverType.BaseSolver)
+
+    val engine = PrologEngine(theory)
+    val goal = "main(R)"
+    val result = engine.solve(goal).headOption
+
+    result match
+      case Some(solution) =>
+        val allCardResults = solution.getTerm("R")
+        Map.empty
+      case None           => Map.empty
 
   private def resolvePatternComputation(logicEffect: ILogicEffect) =
     GameBoardEffectResolver { (gbe: GameBoardEffect) =>
@@ -46,10 +84,8 @@ object PatternEffect:
   private def resolveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
     GameBoardEffectResolver { (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
-      val availablePatterns: Map[Int, Set[Map[Position, Token]]] =
-        computePatterns(gb, cards) // TODO call prolog solver
-      val player = gb.getCurrentPlayer
-      player match
+      val availablePatterns = computePatterns(gb, cards)
+      gb.getCurrentPlayer match
         case b: Bot => logCardsComputation(gb, availablePatterns)
         case _      => GameBoardEffect(gb)
     }

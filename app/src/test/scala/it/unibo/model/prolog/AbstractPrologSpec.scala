@@ -6,7 +6,7 @@ import alice.tuprolog.{Term, Theory}
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.{BasicGrid, Cell, Grid, Position, Token}
 import it.unibo.model.gameboard.grid.Cell.*
-import it.unibo.model.prolog.PrologProgram.{cardsProgram, solverProgram}
+import it.unibo.model.prolog.SolverType.{cardsProgram, solverProgram}
 
 abstract class AbstractPrologSpec extends AnyWordSpecLike with Matchers:
 

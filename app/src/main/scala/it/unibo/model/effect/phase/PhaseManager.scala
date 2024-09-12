@@ -27,7 +27,7 @@ trait PhaseManager:
     case Some(_) => PlaySpecialCardPhase
     case None    => EndTurnPhase
 
-  def handleWindPhase(gb: GameBoard): GameBoard =
+  private def handleWindPhase(gb: GameBoard) =
     val direction = gb.board.windDirection
     val logicEffect = WindChoiceEffect.getPlaceFireEffect(direction)
     val patternComputation = PatternEffect.PatternComputation(logicEffect)

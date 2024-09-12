@@ -1,7 +1,6 @@
 package it.unibo.model.prolog.decisionmaking
 
-import scala.jdk.CollectionConverters._
-
+import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Theory
@@ -10,9 +9,10 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.logger
-import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.distanceProgram
-import it.unibo.model.prolog.PrologProgram.manhattanDistance
+import it.unibo.model.prolog.{PrologEngine, SolverType}
+import it.unibo.model.prolog.given_Conversion_SolverType_Theory
+import it.unibo.model.prolog.SolverType.DistanceSolver
+import it.unibo.model.prolog.SolverType.ManhattanSolver
 import it.unibo.model.prolog.PrologUtils.given
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 
@@ -30,9 +30,9 @@ object DecisionMaker:
     val variable = Struct.of("biasFactor", botBehaviour.biasFactor)
     val theoryVariable = Theory.fromPrologList(Struct.list(Iterator.single(variable).asJava))
     theory.append(theoryVariable)
-    theory.append(distanceProgram)
-    theory.append(manhattanDistance)
-    println(theory)
+    theory.append(SolverType.DistanceSolver)
+    theory.append(SolverType.ManhattanSolver)
+
     val engine = PrologEngine(theory)
     val goal = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
