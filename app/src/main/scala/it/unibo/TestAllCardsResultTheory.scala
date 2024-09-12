@@ -1,7 +1,6 @@
 package it.unibo
 
 import alice.tuprolog.Theory
-import it.unibo.PerformanceUtils.measure
 import it.unibo.model.effect.card.BucketEffect
 import it.unibo.model.effect.card.FireEffect
 import it.unibo.model.effect.card.FirebreakEffect
@@ -23,7 +22,25 @@ import it.unibo.model.prolog.PrologProgram.solverProgram
 import it.unibo.model.prolog.PrologUtils.given
 import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
 
+import java.util.concurrent.TimeUnit
+import scala.concurrent.duration.FiniteDuration
+
 object TestAllCardsResultTheory:
+  object PerformanceUtils:
+    case class MeasurementResults[T](result: T, duration: FiniteDuration)
+        extends Ordered[MeasurementResults[?]]:
+      override def compare(that: MeasurementResults[?]): Int = duration.toNanos
+        .compareTo(that.duration.toNanos)
+
+    private def measure[T](msg: String)(expr: => T): MeasurementResults[T] =
+      val startTime = System.nanoTime()
+      val res = expr
+      val duration = FiniteDuration(System.nanoTime() - startTime, TimeUnit.NANOSECONDS)
+      if (msg.nonEmpty) println(s"${duration.toNanos} nanos")
+      MeasurementResults(res, duration)
+
+    def measure[T](expr: => T): MeasurementResults[T] = measure("")(expr)
+
   private val deck = Deck("cards.yaml")
   private val enemy: Person = Person("tone", List.empty, List.empty)
   val player: Player = Player.bot(Balanced)
@@ -51,6 +68,7 @@ object TestAllCardsResultTheory:
     case WindEffect.East             => WindEffect.windEffectResolver.resolve(WindEffect.East)
     case WindEffect.West             => WindEffect.windEffectResolver.resolve(WindEffect.West)
     case _                           => throw new MatchError(s"Unmatched effect: $effect")
+
   private def run(): Unit =
     val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
     val enemyTower = gb.getOpponent.towerPositions.head.position
@@ -87,4 +105,4 @@ object TestAllCardsResultTheory:
       case None           => println("No solution found")
 
   @main
-  def main(): Unit = println(s"Took ${measure(run()).duration.toSeconds} seconds")
+  def main(): Unit = println(s"Took ${PerformanceUtils.measure(run()).duration.toSeconds} seconds")
