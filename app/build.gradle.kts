@@ -23,8 +23,20 @@ dependencies {
     testImplementation(libs.scalatest.plusjunit)
 }
 
+tasks.withType(ScalaCompile::class.java) {
+    scalaCompileOptions.additionalParameters =
+        listOf(
+            "-indent",
+            "-rewrite",
+            "-feature",
+            "-Wunused:imports",
+            "-language:implicitConversions"
+        )
+
+}
+
 javafx {
-    version = "19"
+    version = "21"
     modules = listOf("javafx.controls", "javafx.media", "javafx.fxml")
 }
 
