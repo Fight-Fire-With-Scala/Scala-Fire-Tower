@@ -4,7 +4,6 @@ import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.effects.{GameBoardEffect, PatternEffect}
 import it.unibo.model.effects.cards.WindChoiceEffect
 import it.unibo.model.gameboard.{GameBoard, GamePhase}
-import it.unibo.model.logger
 
 import scala.annotation.tailrec
 
@@ -26,11 +25,10 @@ trait PhaseManager:
     case Some(_) => PlaySpecialCardPhase
     case None    => EndTurnPhase
 
-  def handleWindPhase(gb: GameBoard) =
+  def handleWindPhase(gb: GameBoard): GameBoard =
     val direction = gb.board.windDirection
     val logicEffect = WindChoiceEffect.getPlaceFireEffect(direction)
     val patternComputation = PatternEffect.PatternComputation(logicEffect)
     val gbEffectResolver = PatternEffect.patternEffectResolver.resolve(patternComputation)
     val newGb = gbEffectResolver.resolve(GameBoardEffect(gb)).gameBoard
-//    logger.info(s"New GB $newGb")
     newGb

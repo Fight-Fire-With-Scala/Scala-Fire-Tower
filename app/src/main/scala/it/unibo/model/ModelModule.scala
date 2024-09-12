@@ -1,6 +1,7 @@
 package it.unibo.model
 
 import it.unibo.model.gameboard.GameBoard
+import scala.compiletime.uninitialized
 
 object ModelModule:
   trait Model:
@@ -12,7 +13,7 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      private var gameBoard: GameBoard = _
+      private var gameBoard: GameBoard = uninitialized
 
       override def getGameBoard: GameBoard = gameBoard
       override def setGameBoard(gb: GameBoard): Unit = gameBoard = gb

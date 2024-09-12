@@ -4,7 +4,7 @@ import it.unibo.model.effects.hand.HandEffect.{DiscardCard, DrawCard, PlayCard}
 import it.unibo.model.effects.PatternEffect.PatternApplication
 import it.unibo.model.effects.cards.WindChoiceEffect
 import it.unibo.model.effects.phase.PhaseEffect
-import it.unibo.model.gameboard.{GameBoard, GameBoardConfig, GamePhase}
+import it.unibo.model.gameboard.{GameBoard, GameBoardConfig}
 import monix.reactive.subjects.PublishSubject
 
 type ModelSubject = PublishSubject[ModelMessage]
