@@ -1,17 +1,22 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
-import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.grid.Cell.{EternalFire, Tower, Woods}
-import it.unibo.model.gameboard.grid.{Grid, Position, Token}
-import it.unibo.view.components.game.gameboard.grid.handler.GridEventHandler
-import scalafx.scene.layout.GridPane
-import javafx.scene.layout.StackPane
-import scalafx.scene.paint.Color
-
 import scala.collection.mutable
 import scala.compiletime.uninitialized
+
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
+import it.unibo.launcher.Launcher.view.runOnUIThread
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.grid.Cell.EternalFire
+import it.unibo.model.gameboard.grid.Cell.Tower
+import it.unibo.model.gameboard.grid.Cell.Woods
+import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.view.components.game.gameboard.grid.handler.GridEventHandler
+import javafx.scene.layout.StackPane
+import scalafx.scene.layout.GridPane
+import scalafx.scene.paint.Color
 
 class GridManager(
     gridSize: Int,

@@ -1,19 +1,23 @@
 package it.unibo.view.components.game
 
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
-import it.unibo.model.gameboard.{GameBoard, GamePhase}
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
+import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.player.Player
 import it.unibo.view.GUIType
-import it.unibo.view.components.{IUpdateView, IViewComponent}
+import it.unibo.view.components.IUpdateView
+import it.unibo.view.components.IViewComponent
 import it.unibo.view.components.game.gameboard.grid.GridComponent
 import it.unibo.view.components.game.gameboard.hand.HandComponent
-import it.unibo.view.components.game.gameboard.sidebar.{GameInfoComponent, SidebarComponent}
+import it.unibo.view.components.game.gameboard.sidebar.GameInfoComponent
+import it.unibo.view.components.game.gameboard.sidebar.SidebarComponent
 import javafx.fxml.FXML
-import javafx.scene.layout.Pane
 import javafx.scene.Node
+import javafx.scene.layout.Pane
 import monix.eval.Task
-
-import scala.compiletime.uninitialized
 
 final class GameComponent extends IViewComponent with IUpdateView:
   override val fxmlPath: String = GUIType.Game.fxmlPath

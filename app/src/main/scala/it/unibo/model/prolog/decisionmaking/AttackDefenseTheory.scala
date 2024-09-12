@@ -1,10 +1,14 @@
 package it.unibo.model.prolog.decisionmaking
 
-import alice.tuprolog.{Struct, Term, Theory}
-import it.unibo.model.gameboard.grid.{Grid, Position}
-import it.unibo.model.prolog.PrologUtils.{size, given}
+import scala.jdk.CollectionConverters._
 
-import scala.jdk.CollectionConverters.*
+import alice.tuprolog.Struct
+import alice.tuprolog.Term
+import alice.tuprolog.Theory
+import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.prolog.PrologUtils.given
+import it.unibo.model.prolog.PrologUtils.size
 
 enum AttackDefense:
   case Attack

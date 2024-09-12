@@ -1,24 +1,26 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{UpdateGamePhase, UpdateWindDirection, ViewSubject}
+import scala.compiletime.uninitialized
+import scala.util.Random
+
+import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.UpdateWindDirection
+import it.unibo.controller.ViewSubject
 import it.unibo.model.effects.cards.WindChoiceEffect
 import it.unibo.model.effects.phase.PhaseEffect
-import it.unibo.view.GUIType
-import it.unibo.view.components.{ISidebarComponent, IUpdateView}
-import javafx.fxml.FXML
-import javafx.scene.layout.Pane
-
-import scala.compiletime.uninitialized
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
+import it.unibo.view.GUIType
+import it.unibo.view.components.ISidebarComponent
+import it.unibo.view.components.IUpdateView
 import it.unibo.view.components.game.gameboard.sidebar.svg.DiceFace
 import javafx.event.EventHandler
+import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Pane
 import scalafx.scene.shape.SVGPath
-
-import scala.util.Random
 
 //noinspection VarCouldBeVal
 final class DiceComponent(using observable: ViewSubject) extends ISidebarComponent with IUpdateView:

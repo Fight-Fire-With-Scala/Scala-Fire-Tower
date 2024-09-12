@@ -1,7 +1,10 @@
 package it.unibo.view.components.game.gameboard.sidebar.svg
 
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.Direction.{East, North, South, West}
+import it.unibo.model.gameboard.Direction.East
+import it.unibo.model.gameboard.Direction.North
+import it.unibo.model.gameboard.Direction.South
+import it.unibo.model.gameboard.Direction.West
 
 object SVGCommonPaths:
   def getPathFromDirection(direction: Direction): String = direction match

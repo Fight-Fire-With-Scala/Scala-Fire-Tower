@@ -1,12 +1,13 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
+import scala.compiletime.uninitialized
+
 import it.unibo.view.GUIType
-import it.unibo.view.components.{ISidebarComponent, IUpdateView}
+import it.unibo.view.components.ISidebarComponent
+import it.unibo.view.components.IUpdateView
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.VBox
-
-import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class SidebarComponent(val components: List[ISidebarComponent])

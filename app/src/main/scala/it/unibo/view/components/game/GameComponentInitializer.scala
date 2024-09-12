@@ -1,10 +1,16 @@
 package it.unibo.view.components.game
 
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
-import it.unibo.view.components.game.gameboard.grid.GridComponent
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
 import it.unibo.view.components.ISidebarComponent
-import it.unibo.view.components.game.gameboard.hand.{CardComponent, HandComponent}
-import it.unibo.view.components.game.gameboard.sidebar.{DeckComponent, DiceComponent, GameInfoComponent, SidebarComponent, WindRoseComponent}
+import it.unibo.view.components.game.gameboard.grid.GridComponent
+import it.unibo.view.components.game.gameboard.hand.CardComponent
+import it.unibo.view.components.game.gameboard.hand.HandComponent
+import it.unibo.view.components.game.gameboard.sidebar.DeckComponent
+import it.unibo.view.components.game.gameboard.sidebar.DiceComponent
+import it.unibo.view.components.game.gameboard.sidebar.GameInfoComponent
+import it.unibo.view.components.game.gameboard.sidebar.SidebarComponent
+import it.unibo.view.components.game.gameboard.sidebar.WindRoseComponent
 import monix.eval.Task
 
 trait GameComponentInitializer:

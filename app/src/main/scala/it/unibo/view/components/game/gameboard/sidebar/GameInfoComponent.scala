@@ -1,19 +1,23 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{InternalViewSubject, UpdateGamePhase, ViewSubject}
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.ViewSubject
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.EndTurnPhase
 import it.unibo.view.GUIType
-import it.unibo.view.components.{ISidebarComponent, IUpdateView}
+import it.unibo.view.components.ISidebarComponent
+import it.unibo.view.components.IUpdateView
 import javafx.event.EventHandler
-
-import scala.compiletime.uninitialized
 import javafx.fxml.FXML
 import javafx.scene.Node
-import javafx.scene.layout.Pane
-import javafx.scene.control.{Button, TextField}
+import javafx.scene.control.Button
+import javafx.scene.control.TextField
 import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Pane
 
 //noinspection VarCouldBeVal
 final class GameInfoComponent(using

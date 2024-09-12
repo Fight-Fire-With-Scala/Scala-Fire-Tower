@@ -1,15 +1,21 @@
 package it.unibo.view.components.game.gameboard.grid.handler
 
-import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.effects.cards.{FireEffect, WaterEffect}
-import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{PlayStandardCardPhase, WindPhase}
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{GridSquare, GridState, HoverDirection}
-import it.unibo.view.logger
-
 import scala.collection.mutable
+
+import it.unibo.launcher.Launcher.view.runOnUIThread
+import it.unibo.model.effects.cards.FireEffect
+import it.unibo.model.effects.cards.WaterEffect
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
+import it.unibo.model.gameboard.GamePhase.WindPhase
+import it.unibo.model.gameboard.grid.ConcreteToken.Fire
+import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.view.components.game.gameboard.grid.GridSquare
+import it.unibo.view.components.game.gameboard.grid.GridState
+import it.unibo.view.components.game.gameboard.grid.HoverDirection
+import it.unibo.view.logger
 
 class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: GridState):
   def handleCellHover(

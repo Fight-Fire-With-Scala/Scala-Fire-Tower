@@ -1,15 +1,17 @@
 package it.unibo.model.gameboard.player
 
 import it.unibo.model.cards.Card
-import it.unibo.model.effects.{GameBoardEffect, MoveEffect, PatternEffect}
-import it.unibo.model.effects.PatternEffect.CardsComputation
-import it.unibo.model.effects.cards.WindChoiceEffect
-import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.effects.MoveEffect
+import it.unibo.model.effects.PatternEffect
 import it.unibo.model.effects.phase.PhaseEffect.handleWindPhase
+import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
-import it.unibo.model.gameboard.GamePhase.{WaitingPhase, WindPhase}
-import it.unibo.model.gameboard.{GameBoard, GamePhase}
-import it.unibo.model.gameboard.grid.{Position, Token, TowerPosition}
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.model.gameboard.GamePhase.WindPhase
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense

@@ -1,7 +1,8 @@
 package it.unibo.model
 
-import it.unibo.model.gameboard.GameBoard
 import scala.compiletime.uninitialized
+
+import it.unibo.model.gameboard.GameBoard
 
 object ModelModule:
   trait Model:

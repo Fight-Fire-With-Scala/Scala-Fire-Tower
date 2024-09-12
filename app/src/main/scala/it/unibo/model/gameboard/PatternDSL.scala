@@ -1,9 +1,11 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.gameboard.grid.ConcreteToken.*
-import it.unibo.model.gameboard.grid.{Position, TemplateToken, Token}
-
 import scala.collection.mutable.ArrayBuffer
+
+import it.unibo.model.gameboard.grid.ConcreteToken._
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.TemplateToken
+import it.unibo.model.gameboard.grid.Token
 
 final class PatternDSL:
   val tokens = new ArrayBuffer[Token]

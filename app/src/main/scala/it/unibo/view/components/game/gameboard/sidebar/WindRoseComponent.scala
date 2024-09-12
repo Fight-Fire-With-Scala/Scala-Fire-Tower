@@ -1,22 +1,29 @@
 package it.unibo.view.components.game.gameboard.sidebar
 
-import it.unibo.controller.{UpdateGamePhase, UpdateWindDirection, ViewSubject}
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.UpdateWindDirection
+import it.unibo.controller.ViewSubject
 import it.unibo.model.effects.cards.WindChoiceEffect
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.Direction.{East, North, South, West}
+import it.unibo.model.gameboard.Direction.East
+import it.unibo.model.gameboard.Direction.North
+import it.unibo.model.gameboard.Direction.South
+import it.unibo.model.gameboard.Direction.West
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
 import it.unibo.view.GUIType
-import it.unibo.view.components.{ISidebarComponent, IUpdateView}
-import it.unibo.view.components.game.gameboard.sidebar.svg.{WindRoseArrow, WindRoseDirection}
+import it.unibo.view.components.ISidebarComponent
+import it.unibo.view.components.IUpdateView
+import it.unibo.view.components.game.gameboard.sidebar.svg.WindRoseArrow
+import it.unibo.view.components.game.gameboard.sidebar.svg.WindRoseDirection
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
-
-import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class WindRoseComponent(using observable: ViewSubject)

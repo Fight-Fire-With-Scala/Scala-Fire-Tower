@@ -1,8 +1,10 @@
 package it.unibo.model.gameboard
 
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
-import it.unibo.model.gameboard.GameBoardConfig.{BotBehaviour, GameMode}
-import it.unibo.model.gameboard.player.{Person, Player}
+import it.unibo.model.gameboard.GameBoardConfig.GameMode
+import it.unibo.model.gameboard.player.Person
+import it.unibo.model.gameboard.player.Player
 
 case class GameBoardConfig(
     gameMode: GameMode = GameMode.HumanVsHuman,

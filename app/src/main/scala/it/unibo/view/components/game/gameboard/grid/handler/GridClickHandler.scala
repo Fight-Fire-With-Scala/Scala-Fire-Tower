@@ -1,23 +1,27 @@
 package it.unibo.view.components.game.gameboard.grid.handler
 
-import it.unibo.controller.*
+import scala.collection.mutable
+
+import it.unibo.controller._
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.effects.PatternEffect.PatternApplication
-import it.unibo.model.effects.cards.{FireEffect, FirebreakEffect, WaterEffect, WindEffect}
+import it.unibo.model.effects.cards.FireEffect
+import it.unibo.model.effects.cards.FirebreakEffect
+import it.unibo.model.effects.cards.WaterEffect
+import it.unibo.model.effects.cards.WindEffect
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{
-  DecisionPhase,
-  PlayStandardCardPhase,
-  WaitingPhase,
-  WindPhase
-}
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{GridSquare, GridState}
+import it.unibo.model.gameboard.GamePhase.DecisionPhase
+import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.model.gameboard.GamePhase.WindPhase
+import it.unibo.model.gameboard.grid.ConcreteToken.Fire
+import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.view.components.game.gameboard.grid.GridSquare
+import it.unibo.view.components.game.gameboard.grid.GridState
 import it.unibo.view.logger
-
-import scala.collection.mutable
 
 class GridClickHandler(
     observableSubject: ViewSubject,

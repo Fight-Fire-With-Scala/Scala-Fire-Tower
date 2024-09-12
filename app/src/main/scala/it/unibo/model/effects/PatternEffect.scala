@@ -1,20 +1,25 @@
 package it.unibo.model.effects
 
 import it.unibo.model.cards.Card
-import it.unibo.model.effects.MoveEffect.{CardChosen, PatternApplied, PatternChosen}
-import it.unibo.model.effects.core.{
-  CanBePlayedAsExtra,
-  GameBoardEffectResolver,
-  GameEffectResolver,
-  IGameEffect,
-  ILogicEffect
-}
+import it.unibo.model.effects.MoveEffect.CardChosen
+import it.unibo.model.effects.MoveEffect.PatternApplied
+import it.unibo.model.effects.MoveEffect.PatternChosen
+import it.unibo.model.effects.core.CanBePlayedAsExtra
+import it.unibo.model.effects.core.GameBoardEffectResolver
+import it.unibo.model.effects.core.GameEffectResolver
+import it.unibo.model.effects.core.IGameEffect
+import it.unibo.model.effects.core.ILogicEffect
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.model.gameboard.player.{Bot, Move, Person}
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.gameboard.player.Bot
+import it.unibo.model.gameboard.player.Move
+import it.unibo.model.gameboard.player.Person
 import it.unibo.model.logger
-import it.unibo.model.prolog.PrologProgram.{cardsProgram, solverProgram}
-import it.unibo.model.prolog.{GridTheory, PrologEngine}
+import it.unibo.model.prolog.GridTheory
+import it.unibo.model.prolog.PrologEngine
+import it.unibo.model.prolog.PrologProgram.cardsProgram
+import it.unibo.model.prolog.PrologProgram.solverProgram
 
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)
@@ -80,7 +85,7 @@ object PatternEffect:
       val move = MoveEffect.CardChosen(c, availablePatterns)
       MoveEffect.resolveMove(move, gb)
     case None    =>
-      logger.warn(s"No card found")
+      logger.warn("No card found")
       GameBoardEffect(gb)
 
   private def resolvePatternApplication(pattern: Map[Position, Token]) = GameBoardEffectResolver:

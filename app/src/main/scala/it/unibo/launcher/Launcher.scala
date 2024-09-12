@@ -1,7 +1,9 @@
 package it.unibo.launcher
 
 import it.unibo.controller.ControllerModule
-import it.unibo.launcher.Launcher.{ControllerImpl, ModelImpl, ViewImpl}
+import it.unibo.launcher.Launcher.ControllerImpl
+import it.unibo.launcher.Launcher.ModelImpl
+import it.unibo.launcher.Launcher.ViewImpl
 import it.unibo.model.ModelModule
 import it.unibo.view.ViewModule
 

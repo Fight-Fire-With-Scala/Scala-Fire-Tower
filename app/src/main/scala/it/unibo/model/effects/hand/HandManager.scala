@@ -1,9 +1,9 @@
 package it.unibo.model.effects.hand
 
 import it.unibo.model.cards.Card
-import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.model.gameboard.Deck
+import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.gameboard.{Deck, GameBoard}
 
 trait HandManager:
   private def drawCardsFromDeck(

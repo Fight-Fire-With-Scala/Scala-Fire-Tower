@@ -1,9 +1,10 @@
 package it.unibo.view
 
+import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.RefreshType.PhaseUpdate
-import it.unibo.controller.view.ViewController
+import it.unibo.controller.ViewSubject
 import it.unibo.controller.subscribers.InternalViewSubscriber
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
+import it.unibo.controller.view.ViewController
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.components.IViewComponent
 import it.unibo.view.components.game.GameComponent
@@ -19,7 +20,7 @@ object ViewInitialization:
       val gameComponent = r.asInstanceOf[GameComponent]
       val gameComponentInitTask = GameComponent.initialize(gameComponent)
       gameComponentInitTask.map { gameComponent =>
-        logger.debug(s"Game UI initialization completed")
+        logger.debug("Game UI initialization completed")
         gameController.initialize(gameComponent)
         val internalViewSubscriber = InternalViewSubscriber(gameController)
         internalObservable.subscribe(internalViewSubscriber)

@@ -1,7 +1,10 @@
 package it.unibo.view.components.game.gameboard.sidebar.svg
 
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.Direction.{East, North, South, West}
+import it.unibo.model.gameboard.Direction.East
+import it.unibo.model.gameboard.Direction.North
+import it.unibo.model.gameboard.Direction.South
+import it.unibo.model.gameboard.Direction.West
 import it.unibo.view.components.ICanBeDisabled
 import it.unibo.view.components.game.gameboard.sidebar.svg.WindRoseArrow.getRotationFromDirection
 import javafx.scene.Node

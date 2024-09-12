@@ -1,30 +1,30 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{
-  DiscardCardMessage,
-  DrawCardMessage,
-  InternalViewSubject,
-  ChoseCardToPlay,
-  ResolvePatternReset,
-  UpdateGamePhase,
-  ViewSubject
-}
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.ChoseCardToPlay
+import it.unibo.controller.DiscardCardMessage
+import it.unibo.controller.DrawCardMessage
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ResolvePatternReset
+import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.ViewSubject
+import it.unibo.model.effects.hand.HandEffect.DiscardCard
+import it.unibo.model.effects.hand.HandEffect.DrawCard
+import it.unibo.model.effects.hand.HandEffect.PlayCard
+import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{
-  DecisionPhase,
-  PlaySpecialCardPhase,
-  PlayStandardCardPhase,
-  WaitingPhase
-}
-import it.unibo.view.{logger, GUIType}
-import it.unibo.view.components.{IHandComponent, IUpdateView}
+import it.unibo.model.gameboard.GamePhase.DecisionPhase
+import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
+import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.view.GUIType
+import it.unibo.view.components.IHandComponent
+import it.unibo.view.components.IUpdateView
+import it.unibo.view.logger
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.Pane
-import it.unibo.model.effects.hand.HandEffect.{DiscardCard, DrawCard, PlayCard}
-import it.unibo.model.effects.phase.PhaseEffect
-
-import scala.compiletime.uninitialized
 
 final class HandComponent(val cardComponents: List[CardComponent])(using
     observable: ViewSubject,

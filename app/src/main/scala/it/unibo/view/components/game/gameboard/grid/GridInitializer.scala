@@ -1,8 +1,9 @@
 package it.unibo.view.components.game.gameboard.grid
 
+import scala.collection.mutable
+
 import it.unibo.model.gameboard.grid.Position
 import scalafx.scene.layout.GridPane
-import scala.collection.mutable
 
 class GridInitializer(
     gridSize: Int,

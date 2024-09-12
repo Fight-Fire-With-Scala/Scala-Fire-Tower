@@ -1,11 +1,13 @@
 package it.unibo.model.effects.phase
 
-import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.effects.{GameBoardEffect, PatternEffect}
-import it.unibo.model.effects.cards.WindChoiceEffect
-import it.unibo.model.gameboard.{GameBoard, GamePhase}
-
 import scala.annotation.tailrec
+
+import it.unibo.model.effects.GameBoardEffect
+import it.unibo.model.effects.PatternEffect
+import it.unibo.model.effects.cards.WindChoiceEffect
+import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.GamePhase._
 
 trait PhaseManager:
   @tailrec

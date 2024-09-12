@@ -1,12 +1,13 @@
 package it.unibo.controller.subscribers
 
+import scala.concurrent.Future
+
 import com.typesafe.scalalogging.Logger
 import it.unibo.controller.Message
+import monix.execution.Ack
 import monix.execution.Ack.Continue
-import monix.execution.{Ack, Scheduler}
+import monix.execution.Scheduler
 import monix.reactive.observers.Subscriber
-
-import scala.concurrent.Future
 
 trait BaseSubscriber[T <: Message] extends Subscriber[T]:
   override def scheduler: Scheduler = Scheduler.global
@@ -32,4 +33,4 @@ trait BaseSubscriber[T <: Message] extends Subscriber[T]:
     }
     logger.error(s"Full description: ${ex.toString}")
 
-  private def onCompleteHandler(): Unit = logger.info(s"Received final event")
+  private def onCompleteHandler(): Unit = logger.info("Received final event")

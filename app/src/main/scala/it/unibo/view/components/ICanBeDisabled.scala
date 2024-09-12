@@ -1,6 +1,5 @@
 package it.unibo.view.components
 
-import it.unibo.view.logger
 import javafx.scene.Node
 
 trait ICanBeDisabled:

@@ -1,15 +1,19 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.grid.{Grid, Position, Token}
+import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
 import it.unibo.view.GUIType
-import it.unibo.view.components.{IGridComponent, IUpdateView}
+import it.unibo.view.components.IGridComponent
+import it.unibo.view.components.IUpdateView
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.StackPane
-
-import scala.compiletime.uninitialized
 
 final class GridComponent(using
     internalObservable: InternalViewSubject,

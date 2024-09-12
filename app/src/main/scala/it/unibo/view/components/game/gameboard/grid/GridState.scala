@@ -1,12 +1,13 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.grid.{Position, Token}
-import scalafx.scene.paint.Color
-
 import scala.collection.mutable
 import scala.compiletime.uninitialized
+
+import it.unibo.launcher.Launcher.view.runOnUIThread
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import scalafx.scene.paint.Color
 
 class GridState(val squareMap: mutable.Map[Position, GridSquare]):
   val hoveredCells: mutable.Map[Position, Color] = mutable.Map()

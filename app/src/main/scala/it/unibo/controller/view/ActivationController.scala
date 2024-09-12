@@ -1,20 +1,16 @@
 package it.unibo.controller.view
 
-import it.unibo.model.gameboard.GamePhase.{
-  PlaySpecialCardPhase,
-  PlayStandardCardPhase,
-  RedrawCardsPhase,
-  WaitingPhase,
-  WindPhase
-}
 import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
+import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
+import it.unibo.model.gameboard.GamePhase.RedrawCardsPhase
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
+import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.view.components.game.GameComponent
-import it.unibo.view.components.game.gameboard.sidebar.{
-  DeckComponent,
-  DiceComponent,
-  GameInfoComponent,
-  WindRoseComponent
-}
+import it.unibo.view.components.game.gameboard.sidebar.DeckComponent
+import it.unibo.view.components.game.gameboard.sidebar.DiceComponent
+import it.unibo.view.components.game.gameboard.sidebar.GameInfoComponent
+import it.unibo.view.components.game.gameboard.sidebar.WindRoseComponent
 
 trait ActivationController extends GameController:
   private def showTurnInfoOnly(component: GameComponent): Unit = component.sidebarComponent.components

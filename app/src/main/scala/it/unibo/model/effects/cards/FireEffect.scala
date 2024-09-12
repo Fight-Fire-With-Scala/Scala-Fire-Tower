@@ -1,15 +1,16 @@
 package it.unibo.model.effects.cards
 
-import it.unibo.model.effects.core.{
-  GameEffectResolver,
-  IGameEffect,
-  ILogicEffect,
-  IOffensiveCard,
-  IStandardCardEffect
-}
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak}
+import it.unibo.model.effects.core.GameEffectResolver
+import it.unibo.model.effects.core.IGameEffect
+import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.effects.core.IOffensiveCard
+import it.unibo.model.effects.core.IStandardCardEffect
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.PatternType.{LargeEffect, MediumEffect, VeryLargeEffect}
+import it.unibo.model.gameboard.PatternType.LargeEffect
+import it.unibo.model.gameboard.PatternType.MediumEffect
+import it.unibo.model.gameboard.PatternType.VeryLargeEffect
+import it.unibo.model.gameboard.grid.ConcreteToken.Fire
+import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.prolog.Rule
 
 enum FireEffect(override val effectId: Int) extends IStandardCardEffect with IOffensiveCard:

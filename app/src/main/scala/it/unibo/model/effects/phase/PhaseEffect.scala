@@ -1,7 +1,9 @@
 package it.unibo.model.effects.phase
 
 import it.unibo.model.effects.GameBoardEffect
-import it.unibo.model.effects.core.{GameBoardEffectResolver, GameEffectResolver, IGameEffect}
+import it.unibo.model.effects.core.GameBoardEffectResolver
+import it.unibo.model.effects.core.GameEffectResolver
+import it.unibo.model.effects.core.IGameEffect
 import it.unibo.model.gameboard.GamePhase
 
 final case class PhaseEffect(newPhase: GamePhase) extends IGameEffect

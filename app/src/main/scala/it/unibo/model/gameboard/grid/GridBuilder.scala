@@ -1,8 +1,11 @@
 package it.unibo.model.gameboard.grid
 
+import scala.annotation.tailrec
+import scala.annotation.targetName
+
+import it.unibo.model.gameboard.grid.Cell._
+
 import GivenExtension.within
-import it.unibo.model.gameboard.grid.Cell.*
-import scala.annotation.{tailrec, targetName}
 
 /** Builder of a grid. */
 final class GridBuilder:

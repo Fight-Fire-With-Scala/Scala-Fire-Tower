@@ -1,6 +1,8 @@
 package it.unibo.model.effects.cards
 
-import it.unibo.model.effects.core.{IDefensiveCard, ILogicEffect, ISpecialCardEffect}
+import it.unibo.model.effects.core.IDefensiveCard
+import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.effects.core.ISpecialCardEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.grid.ConcreteToken.Water

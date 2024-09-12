@@ -1,15 +1,13 @@
 package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
+import it.unibo.controller.CancelDiscardMessage
+import it.unibo.controller.CandidateCardToPlayMessage
+import it.unibo.controller.ConfirmDiscardMessage
+import it.unibo.controller.InitializeDiscardProcedureMessage
+import it.unibo.controller.InternalViewMessage
+import it.unibo.controller.ToggleCardInListMessage
 import it.unibo.controller.view.ViewController
-import it.unibo.controller.{
-  CancelDiscardMessage,
-  CandidateCardToPlayMessage,
-  ConfirmDiscardMessage,
-  InitializeDiscardProcedureMessage,
-  InternalViewMessage,
-  ToggleCardInListMessage
-}
 
 final class InternalViewSubscriber(controller: ViewController)
     extends BaseSubscriber[InternalViewMessage]:

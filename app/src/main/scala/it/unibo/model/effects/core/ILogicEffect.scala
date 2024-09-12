@@ -1,7 +1,8 @@
 package it.unibo.model.effects.core
 
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.prolog.Rule
 
 final case class ILogicEffect(

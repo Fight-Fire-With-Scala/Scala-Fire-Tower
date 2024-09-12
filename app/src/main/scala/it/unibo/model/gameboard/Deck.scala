@@ -1,17 +1,19 @@
 package it.unibo.model.gameboard
 
+import scala.annotation.tailrec
 import scala.io.Source
 import scala.util.Random
-import cats.syntax.either.*
-import io.circe.*
-import io.circe.generic.auto.*
+
+import cats.syntax.either._
+import io.circe._
+import io.circe.generic.auto._
 import io.circe.yaml
 import io.circe.yaml.parser
-import it.unibo.model.cards.{Card, CardSet, CardType}
+import it.unibo.model.cards.Card
+import it.unibo.model.cards.CardSet
+import it.unibo.model.cards.CardType
 import it.unibo.model.effects.core.ISpecialCardEffect
 import it.unibo.model.logger
-
-import scala.annotation.tailrec
 
 final case class Deck(
     standardCards: List[Card],

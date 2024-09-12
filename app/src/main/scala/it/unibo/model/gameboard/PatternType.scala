@@ -1,8 +1,11 @@
 package it.unibo.model.gameboard
 
+import it.unibo.model.gameboard.PatternDSL.a
+import it.unibo.model.gameboard.PatternDSL.b
+import it.unibo.model.gameboard.PatternDSL.pattern
+import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.TemplateToken
-import it.unibo.model.gameboard.PatternDSL.{a, b, pattern}
-import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.model.gameboard.grid.Token
 
 sealed trait PatternType:
   val tokens: Map[String, Token]

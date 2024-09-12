@@ -1,20 +1,19 @@
 package it.unibo.view.components.game.gameboard.grid
 
-import it.unibo.model.gameboard.GamePhase
-import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
-import it.unibo.view.components.{ICanBeDisabled, ICanSwitchHandler}
-import it.unibo.view.logger
-import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
-import scalafx.scene.text.{Font, Text}
-import javafx.scene.input.MouseEvent
+import scala.compiletime.uninitialized
+
+import it.unibo.view.components.ICanBeDisabled
 import javafx.animation.PauseTransition
-import javafx.event.{EventHandler, EventType}
+import javafx.event.EventHandler
+import javafx.event.EventType
 import javafx.scene.Node
+import javafx.scene.input.MouseEvent
 import javafx.util.Duration
 import scalafx.scene.layout.Pane
-
-import scala.compiletime.uninitialized
+import scalafx.scene.paint.Color
+import scalafx.scene.shape.Rectangle
+import scalafx.scene.text.Font
+import scalafx.scene.text.Text
 
 final case class GridSquare(
     row: Int,

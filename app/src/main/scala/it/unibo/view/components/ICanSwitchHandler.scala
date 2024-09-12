@@ -1,6 +1,7 @@
 package it.unibo.view.components
 
-import javafx.event.{EventHandler, EventType}
+import javafx.event.EventHandler
+import javafx.event.EventType
 import javafx.scene.input.MouseEvent
 
 trait Switchable[T]:

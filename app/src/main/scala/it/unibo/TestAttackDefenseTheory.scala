@@ -1,40 +1,45 @@
 package it.unibo
 
-import PerformanceUtils.measure
-import it.unibo.model.prolog.PrologUtils.given
-import alice.tuprolog.{Struct, Theory}
+import java.util.concurrent.TimeUnit
+
+import scala.concurrent.duration.FiniteDuration
+import scala.jdk.CollectionConverters._
+
+import alice.tuprolog.Struct
+import alice.tuprolog.Theory
+import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.{Aggressive, Defensive}
-import it.unibo.model.gameboard.player.{Bot, Person, Player}
-import it.unibo.model.logger
+import it.unibo.model.gameboard.player.Person
+import it.unibo.model.gameboard.player.Player
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.{distanceProgram, manhattanDistance}
-import it.unibo.model.prolog.decisionmaking.AttackDefenseTheory
-import it.unibo.model.prolog.decisionmaking.AttackDefense
+import it.unibo.model.prolog.PrologProgram.distanceProgram
+import it.unibo.model.prolog.PrologProgram.manhattanDistance
+import it.unibo.model.prolog.PrologUtils.given
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.decisionmaking.AttackDefense
+import it.unibo.model.prolog.decisionmaking.AttackDefenseTheory
 
-import scala.jdk.CollectionConverters.*
-import java.util.concurrent.TimeUnit
-import scala.concurrent.duration.FiniteDuration
+import PerformanceUtils.measure
 
-object PerformanceUtils:
-  case class MeasurementResults[T](result: T, duration: FiniteDuration)
+object TestAttackDefenseTheory:
+
+  object PerformanceUtils:
+    case class MeasurementResults[T](result: T, duration: FiniteDuration)
       extends Ordered[MeasurementResults[?]]:
-    override def compare(that: MeasurementResults[?]): Int = duration.toNanos
-      .compareTo(that.duration.toNanos)
+      override def compare(that: MeasurementResults[?]): Int = duration.toNanos
+        .compareTo(that.duration.toNanos)
 
-  def measure[T](msg: String)(expr: => T): MeasurementResults[T] =
-    val startTime = System.nanoTime()
-    val res = expr
-    val duration = FiniteDuration(System.nanoTime() - startTime, TimeUnit.NANOSECONDS)
-    if (msg.nonEmpty) println(s"${duration.toNanos} nanos")
-    MeasurementResults(res, duration)
+    private def measure[T](msg: String)(expr: => T): MeasurementResults[T] =
+      val startTime = System.nanoTime()
+      val res = expr
+      val duration = FiniteDuration(System.nanoTime() - startTime, TimeUnit.NANOSECONDS)
+      if (msg.nonEmpty) println(s"${duration.toNanos} nanos")
+      MeasurementResults(res, duration)
 
-  def measure[T](expr: => T): MeasurementResults[T] = measure("")(expr)
-
-object Test:
+    def measure[T](expr: => T): MeasurementResults[T] = measure("")(expr)
+    
   val player1: Person = Person("tone", List.empty, List.empty)
   val player2: Player = Player.bot(Aggressive)
   private val gb = GameBoard(player1, player2)
@@ -58,7 +63,7 @@ object Test:
     theory.append(manhattanDistance)
     println(theory)
     val engine = PrologEngine(theory)
-    val goal = s"closest_tower_to_fire(ClosestTower)"
+    val goal = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
 
     result match

@@ -1,11 +1,15 @@
 package it.unibo.view.components.game.gameboard.grid.handler
 
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
-import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.view.components.game.gameboard.grid.{GridSquare, GridState, HoverDirection}
-
 import scala.collection.mutable
+
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
+import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.view.components.game.gameboard.grid.GridSquare
+import it.unibo.view.components.game.gameboard.grid.GridState
+import it.unibo.view.components.game.gameboard.grid.HoverDirection
 
 class GridEventHandler(
     observableSubject: ViewSubject,

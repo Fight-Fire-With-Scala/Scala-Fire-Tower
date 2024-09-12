@@ -1,14 +1,14 @@
 package it.unibo.model.cards
 
-import io.circe.{Decoder, HCursor}
-import it.unibo.model.effects.cards.{
-  BucketEffect,
-  FireEffect,
-  FirebreakEffect,
-  WaterEffect,
-  WindEffect
-}
-import it.unibo.model.effects.core.{ICardEffect, IStandardCardEffect}
+import io.circe.Decoder
+import io.circe.HCursor
+import it.unibo.model.effects.cards.BucketEffect
+import it.unibo.model.effects.cards.FireEffect
+import it.unibo.model.effects.cards.FirebreakEffect
+import it.unibo.model.effects.cards.WaterEffect
+import it.unibo.model.effects.cards.WindEffect
+import it.unibo.model.effects.core.ICardEffect
+import it.unibo.model.effects.core.IStandardCardEffect
 
 final case class CardType(title: String, description: String, amount: Int, effect: ICardEffect)
 

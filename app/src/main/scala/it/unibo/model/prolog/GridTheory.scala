@@ -1,12 +1,16 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.{Struct, Term, Theory}
+import scala.jdk.CollectionConverters._
+
+import alice.tuprolog.Struct
+import alice.tuprolog.Term
+import alice.tuprolog.Theory
 import it.unibo.model.effects.core.ILogicEffect
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.grid.{Grid, Position}
-import it.unibo.model.prolog.PrologUtils.{size, given}
-
-import scala.jdk.CollectionConverters.*
+import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.prolog.PrologUtils.given
+import it.unibo.model.prolog.PrologUtils.size
 
 final case class GridTheory(
     private val grid: Grid,

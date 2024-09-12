@@ -3,11 +3,10 @@ package it.unibo.model.effects.hand
 import it.unibo.model.cards.Card
 import it.unibo.model.effects.GameBoardEffect
 import it.unibo.model.effects.PatternEffect.CardComputation
-import it.unibo.model.effects.cards.*
-import it.unibo.model.effects.core.*
-import it.unibo.model.gameboard.player.Player
+import it.unibo.model.effects.cards._
+import it.unibo.model.effects.core._
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.logger
+import it.unibo.model.gameboard.player.Player
 
 enum HandEffect extends IGameEffect:
   case PlayCard(cardId: Int)

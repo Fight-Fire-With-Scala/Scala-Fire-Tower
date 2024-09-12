@@ -1,8 +1,15 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.{SolveInfo, Struct, Term, Var}
+import alice.tuprolog.SolveInfo
+import alice.tuprolog.Struct
+import alice.tuprolog.Term
+import alice.tuprolog.Var
+import it.unibo.model.gameboard.grid.Cell
+import it.unibo.model.gameboard.grid.ConcreteToken
 import it.unibo.model.gameboard.grid.ConcreteToken.Empty
-import it.unibo.model.gameboard.grid.{Cell, ConcreteToken, Grid, Position, Token}
+import it.unibo.model.gameboard.grid.Grid
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
 
 object PrologUtils:
   given Conversion[Rule, Term] = _.term

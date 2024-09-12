@@ -1,7 +1,7 @@
 package it.unibo.model.gameboard.grid
 
-import it.unibo.model.gameboard.grid.ConcreteToken.*
-import it.unibo.model.gameboard.grid.Cell.*
+import it.unibo.model.gameboard.grid.Cell._
+import it.unibo.model.gameboard.grid.ConcreteToken._
 import it.unibo.model.gameboard.grid.Grid.Size
 
 enum TowerPosition(val position: Position):

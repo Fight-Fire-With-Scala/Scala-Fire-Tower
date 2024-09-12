@@ -1,8 +1,13 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.{Prolog, SolveInfo, Term, Theory}
-import it.unibo.model.gameboard.grid.{Position, Token}
-import it.unibo.model.prolog.PrologEngine.{engineWithResolver, engineWithTheory}
+import alice.tuprolog.Prolog
+import alice.tuprolog.SolveInfo
+import alice.tuprolog.Term
+import alice.tuprolog.Theory
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.prolog.PrologEngine.engineWithResolver
+import it.unibo.model.prolog.PrologEngine.engineWithTheory
 import it.unibo.model.prolog.PrologUtils.parseComputedPatterns
 
 final case class PrologEngine(theory: Theory):

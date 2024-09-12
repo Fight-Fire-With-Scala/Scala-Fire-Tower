@@ -1,6 +1,7 @@
 package it.unibo.controller.view
 
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
 import it.unibo.view.components.game.GameComponent
 
 trait GameController:

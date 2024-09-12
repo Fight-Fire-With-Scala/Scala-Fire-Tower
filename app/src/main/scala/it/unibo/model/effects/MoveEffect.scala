@@ -3,7 +3,8 @@ package it.unibo.model.effects
 import it.unibo.model.cards.Card
 import it.unibo.model.effects.core.IGameEffect
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.player.Move
 
 enum MoveEffect extends IGameEffect:

@@ -1,38 +1,37 @@
 package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.{
-  ChoseCardToPlay,
-  ConfirmCardPlayMessage,
-  DiscardCardMessage,
-  DrawCardMessage,
-  GameBoardInitialization,
-  RefreshType,
-  ResolvePatternChoice,
-  ResolvePatternReset,
-  StartGameMessage,
-  UpdateGamePhase,
-  UpdateWindDirection,
-  ViewMessage
-}
-import it.unibo.controller.RefreshType.{
-  CardDeselected,
-  CardDiscard,
-  CardDraw,
-  CardSelected,
-  PatternChosen,
-  PhaseUpdate,
-  WindUpdate
-}
+import it.unibo.controller.ChoseCardToPlay
+import it.unibo.controller.ConfirmCardPlayMessage
+import it.unibo.controller.DiscardCardMessage
+import it.unibo.controller.DrawCardMessage
+import it.unibo.controller.GameBoardInitialization
+import it.unibo.controller.RefreshType
+import it.unibo.controller.RefreshType.CardDeselected
+import it.unibo.controller.RefreshType.CardDiscard
+import it.unibo.controller.RefreshType.CardDraw
+import it.unibo.controller.RefreshType.CardSelected
+import it.unibo.controller.RefreshType.PatternChosen
+import it.unibo.controller.RefreshType.PhaseUpdate
+import it.unibo.controller.RefreshType.WindUpdate
+import it.unibo.controller.ResolvePatternChoice
+import it.unibo.controller.ResolvePatternReset
+import it.unibo.controller.StartGameMessage
+import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.UpdateWindDirection
+import it.unibo.controller.ViewMessage
+import it.unibo.controller.model.ModelController
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.effects.PatternEffect
-import it.unibo.model.effects.hand.HandEffect.{DiscardCard, DrawCard, PlayCard}
-import it.unibo.model.effects.PatternEffect.{PatternApplication, ResetPatternComputation}
+import it.unibo.model.effects.PatternEffect.PatternApplication
+import it.unibo.model.effects.PatternEffect.ResetPatternComputation
 import it.unibo.model.effects.cards.WindChoiceEffect
 import it.unibo.model.effects.hand.HandEffect
+import it.unibo.model.effects.hand.HandEffect.DiscardCard
+import it.unibo.model.effects.hand.HandEffect.DrawCard
+import it.unibo.model.effects.hand.HandEffect.PlayCard
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.controller.model.ModelController
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[ViewMessage]:

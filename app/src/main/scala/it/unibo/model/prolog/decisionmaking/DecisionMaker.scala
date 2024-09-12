@@ -1,16 +1,20 @@
 package it.unibo.model.prolog.decisionmaking
 
-import it.unibo.model.prolog.PrologUtils.given
-import alice.tuprolog.{Struct, Term, Theory}
+import scala.jdk.CollectionConverters._
+
+import alice.tuprolog.Struct
+import alice.tuprolog.Term
+import alice.tuprolog.Theory
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.logger
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.{distanceProgram, manhattanDistance}
+import it.unibo.model.prolog.PrologProgram.distanceProgram
+import it.unibo.model.prolog.PrologProgram.manhattanDistance
+import it.unibo.model.prolog.PrologUtils.given
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
-import scala.jdk.CollectionConverters.*
 
 object DecisionMaker:
   private var objectiveTower: Position = Position(0, 0)
@@ -32,7 +36,7 @@ object DecisionMaker:
     theory.append(manhattanDistance)
     println(theory)
     val engine = PrologEngine(theory)
-    val goal = s"closest_tower_to_fire(ClosestTower)"
+    val goal = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
 
     result match

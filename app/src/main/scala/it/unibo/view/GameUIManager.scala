@@ -1,19 +1,20 @@
 package it.unibo.view
 
+import scala.compiletime.uninitialized
+import scala.jdk.CollectionConverters._
+
 import it.unibo.controller.ViewSubject
-import scalafx.application.{JFXApp3, Platform}
-import scalafx.application.JFXApp3.PrimaryStage
-import scalafx.scene.Scene
-import scalafx.scene.layout.{Pane, StackPane}
 import it.unibo.view.components.IViewComponent
 import it.unibo.view.components.menu.MenuComponent
-import javafx.concurrent.Task as JFXTask
+import javafx.concurrent.{Task => JFXTask}
 import monix.eval.Task
-import scalafx.scene.image.Image
-
-import scala.compiletime.uninitialized
-import scala.jdk.CollectionConverters.*
 import monix.execution.Scheduler.Implicits.global
+import scalafx.application.JFXApp3
+import scalafx.application.JFXApp3.PrimaryStage
+import scalafx.scene.Scene
+import scalafx.scene.image.Image
+import scalafx.scene.layout.Pane
+import scalafx.scene.layout.StackPane
 
 final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) extends JFXApp3:
 

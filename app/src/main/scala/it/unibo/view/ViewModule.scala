@@ -1,7 +1,8 @@
 package it.unibo.view
 
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ViewSubject
 import it.unibo.controller.view.ViewController
-import it.unibo.controller.{InternalViewSubject, ViewSubject}
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.ViewInitialization.getGuiInitTask
 import it.unibo.view.components.IUpdateView

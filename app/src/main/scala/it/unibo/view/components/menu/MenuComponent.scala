@@ -1,18 +1,25 @@
 package it.unibo.view.components.menu
 
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.GameBoardInitialization
+import it.unibo.controller.ViewSubject
+import it.unibo.model.gameboard.GameBoardConfig
+import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
+import it.unibo.model.gameboard.GameBoardConfig.CardSet
+import it.unibo.model.gameboard.GameBoardConfig.GameMode
+import it.unibo.view.GUIType
 import it.unibo.view.components.IViewComponent
 import javafx.fxml.FXML
-import javafx.scene.control.{Button, ComboBox, RadioButton, TextField, ToggleGroup}
-import scalafx.Includes.*
-import scalafx.application.Platform
-import it.unibo.controller.{GameBoardInitialization, ViewSubject}
-import it.unibo.model.gameboard.GameBoardConfig.{BotBehaviour, CardSet, GameMode}
-import it.unibo.model.gameboard.GameBoardConfig
-import it.unibo.view.GUIType
 import javafx.scene.Node
+import javafx.scene.control.Button
+import javafx.scene.control.ComboBox
+import javafx.scene.control.RadioButton
+import javafx.scene.control.TextField
+import javafx.scene.control.ToggleGroup
 import javafx.scene.layout.Pane
-
-import scala.compiletime.uninitialized
+import scalafx.Includes._
+import scalafx.application.Platform
 
 //noinspection VarCouldBeVal
 final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent:

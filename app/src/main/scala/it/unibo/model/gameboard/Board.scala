@@ -1,8 +1,8 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.gameboard.grid.Grid
-
 import scala.util.Random
+
+import it.unibo.model.gameboard.grid.Grid
 
 final case class Board(grid: Grid, windDirection: Direction):
   override def toString: String =

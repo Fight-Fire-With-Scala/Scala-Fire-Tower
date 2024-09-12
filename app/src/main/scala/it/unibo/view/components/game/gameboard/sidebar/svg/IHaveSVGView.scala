@@ -1,7 +1,8 @@
 package it.unibo.view.components.game.gameboard.sidebar.svg
 
 import it.unibo.model.gameboard.Direction
-import it.unibo.view.components.game.gameboard.sidebar.svg.IHaveSVGView.{color, scaleFactor}
+import it.unibo.view.components.game.gameboard.sidebar.svg.IHaveSVGView.color
+import it.unibo.view.components.game.gameboard.sidebar.svg.IHaveSVGView.scaleFactor
 import it.unibo.view.components.game.gameboard.sidebar.svg.SVGCommonPaths.getPathFromDirection
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.SVGPath

@@ -1,23 +1,33 @@
 package it.unibo.view.components.game.gameboard.hand
 
-import it.unibo.controller.{CandidateCardToPlayMessage, InternalViewSubject, ToggleCardInListMessage}
+import scala.compiletime.uninitialized
+
+import it.unibo.controller.CandidateCardToPlayMessage
+import it.unibo.controller.InternalViewSubject
+import it.unibo.controller.ToggleCardInListMessage
 import it.unibo.model.cards.Card
-import it.unibo.model.effects.cards.{BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect}
-import it.unibo.model.effects.core.{CanBeDiscarded, ICardEffect, ISpecialCardEffect, IStandardCardEffect}
+import it.unibo.model.effects.cards.BucketEffect
+import it.unibo.model.effects.cards.FireEffect
+import it.unibo.model.effects.cards.FirebreakEffect
+import it.unibo.model.effects.cards.WaterEffect
+import it.unibo.model.effects.cards.WindEffect
+import it.unibo.model.effects.core.CanBeDiscarded
+import it.unibo.model.effects.core.ICardEffect
+import it.unibo.model.effects.core.ISpecialCardEffect
+import it.unibo.model.effects.core.IStandardCardEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
+import it.unibo.view.components.ICanBeDisabled
+import it.unibo.view.components.ICanSwitchHandler
+import it.unibo.view.components.IHandComponent
 import it.unibo.view.components.game.gameboard.hand.CardHighlightState.Unhighlighted
 import javafx.event.EventHandler
-import it.unibo.view.components.{ICanBeDisabled, ICanSwitchHandler, IHandComponent}
-import javafx.event.{EventHandler, EventType}
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
-import scalafx.Includes.*
-
-import scala.compiletime.uninitialized
+import scalafx.Includes._
 
 enum CardHighlightState:
   case Highlighted, Unhighlighted
@@ -53,12 +63,12 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     highlightManager.switch()
 
   private def addHandlers(): Unit =
-    containSpecialCard match
-      case true  => addHandler(GamePhase.PlaySpecialCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-      case false =>
-        addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-        addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
-        addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
+    if containSpecialCard then
+      addHandler(GamePhase.PlaySpecialCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+    else
+      addHandler(GamePhase.PlayStandardCardPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+      addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
+      addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
   protected def applyState(state: GamePhase): Unit = highlightManager.switch(Some(Unhighlighted))
 

@@ -1,6 +1,8 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.{Struct, Term, Var}
+import alice.tuprolog.Struct
+import alice.tuprolog.Term
+import alice.tuprolog.Var
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Int_Term
 
 final case class Rule(term: Struct)

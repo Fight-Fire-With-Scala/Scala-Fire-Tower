@@ -1,13 +1,20 @@
 package it.unibo.model.gameboard
 
 import it.unibo.model.cards.Card
-import it.unibo.model.effects.{GameBoardEffect, PatternEffect}
-import it.unibo.model.effects.core.{GameBoardEffectResolver, GameLogicEffectResolver, IGameEffect}
+import it.unibo.model.effects.GameBoardEffect
+import it.unibo.model.effects.PatternEffect
+import it.unibo.model.effects.core.GameBoardEffectResolver
+import it.unibo.model.effects.core.GameLogicEffectResolver
+import it.unibo.model.effects.core.IGameEffect
 import it.unibo.model.effects.hand.HandEffect
 import it.unibo.model.effects.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.grid.TowerPosition
-import it.unibo.model.gameboard.player.{Bot, Person, Player, PlayerInstance, PlayerManager}
+import it.unibo.model.gameboard.player.Bot
+import it.unibo.model.gameboard.player.Person
+import it.unibo.model.gameboard.player.Player
+import it.unibo.model.gameboard.player.PlayerInstance
+import it.unibo.model.gameboard.player.PlayerManager
 import it.unibo.model.logger
 
 case class GameBoard(

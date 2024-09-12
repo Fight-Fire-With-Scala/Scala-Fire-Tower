@@ -1,16 +1,15 @@
 package it.unibo.model.effects.cards
 
-import it.unibo.model.effects.*
-import it.unibo.model.effects.core.{
-  GameEffectResolver,
-  IGameChoiceEffect,
-  IGameEffect,
-  ILogicEffect
-}
-import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import it.unibo.model.gameboard.{Dice, Direction}
-import it.unibo.model.prolog.Rule
+import it.unibo.model.effects._
+import it.unibo.model.effects.core.GameEffectResolver
+import it.unibo.model.effects.core.IGameChoiceEffect
+import it.unibo.model.effects.core.IGameEffect
+import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.gameboard.Dice
+import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.PatternType.VerySmallEffect
+import it.unibo.model.gameboard.grid.ConcreteToken.Fire
+import it.unibo.model.prolog.Rule
 
 enum WindChoiceEffect extends IGameChoiceEffect:
   case UpdateWind(direction: Direction)
