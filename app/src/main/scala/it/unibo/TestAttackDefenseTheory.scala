@@ -39,7 +39,7 @@ object TestAttackDefenseTheory:
       MeasurementResults(res, duration)
 
     def measure[T](expr: => T): MeasurementResults[T] = measure("")(expr)
-    
+
   val player1: Person = Person("tone", List.empty, List.empty)
   val player2: Player = Player.bot(Aggressive)
   private val gb = GameBoard(player1, player2)
@@ -80,4 +80,4 @@ object TestAttackDefenseTheory:
         println("No solution found")
 
   @main
-  def main(): Unit = println(s"Took ${measure(run()).duration.toSeconds} seconds")
+  def launch(): Unit = println(s"Took ${measure(run()).duration.toSeconds} seconds")
