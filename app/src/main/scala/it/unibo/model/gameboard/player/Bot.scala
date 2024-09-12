@@ -2,6 +2,7 @@ package it.unibo.model.gameboard.player
 
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
+import it.unibo.model.effect.core.{IDefensiveCard, IOffensiveCard}
 import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.effect.phase.PhaseEffect.handleWindPhase
 import it.unibo.model.gameboard.GameBoard
@@ -13,7 +14,7 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.logger
-import it.unibo.model.prolog.decisionmaking.DecisionMaker
+import it.unibo.model.prolog.decisionmaking.{AttackDefense, DecisionMaker}
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 
 final case class Bot(
@@ -47,14 +48,19 @@ final case class Bot(
     // Should be Waiting Phase
     case WaitingPhase =>
       computeAttackOrDefense(gb, botBehaviour)
+      val filteredCards = filterCardsBasedOnDecision(DecisionMaker.getAttackOrDefense)
+      logger.info(filteredCards.toString())
+      logger.info(hand.toString())
 //      val cardsToCompute: Map[Int, List[ILogicEffect]] = ???
 //      val effect = CardsComputation(cardsToCompute)
 //      val newGb = gameBoard.resolveEffect(effect)
 //    case CardsChosen(cards: )
-
-      logger.info(s"Bot is thinking... Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
-      logger.info(s"Objective tower: ${DecisionMaker.getObjectiveTower}")
     case _         =>
+
+  private def filterCardsBasedOnDecision(decision: AttackDefense): List[Card] = decision match
+  case AttackDefense.Attack => hand.collect { case card if card.effect match { case _: IOffensiveCard => true; case _ => false } => card }
+  case AttackDefense.Defense => hand.collect { case card if card.effect match { case _: IDefensiveCard => true; case _ => false } => card }
+
 
 object Bot:
   def apply(moves: List[Move], hand: List[Card], botBehaviour: BotBehaviour) =

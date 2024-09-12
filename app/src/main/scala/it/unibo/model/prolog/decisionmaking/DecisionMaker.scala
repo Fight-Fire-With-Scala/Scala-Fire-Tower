@@ -17,10 +17,8 @@ import it.unibo.model.prolog.PrologUtils.given
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 
 object DecisionMaker:
-  private var objectiveTower: Position = Position(0, 0)
   private var attackOrDefense: AttackDefense = AttackDefense.Attack
-
-  def getObjectiveTower: Position = objectiveTower
+  
   def getAttackOrDefense: AttackDefense = attackOrDefense
 
   def computeAttackOrDefense(gameBoard: GameBoard, botBehaviour: BotBehaviour): Unit =
@@ -42,7 +40,7 @@ object DecisionMaker:
     result match
       case Some(solution) =>
         val closestTower = solution.getTerm("ClosestTower").toString
-        objectiveTower = Position(
+        val objectiveTower = Position(
           closestTower.substring(1, closestTower.indexOf(',')).toInt,
           closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt
         )
