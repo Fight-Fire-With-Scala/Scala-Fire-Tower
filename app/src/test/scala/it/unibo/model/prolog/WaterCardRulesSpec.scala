@@ -1,6 +1,6 @@
 package it.unibo.model.prolog
 
-import it.unibo.model.effects.{LargeEffect, MediumEffect, VeryLargeEffect}
+import it.unibo.model.effect.{LargeEffect, MediumEffect, VeryLargeEffect}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Water}
 import it.unibo.model.gameboard.grid.Position
 import org.junit.runner.RunWith

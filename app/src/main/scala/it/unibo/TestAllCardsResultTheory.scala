@@ -2,12 +2,12 @@ package it.unibo
 
 import alice.tuprolog.Theory
 import it.unibo.PerformanceUtils.measure
-import it.unibo.model.effects.cards.BucketEffect
-import it.unibo.model.effects.cards.FireEffect
-import it.unibo.model.effects.cards.FirebreakEffect
-import it.unibo.model.effects.cards.WindEffect
-import it.unibo.model.effects.core.IGameEffect
-import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.effect.card.BucketEffect
+import it.unibo.model.effect.card.FireEffect
+import it.unibo.model.effect.card.FirebreakEffect
+import it.unibo.model.effect.card.WindEffect
+import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.Deck
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced

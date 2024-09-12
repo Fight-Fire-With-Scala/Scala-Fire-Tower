@@ -1,9 +1,9 @@
 package it.unibo.model.gameboard.player
 
-import it.unibo.model.cards.Card
-import it.unibo.model.effects.MoveEffect
-import it.unibo.model.effects.PatternEffect
-import it.unibo.model.effects.phase.PhaseEffect.handleWindPhase
+import it.unibo.model.card.Card
+import it.unibo.model.effect.MoveEffect
+import it.unibo.model.effect.pattern.PatternEffect
+import it.unibo.model.effect.phase.PhaseEffect.handleWindPhase
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase

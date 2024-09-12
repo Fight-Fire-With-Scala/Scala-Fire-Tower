@@ -5,8 +5,8 @@ import it.unibo.controller.ViewSubject
 import it.unibo.controller.view.ViewController
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.ViewInitialization.getGuiInitTask
-import it.unibo.view.components.IUpdateView
-import it.unibo.view.components.game.GameComponent
+import it.unibo.view.component.IUpdateView
+import it.unibo.view.component.game.GameComponent
 import monix.execution.Scheduler.Implicits.global
 
 object ViewModule:

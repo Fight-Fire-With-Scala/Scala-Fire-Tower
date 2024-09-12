@@ -1,6 +1,6 @@
 package it.unibo.model.prolog
 
-import it.unibo.model.effects.{LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect}
+import it.unibo.model.effect.{LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Fire, Firebreak}
 import it.unibo.model.gameboard.grid.Position
 import org.scalatestplus.junit.JUnitRunner

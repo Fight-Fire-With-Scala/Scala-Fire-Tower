@@ -1,6 +1,6 @@
 package it.unibo.view
 
-import it.unibo.view.components.IHaveView
+import it.unibo.view.component.IHaveView
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 

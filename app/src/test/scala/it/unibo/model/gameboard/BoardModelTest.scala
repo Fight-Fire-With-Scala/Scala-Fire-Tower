@@ -1,8 +1,8 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.cards.{Card, CardType}
-import it.unibo.model.cards.types.WindCard
-import it.unibo.model.effects.cards.WindEffect
+import it.unibo.model.card.{Card, CardType}
+import it.unibo.model.card.types.WindCard
+import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.player.Person
 import org.junit.runner.RunWith

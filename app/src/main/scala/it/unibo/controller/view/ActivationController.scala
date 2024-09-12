@@ -6,11 +6,11 @@ import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
 import it.unibo.model.gameboard.GamePhase.RedrawCardsPhase
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.model.gameboard.GamePhase.WindPhase
-import it.unibo.view.components.game.GameComponent
-import it.unibo.view.components.game.gameboard.sidebar.DeckComponent
-import it.unibo.view.components.game.gameboard.sidebar.DiceComponent
-import it.unibo.view.components.game.gameboard.sidebar.GameInfoComponent
-import it.unibo.view.components.game.gameboard.sidebar.WindRoseComponent
+import it.unibo.view.component.game.GameComponent
+import it.unibo.view.component.game.gameboard.sidebar.DeckComponent
+import it.unibo.view.component.game.gameboard.sidebar.DiceComponent
+import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
+import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
 
 trait ActivationController extends GameController:
   private def showTurnInfoOnly(component: GameComponent): Unit = component.sidebarComponent.components

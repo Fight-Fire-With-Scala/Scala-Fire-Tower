@@ -1,13 +1,13 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.cards.Card
-import it.unibo.model.effects.GameBoardEffect
-import it.unibo.model.effects.PatternEffect
-import it.unibo.model.effects.core.GameBoardEffectResolver
-import it.unibo.model.effects.core.GameLogicEffectResolver
-import it.unibo.model.effects.core.IGameEffect
-import it.unibo.model.effects.hand.HandEffect
-import it.unibo.model.effects.phase.PhaseEffect
+import it.unibo.model.card.Card
+import it.unibo.model.effect.GameBoardEffect
+import it.unibo.model.effect.core.GameBoardEffectResolver
+import it.unibo.model.effect.core.GameLogicEffectResolver
+import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.hand.HandEffect
+import it.unibo.model.effect.pattern.PatternEffect
+import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.gameboard.player.Bot

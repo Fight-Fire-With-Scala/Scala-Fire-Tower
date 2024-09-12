@@ -1,8 +1,8 @@
 package it.unibo.controller
 
 import it.unibo.controller.model.ModelController
-import it.unibo.controller.subscribers.ModelSubscriber
-import it.unibo.controller.subscribers.ViewSubscriber
+import it.unibo.controller.subscriber.ModelSubscriber
+import it.unibo.controller.subscriber.ViewSubscriber
 import it.unibo.controller.view.ViewController
 import it.unibo.model.ModelModule
 import it.unibo.view.ViewModule

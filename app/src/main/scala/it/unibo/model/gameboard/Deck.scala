@@ -9,10 +9,10 @@ import io.circe._
 import io.circe.generic.auto._
 import io.circe.yaml
 import io.circe.yaml.parser
-import it.unibo.model.cards.Card
-import it.unibo.model.cards.CardSet
-import it.unibo.model.cards.CardType
-import it.unibo.model.effects.core.ISpecialCardEffect
+import it.unibo.model.card.Card
+import it.unibo.model.card.CardSet
+import it.unibo.model.card.CardType
+import it.unibo.model.effect.core.ISpecialCardEffect
 import it.unibo.model.logger
 
 final case class Deck(

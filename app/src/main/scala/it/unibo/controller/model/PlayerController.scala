@@ -1,6 +1,6 @@
 package it.unibo.controller.model
 
-import it.unibo.model.effects.hand.HandManager
+import it.unibo.model.effect.hand.HandManager
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Player
 

@@ -1,18 +1,17 @@
 package it.unibo.controller.view
 
 import it.unibo.controller.InternalViewSubject
-import it.unibo.controller.RefreshType
 import it.unibo.controller.ViewSubject
-import it.unibo.model.effects.MoveEffect
-import it.unibo.model.effects.MoveEffect.CardChosen
+import it.unibo.model.effect.MoveEffect
+import it.unibo.model.effect.MoveEffect.CardChosen
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Move
 import it.unibo.view.ViewModule.View
-import it.unibo.view.components.game.GameComponent
-import it.unibo.view.components.game.gameboard.sidebar.DeckComponent
-import it.unibo.view.components.game.gameboard.sidebar.DiceComponent
-import it.unibo.view.components.game.gameboard.sidebar.GameInfoComponent
-import it.unibo.view.components.game.gameboard.sidebar.WindRoseComponent
+import it.unibo.view.component.game.GameComponent
+import it.unibo.view.component.game.gameboard.sidebar.DeckComponent
+import it.unibo.view.component.game.gameboard.sidebar.DiceComponent
+import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
+import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
 
 final case class ViewController(
     view: View,

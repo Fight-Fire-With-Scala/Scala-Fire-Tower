@@ -1,7 +1,7 @@
 package it.unibo.model.prolog.decisionmaking
 
 import alice.tuprolog.Theory
-import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.effect.core.ILogicEffect
 
 final case class AllCardsResultTheory(cards: Map[Int, List[ILogicEffect]])
 

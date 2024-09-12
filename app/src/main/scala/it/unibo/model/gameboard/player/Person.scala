@@ -1,6 +1,6 @@
 package it.unibo.model.gameboard.player
 
-import it.unibo.model.cards.Card
+import it.unibo.model.card.Card
 import it.unibo.model.gameboard.grid.TowerPosition
 
 final case class Person(

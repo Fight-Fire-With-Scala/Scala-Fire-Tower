@@ -1,13 +1,13 @@
 package it.unibo.view
 
 import it.unibo.controller.InternalViewSubject
-import it.unibo.controller.RefreshType.PhaseUpdate
+import it.unibo.controller.view.RefreshType.PhaseUpdate
 import it.unibo.controller.ViewSubject
-import it.unibo.controller.subscribers.InternalViewSubscriber
+import it.unibo.controller.subscriber.InternalViewSubscriber
 import it.unibo.controller.view.ViewController
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.view.components.IViewComponent
-import it.unibo.view.components.game.GameComponent
+import it.unibo.view.component.IViewComponent
+import it.unibo.view.component.game.GameComponent
 import monix.eval.Task
 
 object ViewInitialization:

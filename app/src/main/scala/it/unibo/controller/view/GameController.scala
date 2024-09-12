@@ -2,7 +2,7 @@ package it.unibo.controller.view
 
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ViewSubject
-import it.unibo.view.components.game.GameComponent
+import it.unibo.view.component.game.GameComponent
 
 trait GameController:
   var gameComponent: Option[GameComponent] = None

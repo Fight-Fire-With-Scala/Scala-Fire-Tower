@@ -1,11 +1,12 @@
 package it.unibo.controller
 
-import it.unibo.model.effects.PatternEffect.PatternApplication
-import it.unibo.model.effects.cards.WindChoiceEffect
-import it.unibo.model.effects.hand.HandEffect.DiscardCard
-import it.unibo.model.effects.hand.HandEffect.DrawCard
-import it.unibo.model.effects.hand.HandEffect.PlayCard
-import it.unibo.model.effects.phase.PhaseEffect
+import it.unibo.controller.view.RefreshType
+import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
+import it.unibo.model.effect.card.WindChoiceEffect
+import it.unibo.model.effect.hand.HandEffect.DiscardCard
+import it.unibo.model.effect.hand.HandEffect.DrawCard
+import it.unibo.model.effect.hand.HandEffect.PlayCard
+import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
 import monix.reactive.subjects.PublishSubject

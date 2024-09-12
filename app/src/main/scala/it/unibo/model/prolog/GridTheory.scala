@@ -5,7 +5,7 @@ import scala.jdk.CollectionConverters._
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Theory
-import it.unibo.model.effects.core.ILogicEffect
+import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
