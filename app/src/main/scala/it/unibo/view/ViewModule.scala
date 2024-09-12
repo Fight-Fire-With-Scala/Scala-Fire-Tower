@@ -8,6 +8,7 @@ import it.unibo.view.ViewInitialization.getGuiInitTask
 import it.unibo.view.component.IUpdateView
 import it.unibo.view.component.game.GameComponent
 import monix.execution.Scheduler.Implicits.global
+import scala.compiletime.uninitialized
 
 object ViewModule:
   trait View extends IUpdateView:
@@ -22,17 +23,17 @@ object ViewModule:
 
   trait Component:
     class ViewImpl extends View:
-      private var gui: Option[GameUIManager] = None
+      private var gui: GameUIManager = uninitialized
 
       override def startMenu(viewObservable: ViewSubject): Unit =
-        gui = Some(GameUIManager(1280, 1280, viewObservable))
-        gui.get.main(Array.empty)
+        gui = GameUIManager(1280, 1280, viewObservable)
+        gui.main(Array.empty)
 
       override def startGame(gb: GameBoard, gameController: ViewController)(using
           intObservable: InternalViewSubject,
           viewObservable: ViewSubject
       ): Unit =
-        val rootTask = gui.get.loadGUIRoot(GameComponent())
+        val rootTask = gui.loadGUIRoot(GameComponent())
         val componentsTask = getGuiInitTask(gameController, rootTask, gb)
         componentsTask.runAsyncAndForget
 
