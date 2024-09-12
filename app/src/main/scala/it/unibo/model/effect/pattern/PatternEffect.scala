@@ -15,6 +15,7 @@ import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Move
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 import it.unibo.model.logger
 import it.unibo.model.prolog.{GridTheory, PrologEngine, SolverType}
 import it.unibo.model.prolog.SolverType.{
@@ -24,7 +25,6 @@ import it.unibo.model.prolog.SolverType.{
   ManhattanSolver
 }
 import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
-import it.unibo.model.prolog.given_Conversion_SolverType_Theory
 
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)

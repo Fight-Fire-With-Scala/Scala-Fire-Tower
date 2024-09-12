@@ -1,9 +1,6 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.SolveInfo
-import alice.tuprolog.Struct
-import alice.tuprolog.Term
-import alice.tuprolog.Var
+import alice.tuprolog.{SolveInfo, Struct, Term, Theory, Var}
 import it.unibo.model.gameboard.grid.Cell
 import it.unibo.model.gameboard.grid.ConcreteToken
 import it.unibo.model.gameboard.grid.ConcreteToken.Empty
@@ -18,6 +15,7 @@ object PrologUtils:
   given Conversion[Int, Term] = (int: Int) => Term.createTerm(int.toString)
   given Conversion[Cell, Term] = (cell: Cell) => Term.createTerm(cell.id)
   given Conversion[Token, Term] = (token: Token) => Term.createTerm(token.id)
+  given Conversion[SolverType, Theory] = t => t.getTheory(t.prologSourcePath)
   
   extension (g: Grid) def size: Int = math.sqrt(g.cells.size).toInt
 

@@ -10,11 +10,11 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.logger
 import it.unibo.model.prolog.{PrologEngine, SolverType}
-import it.unibo.model.prolog.given_Conversion_SolverType_Theory
 import it.unibo.model.prolog.SolverType.DistanceSolver
 import it.unibo.model.prolog.SolverType.ManhattanSolver
 import it.unibo.model.prolog.PrologUtils.given
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 
 object DecisionMaker:
   private var attackOrDefense: AttackDefense = AttackDefense.Attack

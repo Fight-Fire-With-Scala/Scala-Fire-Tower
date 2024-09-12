@@ -12,14 +12,9 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.prolog.GridTheory
-import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.cardsProgram
-import it.unibo.model.prolog.PrologProgram.choseCardProgram
-import it.unibo.model.prolog.PrologProgram.concatListsProgram
-import it.unibo.model.prolog.PrologProgram.manhattanDistance
-import it.unibo.model.prolog.PrologProgram.solverProgram
-import it.unibo.model.prolog.PrologUtils.given
+import it.unibo.model.prolog.{GridTheory, PrologEngine, SolverType}
+import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
+import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
 
 import java.util.concurrent.TimeUnit
@@ -87,12 +82,12 @@ object TestAllCardsResultTheory:
     theory.append(Theory.parseLazilyWithStandardOperators(
       s"tower_position((${enemyTower.row}, ${enemyTower.col}))."
     ))
-    theory.append(manhattanDistance)
-    theory.append(concatListsProgram)
+    theory.append(SolverType.ManhattanSolver)
+    theory.append(SolverType.ConcatListSolver)
     theory.append(dynamicTheory)
-    theory.append(choseCardProgram)
-    theory.append(cardsProgram)
-    theory.append(solverProgram)
+    theory.append(SolverType.CardChoserSolver)
+    theory.append(SolverType.CardSolver)
+    theory.append(SolverType.BaseSolver)
     println(theory)
     val engine = PrologEngine(theory)
     val goal = "main(R)"
@@ -100,7 +95,7 @@ object TestAllCardsResultTheory:
 
     result match
       case Some(solution) =>
-        val allCardResults = solution.getTerm("R").toString
+        val allCardResults = solution.getTerm("R")
         println(s"All card results: $allCardResults")
       case None           => println("No solution found")
 

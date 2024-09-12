@@ -3,8 +3,6 @@ package it.unibo.model.prolog
 import alice.tuprolog.Theory
 import it.unibo.model.prolog.SolverType.getClass
 
-given Conversion[SolverType, Theory] = t => t.getTheory(t.prologSourcePath)
-
 enum SolverType(val prologSourcePath: String):
   case BaseSolver extends SolverType("/prolog/solver.pl")
   case CardSolver extends SolverType("/prolog/cards.pl")

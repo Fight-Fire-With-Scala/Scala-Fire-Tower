@@ -1,12 +1,11 @@
 package it.unibo
 
 import java.util.concurrent.TimeUnit
-
 import scala.concurrent.duration.FiniteDuration
-import scala.jdk.CollectionConverters._
-
+import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Theory
+import it.unibo.TestAttackDefenseTheory.PerformanceUtils.measure
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
@@ -14,14 +13,12 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologProgram.distanceProgram
-import it.unibo.model.prolog.PrologProgram.manhattanDistance
+import it.unibo.model.prolog.SolverType
 import it.unibo.model.prolog.PrologUtils.given
+import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.AttackDefenseTheory
-
-import PerformanceUtils.measure
 
 object TestAttackDefenseTheory:
 
@@ -59,8 +56,8 @@ object TestAttackDefenseTheory:
     val variable = Struct.of("biasFactor", 5)
     val theoryVariable = Theory.fromPrologList(Struct.list(Iterator.single(variable).asJava))
     theory.append(theoryVariable)
-    theory.append(distanceProgram)
-    theory.append(manhattanDistance)
+    theory.append(SolverType.DistanceSolver)
+    theory.append(SolverType.ManhattanSolver)
     println(theory)
     val engine = PrologEngine(theory)
     val goal = "closest_tower_to_fire(ClosestTower)"
