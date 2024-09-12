@@ -17,7 +17,7 @@
 
 .firebreak { -fx-background-color: purple; }
 
-.water { -fx-background-color: blue; }
+.water { -fx-background-color: rgba(21, 156, 186, 0.99); }
 
 .wind { -fx-background-color: grey; }
 
