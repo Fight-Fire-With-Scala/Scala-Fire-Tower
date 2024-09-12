@@ -49,7 +49,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     enableView()
 
   def updateHand(cards: List[it.unibo.model.cards.Card])(gamePhase: GamePhase): Unit =
-    runOnUIThread {
+    runOnUIThread:
       cardComponents.foreach(_.reset())
       cardComponents.zip(cards).foreach { case (cardComponent, card) =>
         cardComponent.setCard(card)
@@ -57,7 +57,6 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
       }
       cardToPlay.foreach(_.highlightManager.switch(Some(CardHighlightState.Highlighted)))
 
-    }
 
   def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 

@@ -47,10 +47,9 @@ final class GameComponent extends IViewComponent with IUpdateView:
       pane: Pane,
       componentPane: Node,
       assignComponent: () => IViewComponent
-  ): Task[IViewComponent] = runTaskOnUIThread {
+  ): Task[IViewComponent] = runTaskOnUIThread:
     pane.getChildren.add(componentPane)
     assignComponent()
-  }
 
   def setupGrid(gc: GridComponent): Task[IViewComponent] =
     val gridView: Node = gc.getView
@@ -88,10 +87,9 @@ final class GameComponent extends IViewComponent with IUpdateView:
     val currentTowerPositions = grid.getTowerCells(currentPlayer.towerPositions)
     gridComponent.updateGrid(grid, currentTowerPositions, gamePhase)
 
-  def updatePlayer(player: Player)(gamePhase: GamePhase): Unit = runOnUIThread {
+  def updatePlayer(player: Player)(gamePhase: GamePhase): Unit = runOnUIThread:
     val updatedHand = player.extraCard.fold(player.hand)(card => player.hand :+ card)
     handComponent.updateHand(updatedHand)(gamePhase)
-  }
 
   def updateSidebar(gameInfoComponent: GameInfoComponent, newGamePhase: GamePhase): Unit =
     gameInfoComponent.updateTurnPhase(newGamePhase.toString)

@@ -54,8 +54,7 @@ object HandEffect extends HandManager:
       case None    => GameBoardEffect(gb)
   }
 
-  val handEffectResolver: GameEffectResolver[IGameEffect, IGameEffect] = GameEffectResolver {
+  val handEffectResolver: GameEffectResolver[IGameEffect, IGameEffect] = GameEffectResolver:
     case DrawCard(nCards)   => resolveDrawCard(nCards)
     case DiscardCard(cards) => resolveDiscardCard(cards)
     case PlayCard(cardId)   => resolveCardEffect(cardId)
-  }

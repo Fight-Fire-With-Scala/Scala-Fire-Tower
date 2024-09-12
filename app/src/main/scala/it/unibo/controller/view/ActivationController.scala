@@ -18,23 +18,21 @@ import it.unibo.view.components.game.gameboard.sidebar.{
 
 trait ActivationController extends GameController:
   private def showTurnInfoOnly(component: GameComponent): Unit = component.sidebarComponent.components
-    .foreach {
+    .foreach:
       case c: DeckComponent     => c.disableView()
       case c: DiceComponent     => c.disableView()
       case c: WindRoseComponent => c.disableView()
       case c: GameInfoComponent => c.enableView()
-    }
 
   def updateGamePhaseActivation(choice: GamePhase): Unit = choice match
     case WaitingPhase | RedrawCardsPhase => gameComponent.fold(()) { component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
-        component.sidebarComponent.components.foreach {
+        component.sidebarComponent.components.foreach:
           case c: DeckComponent     => c.enableView()
           case c: DiceComponent     => c.disableView()
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
-        }
       }
     case PlayStandardCardPhase           => gameComponent.fold(()) { component =>
         component.gridComponent.enableView()
@@ -56,10 +54,9 @@ trait ActivationController extends GameController:
     case _                               => gameComponent.fold(()) { component =>
         component.gridComponent.disableView()
         component.handComponent.disableView()
-        component.sidebarComponent.components.foreach {
+        component.sidebarComponent.components.foreach:
           case c: DeckComponent     => c.disableView()
           case c: DiceComponent     => c.disableView()
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
-        }
       }

@@ -33,8 +33,7 @@ object WindChoiceEffect:
     directions = List(direction)
   )
 
-  val windChoiceResolver: GameEffectResolver[WindChoiceEffect, IGameEffect] = GameEffectResolver {
+  val windChoiceResolver: GameEffectResolver[WindChoiceEffect, IGameEffect] = GameEffectResolver:
     case UpdateWind(direction) => resolveWindChoice(direction)
     case RandomUpdateWind      => resolveWindChoice(dice.roll())
     case PlaceFire(direction)  => getPlaceFireEffect(direction)
-  }

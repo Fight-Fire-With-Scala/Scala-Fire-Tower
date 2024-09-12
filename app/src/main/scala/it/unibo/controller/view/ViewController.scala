@@ -43,7 +43,7 @@ final case class ViewController(
 
     setAvailablePatternsInGrid
 
-    component.sidebarComponent.components.foreach {
+    component.sidebarComponent.components.foreach:
       case c: GameInfoComponent =>
         c.updateTurnPhase(currentGamePhase.toString)
         c.updateTurnNumber(gameBoard.turnNumber)
@@ -51,7 +51,6 @@ final case class ViewController(
       case c: WindRoseComponent => c.updateWindRoseDirection(gameBoard.board.windDirection)
       case c: DeckComponent     =>
       case c: DiceComponent     =>
-    }
 
   private def setAvailablePatternsInGrid(using c: GameComponent, gb: GameBoard): Unit =
     val lastPatternChosenMove = gb.getCurrentPlayer.lastPatternChosen

@@ -14,10 +14,9 @@ object PatternType:
   private def fillPattern(
       skeleton: Map[Position, Token],
       tokens: Map[String, Token]
-  ): Map[Position, Token] = skeleton.map {
+  ): Map[Position, Token] = skeleton.map:
     case (pos, TemplateToken(id: String, _)) if tokens.contains(id) => pos -> tokens(id)
     case (pos, token)                                               => pos -> token
-  }
 
   case class VeryLargeEffect(tokens: Map[String, Token]) extends PatternType:
     override val template: Map[Position, Token] = pattern { a; a; a; a; b; a; a; a; a }.mapTo(3, 3)

@@ -18,7 +18,7 @@ enum WaterEffect(override val effectId: Int) extends IStandardCardEffect with ID
   case FireEngine extends WaterEffect(13)
 
 object WaterEffect:
-  val waterEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver {
+  val waterEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver:
     case WaterEffect.SmokeJumper => ILogicEffect(
         pattern = VeryLargeEffect(Map("a" -> Water, "b" -> Fire)).compilePattern,
         goals = List(Rule("smoke_jumper")),
@@ -34,4 +34,3 @@ object WaterEffect:
         goals = List(Rule("water")),
         directions = Direction.values.toList
       )
-  }

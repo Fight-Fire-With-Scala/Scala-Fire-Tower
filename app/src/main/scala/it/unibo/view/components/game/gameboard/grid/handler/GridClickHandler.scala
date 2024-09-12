@@ -76,17 +76,15 @@ class GridClickHandler(
   private def activateFixedCellMode(position: Position): Unit =
     val pattern = gridState.availablePatterns.find(_.contains(position)).get
     gridState.availablePatternsClickFixed = gridState.availablePatterns.filter(_.contains(position))
-    runOnUIThread {
+    runOnUIThread:
       gridState.fixedCell += position -> gridState.hoveredCells(position)
       squareMap(position).updateColor(pattern(position).color.deriveColor(1, 1, 1, 0.7))
       gridState.hoveredCells.clear()
-    }
 
   private def deactivateFixedCellMode(position: Position): Unit =
-    runOnUIThread {
+    runOnUIThread:
       squareMap(position).updateColor(gridState.fixedCell(position))
       gridState.fixedCell.clear()
-    }
     gridState.resetHoverColors()
     gridState.availablePatternsClickFixed = gridState.availablePatterns
 

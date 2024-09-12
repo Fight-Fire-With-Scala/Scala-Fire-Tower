@@ -10,11 +10,11 @@ final class GridBuilder:
   private var indexOfNextCell = GridBuilder.MinIndex
 
   private def setNextCell(cell: Cell): this.type =
-    if (this.indexOfNextCell <= GridBuilder.MaxIndex) {
+    if (this.indexOfNextCell <= GridBuilder.MaxIndex)
       this.grid = this.grid.update(this.nextPosition -> cell)
       this.indexOfNextCell += 1
       this
-    } else this
+    else this
 
   /** Alias for [[GridBuilder.setNextCell]]. */
   @targetName("setNextCellAlias")

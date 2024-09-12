@@ -16,9 +16,8 @@ enum WindEffect(override val effectId: Int) extends IStandardCardEffect with IOf
   case West extends WindEffect(7)
 
 object WindEffect:
-  val windEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver {
+  val windEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver:
     case WindEffect.North => WindChoiceEffect.getPlaceFireEffect(Direction.North)
     case WindEffect.East  => WindChoiceEffect.getPlaceFireEffect(Direction.East)
     case WindEffect.West  => WindChoiceEffect.getPlaceFireEffect(Direction.West)
     case WindEffect.South => WindChoiceEffect.getPlaceFireEffect(Direction.South)
-  }

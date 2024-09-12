@@ -12,7 +12,7 @@ trait HandManager:
       drawCardFunc: Deck => (Option[Card], Deck)
   )(player: Player): (GameBoard, Player) =
     val deck = gb.deck
-    val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, player)) {
+    val (finalDeck, finalPlayer) = (1 to nCards).foldLeft((deck, player)):
       case ((currentDeck, player), _) =>
         val (card, newDeck) = drawCardFunc(currentDeck)
         card match
@@ -20,7 +20,6 @@ trait HandManager:
             val newPlayer = player.drawCardFromDeck(c)
             (newDeck, newPlayer)
           case None    => (newDeck, player)
-    }
     (gb.copy(deck = finalDeck), finalPlayer)
 
   def drawCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =

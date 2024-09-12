@@ -83,7 +83,7 @@ object PatternEffect:
       logger.warn(s"No card found")
       GameBoardEffect(gb)
 
-  private def resolvePatternApplication(pattern: Map[Position, Token]) = GameBoardEffectResolver {
+  private def resolvePatternApplication(pattern: Map[Position, Token]) = GameBoardEffectResolver:
     (gbe: GameBoardEffect) =>
       // Update the grid
       val gb = gbe.gameBoard
@@ -102,7 +102,6 @@ object PatternEffect:
           logger.warn("Could not find the last card chosen, deck not updated and move not logged")
           val newGb = gb.copy(board = b.copy(grid = newGrid))
           GameBoardEffect(newGb)
-  }
 
   private def updateDeckAndHand(gb: GameBoard, move: MoveEffect): GameBoard =
     val deck = gb.deck
@@ -139,7 +138,7 @@ object PatternEffect:
   }
 
   val patternEffectResolver: GameEffectResolver[IGameEffect, GameBoardEffectResolver] =
-    GameEffectResolver {
+    GameEffectResolver:
       case e: GameBoardEffect               => GameBoardEffectResolver { (gbe: GameBoardEffect) =>
           GameBoardEffect(gbe.gameBoard)
         }
@@ -148,4 +147,3 @@ object PatternEffect:
       case PatternComputation(logicEffect)  => resolvePatternComputation(logicEffect)
       case PatternApplication(pattern)      => resolvePatternApplication(pattern)
       case ResetPatternComputation          => resolvePatternReset()
-    }

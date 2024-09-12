@@ -46,7 +46,7 @@ object Grid:
   def empty: Grid = BasicGrid()
 
   // noinspection DuplicatedCode
-  def standard: Grid = Grid {
+  def standard: Grid = Grid:
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
@@ -63,7 +63,6 @@ object Grid:
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
     T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
-  }
 
 final case class BasicGrid(
     private val _cells: Map[Position, Cell] = Map.empty,

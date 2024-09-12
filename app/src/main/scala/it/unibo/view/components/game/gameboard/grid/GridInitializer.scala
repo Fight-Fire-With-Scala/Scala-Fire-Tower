@@ -16,7 +16,7 @@ class GridInitializer(
     for {
       row <- 0 until gridSize
       col <- 0 until gridSize
-    } {
+    }
       val square = GridSquare(
         row,
         col,
@@ -28,5 +28,4 @@ class GridInitializer(
       GridPane.setColumnIndex(square.getGraphicPane, col)
       gridPane.children.add(square.getGraphicPane)
       squareMap(Position(row, col)) = square
-    }
     squareMap

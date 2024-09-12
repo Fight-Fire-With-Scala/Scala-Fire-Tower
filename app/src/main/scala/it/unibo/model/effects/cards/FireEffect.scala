@@ -19,7 +19,7 @@ enum FireEffect(override val effectId: Int) extends IStandardCardEffect with IOf
   case Ember extends FireEffect(3)
 
 object FireEffect:
-  val fireEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver {
+  val fireEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver:
     case FireEffect.Explosion   => ILogicEffect(
         pattern = VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)).compilePattern,
         goals = List(Rule("explosion")),
@@ -42,4 +42,3 @@ object FireEffect:
     //      directions = Direction.values.toList
     //    )
     //    patternEffectResolver.resolve(patternEffect)
-  }

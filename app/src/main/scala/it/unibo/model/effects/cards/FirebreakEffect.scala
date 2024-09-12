@@ -18,7 +18,7 @@ enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect wit
   case DeReforest extends FirebreakEffect(10)
 
 object FirebreakEffect:
-  val fireBreakEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver {
+  val fireBreakEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver:
     case FirebreakEffect.DeReforest  => ILogicEffect(
         pattern = VerySmallEffect(Map("a" -> Firebreak)).compilePattern,
         goals = List(Rule("deforest"), Rule("reforest")),
@@ -34,4 +34,3 @@ object FirebreakEffect:
         goals = List(Rule("dozer_line")),
         directions = Direction.values.toList
       )
-  }

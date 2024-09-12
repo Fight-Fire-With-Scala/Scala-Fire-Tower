@@ -36,10 +36,9 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
         gridState.availablePatternsClickHovered = candidatePatterns
         pattern.foreach { case (position, token) =>
           if !gridState.fixedCell.contains(position) then
-            runOnUIThread {
+            runOnUIThread:
               gridState.hoveredCells += position -> squareMap(position).getColor
               squareMap(position).updateColor(token.color)
-            }
         }
       case _              =>
 
@@ -54,17 +53,16 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
           case None          =>
 
   private def handleExplosionPattern(position: Position, token: Token): Unit =
-    gridState.availablePatterns.collectFirst {
+    gridState.availablePatterns.collectFirst:
       case pattern if pattern.contains(position) && pattern(position) == token =>
         (position, pattern(position))
-    } match
+    match
       case Some(pattern) => updateHoveredCells(pattern._1, pattern._2)
       case None          =>
 
-  private def updateHoveredCells(position: Position, token: Token): Unit = runOnUIThread {
+  private def updateHoveredCells(position: Position, token: Token): Unit = runOnUIThread:
     gridState.hoveredCells += position -> squareMap(position).getColor
     squareMap(position).updateColor(token.color)
-  }
 
   private def getNeighbor(startPosition: Position, hoverDirection: HoverDirection): Position =
     hoverDirection.direction match
