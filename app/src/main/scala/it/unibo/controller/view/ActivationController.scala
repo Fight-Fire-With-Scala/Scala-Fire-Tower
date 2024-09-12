@@ -25,7 +25,7 @@ trait ActivationController extends GameController:
       case c: GameInfoComponent => c.enableView()
     }
 
-  def updateGamePhase(choice: GamePhase): Unit = choice match
+  def updateGamePhaseActivation(choice: GamePhase): Unit = choice match
     case WaitingPhase | RedrawCardsPhase => gameComponent.fold(()) { component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()

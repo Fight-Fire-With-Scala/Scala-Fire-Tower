@@ -1,7 +1,7 @@
 package it.unibo.controller.subscribers
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.view.InternalViewController
+import it.unibo.controller.view.ViewController
 import it.unibo.controller.{
   CancelDiscardMessage,
   CandidateCardToPlayMessage,
@@ -11,14 +11,14 @@ import it.unibo.controller.{
   ToggleCardInListMessage
 }
 
-final class InternalViewSubscriber(viewController: InternalViewController)
+final class InternalViewSubscriber(controller: ViewController)
     extends BaseSubscriber[InternalViewMessage]:
 
   override val logger: Logger = Logger("View -> IntervalView")
 
   override protected def onMessageReceived(msg: InternalViewMessage): Unit = msg match
-    case InitializeDiscardProcedureMessage()   => viewController.initDiscardProcedure()
-    case ToggleCardInListMessage(cardId)       => viewController.toggleCardInDiscardList(cardId)
-    case ConfirmDiscardMessage()               => viewController.confirmDiscard()
-    case CancelDiscardMessage()                => viewController.cancelDiscard()
-    case CandidateCardToPlayMessage(cardId)    => viewController.candidateCardToPlay(cardId)
+    case InitializeDiscardProcedureMessage()   => controller.initDiscardProcedure()
+    case ToggleCardInListMessage(cardId)       => controller.toggleCardInDiscardList(cardId)
+    case ConfirmDiscardMessage()               => controller.confirmDiscard()
+    case CancelDiscardMessage()                => controller.cancelDiscard()
+    case CandidateCardToPlayMessage(cardId)    => controller.candidateCardToPlay(cardId)

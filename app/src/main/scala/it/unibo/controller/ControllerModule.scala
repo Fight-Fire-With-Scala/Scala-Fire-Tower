@@ -6,6 +6,7 @@ import it.unibo.model.ModelModule
 import it.unibo.view.ViewModule
 import monix.reactive.subjects.PublishSubject
 import it.unibo.controller.model.ModelController
+import it.unibo.controller.view.ViewController
 
 object ControllerModule:
 
@@ -21,13 +22,20 @@ object ControllerModule:
     context: Requirements =>
 
     class ControllerImpl extends Controller:
-      private val modelObserver = PublishSubject[ModelMessage]()
+      private val modelObservable = PublishSubject[ModelMessage]()
+      private val viewObservable = PublishSubject[ViewMessage]()
+      private val intObservable = PublishSubject[InternalViewMessage]()
 
-      def notifyStartGame(): Unit =
-        modelObserver.subscribe(new ModelSubscriber(context.view))
-        val modelController = ModelController(context.model, modelObserver)
-        context.view.getObservable.subscribe(new ViewSubscriber(modelController))
-        context.view.startMenu()
+      private lazy val modelController = ModelController(context.model, modelObservable)
+      private lazy val viewController = ViewController(context.view, intObservable, viewObservable)
+
+      private lazy val modelSubscriber = ModelSubscriber(viewController)
+      private lazy val viewSubscriber = ViewSubscriber(modelController)
+
+      override def notifyStartGame(): Unit =
+        modelObservable.subscribe(modelSubscriber)
+        viewObservable.subscribe(viewSubscriber)
+        viewController.startMenu()
 
   trait Interface extends Provider with Component:
     self: Requirements =>

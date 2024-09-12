@@ -1,7 +1,7 @@
 package it.unibo.controller.subscribers
 
-import it.unibo.view.ViewModule.View
 import com.typesafe.scalalogging.Logger
+import it.unibo.controller.view.ViewController
 import it.unibo.controller.{
   ConfirmCardPlayMessage,
   ModelMessage,
@@ -11,12 +11,13 @@ import it.unibo.controller.{
 }
 
 /** This class is subscribed to the Model updates and changes the View accordingly */
-final class ModelSubscriber(view: View) extends BaseSubscriber[ModelMessage]:
-
+final class ModelSubscriber(controller: ViewController)
+    extends BaseSubscriber[ModelMessage]:
+  
   override val logger: Logger = Logger("Model -> ModelSubscriber")
 
   override def onMessageReceived(msg: ModelMessage): Unit = msg match
-    case StartGameMessage(gameBoard)            => view.startGame(gameBoard)
-    case RefreshMessage(gameBoard, refreshType) => view.updateView(gameBoard, refreshType)
-    case ConfirmCardPlayMessage()               => view.confirmCardPlay()
-    case StartMenuMessage()                     => ???
+    case StartGameMessage(gameBoard)            => controller.startGame(gameBoard)
+    case RefreshMessage(gameBoard, refreshType) => controller.refreshView(gameBoard, refreshType)
+    case ConfirmCardPlayMessage()               => controller.confirmCardPlay()
+    case StartMenuMessage()                     => controller.startMenu()

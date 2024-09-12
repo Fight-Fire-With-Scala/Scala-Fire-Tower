@@ -43,14 +43,23 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
 
   override def onMessageReceived(msg: ViewMessage): Unit = msg match
     case GameBoardInitialization(settings) =>
-      val playerOne = settings.getPlayerOne
-      val playerTwo = settings.getPlayerTwo
-      val gameBoard = GameBoard(playerOne, playerTwo)
-      val (partialGb, newPlayer) = controller
-        .initializePlayer(gameBoard, gameBoard.getCurrentPlayer)
-      val (newGb, newPlayer2) = controller.initializePlayer(partialGb, partialGb.getOpponent)
-      controller.model.setGameBoard(newGb.copy(player1 = newPlayer, player2 = newPlayer2))
-      controller.modelObserver.onNext(StartGameMessage(newGb))
+      val initialGameBoard = GameBoard(settings.getPlayerOne, settings.getPlayerTwo)
+
+      // Initialize both players
+      val (updatedGameBoard, updatedPlayer1) = controller
+        .initializePlayer(initialGameBoard, initialGameBoard.getCurrentPlayer)
+      val (finalGameBoard, updatedPlayer2) = controller
+        .initializePlayer(updatedGameBoard, updatedGameBoard.getOpponent)
+
+      // Create the fully initialized game board
+      val completeGameBoard = finalGameBoard
+        .copy(player1 = updatedPlayer1, player2 = updatedPlayer2)
+
+      // Update the game board in the model and notify observers
+      val resolvedGameBoard = completeGameBoard
+        .resolveEffect(PhaseEffect(completeGameBoard.gamePhase))
+      controller.model.setGameBoard(resolvedGameBoard)
+      controller.modelObserver.onNext(StartGameMessage(resolvedGameBoard))
 
     case UpdateGamePhase(ef: PhaseEffect) =>
       controller.applyEffect(ef, PhaseUpdate)

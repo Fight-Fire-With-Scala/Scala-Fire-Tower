@@ -1,10 +1,10 @@
 package it.unibo.view
 
-import scalafx.application.JFXApp3
+import it.unibo.controller.ViewSubject
+import scalafx.application.{JFXApp3, Platform}
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
-import it.unibo.controller.ViewSubject
 import it.unibo.view.components.IViewComponent
 import it.unibo.view.components.menu.MenuComponent
 import javafx.concurrent.Task as JFXTask

@@ -5,7 +5,7 @@ import it.unibo.view.components.game.GameComponent
 
 trait GameController:
   var gameComponent: Option[GameComponent] = None
-  val viewObservable: ViewSubject
+  val observable: ViewSubject
   val internalObservable: InternalViewSubject
 
   def initialize(component: GameComponent): Unit = gameComponent = Some(component)
