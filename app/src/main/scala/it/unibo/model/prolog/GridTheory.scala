@@ -26,7 +26,7 @@ object GridTheory:
   private def getCells(grid: Grid): Iterator[Term] =
     val cells = grid.cells.iterator.map { case (pos, cell) =>
       Struct.of("cell", Struct.tuple(pos._1, pos._2), cell)
-    }.toSeq.sorted.iterator
+    }.toSeq.iterator
 
     val tokens = grid.tokens.iterator.map { case (pos, token) =>
       Struct.of("token", Struct.tuple(pos._1, pos._2), token)
