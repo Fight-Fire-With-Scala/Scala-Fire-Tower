@@ -1,6 +1,6 @@
 package it.unibo.controller.view
 
-trait DiscardController extends GameController:
+trait DiscardCardController extends GameController:
   def confirmDiscard(): Unit = gameComponent.fold(()) { component =>
     component.handComponent.discardCards()
   }
