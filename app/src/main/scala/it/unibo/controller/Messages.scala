@@ -1,11 +1,11 @@
 package it.unibo.controller
 
 import it.unibo.controller.view.RefreshType
-import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.card.WindChoiceEffect
 import it.unibo.model.effect.hand.HandEffect.DiscardCard
 import it.unibo.model.effect.hand.HandEffect.DrawCard
 import it.unibo.model.effect.hand.HandEffect.PlayCard
+import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
@@ -39,9 +39,8 @@ case class DiscardCardMessage(ef: DiscardCard) extends ViewMessage
  */
 sealed trait ModelMessage extends Message
 
-case class StartGameMessage(gameBoard: GameBoard) extends ModelMessage
-case class StartMenuMessage() extends ModelMessage
-case class RefreshMessage(gameBoard: GameBoard, refreshType: RefreshType) extends ModelMessage
+case class StartGameMessage(gb: GameBoard) extends ModelMessage
+case class RefreshMessage(gb: GameBoard, refreshType: RefreshType) extends ModelMessage
 case class ConfirmCardPlayMessage() extends ModelMessage
 
 /*
