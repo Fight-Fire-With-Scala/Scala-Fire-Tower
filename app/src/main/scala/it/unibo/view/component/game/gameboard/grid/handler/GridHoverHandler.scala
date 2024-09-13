@@ -36,7 +36,7 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
     val neighbourPosition = getNeighbor(position, hoverDirection)
     val candidatePatterns = gridState.availablePatternsClickFixed
       .filter(_.contains(neighbourPosition))
-    logger.info(s"Candidate Patterns $candidatePatterns")
+    logger.debug(s"Candidate Patterns $candidatePatterns")
     candidatePatterns.toList match
       case pattern :: Nil =>
         gridState.availablePatternsClickHovered = candidatePatterns
