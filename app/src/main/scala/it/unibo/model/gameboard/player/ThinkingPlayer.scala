@@ -15,10 +15,9 @@ import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase._
-import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.grid.Token
-import it.unibo.model.gameboard.player.ThinkingPlayer.filterCardsBasedOnDecision
+import it.unibo.model.gameboard.GamePhase.*
+import it.unibo.model.gameboard.grid.{ConcreteToken, Position, Token}
+import it.unibo.model.gameboard.player.ThinkingPlayer.{filterCardsBasedOnDecision, isFireTokenInTowerArea}
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
@@ -54,26 +53,33 @@ trait ThinkingPlayer extends Player:
     computeAttackOrDefense(gb, botBehaviour)
 
     logger.info(s"[BOT] Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
-//    logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower}")
+    logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower}")
 
     // bot does redraw cards only if attacking and not having attack cards
     val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
     if (filteredCards.isEmpty) controller.applyEffect(PhaseEffect(RedrawCardsPhase), CardDiscard)
     else controller.applyEffect(PhaseEffect(PlayStandardCardPhase), CardSelected)
 
-    logger.info(filteredCards.toString())
+    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(RedrawCardsPhase)))
 
-  protected def thinkForRedrawCardPhase(using controller: ModelController): Unit = ???
+  protected def thinkForRedrawCardPhase(using controller: ModelController): Unit =
+    logger.info("[BOT] thinkForRedrawCardPhase")
+    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
 
-  protected def thinkForPlayStandardCardPhase(using controller: ModelController): Unit = ???
+  protected def thinkForPlayStandardCardPhase(using controller: ModelController): Unit =
+    logger.info("[BOT] thinkForPlayStandardCardPhase")
+    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
   protected def thinkForDecisionPhase(using controller: ModelController): Unit =
-    controller.applyEffect(PhaseEffect(PlaySpecialCardPhase), PhaseUpdate)
-    controller.applyEffect(PhaseEffect(EndTurnPhase), PhaseUpdate)
+    logger.info("[BOT] thinkForDecisionPhase")
+    if isFireTokenInTowerArea(controller.model.getGameBoard) then
+      botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
+    else botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
 
-  protected def thinkForPlaySpecialCardPhase(using controller: ModelController): Unit = ???
-
-  protected def thinkForEndTurnPhase(using controller: ModelController): Unit = ???
+  protected def thinkForPlaySpecialCardPhase(using controller: ModelController): Unit =
+    logger.info("[BOT] thinkForPlaySpecialCardPhase")
+    //if u have secchio u should play it here
+    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
 
 object ThinkingPlayer:
   private def handleMove(
@@ -98,3 +104,10 @@ object ThinkingPlayer:
                 case _: IDefensiveCard => true;
                 case _                 => false
               => card
+
+  private def isFireTokenInTowerArea(gb: GameBoard): Boolean =
+    val towerPositions = gb.board.grid.getTowerCells(gb.getCurrentPlayer.towerPositions)
+    towerPositions.exists(pos => gb.board.grid.getToken(pos).exists {
+      case token: ConcreteToken => token == ConcreteToken.Fire
+      case _ => false
+    })

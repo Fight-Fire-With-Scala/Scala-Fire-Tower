@@ -1,16 +1,16 @@
 package it.unibo.model.effect.phase
 
 import scala.annotation.tailrec
-
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.card.WindEffect.given_Conversion_Direction_WindEffect
 import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase._
+import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
+import it.unibo.model.logger
 
 trait PhaseManager:
   @tailrec
@@ -22,8 +22,10 @@ trait PhaseManager:
     case PlayStandardCardPhase => gb.copy(gamePhase = PlayStandardCardPhase)
     case RedrawCardsPhase      => gb.copy(gamePhase = RedrawCardsPhase)
     case DecisionPhase         => gb.getCurrentPlayer match
-        case p: Person => updateGamePhase(gb, getNextPhaseAfterDecisionPhase(gb))
-        case _         => gb
+        case p: Person => 
+          logger.info("Player is a Person")
+          updateGamePhase(gb, getNextPhaseAfterDecisionPhase(gb))
+        case _         => gb.copy(gamePhase = DecisionPhase)
     case PlaySpecialCardPhase  => gb.copy(gamePhase = PlaySpecialCardPhase)
     case EndTurnPhase          => updateGamePhase(handleTurnEnd(gb), WindPhase)
 

@@ -34,7 +34,7 @@ final case class Bot(
       case PlayStandardCardPhase => thinkForPlayStandardCardPhase
       case DecisionPhase         => thinkForDecisionPhase
       case PlaySpecialCardPhase  => thinkForPlaySpecialCardPhase
-      case EndTurnPhase          => thinkForEndTurnPhase
+      case _                     =>
 
 object Bot:
   def apply(
