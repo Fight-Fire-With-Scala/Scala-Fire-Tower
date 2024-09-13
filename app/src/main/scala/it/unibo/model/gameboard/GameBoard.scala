@@ -1,13 +1,7 @@
 package it.unibo.model.gameboard
 
 import it.unibo.model.card.Card
-import it.unibo.model.effect.GameBoardEffect
-import it.unibo.model.effect.core.GameBoardEffectResolver
-import it.unibo.model.effect.core.GameLogicEffectResolver
 import it.unibo.model.effect.core.IGameEffect
-import it.unibo.model.effect.hand.HandEffect
-import it.unibo.model.effect.pattern.PatternEffect
-import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.gameboard.player.Bot
@@ -15,7 +9,6 @@ import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
 import it.unibo.model.gameboard.player.PlayerInstance
 import it.unibo.model.gameboard.player.PlayerManager
-import it.unibo.model.logger
 
 case class GameBoard(
     board: Board,
@@ -25,7 +18,7 @@ case class GameBoard(
     private val playerManager: PlayerManager = PlayerManager(),
     turnNumber: Int = 0,
     gamePhase: GamePhase = WindPhase
-):
+) extends GameBoardManager:
 
   def getCurrentPlayer: Player = playerManager.getCurrentState match
     case PlayerInstance.Player1 => player1
@@ -43,20 +36,7 @@ case class GameBoard(
     playerManager.toggle()
     this
 
-  def resolveEffect(effect: IGameEffect): GameBoard = getEffectResolver(effect)
-    .resolve(GameBoardEffect(this)).gameBoard
-
-  private def getEffectResolver(effect: IGameEffect): GameBoardEffectResolver =
-    logger.info(s"Effect to resolve $effect")
-    effect match
-      case ef: PhaseEffect             => PhaseEffect.phaseEffectResolver.resolve(ef)
-      case ef: HandEffect              => HandEffect.handEffectResolver.resolve(ef) match
-          case e: GameLogicEffectResolver =>
-            val patternEffect = e.resolve(GameBoardEffect(this))
-            PatternEffect.patternEffectResolver.resolve(patternEffect)
-          case e: GameBoardEffectResolver => e
-      case ef: PatternEffect           => PatternEffect.patternEffectResolver.resolve(ef)
-      case ef: GameBoardEffectResolver => ef
+  def resolveEffect(effect: IGameEffect): GameBoard = gameBoardEffectResolver(this, effect)
 
 object GameBoard:
   def apply(player1: Player, player2: Player): GameBoard =

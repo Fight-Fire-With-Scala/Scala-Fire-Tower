@@ -7,7 +7,7 @@ import it.unibo.controller.DiscardCardMessage
 import it.unibo.controller.DrawCardMessage
 import it.unibo.controller.GameBoardInitialization
 import it.unibo.controller.ResolvePatternChoice
-import it.unibo.controller.ResolvePatternReset
+import it.unibo.controller.ResolveCardReset
 import it.unibo.controller.StartGameMessage
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.UpdateWindDirection
@@ -58,7 +58,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
       controller.applyEffect(ResetPatternComputation, CardDeselected)
       controller.modelObserver.onNext(ConfirmCardPlayMessage())
 
-    case ResolvePatternReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)
+    case ResolveCardReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)
 
     case DrawCardMessage(ef: DrawCard) => controller.applyEffect(ef, CardDraw)
 

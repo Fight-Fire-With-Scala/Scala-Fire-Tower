@@ -28,7 +28,7 @@ case class UpdateWindDirection(ef: WindChoiceEffect) extends ViewMessage
 case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage
 
 case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage
-case class ResolvePatternReset() extends ViewMessage
+case class ResolveCardReset() extends ViewMessage
 case class ResolvePatternChoice(ef: PatternApplication) extends ViewMessage
 
 case class DrawCardMessage(ef: DrawCard) extends ViewMessage

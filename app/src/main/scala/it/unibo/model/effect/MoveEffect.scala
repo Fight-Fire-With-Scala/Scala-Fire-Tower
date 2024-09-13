@@ -15,8 +15,31 @@ enum MoveEffect extends IGameEffect:
   case PatternApplied(chosenPattern: Map[Position, Token])
 
 object MoveEffect:
-  def resolveMove(effect: MoveEffect, gb: GameBoard): GameBoardEffect =
+  private def resolveMove(effect: MoveEffect, gb: GameBoard): GameBoardEffect =
     val move = Move(gb.turnNumber, effect)
     val currentPlayer = gb.getCurrentPlayer.logMove(move)
     val newGb = gb.updateCurrentPlayer(currentPlayer)
     GameBoardEffect(newGb)
+
+  def logPatternChosen(
+      gb: GameBoard,
+      availablePatterns: Set[Map[Position, Token]]
+  ): GameBoardEffect =
+    val move = PatternChosen(availablePatterns)
+    MoveEffect.resolveMove(move, gb)
+
+  def logCardsChosen(gb: GameBoard, cards: Map[Int, Set[Map[Position, Token]]]): GameBoardEffect =
+    val move = MoveEffect.CardsChosen(cards)
+    MoveEffect.resolveMove(move, gb)
+
+  def logCardChosen(
+      gb: GameBoard,
+      card: Card,
+      availablePatterns: Set[Map[Position, Token]]
+  ): GameBoardEffect =
+    val move = MoveEffect.CardChosen(card, availablePatterns)
+    MoveEffect.resolveMove(move, gb)
+
+  def logPatternApplied(gb: GameBoard, pattern: Map[Position, Token]): GameBoardEffect =
+    val move = PatternApplied(pattern)
+    MoveEffect.resolveMove(move, gb)

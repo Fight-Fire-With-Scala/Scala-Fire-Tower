@@ -6,7 +6,7 @@ import it.unibo.controller.ChoseCardToPlay
 import it.unibo.controller.DiscardCardMessage
 import it.unibo.controller.DrawCardMessage
 import it.unibo.controller.InternalViewSubject
-import it.unibo.controller.ResolvePatternReset
+import it.unibo.controller.ResolveCardReset
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.hand.HandEffect.DiscardCard
@@ -86,7 +86,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     if cardToPlay == cardComponent then
       cardToPlay = None
       logger.info(s"Card not to play: $cardToPlay")
-      observable.onNext(ResolvePatternReset())
+      observable.onNext(ResolveCardReset())
       observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
     else
       cardToPlay match
