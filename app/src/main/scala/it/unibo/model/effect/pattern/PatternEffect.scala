@@ -2,13 +2,12 @@ package it.unibo.model.effect.pattern
 
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.MoveEffect.{
-  logCardChosen,
-  logCardsChosen,
-  logPatternApplied,
-  logPatternChosen
-}
-import it.unibo.model.effect.core.*
+import it.unibo.model.effect.MoveEffect.logCardChosen
+import it.unibo.model.effect.MoveEffect.logCardsChosen
+import it.unibo.model.effect.MoveEffect.logPatternApplied
+import it.unibo.model.effect.MoveEffect.logPatternChosen
+import it.unibo.model.effect.core._
+import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.logger
@@ -37,12 +36,10 @@ object PatternEffect extends PatternManager with LogicSolverManager:
     GameBoardEffectResolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
       val availablePatterns = computePatterns(gb, cardId, logicEffect)
-      val card = gb.getCurrentPlayer.hand.find(_.id == cardId)
-      card match
-        case Some(c) => logCardChosen(gb, c, availablePatterns)
-        case None    =>
-          logger.warn(s"Could not find a card with id $cardId in hand")
-          GameBoardEffect(gb)
+      val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId)
+      cardOpt.map(card => logCardChosen(gb, card, availablePatterns)).getOrElse:
+        logger.warn(s"Could not find a card with id $cardId in hand")
+        gb
 
   private def resolvePatternApplication(pattern: Map[Position, Token]) =
     GameBoardEffectResolver: (gbe: GameBoardEffect) =>
@@ -62,4 +59,4 @@ object PatternEffect extends PatternManager with LogicSolverManager:
       case CardsComputation(cards)          => resolveCardsComputation(cards)
       case PatternComputation(logicEffect)  => resolvePatternComputation(logicEffect)
       case PatternApplication(pattern)      => resolvePatternApplication(pattern)
-      case ResetPatternComputation             => resolvePatternReset()
+      case ResetPatternComputation          => resolvePatternReset()

@@ -2,6 +2,7 @@ package it.unibo.model.effect
 
 import it.unibo.model.card.Card
 import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
@@ -19,7 +20,7 @@ object MoveEffect:
     val move = Move(gb.turnNumber, effect)
     val currentPlayer = gb.getCurrentPlayer.logMove(move)
     val newGb = gb.updateCurrentPlayer(currentPlayer)
-    GameBoardEffect(newGb)
+    newGb
 
   def logPatternChosen(
       gb: GameBoard,

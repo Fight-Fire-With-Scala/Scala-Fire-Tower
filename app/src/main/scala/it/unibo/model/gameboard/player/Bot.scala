@@ -2,11 +2,12 @@ package it.unibo.model.gameboard.player
 
 import it.unibo.controller.model.ModelController
 import it.unibo.model.card.Card
+import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.*
+import it.unibo.model.gameboard.GamePhase._
 import it.unibo.model.gameboard.grid.TowerPosition
-import it.unibo.model.{gameboard, logger}
+import it.unibo.model.logger
 
 final case class Bot(
     moves: List[Move],

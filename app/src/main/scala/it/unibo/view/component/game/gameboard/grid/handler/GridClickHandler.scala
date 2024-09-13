@@ -4,11 +4,11 @@ import scala.collection.mutable
 
 import it.unibo.controller._
 import it.unibo.launcher.Launcher.view.runOnUIThread
-import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.card.FireEffect
 import it.unibo.model.effect.card.FirebreakEffect
 import it.unibo.model.effect.card.WaterEffect
 import it.unibo.model.effect.card.WindEffect
+import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.DecisionPhase

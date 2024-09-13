@@ -34,15 +34,13 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
 
   def loadGUIRoot(componentInstance: IViewComponent): Task[IViewComponent] =
     val root = FXMLViewLoader.load(componentInstance)
-    wrapInMonixTask { () =>
+    wrapInMonixTask: () =>
       pane.children.clear()
       pane.children.add(root)
       stage.show()
       componentInstance
-    }
 
-  private def wrapInMonixTask[T](jfxTask: JFXTask[T]): Task[T] = Task.async { cb =>
+  private def wrapInMonixTask[T](jfxTask: JFXTask[T]): Task[T] = Task.async: cb =>
     jfxTask.setOnSucceeded(_ => cb.onSuccess(jfxTask.getValue))
     jfxTask.setOnFailed(_ => cb.onError(jfxTask.getException))
     jfxTask.run()
-  }

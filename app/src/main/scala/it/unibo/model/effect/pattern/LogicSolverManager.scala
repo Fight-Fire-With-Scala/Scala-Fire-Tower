@@ -3,12 +3,18 @@ package it.unibo.model.effect.pattern
 import alice.tuprolog.Theory
 import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.grid.{Position, Token}
+import it.unibo.model.gameboard.grid.Position
+import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.prolog.GridTheory
+import it.unibo.model.prolog.PrologEngine
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
-import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
-import it.unibo.model.prolog.{GridTheory, PrologEngine, SolverType}
-import it.unibo.model.prolog.SolverType.{CardChoserSolver, CardSolver, ConcatListSolver, ManhattanSolver}
+import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.SolverType
+import it.unibo.model.prolog.SolverType.CardChoserSolver
+import it.unibo.model.prolog.SolverType.CardSolver
+import it.unibo.model.prolog.SolverType.ConcatListSolver
+import it.unibo.model.prolog.SolverType.ManhattanSolver
 import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
 
 trait LogicSolverManager:

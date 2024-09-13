@@ -1,5 +1,9 @@
 package it.unibo
 
+import java.util.concurrent.TimeUnit
+
+import scala.concurrent.duration.FiniteDuration
+
 import alice.tuprolog.Theory
 import it.unibo.model.effect.card.BucketEffect
 import it.unibo.model.effect.card.FireEffect
@@ -12,13 +16,12 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.prolog.{GridTheory, PrologEngine, SolverType}
+import it.unibo.model.prolog.GridTheory
+import it.unibo.model.prolog.PrologEngine
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.SolverType
 import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
-
-import java.util.concurrent.TimeUnit
-import scala.concurrent.duration.FiniteDuration
 
 object TestAllCardsResultTheory:
   object PerformanceUtils:

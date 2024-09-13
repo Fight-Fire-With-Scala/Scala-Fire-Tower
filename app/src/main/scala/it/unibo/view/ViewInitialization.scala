@@ -16,14 +16,12 @@ object ViewInitialization:
       task: Task[IViewComponent],
       gameBoard: GameBoard
   )(using viewObservable: ViewSubject, internalObservable: InternalViewSubject): Task[Unit] = task
-    .flatMap { r =>
-      val gameComponent = r.asInstanceOf[GameComponent]
-      val gameComponentInitTask = GameComponent.initialize(gameComponent)
-      gameComponentInitTask.map { gameComponent =>
-        logger.debug("Game UI initialization completed")
-        gameController.initialize(gameComponent)
-        val internalViewSubscriber = InternalViewSubscriber(gameController)
-        internalObservable.subscribe(internalViewSubscriber)
-        gameController.refreshView(gameBoard, PhaseUpdate)
-      }
-    }
+    .flatMap:
+      case r @ (gc: GameComponent) =>
+        val gameComponentInitTask = GameComponent.initialize(gc)
+        gameComponentInitTask.map: gameComponent =>
+          logger.debug("Game UI initialization completed")
+          gameController.initialize(gameComponent)
+          val internalViewSubscriber = InternalViewSubscriber(gameController)
+          internalObservable.subscribe(internalViewSubscriber)
+          gameController.refreshView(gameBoard, PhaseUpdate)

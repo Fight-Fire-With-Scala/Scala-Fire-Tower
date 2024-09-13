@@ -1,5 +1,7 @@
 package it.unibo.view
 
+import scala.compiletime.uninitialized
+
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ViewSubject
 import it.unibo.controller.view.ViewController
@@ -8,7 +10,6 @@ import it.unibo.view.ViewInitialization.getGuiInitTask
 import it.unibo.view.component.IUpdateView
 import it.unibo.view.component.game.GameComponent
 import monix.execution.Scheduler.Implicits.global
-import scala.compiletime.uninitialized
 
 object ViewModule:
   trait View extends IUpdateView:

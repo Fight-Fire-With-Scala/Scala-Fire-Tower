@@ -1,6 +1,10 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.{SolveInfo, Struct, Term, Theory, Var}
+import alice.tuprolog.SolveInfo
+import alice.tuprolog.Struct
+import alice.tuprolog.Term
+import alice.tuprolog.Theory
+import alice.tuprolog.Var
 import it.unibo.model.gameboard.grid.Cell
 import it.unibo.model.gameboard.grid.ConcreteToken
 import it.unibo.model.gameboard.grid.ConcreteToken.Empty
@@ -39,7 +43,7 @@ object PrologUtils:
     case atom => atom.toString :: acc
 
   private def convertToMap(buffer: List[String]): Map[Position, Token] =
-    buffer.reverse.grouped(3).collect {
-      case List(i1: String, i2: String, s: String) =>
+    buffer.grouped(3).collect {
+      case List(s: String, i2: String, i1: String) =>
         (Position(i1.toInt, i2.toInt), ConcreteToken.values.find(_.id == s).getOrElse(Empty))
     }.toMap

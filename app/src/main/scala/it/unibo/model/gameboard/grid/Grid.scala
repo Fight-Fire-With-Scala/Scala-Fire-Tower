@@ -99,14 +99,16 @@ final case class BasicGrid(
   override def getTowerCells(towerPositions: Set[TowerPosition]): Set[Position] =
     val halfSize = Grid.Size / 2
 
-    def isInDiagonal(position: Position, towerPosition: TowerPosition): Boolean = towerPosition match
-      case TowerPosition.TOP_LEFT => position.row < halfSize && position.col < halfSize
-      case TowerPosition.BOTTOM_RIGHT => position.row >= halfSize && position.col >= halfSize
-      case TowerPosition.TOP_RIGHT => position.row < halfSize && position.col >= halfSize
-      case TowerPosition.BOTTOM_LEFT => position.row >= halfSize && position.col < halfSize
+    def isInDiagonal(position: Position, towerPosition: TowerPosition): Boolean =
+      towerPosition match
+        case TowerPosition.TOP_LEFT     => position.row < halfSize && position.col < halfSize
+        case TowerPosition.BOTTOM_RIGHT => position.row >= halfSize && position.col >= halfSize
+        case TowerPosition.TOP_RIGHT    => position.row < halfSize && position.col >= halfSize
+        case TowerPosition.BOTTOM_LEFT  => position.row >= halfSize && position.col < halfSize
 
     _cells.collect {
-      case (position, cell) if cell.isInstanceOf[Tower.type] && towerPositions.exists(isInDiagonal(position, _)) => position
+      case (position, cell: Tower.type) if towerPositions.exists(isInDiagonal(position, _)) =>
+        position
     }.toSet
 
   override def toString: String =

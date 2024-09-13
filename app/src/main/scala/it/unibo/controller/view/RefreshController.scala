@@ -9,11 +9,14 @@ import it.unibo.controller.view.RefreshType.PatternChosen
 import it.unibo.controller.view.RefreshType.PhaseUpdate
 import it.unibo.controller.view.RefreshType.WindUpdate
 import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.effect.MoveEffect.CardChosen
+import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase.WindPhase
-import it.unibo.model.gameboard.player.{Bot, Move, Person, Player}
+import it.unibo.model.gameboard.player.Bot
+import it.unibo.model.gameboard.player.Move
+import it.unibo.model.gameboard.player.Person
+import it.unibo.model.gameboard.player.Player
 import it.unibo.view.component.game.GameComponent
 import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
 import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
@@ -27,10 +30,10 @@ trait RefreshController extends ActivationController:
     given c: GameComponent = component
     given gb: GameBoard = gameBoard
 
-//    logger.info(s"[REFRESH] Type: $refreshType")
+    logger.debug(s"[REFRESH] Type: $refreshType")
 
     refreshType match
-      case RefreshType.PatternChosen => updateMove(_.lastPatternChosen)
+      case RefreshType.PatternChosen => // updateMove(_.lastPatternChosen)
       case CardDraw                  => updateHand
       case CardDiscard               => updateHand
       case CardSelected              =>
