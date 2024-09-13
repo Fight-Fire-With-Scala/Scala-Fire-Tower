@@ -22,6 +22,7 @@ object DecisionMaker:
   private var attackOrDefense: AttackDefense = AttackDefense.Attack
   
   def getAttackOrDefense: AttackDefense = attackOrDefense
+  def getObjectiveTower: Position = objectiveTower
 
   def computeAttackOrDefense(gameBoard: GameBoard, botBehaviour: BotBehaviour): Unit =
     val myTowerPositions = gameBoard.getCurrentPlayer.towerPositions.map(_.position)
