@@ -26,13 +26,13 @@ object ControllerModule:
       private val viewObservable = PublishSubject[ViewMessage]()
       private val intObservable = PublishSubject[InternalViewMessage]()
 
-      private lazy val modelController = ModelController(context.model, modelObservable)
-      private lazy val viewController = ViewController(context.view, intObservable, viewObservable)
-
-      private lazy val modelSubscriber = ModelSubscriber(viewController)
-      private lazy val viewSubscriber = ViewSubscriber(modelController)
-
       override def notifyStartGame(): Unit =
+        val modelController = ModelController(context.model, modelObservable)
+        val viewController = ViewController(context.view, intObservable, viewObservable)
+
+        val modelSubscriber = ModelSubscriber(viewController)
+        val viewSubscriber = ViewSubscriber(modelController)
+
         modelObservable.subscribe(modelSubscriber)
         viewObservable.subscribe(viewSubscriber)
         viewController.startMenu()
