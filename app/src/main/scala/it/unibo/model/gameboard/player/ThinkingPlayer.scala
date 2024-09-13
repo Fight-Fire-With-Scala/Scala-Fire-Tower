@@ -1,18 +1,15 @@
 package it.unibo.model.gameboard.player
 
+import it.unibo.controller.BotSubject
+import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType.CardDiscard
 import it.unibo.controller.view.RefreshType.CardSelected
 import it.unibo.controller.view.RefreshType.PhaseUpdate
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.card.WindEffect.given_Conversion_Direction_WindEffect
 import it.unibo.model.effect.core.IDefensiveCard
 import it.unibo.model.effect.core.IOffensiveCard
-import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
-import it.unibo.model.effect.pattern.PatternEffect
-import it.unibo.model.effect.pattern.PatternEffect.CardsComputation
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoard
@@ -22,7 +19,6 @@ import it.unibo.model.gameboard.GamePhase._
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.player.ThinkingPlayer.filterCardsBasedOnDecision
-import it.unibo.model.gameboard.player.ThinkingPlayer.handleMove
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
@@ -30,26 +26,27 @@ import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 
 trait ThinkingPlayer extends Player:
   val botBehaviour: BotBehaviour
+  val botObservable: Option[BotSubject]
   def think(controller: ModelController): Unit
 
   protected def thinkForWindPhase(using controller: ModelController): Unit =
     logger.info("[BOT] thinkForWindPhase")
     // In WindPhase the bot has just to decide from the available patterns
     // the one that gets closer to one tower of the opponent
-    val gb = controller.model.getGameBoard
-    val direction = gb.board.windDirection
-    val logicEffect = WindEffect.windEffectResolver.resolve(direction)
-    val effect = CardsComputation(Map(-1 -> List(logicEffect)))
-
-    val newGb = PatternEffect.patternEffectResolver.resolve(effect).resolve(gb).gameBoard
-
-    val lastCardsChosen = newGb.getCurrentPlayer.lastCardsChosen
-    val availablePattern = handleMove(gb, lastCardsChosen).values.last
-    logger.info(availablePattern.toString())
+//    val gb = controller.model.getGameBoard
+//    val direction = gb.board.windDirection
+//    val logicEffect = WindEffect.windEffectResolver.resolve(direction)
+//    val effect = CardsComputation(Map(-1 -> List(logicEffect)))
+//
+//    val newGb = PatternEffect.patternEffectResolver.resolve(effect).resolve(gb).gameBoard
+//
+//    val lastCardsChosen = newGb.getCurrentPlayer.lastCardsChosen
+//    val availablePattern = handleMove(gb, lastCardsChosen).values.last
+//    logger.info(availablePattern.toString())
 
     // val patternApplicationEffect = PatternApplication(availablePatterns)
 
-    controller.applyEffect(PhaseEffect(WaitingPhase), PhaseUpdate)
+    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
 
   protected def thinkForWaitingPhase(using controller: ModelController): Unit =
     logger.info("[BOT] thinkForWaitingPhase")

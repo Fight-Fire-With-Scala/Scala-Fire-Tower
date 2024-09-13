@@ -20,8 +20,10 @@ import it.unibo.model.prolog.SolverType.ManhattanSolver
 
 object DecisionMaker:
   private var attackOrDefense: AttackDefense = AttackDefense.Attack
+  private var objectiveTower: Position = Position(0, 0)
   
   def getAttackOrDefense: AttackDefense = attackOrDefense
+  def getObjectiveTower: Position = objectiveTower
 
   def computeAttackOrDefense(gameBoard: GameBoard, botBehaviour: BotBehaviour): Unit =
     val myTowerPositions = gameBoard.getCurrentPlayer.towerPositions.map(_.position)
@@ -42,7 +44,7 @@ object DecisionMaker:
     result match
       case Some(solution) =>
         val closestTower = solution.getTerm("ClosestTower").toString
-        val objectiveTower = Position(
+        objectiveTower = Position(
           closestTower.substring(1, closestTower.indexOf(',')).toInt,
           closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt
         )

@@ -63,4 +63,4 @@ object Player:
   def apply(name: String): Player = Person(name, List.empty, List.empty)
   def apply(name: String, towerPositions: Set[TowerPosition]): Player =
     Person(name, List.empty, List.empty, towerPositions)
-  def bot(botBehaviour: BotBehaviour): Player = Bot(List.empty, List.empty, botBehaviour)
+  def bot(botBehaviour: BotBehaviour): Player = Bot(List.empty, List.empty, botBehaviour, None)
