@@ -58,8 +58,9 @@ object Deck:
     val allCards = cardTypes.cardSets.flatMap(c => List.fill(c.amount)(c)).zipWithIndex
       .map { case (c, index) => Card(index + 1, c.title, c.description, c.effect) }
 
-    allCards.partition:
-      case card: ISpecialCardEffect => true
-      case _                        => false
+    allCards.partition(_.effect match
+      case _: ISpecialCardEffect => true
+      case _                     => false
+    )
 
   def showDeck(deck: Deck): Unit = deck.standardCards.foreach(card => logger.info(s"$card"))
