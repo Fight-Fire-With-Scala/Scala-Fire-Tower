@@ -13,15 +13,15 @@ import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
 import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
 
 trait ActivationController extends GameController:
-  private def showTurnInfoOnly(component: GameComponent): Unit = component.sidebarComponent.components
-    .foreach:
+  private def showTurnInfoOnly(component: GameComponent): Unit = component.sidebarComponent
+    .components.foreach:
       case c: DeckComponent     => c.disableView()
       case c: DiceComponent     => c.disableView()
       case c: WindRoseComponent => c.disableView()
       case c: GameInfoComponent => c.enableView()
 
   def updateGamePhaseActivation(choice: GamePhase): Unit = choice match
-    case WaitingPhase | RedrawCardsPhase => gameComponent.fold(()) { component =>
+    case WaitingPhase | RedrawCardsPhase => gameComponent.foreach: component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
         component.sidebarComponent.components.foreach:
@@ -29,25 +29,25 @@ trait ActivationController extends GameController:
           case c: DiceComponent     => c.disableView()
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
-      }
-    case PlayStandardCardPhase           => gameComponent.fold(()) { component =>
+
+    case PlayStandardCardPhase => gameComponent.foreach: component =>
         component.gridComponent.enableView()
         component.handComponent.enableView()
         component.handComponent.handleSpecialCardComponents(choice)
         showTurnInfoOnly(component)
-      }
-    case WindPhase                       => gameComponent.fold(()) { component =>
+
+    case WindPhase => gameComponent.foreach: component =>
         component.gridComponent.enableView()
         component.handComponent.disableView()
         component.sidebarComponent.disableView()
-      }
-    case PlaySpecialCardPhase            => gameComponent.fold(()) { component =>
+
+    case PlaySpecialCardPhase => gameComponent.foreach: component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
         component.handComponent.handleSpecialCardComponents(choice)
         showTurnInfoOnly(component)
-      }
-    case _                               => gameComponent.fold(()) { component =>
+
+    case _ => gameComponent.foreach: component =>
         component.gridComponent.disableView()
         component.handComponent.disableView()
         component.sidebarComponent.components.foreach:
@@ -55,4 +55,3 @@ trait ActivationController extends GameController:
           case c: DiceComponent     => c.disableView()
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
-      }
