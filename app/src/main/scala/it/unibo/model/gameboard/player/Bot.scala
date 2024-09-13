@@ -6,7 +6,7 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.TowerPosition
-import it.unibo.model.gameboard
+import it.unibo.model.{gameboard, logger}
 
 final case class Bot(
     moves: List[Move],
@@ -21,6 +21,7 @@ final case class Bot(
     copy(moves = moves, hand = hand, extraCard = extraCard)
 
   override def think(controller: ModelController): Unit =
+    logger.info("[BOT] Starting to think")
     given c: ModelController = controller
 
     controller.model.getGameBoard.gamePhase match

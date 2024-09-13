@@ -15,7 +15,7 @@ trait BaseSubscriber[T <: Message] extends Subscriber[T]:
   protected val logger: Logger
 
   override def onNext(msg: T): Future[Ack] =
-    logger.info(s"[Message] ${msg.getClass.getName}")
+    logger.debug(s"[Message] ${msg.getClass.getName}")
     onMessageReceived(msg)
     Continue
 

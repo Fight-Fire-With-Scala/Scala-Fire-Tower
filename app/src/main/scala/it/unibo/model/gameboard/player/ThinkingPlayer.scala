@@ -23,8 +23,9 @@ import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 trait ThinkingPlayer extends Player:
   val botBehaviour: BotBehaviour
   def think(controller: ModelController): Unit
-
+  
   protected def thinkForWindPhase(using controller: ModelController): Unit =
+    logger.info("[BOT] thinkForWindPhase")
     // In WindPhase the bot has just to decide from the available patterns
     // the one that gets closer to one tower of the opponent
     val gb = controller.model.getGameBoard
@@ -44,6 +45,7 @@ trait ThinkingPlayer extends Player:
     controller.applyEffect(PhaseEffect(WaitingPhase), PhaseUpdate)
 
   protected def thinkForWaitingPhase(using controller: ModelController): Unit =
+    logger.info("[BOT] thinkForWaitingPhase")
     val gb = controller.model.getGameBoard
     computeAttackOrDefense(gb, botBehaviour)
 

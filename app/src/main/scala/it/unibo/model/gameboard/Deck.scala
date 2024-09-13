@@ -22,20 +22,20 @@ final case class Deck(
 ):
   def shuffle(): Deck = copy(standardCards = Random.shuffle(standardCards))
   @tailrec
-  def drawCard(): (Option[Card], Deck) =
-    standardCards.headOption match
-      case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
-      case None if playedCards.isEmpty =>
-        logger.warn("No standard cards found in deck")
-        (None, this)
-      case None                        =>
-        logger.info("Regenerating deck")
-        val newDeck = regenerate()
-        newDeck.drawCard()
+  def drawCard(): (Option[Card], Deck) = standardCards.headOption match
+    case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
+    case None if playedCards.isEmpty =>
+      logger.warn("[DECK] Could not find a standard card in deck")
+      (None, this)
+    case None                        =>
+      logger.info("[DECK] Regenerating deck")
+      val newDeck = regenerate()
+      newDeck.drawCard()
+
   def drawSpecialCard(): (Option[Card], Deck) = specialCards.headOption match
     case Some(card) => (Some(card), copy(specialCards = specialCards.tail))
     case None       =>
-      logger.warn("No special cards found in deck")
+      logger.warn("[DECK] Could not find a special card in deck")
       (None, this)
 
   private def regenerate(): Deck = copy(standardCards = playedCards, playedCards = List.empty)
