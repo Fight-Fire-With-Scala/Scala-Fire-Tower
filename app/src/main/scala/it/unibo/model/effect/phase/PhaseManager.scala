@@ -1,14 +1,16 @@
 package it.unibo.model.effect.phase
 
 import scala.annotation.tailrec
+
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.card.WindEffect.given_Conversion_Direction_WindEffect
 import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.player.{Person, Player}
+import it.unibo.model.gameboard.GamePhase._
+import it.unibo.model.gameboard.player.Person
+import it.unibo.model.gameboard.player.Player
 
 trait PhaseManager:
   @tailrec

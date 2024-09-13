@@ -1,6 +1,7 @@
 package it.unibo.controller.subscriber
 
 import com.typesafe.scalalogging.Logger
+import it.unibo.controller.BotMessage
 import it.unibo.controller.ChoseCardToPlay
 import it.unibo.controller.ConfirmCardPlayMessage
 import it.unibo.controller.DiscardCardMessage
@@ -32,8 +33,11 @@ import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.pattern.PatternEffect.ResetPatternComputation
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.GameBoardConfig
+import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsBot
+import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsHuman
 import it.unibo.model.gameboard.player.Bot
-import it.unibo.model.gameboard.player.Person
+import monix.reactive.subjects.PublishSubject
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[ViewMessage]:
@@ -71,8 +75,15 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
       // Initialize both players
       val (updatedGameBoard, updatedPlayer1) = controller
         .initializePlayer(initialGameBoard, initialGameBoard.getCurrentPlayer)
-      val (finalGameBoard, updatedPlayer2) = controller
-        .initializePlayer(updatedGameBoard, updatedGameBoard.getOpponent)
+
+      val (finalGameBoard, updatedPlayer2) = settings.gameMode match
+        case GameBoardConfig.GameMode.HumanVsHuman => controller
+            .initializePlayer(updatedGameBoard, updatedGameBoard.getOpponent)
+        case GameBoardConfig.GameMode.HumanVsBot   =>
+          val botObservable = PublishSubject[BotMessage]()
+          val botSubscriber = BotSubscriber(controller)
+          botObservable.subscribe(botSubscriber)
+          controller.initializeBot(updatedGameBoard, updatedGameBoard.getOpponent, botObservable)
 
       // Create the fully initialized game board
       val completeGameBoard = finalGameBoard

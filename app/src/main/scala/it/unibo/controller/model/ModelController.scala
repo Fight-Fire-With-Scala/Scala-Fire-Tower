@@ -5,10 +5,9 @@ import it.unibo.controller.RefreshMessage
 import it.unibo.controller.view.RefreshType
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.effect.core.IGameEffect
-import it.unibo.model.effect.hand.HandManager
 
 final case class ModelController(model: Model, modelObserver: ModelSubject)
-    extends PlayerController with HandManager:
+    extends PlayerController:
 
   def applyEffect(ef: IGameEffect, refreshType: RefreshType): Unit =
     val newGb = model.getGameBoard.resolveEffect(ef)

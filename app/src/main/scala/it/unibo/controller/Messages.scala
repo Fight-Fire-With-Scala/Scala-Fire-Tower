@@ -13,9 +13,12 @@ import monix.reactive.subjects.PublishSubject
 
 type ModelSubject = PublishSubject[ModelMessage]
 type ViewSubject = PublishSubject[ViewMessage]
+type BotSubject = PublishSubject[BotMessage]
 type InternalViewSubject = PublishSubject[InternalViewMessage]
 
 sealed trait Message
+
+sealed trait BotMessage extends Message
 
 /*
  * This refers to messages sent to the model from the view
@@ -25,7 +28,7 @@ sealed trait ViewMessage extends Message
 case class GameBoardInitialization(settings: GameBoardConfig) extends ViewMessage
 
 case class UpdateWindDirection(ef: WindUpdateEffect) extends ViewMessage
-case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage
+case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage with BotMessage
 
 case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage
 case class ResolveCardReset() extends ViewMessage

@@ -1,5 +1,6 @@
 package it.unibo.model.gameboard.player
 
+import it.unibo.controller.BotSubject
 import it.unibo.controller.model.ModelController
 import it.unibo.model.card.Card
 import it.unibo.model.gameboard
@@ -14,6 +15,7 @@ final case class Bot(
     hand: List[Card],
     botBehaviour: BotBehaviour,
     towerPositions: Set[TowerPosition],
+    botObservable: Option[BotSubject],
     extraCard: Option[Card] = None
 ) extends ThinkingPlayer:
   override val name: String = "BOT"
@@ -35,5 +37,9 @@ final case class Bot(
       case EndTurnPhase          => thinkForEndTurnPhase
 
 object Bot:
-  def apply(moves: List[Move], hand: List[Card], botBehaviour: BotBehaviour) =
-    new Bot(List.empty, List.empty, botBehaviour, Set.empty)
+  def apply(
+      moves: List[Move],
+      hand: List[Card],
+      botBehaviour: BotBehaviour,
+      botObservable: Option[BotSubject]
+  ) = new Bot(List.empty, List.empty, botBehaviour, Set.empty, botObservable)
