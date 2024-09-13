@@ -1,9 +1,7 @@
 package it.unibo
 
 import java.util.concurrent.TimeUnit
-
 import scala.concurrent.duration.FiniteDuration
-
 import alice.tuprolog.Theory
 import it.unibo.model.effect.card.BucketEffect
 import it.unibo.model.effect.card.FireEffect
@@ -14,12 +12,14 @@ import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.Deck
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
+import it.unibo.model.gameboard.grid.{Position, Token}
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
 import it.unibo.model.prolog.GridTheory
 import it.unibo.model.prolog.PrologEngine
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.PrologUtils
 import it.unibo.model.prolog.SolverType
 import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
 
@@ -98,8 +98,8 @@ object TestAllCardsResultTheory:
 
     result match
       case Some(solution) =>
-        val allCardResults = solution.getTerm("R")
-        println(s"All card results: $allCardResults")
+        val cardResults = PrologUtils.parseAllCardsResult(solution)
+        println(s"Parsed card results: $cardResults")
       case None           => println("No solution found")
 
   @main

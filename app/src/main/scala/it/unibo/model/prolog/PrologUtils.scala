@@ -25,14 +25,25 @@ object PrologUtils:
   extension (g: Grid) def size: Int = math.sqrt(g.cells.size).toInt
 
   def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] = solution.getSolution match
-    case solutionAsStruct: Struct => solutionAsStruct.getArg(0) match
-        case resultVar: Var => resultVar.getLink match
-            case resultStruct: Struct =>
-              val resultList = parseStruct(resultStruct, List())
-              convertToMap(resultList)
-            case _                    => Map.empty
-        case _              => Map.empty
+    case solutionAsStruct: Struct => extractMapPositionTokenFromStruct(solutionAsStruct, 0)
     case _                        => Map.empty
+
+  def parseAllCardsResult(solution: SolveInfo): Map[Int, Map[Position, Token]] =
+    solution.getTerm("R") match
+      case solutionAsStruct: Struct =>
+        val cardId = solutionAsStruct.getArg(1).toString.toInt
+        val positionsAndTokensMap = extractMapPositionTokenFromStruct(solutionAsStruct, 0)
+        Map(cardId -> positionsAndTokensMap)
+      case _                        => Map.empty
+
+  private def extractMapPositionTokenFromStruct(struct: Struct, argId: Int): Map[Position, Token] =
+    struct.getArg(argId) match
+      case resultVar: Var => resultVar.getLink match
+          case resultStruct: Struct =>
+            val resultList = parseStruct(resultStruct, List())
+            convertToMap(resultList)
+          case _                    => Map.empty
+      case _              => Map.empty
 
   private def parseStruct(s: Struct, acc: List[String]): List[String] = s match
     case s if s.isTuple =>

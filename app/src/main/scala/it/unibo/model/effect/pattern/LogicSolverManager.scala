@@ -5,12 +5,10 @@ import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
-import it.unibo.model.prolog.GridTheory
-import it.unibo.model.prolog.PrologEngine
+import it.unibo.model.prolog.{GridTheory, PrologEngine, PrologUtils, SolverType}
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
-import it.unibo.model.prolog.SolverType
 import it.unibo.model.prolog.SolverType.CardChoserSolver
 import it.unibo.model.prolog.SolverType.CardSolver
 import it.unibo.model.prolog.SolverType.ConcatListSolver
@@ -32,7 +30,7 @@ trait LogicSolverManager:
   protected def computePatterns(
       gb: GameBoard,
       cards: Map[Int, List[ILogicEffect]]
-  ): Map[Int, Set[Map[Position, Token]]] =
+  ): Map[Int, Map[Position, Token]] =
     val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
     val enemyTower = gb.getOpponent.towerPositions.head.position
     val grid = gb.board.grid
@@ -55,6 +53,5 @@ trait LogicSolverManager:
 
     result match
       case Some(solution) =>
-        val allCardResults = solution.getTerm("R")
-        Map.empty
+        PrologUtils.parseAllCardsResult(solution)
       case None           => Map.empty
