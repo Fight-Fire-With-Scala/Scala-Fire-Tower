@@ -1,5 +1,6 @@
 package it.unibo.model.prolog
 
+import alice.tuprolog
 import alice.tuprolog.SolveInfo
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
@@ -20,30 +21,38 @@ object PrologUtils:
   given Conversion[Cell, Term] = (cell: Cell) => Term.createTerm(cell.id)
   given Conversion[Token, Term] = (token: Token) => Term.createTerm(token.id)
   given Conversion[SolverType, Theory] = t => t.getTheory(t.prologSourcePath)
-  
+
   extension (g: Grid) def size: Int = math.sqrt(g.cells.size).toInt
 
-  def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] =
-    val solutionAsStruct = solution.getSolution.asInstanceOf[Struct]
-    val result = solutionAsStruct.getArg(0).asInstanceOf[Var].getLink.asInstanceOf[Struct]
-    val resultList = parseStruct(result, List())
-    convertToMap(resultList)
+  def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] = solution.getSolution match
+    case solutionAsStruct: Struct => solutionAsStruct.getArg(0) match
+        case resultVar: Var => resultVar.getLink match
+            case resultStruct: Struct =>
+              val resultList = parseStruct(resultStruct, List())
+              convertToMap(resultList)
+            case _                    => Map.empty
+        case _              => Map.empty
+    case _                        => Map.empty
 
   private def parseStruct(s: Struct, acc: List[String]): List[String] = s match
     case s if s.isTuple =>
       val acc1 = parseTuple(s.getArg(0), acc)
       parseTuple(s.getArg(1), acc1)
-    case s if s.isCons =>
-      val acc1 = parseStruct(s.getArg(0).asInstanceOf[Struct], acc)
-      parseStruct(s.getArg(1).asInstanceOf[Struct], acc1)
-    case _ => acc
+    case s if s.isCons  =>
+      s.getArg(0) match
+        case struct: Struct =>
+          val acc1 = parseStruct(struct, acc)
+          s.getArg(1) match
+            case struct: Struct => parseStruct(struct, acc1)
+            case _              => acc
+        case _              => acc
+    case _              => acc
 
   private def parseTuple(s: Term, acc: List[String]): List[String] = s match
     case struct: Struct if s.isTuple => parseStruct(struct, acc)
-    case atom => atom.toString :: acc
+    case atom                        => atom.toString :: acc
 
-  private def convertToMap(buffer: List[String]): Map[Position, Token] =
-    buffer.grouped(3).collect {
-      case List(s: String, i2: String, i1: String) =>
-        (Position(i1.toInt, i2.toInt), ConcreteToken.values.find(_.id == s).getOrElse(Empty))
+  private def convertToMap(buffer: List[String]): Map[Position, Token] = buffer.grouped(3)
+    .collect { case List(s: String, i2: String, i1: String) =>
+      (Position(i1.toInt, i2.toInt), ConcreteToken.values.find(_.id == s).getOrElse(Empty))
     }.toMap
