@@ -19,7 +19,7 @@ trait PhaseManager:
     case RedrawCardsPhase      => gb.copy(gamePhase = RedrawCardsPhase)
     case DecisionPhase         => updateGamePhase(gb, getNextPhaseAfterDecisionPhase(gb))
     case PlaySpecialCardPhase  => gb.copy(gamePhase = PlaySpecialCardPhase)
-    case EndTurnPhase          => handleWindPhase(handleTurnEnd(gb))
+    case EndTurnPhase          => updateGamePhase(handleTurnEnd(gb), WindPhase)
 
   private def handleTurnEnd(gb: GameBoard) = gb
     .copy(gamePhase = WindPhase, turnNumber = gb.turnNumber + 1).changePlayer()
