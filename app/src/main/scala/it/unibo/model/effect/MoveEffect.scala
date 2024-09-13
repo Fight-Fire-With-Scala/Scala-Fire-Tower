@@ -11,7 +11,7 @@ import it.unibo.model.gameboard.player.Move
 enum MoveEffect extends IGameEffect:
   case CardsRedrawn(cards: List[Int])
   case CardChosen(card: Card, computedPatterns: Set[Map[Position, Token]])
-  case CardsChosen(cardsChosen: Map[Int, Set[Map[Position, Token]]])
+  case CardsChosen(cardsChosen: Map[Int, Map[Position, Token]])
   case PatternChosen(computedPatterns: Set[Map[Position, Token]])
   case PatternApplied(chosenPattern: Map[Position, Token])
 
@@ -29,7 +29,7 @@ object MoveEffect:
     val move = PatternChosen(availablePatterns)
     MoveEffect.resolveMove(move, gb)
 
-  def logCardsChosen(gb: GameBoard, cards: Map[Int, Set[Map[Position, Token]]]): GameBoardEffect =
+  def logCardsChosen(gb: GameBoard, cards: Map[Int, Map[Position, Token]]): GameBoardEffect =
     val move = MoveEffect.CardsChosen(cards)
     MoveEffect.resolveMove(move, gb)
 

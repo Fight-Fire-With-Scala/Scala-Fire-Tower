@@ -79,10 +79,10 @@ object ThinkingPlayer:
   private def handleMove(
       gb: GameBoard,
       lastMove: Option[Move]
-  ): Map[Int, Set[Map[Position, Token]]] = lastMove match
+  ): Map[Int, Map[Position, Token]] = lastMove match
     case Some(move) => move.effect match
         case MoveEffect.CardsChosen(cards)              => cards
-        case MoveEffect.PatternChosen(computedPatterns) => Map(-1 -> computedPatterns)
+        case MoveEffect.PatternApplied(appliedPattern) => Map(-1 -> appliedPattern)
         case _                                          => Map.empty
     case None       => Map.empty
 
