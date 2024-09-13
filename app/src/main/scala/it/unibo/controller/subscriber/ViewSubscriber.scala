@@ -45,10 +45,10 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
   override def onMessageReceived(msg: ViewMessage): Unit = msg match
     case UpdateGamePhase(ef: PhaseEffect) =>
       val gb = controller.model.getGameBoard
+      controller.applyEffect(ef, PhaseUpdate)
       gb.getCurrentPlayer match
-        case b: Bot    => b.think(controller)
-        case p: Person => controller.applyEffect(ef, PhaseUpdate)
-        case _         =>
+        case b: Bot => b.think(controller)
+        case _      =>
 
     case UpdateWindDirection(ef: WindUpdateEffect) => controller.applyEffect(ef, WindUpdate)
 
