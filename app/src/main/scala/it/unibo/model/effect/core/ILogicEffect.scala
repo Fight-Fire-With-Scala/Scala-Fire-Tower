@@ -10,3 +10,9 @@ final case class ILogicEffect(
     goals: List[Int => Rule],
     directions: List[Direction]
 ) extends IGameEffect
+
+object ILogicEffect:
+  given Conversion[Int => Rule, List[Int => Rule]] = List(_)
+
+  def apply(pattern: Map[Position, Token], goals: List[Int => Rule]) =
+    new ILogicEffect(pattern, goals, Direction.values.toList)

@@ -1,7 +1,7 @@
 package it.unibo.controller
 
 import it.unibo.controller.view.RefreshType
-import it.unibo.model.effect.card.WindChoiceEffect
+import it.unibo.model.effect.card.WindUpdateEffect
 import it.unibo.model.effect.hand.HandEffect.DiscardCard
 import it.unibo.model.effect.hand.HandEffect.DrawCard
 import it.unibo.model.effect.hand.HandEffect.PlayCard
@@ -24,7 +24,7 @@ sealed trait ViewMessage extends Message
 
 case class GameBoardInitialization(settings: GameBoardConfig) extends ViewMessage
 
-case class UpdateWindDirection(ef: WindChoiceEffect) extends ViewMessage
+case class UpdateWindDirection(ef: WindUpdateEffect) extends ViewMessage
 case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage
 
 case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage

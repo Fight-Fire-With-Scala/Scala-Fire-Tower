@@ -1,14 +1,14 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.GameEffectResolver
 import it.unibo.model.effect.core.IDefensiveCard
-import it.unibo.model.effect.core.IGameEffect
 import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.gameboard.Direction
+import it.unibo.model.effect.core.LogicEffectResolver
 import it.unibo.model.gameboard.PatternType.MediumAltEffect
 import it.unibo.model.gameboard.PatternType.SmallEffect
 import it.unibo.model.gameboard.PatternType.VerySmallEffect
+import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Map
 import it.unibo.model.gameboard.grid.ConcreteToken.Empty
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.prolog.Rule
@@ -19,19 +19,9 @@ enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect wit
   case DeReforest extends FirebreakEffect(10)
 
 object FirebreakEffect:
-  val fireBreakEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver:
-    case FirebreakEffect.DeReforest  => ILogicEffect(
-        pattern = VerySmallEffect(Map("a" -> Firebreak)).compilePattern,
-        goals = List(Rule("deforest"), Rule("reforest")),
-        directions = Direction.values.toList
-      )
-    case FirebreakEffect.ScratchLine => ILogicEffect(
-        pattern = MediumAltEffect(Map("a" -> Firebreak, "b" -> Empty)).compilePattern,
-        goals = List(Rule("scratch_line")),
-        directions = Direction.values.toList
-      )
-    case FirebreakEffect.DozerLine   => ILogicEffect(
-        pattern = SmallEffect(Map("a" -> Firebreak)).compilePattern,
-        goals = List(Rule("dozer_line")),
-        directions = Direction.values.toList
-      )
+  val fireBreakEffectResolver: LogicEffectResolver[FirebreakEffect] = LogicEffectResolver:
+    case DeReforest  =>
+      ILogicEffect(VerySmallEffect(Map("a" -> Firebreak)), List(Rule("deforest"), Rule("reforest")))
+    case ScratchLine =>
+      ILogicEffect(MediumAltEffect(Map("a" -> Firebreak, "b" -> Empty)), Rule("scratch_line"))
+    case DozerLine   => ILogicEffect(SmallEffect(Map("a" -> Firebreak)), Rule("dozer_line"))

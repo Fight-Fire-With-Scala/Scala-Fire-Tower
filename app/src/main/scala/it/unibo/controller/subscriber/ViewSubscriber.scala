@@ -6,8 +6,8 @@ import it.unibo.controller.ConfirmCardPlayMessage
 import it.unibo.controller.DiscardCardMessage
 import it.unibo.controller.DrawCardMessage
 import it.unibo.controller.GameBoardInitialization
-import it.unibo.controller.ResolvePatternChoice
 import it.unibo.controller.ResolveCardReset
+import it.unibo.controller.ResolvePatternChoice
 import it.unibo.controller.StartGameMessage
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.UpdateWindDirection
@@ -22,7 +22,7 @@ import it.unibo.controller.view.RefreshType.PatternChosen
 import it.unibo.controller.view.RefreshType.PhaseUpdate
 import it.unibo.controller.view.RefreshType.WindUpdate
 import it.unibo.model.ModelModule.Model
-import it.unibo.model.effect.card.WindChoiceEffect
+import it.unibo.model.effect.card.WindUpdateEffect
 import it.unibo.model.effect.hand.HandEffect
 import it.unibo.model.effect.hand.HandEffect.DiscardCard
 import it.unibo.model.effect.hand.HandEffect.DrawCard
@@ -32,7 +32,8 @@ import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.pattern.PatternEffect.ResetPatternComputation
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.player.{Bot, Person}
+import it.unibo.model.gameboard.player.Bot
+import it.unibo.model.gameboard.player.Person
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[ViewMessage]:
@@ -49,7 +50,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
         case p: Person => controller.applyEffect(ef, PhaseUpdate)
         case _         =>
 
-    case UpdateWindDirection(ef: WindChoiceEffect) => controller.applyEffect(ef, WindUpdate)
+    case UpdateWindDirection(ef: WindUpdateEffect) => controller.applyEffect(ef, WindUpdate)
 
     case ChoseCardToPlay(ef: PlayCard) => controller.applyEffect(ef, CardSelected)
 

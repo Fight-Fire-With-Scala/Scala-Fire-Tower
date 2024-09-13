@@ -2,9 +2,17 @@ package it.unibo.model.effect.hand
 
 import it.unibo.model.card.Card
 import it.unibo.model.effect.GameBoardEffect
-import it.unibo.model.effect.pattern.PatternEffect.CardComputation
 import it.unibo.model.effect.card._
+import it.unibo.model.effect.card.FireEffect.fireEffectResolver
+import it.unibo.model.effect.card.FirebreakEffect.fireBreakEffectResolver
+import it.unibo.model.effect.card.WaterEffect.waterEffectResolver
+import it.unibo.model.effect.card.WindEffect.windEffectResolver
 import it.unibo.model.effect.core._
+import it.unibo.model.effect.core.LogicEffectResolver
+import it.unibo.model.effect.core.PatternEffectResolver
+import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
+import it.unibo.model.effect.pattern.PatternEffect
+import it.unibo.model.effect.pattern.PatternEffect.CardComputation
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Player
 
@@ -14,44 +22,39 @@ enum HandEffect extends IGameEffect:
   case DiscardCard(cards: List[Int])
 
 object HandEffect extends HandManager:
-  private def resolveDrawCard(nCards: Int) = GameBoardEffectResolver { (gbe: GameBoardEffect) =>
+  private def resolveDrawCard(nCards: Int) = GameBoardEffectResolver: (gbe: GameBoardEffect) =>
     val gb = gbe.gameBoard
     val (newGb, player) = drawCards(gb, nCards)(gb.getCurrentPlayer)
     GameBoardEffect(newGb.updateCurrentPlayer(player))
-  }
 
   private def resolveDiscardCard(cards: List[Int]) =
-    GameBoardEffectResolver { (gbe: GameBoardEffect) =>
+    GameBoardEffectResolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
       val cardsPlayed = cards.flatMap(cId => gb.getCurrentPlayer.hand.find(_.id == cId))
       val playedCards = cardsPlayed ++ gb.deck.playedCards
       val newDeck = gb.deck.copy(playedCards = cardsPlayed)
-      GameBoardEffect(discardCards(gb, cards).copy(deck = newDeck))
-    }
+      discardCards(gb, cards).copy(deck = newDeck)
 
-  private def resolveCardEffect(cardId: Int) = GameLogicEffectResolver { (gbe: GameBoardEffect) =>
+  private def resolveCardEffect(cardId: Int) = PatternEffectResolver: (gbe: GameBoardEffect) =>
     val gb = gbe.gameBoard
-    val card = gb.getCurrentPlayer.hand.find(_.id == cardId)
-    card match
-      case Some(c) => c.effect match
-          case effect: FireEffect      =>
-            val logicEffect = FireEffect.fireEffectResolver.resolve(effect)
-            CardComputation(cardId, logicEffect)
-          case effect: FirebreakEffect =>
-            val logicEffect = FirebreakEffect.fireBreakEffectResolver.resolve(effect)
-            CardComputation(cardId, logicEffect)
-          case effect: WaterEffect     =>
-            val logicEffect = WaterEffect.waterEffectResolver.resolve(effect)
-            CardComputation(cardId, logicEffect)
-          case effect: WindEffect      =>
-            val logicEffect = WindEffect.windEffectResolver.resolve(effect)
-            CardComputation(cardId, logicEffect)
-          case BucketEffect            =>
-            val logicEffect = BucketEffect.bucketEffect
-            CardComputation(cardId, logicEffect)
-          case _                       => GameBoardEffect(gb)
-      case None    => GameBoardEffect(gb)
-  }
+    val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId)
+    cardOpt.map(card => resolveCard(gb, card)).getOrElse(gb)
+
+  private def resolveCard(gb: GameBoard, card: Card): GameBoardEffect | PatternEffect =
+    def resolveEffect[CardEffect <: ICardEffect](
+        resolver: LogicEffectResolver[CardEffect],
+        effect: CardEffect
+    ): CardComputation =
+      val logicEffect = resolver.resolve(effect)
+      CardComputation(card.id, logicEffect)
+
+    card.effect match
+      case effect: FireEffect      => resolveEffect(fireEffectResolver, effect)
+      case effect: FirebreakEffect => resolveEffect(fireBreakEffectResolver, effect)
+      case effect: WaterEffect     => resolveEffect(waterEffectResolver, effect)
+      case effect: WindEffect      => resolveEffect(windEffectResolver, effect)
+      case BucketEffect            => CardComputation(card.id, BucketEffect.bucketEffect)
+      case _                       => gb
 
   val handEffectResolver: GameEffectResolver[IGameEffect, IGameEffect] = GameEffectResolver:
     case DrawCard(nCards)   => resolveDrawCard(nCards)

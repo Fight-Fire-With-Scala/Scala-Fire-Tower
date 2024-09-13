@@ -3,7 +3,8 @@ package it.unibo.model.effect.phase
 import scala.annotation.tailrec
 
 import it.unibo.model.effect.GameBoardEffect
-import it.unibo.model.effect.card.WindChoiceEffect
+import it.unibo.model.effect.card.WindEffect
+import it.unibo.model.effect.card.WindEffect.given_Conversion_Direction_WindEffect
 import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase
@@ -29,7 +30,7 @@ trait PhaseManager:
 
   private def handleWindPhase(gb: GameBoard) =
     val direction = gb.board.windDirection
-    val logicEffect = WindChoiceEffect.getPlaceFireEffect(direction)
+    val logicEffect = WindEffect.windEffectResolver.resolve(direction)
     val patternComputation = PatternEffect.PatternComputation(logicEffect)
     val gbEffectResolver = PatternEffect.patternEffectResolver.resolve(patternComputation)
     val newGb = gbEffectResolver.resolve(GameBoardEffect(gb)).gameBoard

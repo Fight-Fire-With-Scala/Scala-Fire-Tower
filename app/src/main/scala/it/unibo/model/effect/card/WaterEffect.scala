@@ -1,14 +1,14 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.GameEffectResolver
 import it.unibo.model.effect.core.IDefensiveCard
-import it.unibo.model.effect.core.IGameEffect
 import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.gameboard.Direction
+import it.unibo.model.effect.core.LogicEffectResolver
 import it.unibo.model.gameboard.PatternType.LargeEffect
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.PatternType.VeryLargeEffect
+import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Map
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Water
 import it.unibo.model.prolog.Rule
@@ -19,19 +19,8 @@ enum WaterEffect(override val effectId: Int) extends IStandardCardEffect with ID
   case FireEngine extends WaterEffect(13)
 
 object WaterEffect:
-  val waterEffectResolver: GameEffectResolver[IGameEffect, ILogicEffect] = GameEffectResolver:
-    case WaterEffect.SmokeJumper => ILogicEffect(
-        pattern = VeryLargeEffect(Map("a" -> Water, "b" -> Fire)).compilePattern,
-        goals = List(Rule("smoke_jumper")),
-        directions = Direction.values.toList
-      )
-    case WaterEffect.AirDrop     => ILogicEffect(
-        pattern = MediumEffect(Map("a" -> Water)).compilePattern,
-        goals = List(Rule("water")),
-        directions = Direction.values.toList
-      )
-    case WaterEffect.FireEngine  => ILogicEffect(
-        pattern = LargeEffect(Map("a" -> Water)).compilePattern,
-        goals = List(Rule("water")),
-        directions = Direction.values.toList
-      )
+  val waterEffectResolver: LogicEffectResolver[WaterEffect] = LogicEffectResolver:
+    case SmokeJumper =>
+      ILogicEffect(VeryLargeEffect(Map("a" -> Water, "b" -> Fire)), Rule("smoke_jumper"))
+    case AirDrop     => ILogicEffect(MediumEffect(Map("a" -> Water)), Rule("water"))
+    case FireEngine  => ILogicEffect(LargeEffect(Map("a" -> Water)), Rule("water"))
