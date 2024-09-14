@@ -57,8 +57,8 @@ water(R, CardId) :-
         match_empty_cells(Coords, [w, ef])
     ),
     compute_pattern(Coords, R, _, CardId),
-    \+ at_least(pattern, R, _, [t], []),
-    at_least(pattern, R, _, [], [f]).
+    \+ at_least(pattern, R, _, [t], [], CardId),
+    at_least(pattern, R, _, [], [f], CardId).
 
 bucket(R, CardId) :-
     (
@@ -66,4 +66,4 @@ bucket(R, CardId) :-
         match_empty_cells(Coords, [w, t, ef])
     ),
     compute_pattern(Coords, R, _, CardId),
-    at_least(pattern, R, _, [t], [f]).
+    at_least(pattern, R, _, [t], [f], CardId).
