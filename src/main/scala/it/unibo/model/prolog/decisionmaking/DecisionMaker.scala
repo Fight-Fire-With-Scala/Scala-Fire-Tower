@@ -31,9 +31,9 @@ object DecisionMaker:
     val opponentPositions = gameBoard.getOpponent.towerPositions.map(_.position)
     logger.info(opponentPositions.toString())
     val theory = AttackDefenseTheory(gameBoard.board.grid, myTowerPositions, opponentPositions)
-    val variable = Struct.of("biasFactor", botBehaviour.biasFactor)
-    val theoryVariable = Theory.fromPrologList(Struct.list(Iterator.single(variable).asJava))
-    theory.append(theoryVariable)
+    val biasVariable = Struct.of("biasFactor", botBehaviour.biasFactor)
+    val biasTheory = Theory.fromPrologList(Struct.list(Iterator.single(biasVariable).asJava))
+    theory.append(biasTheory)
     theory.append(SolverType.DistanceSolver)
     theory.append(SolverType.ManhattanSolver)
 
