@@ -49,22 +49,22 @@
 //  private val gb = GameBoard(enemy, newPlayer2)
 //  private val newGb = gb.changePlayer()
 //
-//  private def resolveEffect(cardId: Int, effect: IGameEffect): ILogicEffect = effect match
-//    case FireEffect.Explosion      => FireEffect.fireEffectResolver.resolve(FireEffect.Explosion)
-//    case FireEffect.Flare          => FireEffect.fireEffectResolver.resolve(FireEffect.Flare)
-//    case FireEffect.BurningSnag    => FireEffect.fireEffectResolver.resolve(FireEffect.BurningSnag)
-//    case FireEffect.Ember          => FireEffect.fireEffectResolver.resolve(FireEffect.Ember)
-//    case FirebreakEffect.DozerLine => FirebreakEffect.fireBreakEffectResolver
-//        .resolve(FirebreakEffect.DozerLine)
-//    case FirebreakEffect.ScratchLine => FirebreakEffect.fireBreakEffectResolver
-//        .resolve(FirebreakEffect.ScratchLine)
-//    case FirebreakEffect.DeReforest  => FirebreakEffect.fireBreakEffectResolver
-//        .resolve(FirebreakEffect.DeReforest)
+//  private def solveEffect(cardId: Int, effect: IGameEffect): ILogicEffect = effect match
+//    case FireEffect.Explosion      => FireEffect.fireEffectSolver.solve(FireEffect.Explosion)
+//    case FireEffect.Flare          => FireEffect.fireEffectSolver.solve(FireEffect.Flare)
+//    case FireEffect.BurningSnag    => FireEffect.fireEffectSolver.solve(FireEffect.BurningSnag)
+//    case FireEffect.Ember          => FireEffect.fireEffectSolver.solve(FireEffect.Ember)
+//    case FirebreakEffect.DozerLine => FirebreakEffect.fireBreakEffectSolver
+//        .solve(FirebreakEffect.DozerLine)
+//    case FirebreakEffect.ScratchLine => FirebreakEffect.fireBreakEffectSolver
+//        .solve(FirebreakEffect.ScratchLine)
+//    case FirebreakEffect.DeReforest  => FirebreakEffect.fireBreakEffectSolver
+//        .solve(FirebreakEffect.DeReforest)
 //    case BucketEffect                => BucketEffect.bucketEffect
-//    case WindEffect.North            => WindEffect.windEffectResolver.resolve(WindEffect.North)
-//    case WindEffect.South            => WindEffect.windEffectResolver.resolve(WindEffect.South)
-//    case WindEffect.East             => WindEffect.windEffectResolver.resolve(WindEffect.East)
-//    case WindEffect.West             => WindEffect.windEffectResolver.resolve(WindEffect.West)
+//    case WindEffect.North            => WindEffect.windEffectSolver.solve(WindEffect.North)
+//    case WindEffect.South            => WindEffect.windEffectSolver.solve(WindEffect.South)
+//    case WindEffect.East             => WindEffect.windEffectSolver.solve(WindEffect.East)
+//    case WindEffect.West             => WindEffect.windEffectSolver.solve(WindEffect.West)
 //    case _                           => throw new MatchError(s"Unmatched effect: $effect")
 //
 //  private def run(): Unit =
@@ -74,8 +74,8 @@
 //
 //    // Create the map with the logic effects of the two cards
 //    val map: Map[Int, List[ILogicEffect]] = Map(
-//      card1.get.id -> List(resolveEffect(card1.get.id, card1.get.effect)),
-//      card2.get.id -> List(resolveEffect(card2.get.id, card2.get.effect))
+//      card1.get.id -> List(solveEffect(card1.get.id, card1.get.effect)),
+//      card2.get.id -> List(solveEffect(card2.get.id, card2.get.effect))
 //    )
 //
 //    // Generate the Prolog theory

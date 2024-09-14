@@ -91,7 +91,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
         .copy(player1 = updatedPlayer1, player2 = updatedPlayer2)
 
       // Update the game board in the model and notify observers
-      val resolvedGameBoard = completeGameBoard
-        .resolveEffect(PhaseEffect(completeGameBoard.gamePhase))
-      controller.model.setGameBoard(resolvedGameBoard)
-      controller.modelObserver.onNext(StartGameMessage(resolvedGameBoard))
+      val solvedGameBoard = completeGameBoard
+        .solveEffect(PhaseEffect(completeGameBoard.gamePhase))
+      controller.model.setGameBoard(solvedGameBoard)
+      controller.modelObserver.onNext(StartGameMessage(solvedGameBoard))

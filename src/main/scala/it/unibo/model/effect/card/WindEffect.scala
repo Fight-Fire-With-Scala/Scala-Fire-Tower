@@ -4,7 +4,7 @@ import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.IOffensiveCard
 import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.effect.core.LogicEffectResolver
+import it.unibo.model.effect.core.LogicEffectSolver
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.PatternType.VerySmallEffect
@@ -27,7 +27,7 @@ object WindEffect:
   private def getPlaceFireEffect(direction: Direction) =
     ILogicEffect(VerySmallEffect(Map("a" -> Fire)), Rule("fire"), List(direction))
 
-  val windEffectResolver: LogicEffectResolver[WindEffect] = LogicEffectResolver:
+  val windEffectSolver: LogicEffectSolver[WindEffect] = LogicEffectSolver:
     case WindEffect.North => getPlaceFireEffect(Direction.North)
     case WindEffect.East  => getPlaceFireEffect(Direction.East)
     case WindEffect.West  => getPlaceFireEffect(Direction.West)

@@ -34,10 +34,10 @@ trait ThinkingPlayer extends Player:
     // the one that gets closer to one tower of the opponent
 //    val gb = controller.model.getGameBoard
 //    val direction = gb.board.windDirection
-//    val logicEffect = WindEffect.windEffectResolver.resolve(direction)
+//    val logicEffect = WindEffect.windEffectSolver.solve(direction)
 //    val effect = CardsComputation(Map(-1 -> List(logicEffect)))
 //
-//    val newGb = PatternEffect.patternEffectResolver.resolve(effect).resolve(gb).gameBoard
+//    val newGb = PatternEffect.patternEffectSolver.solve(effect).solve(gb).gameBoard
 //
 //    val lastCardsChosen = newGb.getCurrentPlayer.lastCardsChosen
 //    val availablePattern = handleMove(gb, lastCardsChosen).values.last

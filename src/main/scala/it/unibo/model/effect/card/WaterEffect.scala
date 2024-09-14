@@ -4,7 +4,7 @@ import it.unibo.model.effect.core.IDefensiveCard
 import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.effect.core.LogicEffectResolver
+import it.unibo.model.effect.core.LogicEffectSolver
 import it.unibo.model.gameboard.PatternType.LargeEffect
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.PatternType.VeryLargeEffect
@@ -19,7 +19,7 @@ enum WaterEffect(override val effectId: Int) extends IStandardCardEffect with ID
   case FireEngine extends WaterEffect(13)
 
 object WaterEffect:
-  val waterEffectResolver: LogicEffectResolver[WaterEffect] = LogicEffectResolver:
+  val waterEffectSolver: LogicEffectSolver[WaterEffect] = LogicEffectSolver:
     case SmokeJumper =>
       ILogicEffect(VeryLargeEffect(Map("a" -> Water, "b" -> Fire)), Rule("smoke_jumper"))
     case AirDrop     => ILogicEffect(MediumEffect(Map("a" -> Water)), Rule("water"))

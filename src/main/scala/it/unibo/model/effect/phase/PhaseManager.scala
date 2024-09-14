@@ -36,8 +36,8 @@ trait PhaseManager:
 
   private def handleWindPhase(gb: GameBoard) =
     val direction = gb.board.windDirection
-    val logicEffect = WindEffect.windEffectResolver.resolve(direction)
+    val logicEffect = WindEffect.windEffectSolver.solve(direction)
     val patternComputation = PatternEffect.PatternComputation(logicEffect)
-    val gbEffectResolver = PatternEffect.patternEffectResolver.resolve(patternComputation)
-    val newGb = gbEffectResolver.resolve(GameBoardEffect(gb)).gameBoard
+    val gbEffectSolver = PatternEffect.patternEffectSolver.solve(patternComputation)
+    val newGb = gbEffectSolver.solve(GameBoardEffect(gb)).gameBoard
     newGb

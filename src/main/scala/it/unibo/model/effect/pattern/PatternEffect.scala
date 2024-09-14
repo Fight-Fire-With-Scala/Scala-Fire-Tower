@@ -20,20 +20,20 @@ enum PatternEffect extends IGameEffect:
   case ResetPatternComputation
 
 object PatternEffect extends PatternManager with LogicSolverManager:
-  private def resolvePatternComputation(logicEffect: ILogicEffect) =
-    GameBoardEffectResolver: (gbe: GameBoardEffect) =>
+  private def solvePatternComputation(logicEffect: ILogicEffect) =
+    GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
       val availablePatterns = computePatterns(gb, -1, logicEffect)
       logPatternChosen(gb, availablePatterns)
 
-  private def resolveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
-    GameBoardEffectResolver: (gbe: GameBoardEffect) =>
+  private def solveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
+    GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
       val availablePatterns = computePatterns(gb, cards)
       logCardsChosen(gb, availablePatterns)
 
-  private def resolveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
-    GameBoardEffectResolver: (gbe: GameBoardEffect) =>
+  private def solveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
+    GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
       val availablePatterns = computePatterns(gb, cardId, logicEffect)
       val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId)
@@ -41,22 +41,22 @@ object PatternEffect extends PatternManager with LogicSolverManager:
         logger.warn(s"Could not find a card with id $cardId in hand")
         gb
 
-  private def resolvePatternApplication(pattern: Map[Position, Token]) =
-    GameBoardEffectResolver: (gbe: GameBoardEffect) =>
+  private def solvePatternApplication(pattern: Map[Position, Token]) =
+    GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
       val b = gb.board
       val newGrid = b.grid.setTokens(pattern.toSeq*)
       val newGb = runIfLastCardChosenFound(gb, updateDeckAndHand).gameBoard
       logPatternApplied(newGb.copy(board = b.copy(grid = newGrid)), pattern)
 
-  private def resolvePatternReset() = GameBoardEffectResolver: (gbe: GameBoardEffect) =>
+  private def solvePatternReset() = GameBoardEffectSolver: (gbe: GameBoardEffect) =>
     val gb = gbe.gameBoard
     runIfLastCardChosenFound(gb, updatePlayer)
 
-  val patternEffectResolver: GameEffectResolver[PatternEffect, GameBoardEffectResolver] =
-    GameEffectResolver:
-      case CardComputation(id, logicEffect) => resolveCardComputation(id, logicEffect)
-      case CardsComputation(cards)          => resolveCardsComputation(cards)
-      case PatternComputation(logicEffect)  => resolvePatternComputation(logicEffect)
-      case PatternApplication(pattern)      => resolvePatternApplication(pattern)
-      case ResetPatternComputation          => resolvePatternReset()
+  val patternEffectSolver: GameEffectSolver[PatternEffect, GameBoardEffectSolver] =
+    GameEffectSolver:
+      case CardComputation(id, logicEffect) => solveCardComputation(id, logicEffect)
+      case CardsComputation(cards)          => solveCardsComputation(cards)
+      case PatternComputation(logicEffect)  => solvePatternComputation(logicEffect)
+      case PatternApplication(pattern)      => solvePatternApplication(pattern)
+      case ResetPatternComputation          => solvePatternReset()

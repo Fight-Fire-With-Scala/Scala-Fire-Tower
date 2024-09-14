@@ -16,3 +16,6 @@ object ILogicEffect:
 
   def apply(pattern: Map[Position, Token], goals: List[Int => Rule]) =
     new ILogicEffect(pattern, goals, Direction.values.toList)
+
+  def apply() =
+    new ILogicEffect(Map.empty, List.empty, List.empty)

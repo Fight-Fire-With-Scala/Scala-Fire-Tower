@@ -10,6 +10,6 @@ final case class ModelController(model: Model, modelObserver: ModelSubject)
     extends PlayerController:
 
   def applyEffect(ef: IGameEffect, refreshType: RefreshType): Unit =
-    val newGb = model.getGameBoard.resolveEffect(ef)
+    val newGb = model.getGameBoard.solveEffect(ef)
     model.setGameBoard(newGb)
     modelObserver.onNext(RefreshMessage(newGb, refreshType))

@@ -4,7 +4,7 @@ import it.unibo.model.effect.core.IDefensiveCard
 import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.effect.core.LogicEffectResolver
+import it.unibo.model.effect.core.LogicEffectSolver
 import it.unibo.model.gameboard.PatternType.MediumAltEffect
 import it.unibo.model.gameboard.PatternType.SmallEffect
 import it.unibo.model.gameboard.PatternType.VerySmallEffect
@@ -19,7 +19,7 @@ enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect wit
   case DeReforest extends FirebreakEffect(10)
 
 object FirebreakEffect:
-  val fireBreakEffectResolver: LogicEffectResolver[FirebreakEffect] = LogicEffectResolver:
+  val fireBreakEffectSolver: LogicEffectSolver[FirebreakEffect] = LogicEffectSolver:
     case DeReforest  =>
       ILogicEffect(VerySmallEffect(Map("a" -> Firebreak)), List(Rule("deforest"), Rule("reforest")))
     case ScratchLine =>

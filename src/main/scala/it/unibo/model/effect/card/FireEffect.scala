@@ -4,7 +4,7 @@ import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.IOffensiveCard
 import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.effect.core.LogicEffectResolver
+import it.unibo.model.effect.core.LogicEffectSolver
 import it.unibo.model.gameboard.PatternType.LargeEffect
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.PatternType.VeryLargeEffect
@@ -20,7 +20,7 @@ enum FireEffect(override val effectId: Int) extends IStandardCardEffect with IOf
   case Ember extends FireEffect(3)
 
 object FireEffect:
-  val fireEffectResolver: LogicEffectResolver[FireEffect] = LogicEffectResolver:
+  val fireEffectSolver: LogicEffectSolver[FireEffect] = LogicEffectSolver:
     case Explosion   =>
       ILogicEffect(VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)), Rule("explosion"))
     case Flare       => ILogicEffect(MediumEffect(Map("a" -> Fire)), Rule("fire"))
@@ -31,4 +31,4 @@ object FireEffect:
     //      goals = List(Rule("fire")),
     //      directions = Direction.values.toList
     //    )
-    //    patternEffectResolver.resolve(patternEffect)
+    //    patternEffectSolver.solve(patternEffect)

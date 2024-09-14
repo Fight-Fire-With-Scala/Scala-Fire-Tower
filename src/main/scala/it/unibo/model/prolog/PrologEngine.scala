@@ -6,12 +6,12 @@ import alice.tuprolog.Term
 import alice.tuprolog.Theory
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
-import it.unibo.model.prolog.PrologEngine.engineWithResolver
+import it.unibo.model.prolog.PrologEngine.engineWithSolver
 import it.unibo.model.prolog.PrologEngine.engineWithTheory
 import it.unibo.model.prolog.PrologUtils.parseComputedPatterns
 
 final case class PrologEngine(theory: Theory):
-  private val engine = engineWithResolver(engineWithTheory(theory))
+  private val engine = engineWithSolver(engineWithTheory(theory))
 
   def solve(goal: Term): LazyList[SolveInfo] = engine(goal)
   
@@ -28,7 +28,7 @@ object PrologEngine:
     engine.setTheory(t)
     engine
 
-  private val engineWithResolver: Prolog => Term => LazyList[SolveInfo] = engine =>
+  private val engineWithSolver: Prolog => Term => LazyList[SolveInfo] = engine =>
     goal =>
       new Iterable[SolveInfo]:
         override def iterator: Iterator[SolveInfo] = new Iterator[SolveInfo]:

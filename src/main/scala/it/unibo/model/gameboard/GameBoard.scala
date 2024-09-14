@@ -36,7 +36,7 @@ case class GameBoard(
     playerManager.toggle()
     this
 
-  def resolveEffect(effect: IGameEffect): GameBoard = gameBoardEffectResolver(this, effect)
+  def solveEffect(effect: IGameEffect): GameBoard = gameBoardEffectSolver(this, effect)
 
 object GameBoard:
   def apply(player1: Player, player2: Player): GameBoard =

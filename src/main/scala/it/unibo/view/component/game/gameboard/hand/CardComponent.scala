@@ -28,6 +28,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import scalafx.Includes._
+import it.unibo.model.effect.core.given_Conversion_ICardEffect_String
 
 enum CardHighlightState:
   case Highlighted, Unhighlighted
@@ -75,7 +76,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   def setCard(card: Card): Unit =
     cardPane.getStyleClass.clear()
     cardPane.getStyleClass.add("card")
-    cardPane.getStyleClass.add(getStyleClassForCardType(card.effect))
+    cardPane.getStyleClass.add(card.effect)
     cardTitle.setText(card.title)
     cardDescription.setText(card.description)
     cardId = card.id.toString
@@ -84,18 +85,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
       case _                 => containSpecialCard = true
 
     addHandlers()
-
-  private def getStyleClassForCardType(effect: ICardEffect): String = effect match
-    case effect: IStandardCardEffect => effect match
-        case effect: FireEffect      => "fire"
-        case effect: FirebreakEffect => "firebreak"
-        case effect: WaterEffect     => "water"
-        case effect: WindEffect      => "wind"
-        case _                       => "not-found"
-    case effect: ISpecialCardEffect  => effect match
-        case BucketEffect => "water"
-        case _            => "not-found"
-
+  
   def reset(): Unit =
     cardPane.getStyleClass.clear()
     cardTitle.setText("")
