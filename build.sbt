@@ -34,7 +34,6 @@ libraryDependencies ++= Seq(
   "io.circe"                   %% "circe-generic"  % CirceGenericVersion
 )
 
-//from https://tpolecat.github.io/2017/04/25/scalac-flags.html
 scalacOptions ++= Seq(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   "-encoding",
@@ -57,7 +56,7 @@ enablePlugins(SitePreviewPlugin, AsciidoctorPlugin)
 enablePlugins(SiteScaladocPlugin)
 SiteScaladoc / siteSubdirName := "api/latest"
 
-Asciidoctor / sourceDirectory := sourceDirectory.value / "asciidoc"
+Asciidoctor / sourceDirectory := sourceDirectory.value / "main" / "asciidoc"
 Asciidoctor / siteSubdirName := "asciidoc"
 
 enablePlugins(GhpagesPlugin)
