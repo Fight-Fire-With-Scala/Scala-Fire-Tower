@@ -86,16 +86,17 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     if cardToPlay == cardComponent then
       cardToPlay = None
       observable.onNext(ResolveCardReset())
-      observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
+      if !cardComponent.get.containSpecialCard then
+        observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
     else
       cardToPlay match
         case Some(component) => component.highlightManager
             .switch(Some(CardHighlightState.Unhighlighted))
         case None            =>
       cardToPlay = cardComponent
-
       observable.onNext(ChoseCardToPlay(PlayCard(cardId)))
-      observable.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
+      if !cardComponent.get.containSpecialCard then
+        observable.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
 
   override def onEnableView(): Unit =
     super.onEnableView()

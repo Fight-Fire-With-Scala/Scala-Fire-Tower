@@ -13,13 +13,12 @@ import it.unibo.view.component.game.gameboard.grid.HoverDirection
 
 class GridEventHandler(
     observableSubject: ViewSubject,
-    internalObservable: InternalViewSubject,
     squareMap: mutable.Map[Position, GridSquare]
 ):
   private val gridState = new GridState(squareMap)
 
   private val clickHandler =
-    new GridClickHandler(observableSubject, internalObservable, squareMap, gridState)
+    new GridClickHandler(observableSubject, squareMap, gridState)
 
   private val hoverHandler = new GridHoverHandler(squareMap, gridState)
 

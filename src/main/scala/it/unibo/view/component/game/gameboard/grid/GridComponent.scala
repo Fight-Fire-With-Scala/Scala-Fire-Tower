@@ -16,8 +16,7 @@ import javafx.scene.Node
 import javafx.scene.layout.StackPane
 
 final class GridComponent(using
-    internalObservable: InternalViewSubject,
-    observableSubject: ViewSubject
+                          observableSubject: ViewSubject
 ) extends IGridComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
@@ -31,7 +30,7 @@ final class GridComponent(using
 
   @FXML
   def initialize(): Unit =
-    gridManager = new GridManager(cellNumber, cellSize, internalObservable, observableSubject)
+    gridManager = new GridManager(cellNumber, cellSize, observableSubject)
     gridManager.initialize(container)
 
   def setAvailablePatterns(patterns: Set[Map[Position, Token]], cardEffect: Int): Unit = gridManager

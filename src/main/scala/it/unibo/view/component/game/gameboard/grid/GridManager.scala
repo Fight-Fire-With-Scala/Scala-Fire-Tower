@@ -21,7 +21,6 @@ import scalafx.scene.paint.Color
 class GridManager(
     gridSize: Int,
     squareSize: Double,
-    internalObservable: InternalViewSubject,
     observableSubject: ViewSubject
 ):
   private var gamePhase: GamePhase = uninitialized
@@ -37,7 +36,7 @@ class GridManager(
     )
     val gridPane = new GridPane
     squareMap = gridInitializer.initializeGridSquares(gridPane)
-    gridEventHandler = new GridEventHandler(observableSubject, internalObservable, squareMap)
+    gridEventHandler = new GridEventHandler(observableSubject, squareMap)
     container.getChildren.add(gridPane)
 
   private def handleCellClick(row: Int, col: Int): Unit = gridEventHandler.handleCellClick(row, col, gamePhase)
