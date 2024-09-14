@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Scala-Fire-Tower.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Scala-Fire-Tower.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Scala-Fire-Tower.iml" filepath="$PROJECT_DIR$/.idea/modules/Scala-Fire-Tower.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Scala-Fire-Tower.Scala-Fire-Tower-build.iml" filepath="$PROJECT_DIR$/.idea/modules/Scala-Fire-Tower.Scala-Fire-Tower-build.iml" />
     </modules>
   </component>
 </project>
