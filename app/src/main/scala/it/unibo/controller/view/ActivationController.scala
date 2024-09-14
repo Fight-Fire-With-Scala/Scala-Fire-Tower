@@ -15,8 +15,8 @@ import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
 trait ActivationController extends GameController:
   private def showTurnInfoOnly(component: GameComponent): Unit = component.sidebarComponent
     .components.foreach:
-      case c: DeckComponent     => c.disableView()
-      case c: DiceComponent     => c.disableView()
+      case c: DeckComponent => c.disableView()
+      case c: DiceComponent => c.disableView()
       case c: WindRoseComponent => c.disableView()
       case c: GameInfoComponent => c.enableView()
 
@@ -34,18 +34,33 @@ trait ActivationController extends GameController:
         component.gridComponent.enableView()
         component.handComponent.enableView()
         component.handComponent.handleSpecialCardComponents(choice)
-        showTurnInfoOnly(component)
+        component.sidebarComponent.components
+          .foreach:
+            case c: DeckComponent => c.disableView()
+            case c: DiceComponent => c.disableView()
+            case c: WindRoseComponent => c.disableView()
+            case c: GameInfoComponent => c.disableView()
 
     case WindPhase => gameComponent.foreach: component =>
         component.gridComponent.enableView()
         component.handComponent.disableView()
-        component.sidebarComponent.disableView()
+        component.sidebarComponent.components
+          .foreach:
+            case c: DeckComponent => c.disableView()
+            case c: DiceComponent => c.disableView()
+            case c: WindRoseComponent => c.disableView()
+            case c: GameInfoComponent => c.disableView()
 
     case PlaySpecialCardPhase => gameComponent.foreach: component =>
         component.gridComponent.disableView()
         component.handComponent.enableView()
         component.handComponent.handleSpecialCardComponents(choice)
-        showTurnInfoOnly(component)
+        component.sidebarComponent.components
+          .foreach:
+            case c: DeckComponent => c.disableView()
+            case c: DiceComponent => c.disableView()
+            case c: WindRoseComponent => c.disableView()
+            case c: GameInfoComponent => c.enableView()
 
     case _ => gameComponent.foreach: component =>
         component.gridComponent.disableView()
