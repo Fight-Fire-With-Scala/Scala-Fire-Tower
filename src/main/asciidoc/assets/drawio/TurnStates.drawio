@@ -1,6 +1,6 @@
-<mxfile host="drawio-plugin" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" modified="2024-09-07T21:31:02.514Z" version="22.1.22" etag="l99sTO1IKX5wUqJ6CD8X" type="embed">
+<mxfile host="drawio-plugin" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" modified="2024-09-14T14:03:16.956Z" etag="9WT6L4JoMhWiqU1Za355" version="22.1.22" type="embed">
   <diagram name="Page-1" id="nQAGZ9vl0YTi9qAUkokT">
-    <mxGraphModel dx="983" dy="496" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="928" dy="634" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -118,7 +118,7 @@
             <mxPoint x="459.94000000000005" y="700" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="4" value="Extra card is empty" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="uAzF2xJCA6m6kvYxS6wg-34">
+        <mxCell id="4" value="Extra card is empty" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="uAzF2xJCA6m6kvYxS6wg-34" vertex="1" connectable="0">
           <mxGeometry x="-0.4155" y="2" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -128,7 +128,7 @@
             <mxPoint x="600" y="700" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="6" value="Extra card is defined" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="uAzF2xJCA6m6kvYxS6wg-36">
+        <mxCell id="6" value="Extra card is defined" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="uAzF2xJCA6m6kvYxS6wg-36" vertex="1" connectable="0">
           <mxGeometry x="-0.3498" y="1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -136,15 +136,23 @@
         <mxCell id="uAzF2xJCA6m6kvYxS6wg-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="uAzF2xJCA6m6kvYxS6wg-2" source="uAzF2xJCA6m6kvYxS6wg-33" target="uAzF2xJCA6m6kvYxS6wg-29" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="uAzF2xJCA6m6kvYxS6wg-39" value="End turn button / Extra card played&amp;nbsp;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="uAzF2xJCA6m6kvYxS6wg-38" vertex="1" connectable="0">
+        <mxCell id="uAzF2xJCA6m6kvYxS6wg-39" value="End turn button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="uAzF2xJCA6m6kvYxS6wg-38" vertex="1" connectable="0">
           <mxGeometry x="-0.0821" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="uAzF2xJCA6m6kvYxS6wg-2" source="uAzF2xJCA6m6kvYxS6wg-33" target="2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Extra card played" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7">
+          <mxGeometry x="-0.2845" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="uAzF2xJCA6m6kvYxS6wg-33" value="PlaySpecialCardPhase" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="uAzF2xJCA6m6kvYxS6wg-2" vertex="1">
           <mxGeometry x="649.97" y="800" width="140" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="2" value="DecisionPhase" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="uAzF2xJCA6m6kvYxS6wg-2">
+        <mxCell id="2" value="DecisionPhase" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="uAzF2xJCA6m6kvYxS6wg-2" vertex="1">
           <mxGeometry x="469.97" y="630" width="120" height="120" as="geometry" />
         </mxCell>
       </root>
