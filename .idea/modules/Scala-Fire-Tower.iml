@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="scala-fire-tower [file:/var/home/richard/IdeaProjects/Scala-Fire-Tower/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21">
+    <output url="file://$MODULE_DIR$/../../target/scala-3.4.2/classes" />
+    <output-test url="file://$MODULE_DIR$/../../target/scala-3.4.2/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/../../target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: scala-sdk-3.4.2" level="project" />
+    <orderEntry type="library" name="sbt: ch.qos.logback:logback-classic:1.2.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: ch.qos.logback:logback-core:1.2.10:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.codepoetics:protonpack:1.13:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.typesafe.scala-logging:scala-logging_3:3.9.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.circe:circe-core_3:0.14.9:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.circe:circe-generic_3:0.14.9:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.circe:circe-numbers_3:0.14.9:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.circe:circe-yaml-common_3:1.15.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.circe:circe-yaml_3:1.15.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:implicitbox_3:0.3.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-catnap_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-eval_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-execution_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-internal-jctools_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-java_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-reactive_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix-tail_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: io.monix:monix_3:3.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: it.unibo.alice.tuprolog:2p-core:4.1.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: it.unibo.alice.tuprolog:2p-parser:4.1.1:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: junit:junit:4.13.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.antlr:antlr4-runtime:4.7.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-lang3:3.9:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.apache.commons:commons-text:1.7:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.hamcrest:hamcrest-core:1.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-base:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-base:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-controls:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-controls:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-fxml:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-fxml:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-graphics:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-graphics:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-media:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-media:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-swing:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-swing:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-web:21:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-web:21:linux:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.reactivestreams:reactive-streams:1.0.3:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scala-lang.modules:scala-xml_3:2.1.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.12:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala3-library_3:3.4.2:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalactic:scalactic_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scalafx:scalafx_3:21.0.0-R32:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-compatible:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-core_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-diagrams_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-featurespec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-flatspec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-freespec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-funspec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-funsuite_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-matchers-core_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-mustmatchers_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-propspec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-refspec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-shouldmatchers_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-wordspec_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest_3:3.2.15:jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="sbt: org.scalatestplus:junit-4-13_3:3.2.15.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.slf4j:slf4j-api:1.7.32:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-core_3:2.12.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-effect_3:2.5.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-kernel_3:2.12.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.yaml:snakeyaml:2.0:jar" level="project" />
+  </component>
+</module>
