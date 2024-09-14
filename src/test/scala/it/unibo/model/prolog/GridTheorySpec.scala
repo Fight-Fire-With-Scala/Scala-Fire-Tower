@@ -61,6 +61,7 @@ class GridTheorySpec extends AnyWordSpecLike with Matchers:
         // Patterns
         Struct.of("pattern", Struct.tuple(0, 0), Fire, dummyCardId),
         Struct.of("pattern", Struct.tuple(0, 1), Fire, dummyCardId),
+        Struct.of("pattern", Struct.tuple(0, 2), Fire, dummyCardId),
         Struct.of("directions", directions, dummyCardId),
         Struct.of("deltas", deltas, dummyCardId)
       )

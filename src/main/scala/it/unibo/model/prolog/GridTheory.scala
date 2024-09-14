@@ -35,6 +35,7 @@ object GridTheory:
         Struct.of("cell", Struct.tuple(pos._1, pos._2), cell)
       }
       .toSeq
+      .sorted
       .iterator
 
     val tokens = grid.tokens.iterator.map { case (pos, token) =>
