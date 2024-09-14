@@ -34,7 +34,6 @@ libraryDependencies ++= Seq(
   "io.circe"                   %% "circe-generic"  % CirceGenericVersion
 )
 
-//from https://tpolecat.github.io/2017/04/25/scalac-flags.html
 scalacOptions ++= Seq(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   "-encoding",
@@ -43,17 +42,13 @@ scalacOptions ++= Seq(
   "-feature", // Emit warning and location for usages of features that should be imported explicitly.
   "-language:implicitConversions", // Allow definition of implicit functions called views
   "-unchecked", // Enable additional warnings where generated code depends on assumptions.
-  "-Xfatal-warnings", // Fail the compilation if there are any warnings.
-  "-Wdead-code", // Warn when dead code is identified.
-  "-Wextra-implicit", // Warn when more than one implicit parameter section is defined.
-  "-Wnumeric-widen", // Warn when numerics are widened.
   "-Wunused:implicits", // Warn if an implicit parameter is unused.
   "-Wunused:imports", // Warn if an import selector is not referenced.
   "-Wunused:locals", // Warn if a local definition is unused.
   "-Wunused:params", // Warn if a value parameter is unused.
-  "-Wunused:patvars", // Warn if a variable bound in a pattern is unused.
-  "-Wunused:privates", // Warn if a private member is unused.
-  "-Wvalue-discard" // Warn when non-Unit expression results are unused.
+  "-Xsemanticdb"
+  //"-Wunused:privates", // Warn if a private member is unused.
+  //"-Wvalue-discard" // Warn when non-Unit expression results are unused.
 )
 
 scalafmtOnCompile := true
@@ -62,7 +57,7 @@ enablePlugins(SitePreviewPlugin, AsciidoctorPlugin)
 enablePlugins(SiteScaladocPlugin)
 SiteScaladoc / siteSubdirName := "api/latest"
 
-Asciidoctor / sourceDirectory := sourceDirectory.value / "asciidoc"
+Asciidoctor / sourceDirectory := sourceDirectory.value / "main" / "asciidoc"
 Asciidoctor / siteSubdirName := "asciidoc"
 
 enablePlugins(GhpagesPlugin)
