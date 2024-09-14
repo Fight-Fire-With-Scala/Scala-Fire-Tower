@@ -21,7 +21,6 @@ import scalafx.scene.paint.Color
 class GridManager(
     gridSize: Int,
     squareSize: Double,
-    internalObservable: InternalViewSubject,
     observableSubject: ViewSubject
 ):
   private var gamePhase: GamePhase = uninitialized
