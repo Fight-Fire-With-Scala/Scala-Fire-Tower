@@ -46,19 +46,19 @@
                 <mxCell id="43" value="BOARD" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="570" y="380" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="64" value="WindResolver con UpdateWind o RandomUpdate &lt;br&gt;Wind invia la scelta finale. &lt;br&gt;La gameboard invia la board aggiornata alla view." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1" parent="1">
+                <mxCell id="64" value="WindSolver con UpdateWind o RandomUpdate &lt;br&gt;Wind invia la scelta finale. &lt;br&gt;La gameboard invia la board aggiornata alla view." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1" parent="1">
                     <mxGeometry x="160" y="520" width="290" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="65" value="WindResolver con PlaceFire invia la prima scelta e per&lt;br&gt;mostrare al giocatore come effettuare la seconda&lt;br&gt;contatta prolog. Dopodiché invia anche la seconda&lt;br&gt;scelta, quella finale. &lt;br&gt;A questo punto la gameboard invece di contattare&lt;br&gt;prolog chiama resolve(choice) e ottiene l'effetto e&amp;nbsp;&lt;br&gt;invia la board alla view." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1" parent="1">
+                <mxCell id="65" value="WindSolver con PlaceFire invia la prima scelta e per&lt;br&gt;mostrare al giocatore come effettuare la seconda&lt;br&gt;contatta prolog. Dopodiché invia anche la seconda&lt;br&gt;scelta, quella finale. &lt;br&gt;A questo punto la gameboard invece di contattare&lt;br&gt;prolog chiama solve(choice) e ottiene l'effetto e&amp;nbsp;&lt;br&gt;invia la board alla view." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1" parent="1">
                     <mxGeometry x="160" y="590" width="310" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="66" value="In PatternResolverWithChoice la View inizialmente &lt;br&gt;invia la scelta del pattern alla gameboard. Si contatta&lt;br&gt;prolog e si inviano le possibili posizioni.&lt;br&gt;La view manda la scelta finale alla gameboard.&lt;br&gt;La gamboard manda la board aggiornata alla view." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1" parent="1">
+                <mxCell id="66" value="In PatternSolverWithChoice la View inizialmente &lt;br&gt;invia la scelta del pattern alla gameboard. Si contatta&lt;br&gt;prolog e si inviano le possibili posizioni.&lt;br&gt;La view manda la scelta finale alla gameboard.&lt;br&gt;La gamboard manda la board aggiornata alla view." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1" parent="1">
                     <mxGeometry x="160" y="405" width="310" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="67" value="In PatternResolver con un pattern si &lt;br&gt;invia la carta. La gameboard sa già quale pattern inviare &lt;br&gt;a prolog. La view dopo aver ricevuto le posizioni &lt;br&gt;possibili invia la scelta finale alla gameboard." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#d79b00;fillColor=#ffe6cc;" vertex="1" parent="1">
+                <mxCell id="67" value="In PatternSolver con un pattern si &lt;br&gt;invia la carta. La gameboard sa già quale pattern inviare &lt;br&gt;a prolog. La view dopo aver ricevuto le posizioni &lt;br&gt;possibili invia la scelta finale alla gameboard." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#d79b00;fillColor=#ffe6cc;" vertex="1" parent="1">
                     <mxGeometry x="521" y="630" width="320" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="68" value="In SequentialPatternResolver&amp;nbsp;la scelta è iniziale &lt;br&gt;è inesistente.&amp;nbsp;&amp;nbsp;Si invia solo la carta alla gameboard.&amp;nbsp;&amp;nbsp;&lt;br&gt;La view riceve le posizioni possibili per il primo pattern.&lt;br&gt;Si invia la scelta finale per il primo pattern e la &lt;br&gt;scelta per il secondo pattern. La gameboard restituisce &lt;br&gt;la board alla view e a prolog e invia le posizioni possibili&lt;br&gt;alla view. La view invia la scelta finale per il secondo &lt;br&gt;pattern e la gamboard risponde con la board aggiornata." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#d6b656;fillColor=#fff2cc;" vertex="1" parent="1">
+                <mxCell id="68" value="In SequentialPatternSolver&amp;nbsp;la scelta è iniziale &lt;br&gt;è inesistente.&amp;nbsp;&amp;nbsp;Si invia solo la carta alla gameboard.&amp;nbsp;&amp;nbsp;&lt;br&gt;La view riceve le posizioni possibili per il primo pattern.&lt;br&gt;Si invia la scelta finale per il primo pattern e la &lt;br&gt;scelta per il secondo pattern. La gameboard restituisce &lt;br&gt;la board alla view e a prolog e invia le posizioni possibili&lt;br&gt;alla view. La view invia la scelta finale per il secondo &lt;br&gt;pattern e la gamboard risponde con la board aggiornata." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#d6b656;fillColor=#fff2cc;" vertex="1" parent="1">
                     <mxGeometry x="521" y="485" width="320" height="130" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" value="Scelta Iniziale vs &lt;br&gt;Scelta Finale&lt;br&gt;Effetto Iniziale vs&lt;br&gt;Effetto Finale" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
@@ -82,16 +82,16 @@
                 <mxCell id="75" value="RESOLVER WITH&lt;br&gt;CHOICE" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="150" y="250" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="76" value="&lt;span style=&quot;&quot;&gt;Sequential Pattern Resolver&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+                <mxCell id="76" value="&lt;span style=&quot;&quot;&gt;Sequential Pattern Solver&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
                     <mxGeometry x="350" y="130" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="77" value="&lt;span style=&quot;&quot;&gt;Pattern ResolverWithChoice&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+                <mxCell id="77" value="&lt;span style=&quot;&quot;&gt;Pattern SolverWithChoice&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
                     <mxGeometry x="350" y="290" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="78" value="&lt;span style=&quot;&quot;&gt;Wind Resolver&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                <mxCell id="78" value="&lt;span style=&quot;&quot;&gt;Wind Solver&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
                     <mxGeometry x="350" y="220" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="79" value="&lt;span style=&quot;&quot;&gt;Pattern Resolver&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+                <mxCell id="79" value="&lt;span style=&quot;&quot;&gt;Pattern Solver&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
                     <mxGeometry x="350" y="60" width="120" height="60" as="geometry"/>
                 </mxCell>
             </root>
