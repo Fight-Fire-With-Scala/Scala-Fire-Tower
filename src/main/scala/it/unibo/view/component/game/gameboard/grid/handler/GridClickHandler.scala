@@ -1,8 +1,7 @@
 package it.unibo.view.component.game.gameboard.grid.handler
 
 import scala.collection.mutable
-
-import it.unibo.controller._
+import it.unibo.controller.*
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.effect.card.FireEffect
 import it.unibo.model.effect.card.FirebreakEffect
@@ -11,10 +10,7 @@ import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.DecisionPhase
-import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
-import it.unibo.model.gameboard.GamePhase.WaitingPhase
-import it.unibo.model.gameboard.GamePhase.WindPhase
+import it.unibo.model.gameboard.GamePhase.{DecisionPhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.gameboard.grid.Position
@@ -34,7 +30,7 @@ class GridClickHandler(
     gamePhase match
       case WindPhase             => if (gridState.hoveredCells.contains(position))
           placePattern(gridState.availablePatterns.find(_.contains(position)).get, WaitingPhase)
-      case PlayStandardCardPhase => handleCardPlay(position)
+      case PlayStandardCardPhase | PlaySpecialCardPhase => handleCardPlay(position)
       case _                     =>
 
   private def handleCardPlay(position: Position): Unit =
