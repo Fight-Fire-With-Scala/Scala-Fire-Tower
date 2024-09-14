@@ -1,6 +1,7 @@
 addSbtPlugin("org.jetbrains.scala" % "sbt-ide-settings" % "1.1.2")
 addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.15.0")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.2.0")
 addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.34")
 addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.16")
 addSbtPlugin("com.github.sbt" % "sbt-site-paradox" % "1.5.0")
