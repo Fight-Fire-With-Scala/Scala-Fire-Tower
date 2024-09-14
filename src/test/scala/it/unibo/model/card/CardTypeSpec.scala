@@ -23,9 +23,9 @@ class CardTypeSpec extends AnyWordSpecLike with Matchers:
       card.title shouldBe "Card"
       card.description shouldBe "Description of Card"
 
-    "correctly resolve card effect" in:
+    "correctly solve card effect" in:
       val parsedCard = parser.parse(yaml).flatMap(_.as[CardType])
       parsedCard.isRight shouldBe true
 
       val card = parsedCard.toOption.get
-      card.effectType should not be null
+      card.effect should not be null

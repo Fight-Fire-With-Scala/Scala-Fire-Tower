@@ -1,4 +1,4 @@
-package it.unibo.model.card.patterns
+package it.unibo.model.gameboard
 
 import it.unibo.model.gameboard.PatternDSL.*
 import it.unibo.model.gameboard.grid.ConcreteToken.*
