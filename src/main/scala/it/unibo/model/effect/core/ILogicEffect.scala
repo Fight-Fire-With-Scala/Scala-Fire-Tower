@@ -5,17 +5,23 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.prolog.Rule
 
-final case class ILogicEffect(
+final case class ILogicEffect(computations: List[ILogicComputation]) extends IGameEffect
+
+object ILogicEffect:
+  given Conversion[Int => Rule, List[Int => Rule]]             = List(_)
+  given Conversion[ILogicComputation, List[ILogicComputation]] = List(_)
+  given Conversion[ILogicComputation, ILogicEffect]            = ILogicEffect(_)
+  given Conversion[List[ILogicComputation], ILogicEffect]      = ILogicEffect(_)
+
+  def apply(): ILogicEffect =
+    ILogicEffect(ILogicComputation(Map.empty, List.empty, List.empty))
+
+final case class ILogicComputation(
     pattern: Map[Position, Token],
     goals: List[Int => Rule],
     directions: List[Direction]
-) extends IGameEffect
+)
 
-object ILogicEffect:
-  given Conversion[Int => Rule, List[Int => Rule]] = List(_)
-
-  def apply(pattern: Map[Position, Token], goals: List[Int => Rule]) =
-    new ILogicEffect(pattern, goals, Direction.values.toList)
-
-  def apply() =
-    new ILogicEffect(Map.empty, List.empty, List.empty)
+object ILogicComputation:
+  def apply(pattern: Map[Position, Token], goals: List[Int => Rule]): ILogicComputation =
+    ILogicComputation(pattern, goals, Direction.values.toList)

@@ -23,6 +23,7 @@ import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
+import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class WindRoseComponent(using observable: ViewSubject)
@@ -46,6 +47,8 @@ final class WindRoseComponent(using observable: ViewSubject)
       observable.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
+  
+  private var currentAllowedDirection: Direction = uninitialized
 
   @FXML
   def initialize(): Unit =
@@ -60,6 +63,13 @@ final class WindRoseComponent(using observable: ViewSubject)
     .filter((dir, pane) => dir == direction).foreach((dir, pane) =>
       pane.addEventHandler(MouseEvent.MOUSE_CLICKED, windRoseEventHandler(dir))
     )
+  
+  def allowInteraction(dir: Direction): Unit =
+    currentAllowedDirection = dir
+    basePane.addEventHandler(MouseEvent.MOUSE_CLICKED, windRoseEventHandler(currentAllowedDirection))
+
+  def disallowInteraction(): Unit =
+    basePane.addEventHandler(MouseEvent.MOUSE_CLICKED, windRoseEventHandler(currentAllowedDirection))
 
   override def onEnableView(): Unit =
     super.onEnableView()

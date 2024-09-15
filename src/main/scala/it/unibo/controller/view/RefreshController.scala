@@ -11,6 +11,8 @@ import it.unibo.controller.view.RefreshType.WindUpdate
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.MoveEffect.CardChosen
 import it.unibo.model.effect.MoveEffect.PatternChosen
+import it.unibo.model.effect.card.WindEffect
+import it.unibo.model.effect.core.{ ISpecialCardEffect, IStandardCardEffect }
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.player.Bot
@@ -28,7 +30,7 @@ trait RefreshController extends ActivationController:
       refreshType: RefreshType
   ): Unit =
     given c: GameComponent = component
-    given gb: GameBoard = gameBoard
+    given gb: GameBoard    = gameBoard
 
     logger.info(s"[REFRESH] Type: $refreshType")
 
@@ -36,18 +38,18 @@ trait RefreshController extends ActivationController:
       case RefreshType.PatternChosen => // updateMove(_.lastPatternChosen)
       case CardDraw                  => updateHand
       case CardDiscard               => updateHand
-      case CardSelected              =>
+      case CardSelected =>
         updateMove(_.lastCardChosen)
         updateHand
-      case CardDeselected            => updateHand
-      case WindUpdate                => updateWind
-      case PhaseUpdate               => updatePhase
+      case CardDeselected => updateHand
+      case WindUpdate     => updateWind
+      case PhaseUpdate    => updatePhase
 
   private def updateHand(using c: GameComponent, gb: GameBoard): Unit = c
     .updatePlayer(gb.getCurrentPlayer)(gb.gamePhase)
 
-  private def updateWind(using c: GameComponent, gb: GameBoard): Unit = c.sidebarComponent
-    .components.foreach:
+  private def updateWind(using c: GameComponent, gb: GameBoard): Unit =
+    c.sidebarComponent.components.foreach:
       case c: WindRoseComponent => c.updateWindRoseDirection(gb.board.windDirection)
       case _                    =>
 
@@ -66,14 +68,14 @@ trait RefreshController extends ActivationController:
       case WindPhase =>
         updateMove(_.lastPatternChosen)
         updateWind
-      case _         =>
+      case _ =>
 
     c.sidebarComponent.components.foreach:
       case c: GameInfoComponent =>
         c.updateTurnPhase(currentGamePhase.toString)
         c.updateTurnNumber(gb.turnNumber)
         c.updateTurnPlayer(gb.getCurrentPlayer.name)
-      case _                    =>
+      case _ =>
 
   private def updateMove(
       getMove: Player => Option[Move]
@@ -86,7 +88,13 @@ trait RefreshController extends ActivationController:
       case CardChosen(card, patterns) if move.turnNumber == gb.turnNumber =>
         logger.debug(s"[REFRESH] ${gb.getCurrentPlayer.name} ${card.title}")
         c.gridComponent.setAvailablePatterns(patterns, card.effect.effectId)
-      case MoveEffect.PatternChosen(patterns)                             =>
+        card.effect match
+          case effect: IStandardCardEffect =>
+            effect match
+              case effect: WindEffect => showWindChoices(gameComponent, effect.direction)
+              case _                  => hideWindChoices(gameComponent)
+          case effect: ISpecialCardEffect =>
+      case MoveEffect.PatternChosen(patterns) =>
         logger.debug(s"[REFRESH] ${gb.getCurrentPlayer.name} $patterns")
         c.gridComponent.setAvailablePatterns(patterns, -1)
       case _ => // do not update the grid

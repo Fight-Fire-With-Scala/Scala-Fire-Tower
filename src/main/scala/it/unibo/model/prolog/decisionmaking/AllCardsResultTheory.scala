@@ -10,7 +10,7 @@ object AllCardsResultTheory:
 
     val findallClauses = cards.flatMap { case (cardId, logicEffects) =>
       logicEffects.map { logicEffect =>
-        logicEffect.goals.map { goal =>
+        logicEffect.computations.head.goals.map { goal =>
           val term = goal(cardId).term
           val firstVar = term.toString.split("[(),]").find(_.startsWith("_")).getOrElse("Coords")
           val updatedTerm = term.toString.replaceFirst("Coords", firstVar)

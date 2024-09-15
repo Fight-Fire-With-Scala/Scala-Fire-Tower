@@ -25,18 +25,22 @@ trait LogicSolverManager:
     theory.append(SolverType.CardSolver)
     theory.append(SolverType.BaseSolver)
     val engine = PrologEngine(theory)
-    logicEffect.goals.map(g => engine.solveAsPatterns(g(cardId))).reduce((a, b) => a.union(b))
+    logicEffect.computations.head.goals.map(g => engine.solveAsPatterns(g(cardId))).reduce((a, b) => a.union(b))
 
   protected def computePatterns(
       gb: GameBoard,
       cards: Map[Int, List[ILogicEffect]]
   ): Map[Int, Map[Position, Token]] =
-    
-    val grid       = gb.board.grid
+
+    val grid = gb.board.grid
 
     val dynamicTheory = AllCardsResultTheory(cards)
     val theory        = GridTheory(grid, cards)
-    DecisionMaker.getObjectiveTower.foreach(tower => theory.append(Theory.parseWithStandardOperators(s"tower_position((${tower.row}, ${tower.col})).")))
+    DecisionMaker.getObjectiveTower.foreach(tower =>
+      theory.append(
+        Theory.parseWithStandardOperators(s"tower_position((${tower.row}, ${tower.col})).")
+      )
+    )
     theory.append(SolverType.ManhattanSolver)
     theory.append(SolverType.ConcatListSolver)
     theory.append(dynamicTheory)

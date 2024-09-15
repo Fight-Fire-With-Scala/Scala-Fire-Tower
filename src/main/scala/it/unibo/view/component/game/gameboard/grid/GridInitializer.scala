@@ -9,7 +9,7 @@ class GridInitializer(
     gridSize: Int,
     squareSize: Double,
     handleCellHover: (Int, Int, HoverDirection) => Unit,
-    handleCellClick: (Int, Int) => Unit,
+    handleCellClick: (Int, Int) => Unit
 ):
   private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
 
@@ -17,7 +17,7 @@ class GridInitializer(
     for {
       row <- 0 until gridSize
       col <- 0 until gridSize
-    }
+    } do
       val square = GridSquare(
         row,
         col,

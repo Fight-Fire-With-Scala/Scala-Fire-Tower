@@ -1,10 +1,8 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.IDefensiveCard
-import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.{ IDefensiveCard, ILogicComputation, ILogicEffect, IStandardCardEffect, LogicEffectSolver }
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
-import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.effect.core.LogicEffectSolver
+import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_ILogicEffect
 import it.unibo.model.gameboard.PatternType.LargeEffect
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.PatternType.VeryLargeEffect
@@ -21,6 +19,6 @@ enum WaterEffect(override val effectId: Int) extends IStandardCardEffect with ID
 object WaterEffect:
   val waterEffectSolver: LogicEffectSolver[WaterEffect] = LogicEffectSolver:
     case SmokeJumper =>
-      ILogicEffect(VeryLargeEffect(Map("a" -> Water, "b" -> Fire)), Rule("smoke_jumper"))
-    case AirDrop     => ILogicEffect(MediumEffect(Map("a" -> Water)), Rule("water"))
-    case FireEngine  => ILogicEffect(LargeEffect(Map("a" -> Water)), Rule("water"))
+      ILogicComputation(VeryLargeEffect(Map("a" -> Water, "b" -> Fire)), Rule("smoke_jumper"))
+    case AirDrop    => ILogicComputation(MediumEffect(Map("a" -> Water)), Rule("water"))
+    case FireEngine => ILogicComputation(LargeEffect(Map("a" -> Water)), Rule("water"))

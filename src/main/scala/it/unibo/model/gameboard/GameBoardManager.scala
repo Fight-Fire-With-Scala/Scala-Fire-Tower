@@ -1,6 +1,8 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.effect.GameBoardEffect
+import it.unibo.model.effect.{ card, GameBoardEffect }
+import it.unibo.model.effect.card.WindUpdateEffect
+import it.unibo.model.effect.card.WindUpdateEffect.{ windChoiceSolver, RandomUpdateWind, UpdateWind }
 import it.unibo.model.effect.core.GameBoardEffectSolver
 import it.unibo.model.effect.core.IGameEffect
 import it.unibo.model.effect.core.PatternEffectSolver
@@ -19,12 +21,13 @@ trait GameBoardManager:
     logger.debug(s"Effect to solve $effect")
 
     val gameBoardEffect = effect match
-      case ef: PhaseEffect             => phaseEffectSolver.solve(ef)
-      case ef: HandEffect              =>
+      case ef: PhaseEffect => phaseEffectSolver.solve(ef)
+      case ef: HandEffect =>
         val handEffect = handEffectSolver.solve(ef)
         handleHandEffect(gb, handEffect)
-      case ef: PatternEffect           => patternEffectSolver.solve(ef)
+      case ef: PatternEffect         => patternEffectSolver.solve(ef)
       case ef: GameBoardEffectSolver => ef
+      case ef: WindUpdateEffect      => windChoiceSolver.solve(ef)
 
     gameBoardEffect.solve(gb).gameBoard
 

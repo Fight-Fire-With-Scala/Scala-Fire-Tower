@@ -1,10 +1,9 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.{ ILogicComputation, ILogicEffect, IOffensiveCard, IStandardCardEffect, LogicEffectSolver }
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
-import it.unibo.model.effect.core.IOffensiveCard
-import it.unibo.model.effect.core.IStandardCardEffect
-import it.unibo.model.effect.core.LogicEffectSolver
+import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_ILogicEffect
+import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_List
 import it.unibo.model.gameboard.PatternType.LargeEffect
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.PatternType.VeryLargeEffect
@@ -21,10 +20,10 @@ enum FireEffect(override val effectId: Int) extends IStandardCardEffect with IOf
 
 object FireEffect:
   val fireEffectSolver: LogicEffectSolver[FireEffect] = LogicEffectSolver:
-    case Explosion   =>
-      ILogicEffect(VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)), Rule("explosion"))
-    case Flare       => ILogicEffect(MediumEffect(Map("a" -> Fire)), Rule("fire"))
-    case BurningSnag => ILogicEffect(LargeEffect(Map("a" -> Fire)), Rule("fire"))
+    case Explosion =>
+      ILogicComputation(VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)), Rule("explosion"))
+    case Flare       => ILogicComputation(MediumEffect(Map("a" -> Fire)), Rule("fire"))
+    case BurningSnag => ILogicComputation(LargeEffect(Map("a" -> Fire)), Rule("fire"))
     case Ember       => ???
     //    val patternEffect = PatternComputation(
     //      pattern = VerySmallEffect(Map("a" -> Firebreak)).compilePattern,

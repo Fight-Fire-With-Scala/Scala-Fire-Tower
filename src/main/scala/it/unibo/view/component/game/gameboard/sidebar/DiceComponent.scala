@@ -6,6 +6,7 @@ import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.UpdateWindDirection
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.card.WindUpdateEffect
+import it.unibo.model.effect.card.WindUpdateEffect.RandomUpdateWind
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
@@ -39,11 +40,8 @@ final class DiceComponent(using observable: ViewSubject) extends ISidebarCompone
   private def diceClickHandler(): Unit =
     val updatedDirection = Random.shuffle(Direction.values).head
     diceFace.updateDirection(updatedDirection)
-    observable.onNext(UpdateWindDirection(WindUpdateEffect.RandomUpdateWind))
+    observable.onNext(UpdateWindDirection(RandomUpdateWind(updatedDirection)))
     observable.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
-
-  def updateDiceFaceDirection(direction: Direction): Unit =
-    runOnUIThread(diceFace.updateDirection(direction))
 
   override def onEnableView(): Unit =
     super.onEnableView()

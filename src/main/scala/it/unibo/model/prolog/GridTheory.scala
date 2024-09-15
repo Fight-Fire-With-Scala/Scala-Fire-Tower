@@ -1,11 +1,10 @@
 package it.unibo.model.prolog
 
-import scala.jdk.CollectionConverters._
-
+import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Theory
-import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.{ ILogicComputation, ILogicEffect }
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
@@ -49,7 +48,7 @@ object GridTheory:
 
   private def getPatterns(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap { case (id, ef) =>
-      ef.flatMap(eff => eff.pattern).iterator.map { case (pos, token) =>
+      ef.flatMap(eff => eff.computations.head.pattern).iterator.map { case (pos, token) =>
         Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, id)
       }
     }
@@ -58,7 +57,8 @@ object GridTheory:
     patternsToCompute.iterator.flatMap { case (id, ef) =>
       ef.iterator.flatMap { eff =>
         val directionsOfApplication: List[Direction] =
-          if (eff.pattern.size <= 1) List(Direction.North) else Direction.values.toList
+          if (eff.computations.head.directions.size <= 1) List(Direction.North)
+          else Direction.values.toList
         val directionNames = directionsOfApplication.map(_.getId)
         Iterator.single(Struct.of("directions", directionNames, id))
       }
@@ -67,7 +67,7 @@ object GridTheory:
   private def getDeltas(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap { case (id, ef) =>
       ef.iterator.flatMap { eff =>
-        val directionDeltas = eff.directions.iterator
+        val directionDeltas = eff.computations.head.directions.iterator
           .map(_.getDelta)
           .map(d => Struct.tuple(d.row, d.col))
         Iterator.single(Struct.of("deltas", directionDeltas.toList, id))
