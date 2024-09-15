@@ -52,7 +52,7 @@ class GridManager(
       this.gamePhase = gamePhase
       val cellColor = grid.getCell(position) match
         case Some(_: Woods.type)       => Color.DarkGreen
-        case Some(_: Tower.type) if currentTowerPositions.contains(position) => Color.rgb(131, 18, 22)
+        case Some(_: Tower.type) if !currentTowerPositions.contains(position) => Color.rgb(131, 18, 22)
         case Some(_: Tower.type)       => Color.rgb(76, 39, 3)
         case Some(_: EternalFire.type) => Color.Red
         case _                         => Color.White
