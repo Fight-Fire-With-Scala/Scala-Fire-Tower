@@ -9,7 +9,9 @@ trait IStandardCardEffect extends ICardEffect with CanBeDiscarded
 
 trait ISpecialCardEffect extends ICardEffect with CanBePlayedAsExtra with CannotBeDiscarded
 
-given Conversion[ICardEffect, ILogicEffect] = {
+given Conversion[ICardEffect, ILogicEffect] = convert(_)
+
+def convert(effect: ICardEffect): ILogicEffect = effect match
   case e: IStandardCardEffect =>
     e match
       case e: FireEffect      => FireEffect.fireEffectSolver.solve(e)
@@ -21,7 +23,8 @@ given Conversion[ICardEffect, ILogicEffect] = {
     e match
       case BucketEffect => BucketEffect.bucketEffect
       case _            => ILogicEffect()
-}
+
+given Conversion[List[ICardEffect], List[ILogicEffect]] = _.map(e => convert(e))
 
 given Conversion[ICardEffect, String] = {
   case effect: IStandardCardEffect =>
