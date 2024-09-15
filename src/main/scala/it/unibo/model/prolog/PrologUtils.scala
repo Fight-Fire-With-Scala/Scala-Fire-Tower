@@ -40,6 +40,14 @@ object PrologUtils:
     case solutionAsStruct: Struct => extractMapPositionTokenFromStruct(solutionAsStruct, 0)
     case _                        => Map.empty
 
+  def parseClosestTowerPosition(solution: SolveInfo): Set[Position] =
+    solution.getTerm("ClosestTower") match
+      case struct: Struct =>
+        val x = struct.getArg(0).toString.toInt
+        val y = struct.getArg(1).toString.toInt
+        Set(Position(x, y))
+      case _ => Set.empty
+
   def parseAllCardsResult(solution: SolveInfo): Map[Int, Map[Position, Token]] =
     solution.getTerm("R") match
       case solutionAsStruct: Struct =>

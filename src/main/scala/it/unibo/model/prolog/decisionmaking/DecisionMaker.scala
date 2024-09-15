@@ -1,7 +1,6 @@
 package it.unibo.model.prolog.decisionmaking
 
-import scala.jdk.CollectionConverters._
-
+import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Theory
@@ -11,19 +10,18 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.logger
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologUtils.given
-import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
-import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
+import it.unibo.model.prolog.PrologUtils.{given_Conversion_SolverType_Theory, given_Conversion_String_Term, parseClosestTowerPosition, parseComputedPatterns, given}
 import it.unibo.model.prolog.SolverType
 import it.unibo.model.prolog.SolverType.DistanceSolver
 import it.unibo.model.prolog.SolverType.ManhattanSolver
 
 object DecisionMaker:
   private var attackOrDefense: AttackDefense = AttackDefense.Attack
-  private var objectiveTower: Position = Position(0, 0)
+  private var objectiveTower: Set[Position] = Set(Position(0, 0))
   
   def getAttackOrDefense: AttackDefense = attackOrDefense
-  def getObjectiveTower: Position = objectiveTower
+  def getObjectiveTower: Set[Position] = objectiveTower
+  def setObjectiveTower (position: Set[Position]): Unit = objectiveTower = position
 
   def computeAttackOrDefense(gameBoard: GameBoard, botBehaviour: BotBehaviour): Unit =
     val myTowerPositions = gameBoard.getCurrentPlayer.towerPositions.map(_.position)
@@ -43,13 +41,9 @@ object DecisionMaker:
 
     result match
       case Some(solution) =>
-        val closestTower = solution.getTerm("ClosestTower").toString
-        objectiveTower = Position(
-          closestTower.substring(1, closestTower.indexOf(',')).toInt,
-          closestTower.substring(closestTower.indexOf(',') + 1, closestTower.length - 1).toInt
-        )
+        objectiveTower = parseClosestTowerPosition(solution)
         attackOrDefense =
-          if myTowerPositions.contains(objectiveTower) then AttackDefense.Defense
+          if myTowerPositions.contains(objectiveTower.head) then AttackDefense.Defense
           else AttackDefense.Attack
       case None           => botBehaviour match
           case Aggressive => attackOrDefense = AttackDefense.Attack
