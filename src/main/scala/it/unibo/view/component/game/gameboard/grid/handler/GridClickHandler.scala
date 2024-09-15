@@ -49,7 +49,8 @@ class GridClickHandler(
     WindEffect.North.effectId || gridState.effectCode == WindEffect.South.effectId ||
     gridState.effectCode                              == WindEffect.East.effectId ||
     gridState.effectCode                              == WindEffect.West.effectId ||
-    gridState.effectCode                              == FirebreakEffect.DeReforest.effectId
+    gridState.effectCode                              == FirebreakEffect.DeReforest.effectId ||
+    gridState.effectCode                              == FireEffect.Ember.effectId
 
   private def placeExplosionPattern(position: Position): Unit = gridState.effectCode match
     case FireEffect.Explosion.effectId =>

@@ -1,31 +1,34 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{ ILogicComputation, ILogicEffect, IOffensiveCard, IStandardCardEffect, LogicEffectSolver }
+import it.unibo.model.effect.core.{ ILogicEffect, IMultiStepCardEffect, IStandardCardEffect, LogicEffectSolver, OffensiveEffect }
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_ILogicEffect
-import it.unibo.model.gameboard.PatternType.LargeEffect
-import it.unibo.model.gameboard.PatternType.MediumEffect
-import it.unibo.model.gameboard.PatternType.VeryLargeEffect
-import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Map
-import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
+import it.unibo.model.gameboard.PatternType.{ given_Conversion_PatternType_Map, LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect }
+import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Fire, Firebreak }
 import it.unibo.model.prolog.Rule
 
-enum FireEffect(override val effectId: Int) extends IStandardCardEffect with IOffensiveCard:
+enum FireEffect(override val effectId: Int) extends IStandardCardEffect:
   case Explosion extends FireEffect(0)
   case Flare extends FireEffect(1)
   case BurningSnag extends FireEffect(2)
-  case Ember extends FireEffect(3)
+  case Ember extends FireEffect(3) with IMultiStepCardEffect
 
 object FireEffect:
   val fireEffectSolver: LogicEffectSolver[FireEffect] = LogicEffectSolver:
     case Explosion =>
-      ILogicComputation(VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)), Rule("explosion"))
-    case Flare       => ILogicComputation(MediumEffect(Map("a" -> Fire)), Rule("fire"))
-    case BurningSnag => ILogicComputation(LargeEffect(Map("a" -> Fire)), Rule("fire"))
-    case Ember       => ???
-    //    val patternEffect = PatternComputation(
-    //      pattern = VerySmallEffect(Map("a" -> Firebreak)).compilePattern,
-    //      goals = List(Rule("fire")),
-    //      directions = Direction.values.toList
-    //    )
-    //    patternEffectSolver.solve(patternEffect)
+      OffensiveEffect(
+        VeryLargeEffect(Map("a" -> Fire, "b" -> Firebreak)),
+        Rule("explosion")
+      )
+    case Flare       => OffensiveEffect(MediumEffect(Map("a" -> Fire)), Rule("fire"))
+    case BurningSnag => OffensiveEffect(LargeEffect(Map("a" -> Fire)), Rule("fire"))
+    case Ember =>
+      List(
+        OffensiveEffect(
+          VerySmallEffect(Map("a" -> Empty)),
+          Rule("ember_first_phase")
+        ),
+        OffensiveEffect(
+          VerySmallEffect(Map("a" -> Fire)),
+          Rule("ember_second_phase")
+        )
+      )

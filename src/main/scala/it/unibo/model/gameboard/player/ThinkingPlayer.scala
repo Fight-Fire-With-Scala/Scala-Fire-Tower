@@ -9,17 +9,17 @@ import it.unibo.controller.view.RefreshType.CardSelected
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.{ given_Conversion_GameBoard_GameBoardEffect, given_Conversion_ICardEffect_ILogicEffect, given_Conversion_List_List, ICardEffect, IDefensiveCard, ILogicEffect, IOffensiveCard }
+import it.unibo.model.effect.core.{DefensiveEffect, ICardEffect, IDefensiveEffect, ILogicEffect, IOffensiveEffect, ISpecialCardEffect, IStandardCardEffect, OffensiveEffect, convert, given_Conversion_GameBoard_GameBoardEffect, given_Conversion_ICardEffect_ILogicEffect, given_Conversion_List_List}
 import it.unibo.model.effect.pattern.PatternEffect
-import it.unibo.model.effect.pattern.PatternEffect.{ BotComputation, PatternApplication }
+import it.unibo.model.effect.pattern.PatternEffect.{BotComputation, PatternApplication}
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token }
-import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea }
+import it.unibo.model.gameboard.grid.{ConcreteToken, Position, Token}
+import it.unibo.model.gameboard.player.ThinkingPlayer.{filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea}
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
@@ -77,10 +77,9 @@ trait ThinkingPlayer extends Player:
   protected def thinkForPlayStandardCardPhase(using controller: ModelController): Unit =
     logger.info(s"[BOT] My hand is: $hand")
     logger.info("[BOT] thinkForPlayStandardCardPhase")
-    val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
-    val gb            = controller.model.getGameBoard
-    val effects: Map[Int, List[ICardEffect]] =
-      filteredCards.map(card => card.id -> List(card.effect)).toMap
+    val filteredCards  = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
+    val gb             = controller.model.getGameBoard
+    val effects        = filteredCards.map(card => card.id -> List(convert(card.effect))).toMap
     val botComputation = BotComputation(effects)
     val gbAfterChoice  = PatternEffect.patternEffectSolver.solve(botComputation).solve(gb).gameBoard
     val lastBotChoice  = gbAfterChoice.getCurrentPlayer.lastBotChoice
@@ -119,17 +118,17 @@ object ThinkingPlayer:
     decision match
       case AttackDefense.Attack =>
         hand.collect:
-          case card if card.effect match
-                case _: IOffensiveCard => true;
-                case _                 => false
-              =>
+          case card if card.effect.computations.exists {
+                case _: OffensiveEffect => true
+                case _                   => false
+              } =>
             card
       case AttackDefense.Defense =>
         hand.collect:
-          case card if card.effect match
-                case _: IDefensiveCard => true;
-                case _                 => false
-              =>
+          case card if card.effect.computations.exists {
+                case _: DefensiveEffect => true
+                case _                   => false
+              } =>
             card
 
   private def isFireTokenInTowerArea(gb: GameBoard): Boolean =

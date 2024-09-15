@@ -48,14 +48,16 @@ object GridTheory:
 
   private def getPatterns(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
-      ef.flatMap(_.computations).zipWithIndex
+      ef.flatMap(_.computations)
+        .zipWithIndex
         .flatMap: (m, compId) =>
           m.pattern.map: (pos, token) =>
             Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, cardId, compId)
 
   private def getDirections(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
-      ef.flatMap(_.computations).zipWithIndex
+      ef.flatMap(_.computations)
+        .zipWithIndex
         .flatMap: (m, compId) =>
           val directionsOfApplication: List[Direction] =
             if (m.directions.size <= 1) List(Direction.North)
@@ -65,7 +67,8 @@ object GridTheory:
 
   private def getDeltas(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
-      ef.flatMap(_.computations).zipWithIndex
+      ef.flatMap(_.computations)
+        .zipWithIndex
         .flatMap: (m, compId) =>
           val directionDeltas = m.directions
             .map(_.getDelta)

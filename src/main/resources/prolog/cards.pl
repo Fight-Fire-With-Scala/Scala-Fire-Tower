@@ -19,6 +19,10 @@ ember_first_phase(R, CardId, EffectId) :-
     match_if_both_token_and_cell(Coords, [w], [f]),
     compute_pattern(Coords, R, _, CardId, EffectId).
 
+ember_second_phase(R, CardId, EffectId) :-
+    match_empty_cells(Coords, [w]),
+    compute_pattern(Coords, R, _, CardId, EffectId).
+
 firebreak(Coords, R, CardId, EffectId) :-
     compute_pattern(Coords, R, _, CardId, EffectId),
     \+ at_least(neigh, R, _, [], [k], CardId, EffectId),

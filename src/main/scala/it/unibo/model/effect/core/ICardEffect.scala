@@ -2,12 +2,14 @@ package it.unibo.model.effect.core
 
 import it.unibo.model.effect.card.{ BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect }
 
-sealed trait ICardEffect extends IGameEffect:
-  val effectId: Int
-
 trait IStandardCardEffect extends ICardEffect with CanBeDiscarded
 
 trait ISpecialCardEffect extends ICardEffect with CanBePlayedAsExtra with CannotBeDiscarded
+
+trait IMultiStepCardEffect extends IStandardCardEffect
+
+sealed trait ICardEffect extends IGameEffect:
+  val effectId: Int
 
 given Conversion[ICardEffect, ILogicEffect] = convert(_)
 
@@ -26,7 +28,7 @@ def convert(effect: ICardEffect): ILogicEffect = effect match
 
 given Conversion[List[ICardEffect], List[ILogicEffect]] = _.map(e => convert(e))
 
-given Conversion[ICardEffect, String] = {
+given Conversion[ICardEffect, String] =
   case effect: IStandardCardEffect =>
     effect match
       case effect: FireEffect      => "fire"
@@ -38,4 +40,3 @@ given Conversion[ICardEffect, String] = {
     effect match
       case BucketEffect => "water"
       case _            => "not-found"
-}

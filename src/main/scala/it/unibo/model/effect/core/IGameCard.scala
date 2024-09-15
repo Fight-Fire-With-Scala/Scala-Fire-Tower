@@ -1,9 +1,5 @@
 package it.unibo.model.effect.core
 
-trait IOffensiveCard
-
-trait IDefensiveCard
-
 trait CanBeDiscarded
 
 trait CanBePlayedAsExtra
