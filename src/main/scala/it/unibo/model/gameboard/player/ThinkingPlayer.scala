@@ -6,12 +6,10 @@ import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType
 import it.unibo.controller.view.RefreshType.CardDiscard
 import it.unibo.controller.view.RefreshType.CardSelected
-import it.unibo.controller.view.RefreshType.PhaseUpdate
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.IDefensiveCard
-import it.unibo.model.effect.core.IOffensiveCard
+import it.unibo.model.effect.core.{ given_Conversion_GameBoard_GameBoardEffect, given_Conversion_ICardEffect_ILogicEffect, given_Conversion_List_List, ICardEffect, IDefensiveCard, ILogicEffect, IOffensiveCard }
 import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.effect.pattern.PatternEffect.{ BotComputation, PatternApplication }
 import it.unibo.model.effect.phase.PhaseEffect
@@ -20,14 +18,12 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token, TowerPosition }
+import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token }
 import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea }
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
-import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
-import it.unibo.model.gameboard.Direction.{ North, West }
 
 trait ThinkingPlayer extends Player:
   val botBehaviour: BotBehaviour
@@ -62,10 +58,11 @@ trait ThinkingPlayer extends Player:
     val gb = controller.model.getGameBoard
     computeAttackOrDefense(gb, botBehaviour)
     logger.info(s"[BOT] Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
-    // logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower}")
+    logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower.head}")
 
     // bot does redraw cards only if attacking and not having attack cards
     val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
+
     if filteredCards.isEmpty then
       controller.applyEffect(PhaseEffect(RedrawCardsPhase), CardDiscard)
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(RedrawCardsPhase)))
@@ -75,10 +72,24 @@ trait ThinkingPlayer extends Player:
 
   protected def thinkForRedrawCardPhase(using controller: ModelController): Unit =
     logger.info("[BOT] thinkForRedrawCardPhase")
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
+    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
   protected def thinkForPlayStandardCardPhase(using controller: ModelController): Unit =
+    logger.info(s"[BOT] My hand is: $hand")
     logger.info("[BOT] thinkForPlayStandardCardPhase")
+    val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
+    val gb            = controller.model.getGameBoard
+    val effects: Map[Int, List[ICardEffect]] =
+      filteredCards.map(card => card.id -> List(card.effect)).toMap
+    val botComputation = BotComputation(effects)
+    val gbAfterChoice  = PatternEffect.patternEffectSolver.solve(botComputation).solve(gb).gameBoard
+    val lastBotChoice  = gbAfterChoice.getCurrentPlayer.lastBotChoice
+    val chosenPattern  = handleMove(gb, lastBotChoice)
+    logger.info(s"[PATTERN] $chosenPattern")
+    logger.info(s"[BOT] My hand is: $hand")
+
+    val appEffect = PatternApplication(chosenPattern.values.head)
+    controller.applyEffect(appEffect, RefreshType.PatternChosen)
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
   protected def thinkForDecisionPhase(using controller: ModelController): Unit =

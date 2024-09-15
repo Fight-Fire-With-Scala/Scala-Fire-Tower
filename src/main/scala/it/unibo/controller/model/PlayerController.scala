@@ -13,9 +13,9 @@ trait PlayerController extends HandManager:
 
   def initializeBot(gb: GameBoard, player: Player, observable: BotSubject): (GameBoard, Player) =
     val (newGb, pl) = initializePlayer(gb, player)
-    player match
+    pl match
       case b: Bot => (newGb, b.copy(botObservable = Some(observable)))
-      case _      => (newGb, pl)
+      case _      => (gb, pl)
 
   def initializePlayer(gb: GameBoard, player: Player): (GameBoard, Player) =
     val (newGb, newPlayer) = fillPlayerHand(gb, player)
