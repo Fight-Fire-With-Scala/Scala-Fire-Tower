@@ -5,7 +5,7 @@ import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
-import it.unibo.model.prolog.{GridTheory, PrologEngine, PrologUtils, SolverType}
+import it.unibo.model.prolog.{ GridTheory, PrologEngine, PrologUtils, SolverType }
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
 import it.unibo.model.prolog.PrologUtils.given_Conversion_String_Term
@@ -13,7 +13,7 @@ import it.unibo.model.prolog.SolverType.CardChoserSolver
 import it.unibo.model.prolog.SolverType.CardSolver
 import it.unibo.model.prolog.SolverType.ConcatListSolver
 import it.unibo.model.prolog.SolverType.ManhattanSolver
-import it.unibo.model.prolog.decisionmaking.AllCardsResultTheory
+import it.unibo.model.prolog.decisionmaking.{ AllCardsResultTheory, DecisionMaker }
 
 trait LogicSolverManager:
   protected def computePatterns(
@@ -31,15 +31,12 @@ trait LogicSolverManager:
       gb: GameBoard,
       cards: Map[Int, List[ILogicEffect]]
   ): Map[Int, Map[Position, Token]] =
-    val opponentPositions = gb.getOpponent.towerPositions.map(_.position)
-    val enemyTower = gb.getOpponent.towerPositions.head.position
-    val grid = gb.board.grid
+    
+    val grid       = gb.board.grid
 
     val dynamicTheory = AllCardsResultTheory(cards)
-    val theory = GridTheory(grid, cards)
-
-    val t = Theory
-      .parseWithStandardOperators(s"tower_position((${enemyTower.row}, ${enemyTower.col})).")
+    val theory        = GridTheory(grid, cards)
+    DecisionMaker.getObjectiveTower.foreach(tower => theory.append(Theory.parseWithStandardOperators(s"tower_position((${tower.row}, ${tower.col})).")))
     theory.append(SolverType.ManhattanSolver)
     theory.append(SolverType.ConcatListSolver)
     theory.append(dynamicTheory)
@@ -48,10 +45,13 @@ trait LogicSolverManager:
     theory.append(SolverType.BaseSolver)
 
     val engine = PrologEngine(theory)
-    val goal = "main(R)"
-    val result = engine.solve(goal).headOption
+    val goal   = "main(R)"
 
+    println(engine.isSolvedWithSuccess(goal))
+
+    val result = engine.solve(goal).headOption
+    println(theory)
     result match
       case Some(solution) =>
         PrologUtils.parseAllCardsResult(solution)
-      case None           => Map.empty
+      case None => Map.empty

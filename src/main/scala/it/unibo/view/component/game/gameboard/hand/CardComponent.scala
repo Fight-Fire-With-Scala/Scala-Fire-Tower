@@ -34,7 +34,9 @@ enum CardHighlightState:
   case Highlighted, Unhighlighted
 
 final class CardComponent(using internalObservable: InternalViewSubject)
-    extends IHandComponent, ICanSwitchHandler[GamePhase], ICanBeDisabled:
+    extends IHandComponent,
+      ICanSwitchHandler[GamePhase],
+      ICanBeDisabled:
 
   override val fxmlPath: String = GUIType.Card.fxmlPath
 
@@ -83,16 +85,15 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     card.effect match
       case _: CanBeDiscarded => containSpecialCard = false
       case _                 => containSpecialCard = true
-
     addHandlers()
-  
+
   def reset(): Unit =
     cardPane.getStyleClass.clear()
     cardTitle.setText("")
     cardDescription.setText("")
     cardId = ""
     containSpecialCard = false
-    disableActualHandlers()
+    resetHandlers()
 
   override def onEnableView(): Unit =
     super.onEnableView()
