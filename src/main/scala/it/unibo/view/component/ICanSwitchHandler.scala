@@ -28,6 +28,15 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
   protected def disableActualHandlers(): Unit =
     updateHandlers(currentState, getPane.removeEventHandler)
 
+  protected def resetHandlers(): Unit =
+    println("calling reset")
+    stateHandlers.foreach((state, eventHandlers) =>
+      eventHandlers.foreach((eventType, handlers) =>
+        handlers.foreach(handler => removeHandler(state, eventType, handler))
+      )
+    )
+    stateHandlers = Map()
+
   protected def enableActualHandlers(): Unit = updateHandlers(currentState, getPane.addEventHandler)
 
   private def onSwitch(state: T): Unit =
@@ -40,9 +49,8 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
       handler: EventHandler[MouseEvent]
   ): Unit =
     val eventHandlers = stateHandlers.getOrElse(state, Map())
-    val handlers = eventHandlers.getOrElse(eventType, List())
+    val handlers      = eventHandlers.getOrElse(eventType, List())
     stateHandlers += (state -> (eventHandlers + (eventType -> (handler :: handlers))))
-
 
   def removeHandler(
       state: T,
@@ -50,18 +58,20 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
       handler: EventHandler[MouseEvent]
   ): Unit =
     val eventHandlers = stateHandlers.getOrElse(state, Map())
-    val handlers = eventHandlers.getOrElse(eventType, List()).filterNot(_ == handler)
+    val handlers      = eventHandlers.getOrElse(eventType, List()).filterNot(_ == handler)
     stateHandlers += (state -> (eventHandlers + (eventType -> handlers)))
 
   def getHandlers(state: T, eventType: EventType[MouseEvent]): List[EventHandler[MouseEvent]] =
     stateHandlers.getOrElse(state, Map()).getOrElse(eventType, List())
 
   override def switch(toState: T): Unit =
-    stateHandlers.find(_._1 == toState).foreach { case (state, _) =>
-      applyState(state)
-      onSwitch(state)
-      currentState = state
-    }
+    stateHandlers.find(_._1 == toState) match
+      case Some((state, _)) =>
+        applyState(state)
+        onSwitch(state)
+        currentState = state
+      case None =>
+        disableActualHandlers()
 
   override def getCurrentState: T = currentState
 
