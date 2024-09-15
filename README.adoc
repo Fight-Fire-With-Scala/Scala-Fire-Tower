@@ -1,0 +1,77 @@
+= Scala Fire Tower
+
+ifdef::env-github[]
+:note-caption: :information_source:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+image:https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=[link=https://scala-steward.org]
+
+Scala Fire Tower is a competitive board game where players manage fire watchtowers, attempting to protect their tower from spreading forest fires while directing the flames toward their opponents' towers. Players utilize resources like firefighters, water, and firebreaks to control the fire's spread. The fire's direction is influenced by the wind, and players can change the wind direction using action cards. The goal is to eliminate opponents by burning down their towers. The game can be played by 1-2 players and typically lasts 15 minutes.
+
+== Compilation
+
+To run the application:
+
+[source, sh]
+----
+sbt run
+----
+
+To run the tests:
+
+[source, sh]
+----
+sbt test
+----
+
+To generate the coverage report:
+
+[source, sh]
+----
+sbt test coverage coverageReport
+----
+
+To build the FAT Jar:
+
+[source, sh]
+----
+sbt assembly
+----
+
+To run the application from the generated Jar:
+
+[source, sh]
+----
+java -jar target/scala-3.4.2/scala-fire-tower.jar
+----
+
+[TIP]
+====
+If the build fails due to classes not found, try to run `sbt clean` to rebuild the application from scratch.
+====
+
+== Quickstart
+
+* *Starting the Game*
+** Select the gamemode, Human vs Human or Human vs Bot.
+** Player 1 has the towers X, Y, while player 2 has towers I and J.
+** Each player is dealt 5 cards, plus a special bucket card.
+** The wind's starting direction is determined randomly.
+* *Objective*
+** Burn down the opposing towers by spreading fire and defend your own. The last player with an intact tower wins.
+* *Turn Structure*
+** _Spread Fire_: at the start of each turn, players must spread the fire in the current wind direction.
+** _Play Action Cards_: players can play one action card to manipulate the wind, spread fire, or use water or firebreaks to protect their tower.
+** _Redraw a Card_: after playing a card, draw one new card from the action deck.
+* *Action Cards*
+** _Fire Cards_: spread the fire in specific patterns.
+** _Wind Cards_: change the wind direction.
+** _Water Cards_: extinguish fire gems in specific areas.
+** _Firebreak Cards_: place barriers to prevent the fire from spreading.
+* *Defending the Tower*
+** Each player’s tower has a designated area. Use water cards or firebreaks to prevent fire from entering this area.
+** Once fire enters your tower, you are eliminated from the game.
+* *Winning the Game*
+** The game ends when a player loses its first tower. The other player wins the game.
