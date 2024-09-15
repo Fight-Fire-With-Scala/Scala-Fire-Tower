@@ -29,7 +29,6 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
     updateHandlers(currentState, getPane.removeEventHandler)
 
   protected def resetHandlers(): Unit =
-    println("calling reset")
     stateHandlers.foreach((state, eventHandlers) =>
       eventHandlers.foreach((eventType, handlers) =>
         handlers.foreach(handler => removeHandler(state, eventType, handler))
