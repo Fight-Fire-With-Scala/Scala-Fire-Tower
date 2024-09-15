@@ -4,7 +4,7 @@ import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Theory
-import it.unibo.model.effect.core.{ ILogicComputation, ILogicEffect }
+import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
@@ -47,29 +47,27 @@ object GridTheory:
     cells ++ tokens ++ numRows ++ numCols
 
   private def getPatterns(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
-    patternsToCompute.iterator.flatMap { case (id, ef) =>
-      ef.flatMap(eff => eff.computations.head.pattern).iterator.map { case (pos, token) =>
-        Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, id)
-      }
-    }
+    patternsToCompute.iterator.flatMap: (cardId, ef) =>
+      ef.flatMap(_.computations).zipWithIndex
+        .flatMap: (m, compId) =>
+          m.pattern.map: (pos, token) =>
+            Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, cardId, compId)
 
   private def getDirections(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
-    patternsToCompute.iterator.flatMap { case (id, ef) =>
-      ef.iterator.flatMap { eff =>
-        val directionsOfApplication: List[Direction] =
-          if (eff.computations.head.directions.size <= 1) List(Direction.North)
-          else Direction.values.toList
-        val directionNames = directionsOfApplication.map(_.getId)
-        Iterator.single(Struct.of("directions", directionNames, id))
-      }
-    }
+    patternsToCompute.iterator.flatMap: (cardId, ef) =>
+      ef.flatMap(_.computations).zipWithIndex
+        .flatMap: (m, compId) =>
+          val directionsOfApplication: List[Direction] =
+            if (m.directions.size <= 1) List(Direction.North)
+            else Direction.values.toList
+          val directionNames = directionsOfApplication.map(_.getId)
+          Iterator.single(Struct.of("directions", directionNames, cardId, compId))
 
   private def getDeltas(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
-    patternsToCompute.iterator.flatMap { case (id, ef) =>
-      ef.iterator.flatMap { eff =>
-        val directionDeltas = eff.computations.head.directions.iterator
-          .map(_.getDelta)
-          .map(d => Struct.tuple(d.row, d.col))
-        Iterator.single(Struct.of("deltas", directionDeltas.toList, id))
-      }
-    }
+    patternsToCompute.iterator.flatMap: (cardId, ef) =>
+      ef.flatMap(_.computations).zipWithIndex
+        .flatMap: (m, compId) =>
+          val directionDeltas = m.directions
+            .map(_.getDelta)
+            .map(d => Struct.tuple(d.row, d.col))
+          Iterator.single(Struct.of("deltas", directionDeltas.toList, cardId, compId))

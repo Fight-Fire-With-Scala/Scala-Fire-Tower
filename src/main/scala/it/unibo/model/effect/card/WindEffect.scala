@@ -1,7 +1,6 @@
 package it.unibo.model.effect.card
 
 import it.unibo.model.effect.core.{ ILogicComputation, ILogicEffect, IOffensiveCard, IStandardCardEffect, LogicEffectSolver }
-import it.unibo.model.effect.core.ILogicEffect.given_Conversion_Function_List
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_ILogicEffect
 import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_List
 import it.unibo.model.gameboard

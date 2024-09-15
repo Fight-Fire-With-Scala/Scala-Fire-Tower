@@ -9,19 +9,15 @@ object AllCardsResultTheory:
   def apply(cards: Map[Int, List[ILogicEffect]]): Theory =
 
     val findallClauses = cards
-      .flatMap { case (cardId, logicEffects) =>
-        logicEffects.map { logicEffect =>
-          logicEffect.computations.head.goals
-            .map { goal =>
-              val term = goal(cardId).term
-              val firstVar =
-                term.toString.split("[(),]").find(_.startsWith("_")).getOrElse("Coords")
-              val updatedTerm = term.toString.replaceFirst("Coords", firstVar)
-              s"findall(($firstVar, $cardId), $updatedTerm, R${cardId.abs})"
-            }
+      .flatMap: (cardId, logicEffects) =>
+        logicEffects.flatMap(_.computations).zipWithIndex.map: (logicComputation, idx) =>
+          val goal = logicComputation.goal
+          val term = goal(cardId, idx).term
+          val firstVar =
+            term.toString.split("[(),]").find(_.startsWith("_")).getOrElse("Coords")
+          val updatedTerm = term.toString.replaceFirst("Coords", firstVar)
+          s"findall(($firstVar, $cardId), $updatedTerm, R${cardId.abs})"
             .mkString(",\n    ")
-        }
-      }
       .mkString(",\n    ")
 
     val resultVars   = cards.keys.map(cardId => s"R${cardId.abs}").mkString(", ")
