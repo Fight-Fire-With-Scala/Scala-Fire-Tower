@@ -74,7 +74,7 @@ trait ActivationController extends GameController:
 
     case PlaySpecialCardPhase =>
       gameComponent.foreach: component =>
-        component.gridComponent.disableView()
+        component.gridComponent.enableView()
         component.handComponent.enableView()
         component.handComponent.handleSpecialCardComponents(choice)
         component.sidebarComponent.components
