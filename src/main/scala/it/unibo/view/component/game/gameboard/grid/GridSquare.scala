@@ -20,10 +20,10 @@ final case class GridSquare(
     col: Int,
     size: Double,
     onHover: (Int, Int, HoverDirection) => Unit,
-    onClick: (Int, Int) => Unit,
+    onClick: (Int, Int) => Unit
 ) extends ICanBeDisabled:
 
-  private val hoverDelayMillis = 5
+  private val hoverDelayMillis   = 5
   private var squareColor: Color = Color.White
   private val onMouseMovedFun: EventHandler[MouseEvent] =
     (event: MouseEvent) => handleMouseMoved(event)
@@ -32,8 +32,11 @@ final case class GridSquare(
     (_: MouseEvent) => onClick(row, col)
 
   private val fixedEventHandlers =
-    List(MouseEvent.MOUSE_MOVED -> onMouseMovedFun, MouseEvent.MOUSE_EXITED -> onMouseExitedFun,
-      MouseEvent.MOUSE_CLICKED -> onMouseClickedFun)
+    List(
+      MouseEvent.MOUSE_MOVED   -> onMouseMovedFun,
+      MouseEvent.MOUSE_EXITED  -> onMouseExitedFun,
+      MouseEvent.MOUSE_CLICKED -> onMouseClickedFun
+    )
 
   override def enableView(): Unit =
     rectangle.setOpacity(1)
@@ -59,7 +62,7 @@ final case class GridSquare(
   pane.getChildren.addAll(rectangle, text)
 
   private val initialDelay = new PauseTransition(Duration.millis(hoverDelayMillis))
-  private val hoverDelay = new PauseTransition(Duration.millis(hoverDelayMillis))
+  private val hoverDelay   = new PauseTransition(Duration.millis(hoverDelayMillis))
   hoverDelay.setOnFinished(_ => triggerHover())
 
   private var lastEvent: MouseEvent = uninitialized

@@ -29,7 +29,8 @@ import javafx.scene.layout.Pane
 final class HandComponent(val cardComponents: List[CardComponent])(using
     observable: ViewSubject,
     internalObservable: InternalViewSubject
-) extends IHandComponent with IUpdateView:
+) extends IHandComponent
+    with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath
 
@@ -56,7 +57,6 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
         cardComponent.switch(gamePhase)
       }
       cardToPlay.foreach(_.highlightManager.switch(Some(CardHighlightState.Highlighted)))
-
 
   def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 
@@ -90,9 +90,10 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
         observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
     else
       cardToPlay match
-        case Some(component) => component.highlightManager
+        case Some(component) =>
+          component.highlightManager
             .switch(Some(CardHighlightState.Unhighlighted))
-        case None            =>
+        case None =>
       cardToPlay = cardComponent
       observable.onNext(ChoseCardToPlay(PlayCard(cardId)))
       if !cardComponent.get.containSpecialCard then
@@ -107,16 +108,17 @@ final class HandComponent(val cardComponents: List[CardComponent])(using
     cardComponents.foreach(card => card.disableView())
 
   def handleSpecialCardComponents(gamePhase: GamePhase): Unit =
-    val (specialCardComponents, normalCardComponents) = cardComponents.partition(_.containSpecialCard)
+    val (specialCardComponents, normalCardComponents) =
+      cardComponents.partition(_.containSpecialCard)
     gamePhase match
       case PlaySpecialCardPhase =>
-          specialCardComponents.foreach(_.enableView())
-          normalCardComponents.foreach(_.disableView())
-      case PlayStandardCardPhase                    =>
-          specialCardComponents.foreach(_.disableView())
-          normalCardComponents.foreach(_.enableView())
-      case _                                         =>
-          specialCardComponents.foreach(_.disableView())
-          normalCardComponents.foreach(_.disableView())
+        specialCardComponents.foreach(_.enableView())
+        normalCardComponents.foreach(_.disableView())
+      case PlayStandardCardPhase =>
+        specialCardComponents.foreach(_.disableView())
+        normalCardComponents.foreach(_.enableView())
+      case _ =>
+        specialCardComponents.foreach(_.disableView())
+        normalCardComponents.foreach(_.disableView())
 
   override protected def getPane: Node = handPane

@@ -78,9 +78,10 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
         .initializePlayer(initialGameBoard, initialGameBoard.getCurrentPlayer)
 
       val (finalGameBoard, updatedPlayer2) = settings.gameMode match
-        case GameBoardConfig.GameMode.HumanVsHuman => controller
+        case GameBoardConfig.GameMode.HumanVsHuman =>
+          controller
             .initializePlayer(updatedGameBoard, updatedGameBoard.getOpponent)
-        case GameBoardConfig.GameMode.HumanVsBot   =>
+        case GameBoardConfig.GameMode.HumanVsBot =>
           val botObservable = PublishSubject[BotMessage]()
           val botSubscriber = BotSubscriber(controller)
           botObservable.subscribe(botSubscriber)

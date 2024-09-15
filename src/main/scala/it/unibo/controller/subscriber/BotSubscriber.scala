@@ -10,7 +10,7 @@ import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Bot
 
-/** This class is subscribed to the View updates and changes the Model accordingly */
+/** This class is subscribed to the Bot updates and changes the Model accordingly */
 final class BotSubscriber(controller: ModelController) extends BaseSubscriber[BotMessage]:
 
   given Conversion[Model, GameBoard] = _.getGameBoard

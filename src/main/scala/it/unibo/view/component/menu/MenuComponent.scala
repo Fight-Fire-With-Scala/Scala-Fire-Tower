@@ -24,7 +24,7 @@ import scalafx.application.Platform
 //noinspection VarCouldBeVal
 final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent:
   override val fxmlPath: String = GUIType.Menu.fxmlPath
-  
+
   @FXML
   private var menuPane: Pane = uninitialized
   @FXML
@@ -47,7 +47,9 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
   @FXML
   def initialize(): Unit =
     setOfCardsDropdown
-      .setItems(javafx.collections.FXCollections.observableArrayList(GameBoardConfig.CardSet.values*))
+      .setItems(
+        javafx.collections.FXCollections.observableArrayList(GameBoardConfig.CardSet.values*)
+      )
     botBehaviourDropdown
       .setItems(javafx.collections.FXCollections.observableArrayList(BotBehaviour.values*))
     botBehaviourDropdown.setDisable(true)
@@ -66,7 +68,8 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
   def handleStartAction(): Unit =
     val selectedGameMode =
       if (humanVsHuman.isSelected) GameMode.HumanVsHuman else GameMode.HumanVsBot
-    val selectedCardSet = Option(setOfCardsDropdown.getValue).getOrElse(GameBoardConfig.CardSet.Base)
+    val selectedCardSet =
+      Option(setOfCardsDropdown.getValue).getOrElse(GameBoardConfig.CardSet.Base)
     val selectedBotBehaviour =
       if (humanVsHuman.isSelected) None
       else Some(Option(botBehaviourDropdown.getValue).getOrElse(BotBehaviour.Balanced))
@@ -74,12 +77,16 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
       if (player1Input.getText.trim.isEmpty) "Player 1" else player1Input.getText.trim
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
 
-    observableSubject.onNext(GameBoardInitialization(GameBoardConfig(
-      gameMode = selectedGameMode,
-      cardSet = selectedCardSet,
-      botBehaviour = selectedBotBehaviour,
-      playerOneName = playerOneNameInput,
-      playerTwoName = playerTwoNameInput
-    )))
+    observableSubject.onNext(
+      GameBoardInitialization(
+        GameBoardConfig(
+          gameMode = selectedGameMode,
+          cardSet = selectedCardSet,
+          botBehaviour = selectedBotBehaviour,
+          playerOneName = playerOneNameInput,
+          playerTwoName = playerTwoNameInput
+        )
+      )
+    )
 
   override protected def getPane: Node = menuPane

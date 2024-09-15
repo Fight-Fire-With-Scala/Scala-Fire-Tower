@@ -15,8 +15,8 @@ final class InternalViewSubscriber(controller: ViewController)
   override val logger: Logger = Logger("View -> IntervalView")
 
   override protected def onMessageReceived(msg: InternalViewMessage): Unit = msg match
-    case InitializeDiscardProcedureMessage()   => controller.initDiscardProcedure()
-    case ToggleCardInListMessage(cardId)       => controller.toggleCardInDiscardList(cardId)
-    case ConfirmDiscardMessage()               => controller.confirmDiscard()
-    case CancelDiscardMessage()                => controller.cancelDiscard()
-    case CandidateCardToPlayMessage(cardId)    => controller.candidateCardToPlay(cardId)
+    case InitializeDiscardProcedureMessage() => controller.initDiscardProcedure()
+    case ToggleCardInListMessage(cardId)     => controller.toggleCardInDiscardList(cardId)
+    case ConfirmDiscardMessage()             => controller.confirmDiscard()
+    case CancelDiscardMessage()              => controller.cancelDiscard()
+    case CandidateCardToPlayMessage(cardId)  => controller.candidateCardToPlay(cardId)

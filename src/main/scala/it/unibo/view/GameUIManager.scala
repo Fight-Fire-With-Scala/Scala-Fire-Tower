@@ -6,7 +6,7 @@ import scala.jdk.CollectionConverters._
 import it.unibo.controller.ViewSubject
 import it.unibo.view.component.IViewComponent
 import it.unibo.view.component.menu.MenuComponent
-import javafx.concurrent.{Task => JFXTask}
+import javafx.concurrent.{ Task => JFXTask }
 import monix.eval.Task
 import monix.execution.Scheduler.Implicits.global
 import scalafx.application.JFXApp3

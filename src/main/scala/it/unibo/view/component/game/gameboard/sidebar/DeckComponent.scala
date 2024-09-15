@@ -11,7 +11,7 @@ import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.hand.HandEffect.DrawCard
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.view.{GUIType, logger}
+import it.unibo.view.{ logger, GUIType }
 import it.unibo.view.component.ISidebarComponent
 import javafx.event.EventHandler
 import javafx.fxml.FXML

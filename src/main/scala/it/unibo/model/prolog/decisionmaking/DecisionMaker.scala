@@ -10,18 +10,18 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Aggressive
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.logger
 import it.unibo.model.prolog.PrologEngine
-import it.unibo.model.prolog.PrologUtils.{given_Conversion_SolverType_Theory, given_Conversion_String_Term, parseClosestTowerPosition, parseComputedPatterns, given}
+import it.unibo.model.prolog.PrologUtils.{ given_Conversion_SolverType_Theory, given_Conversion_String_Term, parseClosestTowerPosition, parseComputedPatterns, given }
 import it.unibo.model.prolog.SolverType
 import it.unibo.model.prolog.SolverType.DistanceSolver
 import it.unibo.model.prolog.SolverType.ManhattanSolver
 
 object DecisionMaker:
   private var attackOrDefense: AttackDefense = AttackDefense.Attack
-  private var objectiveTower: Set[Position] = Set(Position(0, 0))
-  
-  def getAttackOrDefense: AttackDefense = attackOrDefense
-  def getObjectiveTower: Set[Position] = objectiveTower
-  def setObjectiveTower (position: Set[Position]): Unit = objectiveTower = position
+  private var objectiveTower: Set[Position]  = Set(Position(0, 0))
+
+  def getAttackOrDefense: AttackDefense                = attackOrDefense
+  def getObjectiveTower: Set[Position]                 = objectiveTower
+  def setObjectiveTower(position: Set[Position]): Unit = objectiveTower = position
 
   def computeAttackOrDefense(gameBoard: GameBoard, botBehaviour: BotBehaviour): Unit =
     val myTowerPositions = gameBoard.getCurrentPlayer.towerPositions.map(_.position)
@@ -30,13 +30,13 @@ object DecisionMaker:
     logger.info(opponentPositions.toString())
     val theory = AttackDefenseTheory(gameBoard.board.grid, myTowerPositions, opponentPositions)
     val biasVariable = Struct.of("biasFactor", botBehaviour.biasFactor)
-    val biasTheory = Theory.fromPrologList(Struct.list(Iterator.single(biasVariable).asJava))
+    val biasTheory   = Theory.fromPrologList(Struct.list(Iterator.single(biasVariable).asJava))
     theory.append(biasTheory)
     theory.append(SolverType.DistanceSolver)
     theory.append(SolverType.ManhattanSolver)
 
     val engine = PrologEngine(theory)
-    val goal = "closest_tower_to_fire(ClosestTower)"
+    val goal   = "closest_tower_to_fire(ClosestTower)"
     val result = engine.solve(goal).headOption
 
     result match
@@ -45,6 +45,7 @@ object DecisionMaker:
         attackOrDefense =
           if myTowerPositions.contains(objectiveTower.head) then AttackDefense.Defense
           else AttackDefense.Attack
-      case None           => botBehaviour match
+      case None =>
+        botBehaviour match
           case Aggressive => attackOrDefense = AttackDefense.Attack
           case _          => attackOrDefense = AttackDefense.Defense

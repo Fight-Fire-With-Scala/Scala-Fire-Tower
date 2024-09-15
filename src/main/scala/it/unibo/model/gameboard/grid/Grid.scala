@@ -35,13 +35,14 @@ trait Grid:
 
 object Grid:
   export GridBuilder.*
-  val Size: Int = 16
+  val Size: Int           = 16
   val positionNumber: Int = Grid.Size * Grid.Size
 
   def apply(): Grid = Grid.empty
 
   def apply(builderConfiguration: GridBuilder ?=> GridBuilder): Grid = GridBuilder
-    .configure(builderConfiguration).build
+    .configure(builderConfiguration)
+    .build
 
   def empty: Grid = BasicGrid()
 
@@ -68,7 +69,7 @@ final case class BasicGrid(
     private val _cells: Map[Position, Cell] = Map.empty,
     private val _tokens: Map[Position, Token] = Map.empty
 ) extends Grid:
-  override def cells: Map[Position, Cell] = this._cells
+  override def cells: Map[Position, Cell]   = this._cells
   override def tokens: Map[Position, Token] = this._tokens
 
   override def setToken(position: Position, token: Token): Grid = getCell(position) match
@@ -77,15 +78,17 @@ final case class BasicGrid(
     case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
   private def handleTokenForWoods(position: Position, token: Token): Grid = getToken(position) match
-    case Some(Fire)                                 => token match
+    case Some(Fire) =>
+      token match
         case Water => BasicGrid(this._cells, this._tokens - position)
         case _     => BasicGrid(this._cells, this._tokens + (position -> token))
-    case Some(Firebreak)                            => token match
+    case Some(Firebreak) =>
+      token match
         case Reforest => BasicGrid(this._cells, this._tokens + (position -> token))
         case _        => this
     case Some(Water) | Some(Reforest) | Some(Empty) =>
       BasicGrid(this._cells, this._tokens + (position -> token))
-    case _                                          =>
+    case _ =>
       if token == Water || token == Empty then this
       else BasicGrid(this._cells, this._tokens + (position -> token))
 
@@ -116,8 +119,8 @@ final case class BasicGrid(
       i <- 0 until Grid.Size
       j <- 0 until Grid.Size
       position = Position(i, j)
-      cell = getCell(position).orNull
-      token = getToken(position)
+      cell     = getCell(position).orNull
+      token    = getToken(position)
       cellChar = cell match
         case _: Woods.type       => "W"
         case _: Tower.type       => "T"

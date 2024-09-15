@@ -6,7 +6,7 @@ final case class Position(row: Int, col: Int):
   @targetName("plus")
   def +(other: Position): Position =
     Position(this.row + other.row, this.col + other.col)
-    
+
   @targetName("minus")
   def -(other: Position): Position =
     Position(this.row - other.row, this.col - other.col)

@@ -17,9 +17,9 @@ enum MoveEffect extends IGameEffect:
 
 object MoveEffect:
   private def solveMove(effect: MoveEffect, gb: GameBoard): GameBoardEffect =
-    val move = Move(gb.turnNumber, effect)
+    val move          = Move(gb.turnNumber, effect)
     val currentPlayer = gb.getCurrentPlayer.logMove(move)
-    val newGb = gb.updateCurrentPlayer(currentPlayer)
+    val newGb         = gb.updateCurrentPlayer(currentPlayer)
     newGb
 
   def logPatternChosen(

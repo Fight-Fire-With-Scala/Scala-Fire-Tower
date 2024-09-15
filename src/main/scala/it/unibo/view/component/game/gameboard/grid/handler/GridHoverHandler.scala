@@ -26,11 +26,11 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
   ): Unit =
     val position: Position = Position(row, col)
     gamePhase match
-      case WindPhase             => hoverForAvailablePatterns(position)
+      case WindPhase => hoverForAvailablePatterns(position)
       case PlayStandardCardPhase =>
         if gridState.fixedCell.nonEmpty then hoverForFixedCell(position, hoverDirection)
         else hoverForAvailablePatterns(position)
-      case _                     =>
+      case _ =>
   private def hoverForFixedCell(position: Position, hoverDirection: HoverDirection): Unit =
     gridState.resetHoverColors()
     val neighbourPosition = getNeighbor(position, hoverDirection)
@@ -46,17 +46,19 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
               gridState.hoveredCells += position -> squareMap(position).getColor
               squareMap(position).updateColor(token.color)
         }
-      case _              =>
+      case _ =>
 
   private def hoverForAvailablePatterns(position: Position): Unit =
     gridState.resetHoverColors()
     gridState.effectCode match
       case FireEffect.Explosion.effectId    => handleExplosionPattern(position, Firebreak)
       case WaterEffect.SmokeJumper.effectId => handleExplosionPattern(position, Fire)
-      case _ => gridState.availablePatterns.find(_.contains(position)) match
-          case Some(pattern) => if (!gridState.fixedCell.contains(position))
+      case _ =>
+        gridState.availablePatterns.find(_.contains(position)) match
+          case Some(pattern) =>
+            if (!gridState.fixedCell.contains(position))
               updateHoveredCells(position, pattern(position))
-          case None          =>
+          case None =>
 
   private def handleExplosionPattern(position: Position, token: Token): Unit =
     gridState.availablePatterns.collectFirst:

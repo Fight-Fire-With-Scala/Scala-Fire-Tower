@@ -28,8 +28,9 @@ trait BaseSubscriber[T <: Message] extends Subscriber[T]:
   private def onErrorHandler(ex: Throwable): Unit =
     logger.error(s"Received error: ${ex.getMessage}")
     ex.getStackTrace.foreach { traceElement =>
-      logger.error(s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement
-          .getFileName}:${traceElement.getLineNumber})")
+      logger.error(
+        s"at ${traceElement.getClassName}.${traceElement.getMethodName}(${traceElement.getFileName}:${traceElement.getLineNumber})"
+      )
     }
     logger.error(s"Full description: ${ex.toString}")
 

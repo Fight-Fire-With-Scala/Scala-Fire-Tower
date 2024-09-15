@@ -13,21 +13,21 @@ import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.core.IDefensiveCard
 import it.unibo.model.effect.core.IOffensiveCard
 import it.unibo.model.effect.pattern.PatternEffect
-import it.unibo.model.effect.pattern.PatternEffect.{BotComputation, PatternApplication}
+import it.unibo.model.effect.pattern.PatternEffect.{ BotComputation, PatternApplication }
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.grid.{ConcreteToken, Position, Token, TowerPosition}
-import it.unibo.model.gameboard.player.ThinkingPlayer.{filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea}
+import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token, TowerPosition }
+import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea }
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
-import it.unibo.model.gameboard.Direction.{North, West}
+import it.unibo.model.gameboard.Direction.{ North, West }
 
 trait ThinkingPlayer extends Player:
   val botBehaviour: BotBehaviour
@@ -62,7 +62,7 @@ trait ThinkingPlayer extends Player:
     val gb = controller.model.getGameBoard
     computeAttackOrDefense(gb, botBehaviour)
     logger.info(s"[BOT] Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
-    //logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower}")
+    // logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower}")
 
     // bot does redraw cards only if attacking and not having attack cards
     val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)

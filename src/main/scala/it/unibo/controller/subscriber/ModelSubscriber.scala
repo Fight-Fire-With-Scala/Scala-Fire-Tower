@@ -8,9 +8,8 @@ import it.unibo.controller.StartGameMessage
 import it.unibo.controller.view.ViewController
 
 /** This class is subscribed to the Model updates and changes the View accordingly */
-final class ModelSubscriber(controller: ViewController)
-    extends BaseSubscriber[ModelMessage]:
-  
+final class ModelSubscriber(controller: ViewController) extends BaseSubscriber[ModelMessage]:
+
   override val logger: Logger = Logger("Model -> ModelSubscriber")
 
   override def onMessageReceived(msg: ModelMessage): Unit = msg match

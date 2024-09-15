@@ -34,7 +34,7 @@ object ViewModule:
           intObservable: InternalViewSubject,
           viewObservable: ViewSubject
       ): Unit =
-        val rootTask = gui.loadGUIRoot(GameComponent())
+        val rootTask       = gui.loadGUIRoot(GameComponent())
         val componentsTask = getGuiInitTask(gameController, rootTask, gb)
         componentsTask.runAsyncAndForget
 

@@ -5,7 +5,8 @@ import javafx.scene.Node
 import scalafx.scene.shape.SVGPath
 
 final case class WindRoseDirection(override val svgPath: SVGPath)
-    extends IHaveSVGView[WindRoseDirection] with ICanBeDisabled:
+    extends IHaveSVGView[WindRoseDirection]
+    with ICanBeDisabled:
 
   override def onEnableView(): Unit = svgPath.setOpacity(0.9)
 

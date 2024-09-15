@@ -16,7 +16,7 @@ object ModelModule:
     class ModelImpl extends Model:
       private var gameBoard: GameBoard = uninitialized
 
-      override def getGameBoard: GameBoard = gameBoard
+      override def getGameBoard: GameBoard           = gameBoard
       override def setGameBoard(gb: GameBoard): Unit = gameBoard = gb
 
   trait Interface extends Provider with Component

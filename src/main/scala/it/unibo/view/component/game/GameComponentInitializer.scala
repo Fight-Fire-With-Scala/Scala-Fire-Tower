@@ -19,7 +19,7 @@ trait GameComponentInitializer:
       internalViewObservable: InternalViewSubject
   ): HandComponent =
     val cardComponents = List.fill(6)(new CardComponent())
-    val handComponent = HandComponent(cardComponents)
+    val handComponent  = HandComponent(cardComponents)
     handComponent
 
   private def loadSidebar(using
@@ -39,11 +39,13 @@ trait GameComponentInitializer:
       viewObservable: ViewSubject,
       internalViewObservable: InternalViewSubject
   ): Task[GameComponent] =
-    val gridTask = gc.setupGrid(loadGrid)
+    val gridTask    = gc.setupGrid(loadGrid)
     val sidebarTask = gc.setupSidebar(loadSidebar)
-    val handTask = gc.setupHand(loadHand)
+    val handTask    = gc.setupHand(loadHand)
 
-    Task.parZip3(gridTask, sidebarTask, handTask).map { case (b, c, d) => }
+    Task
+      .parZip3(gridTask, sidebarTask, handTask)
+      .map { case (b, c, d) => }
       .flatMap(combinedResult => Task(gc))
 
   def initialize(gameComponent: GameComponent)(using

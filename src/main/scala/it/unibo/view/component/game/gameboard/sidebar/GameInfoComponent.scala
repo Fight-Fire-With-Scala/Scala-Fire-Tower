@@ -7,7 +7,7 @@ import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.EndTurnPhase
-import it.unibo.view.{GUIType, logger}
+import it.unibo.view.{ logger, GUIType }
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import javafx.event.EventHandler
@@ -22,7 +22,8 @@ import javafx.scene.layout.Pane
 final class GameInfoComponent(using
     observable: ViewSubject,
     internalObservable: InternalViewSubject
-) extends ISidebarComponent with IUpdateView:
+) extends ISidebarComponent
+    with IUpdateView:
   override val fxmlPath: String = GUIType.GameInfo.fxmlPath
 
   @FXML

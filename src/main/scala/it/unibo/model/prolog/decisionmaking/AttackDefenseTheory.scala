@@ -22,17 +22,20 @@ final case class AttackDefenseTheory(
 
 object AttackDefenseTheory:
   def apply(grid: Grid, myTowerPosition: Set[Position], enemyTowerPosition: Set[Position]): Theory =
-    val cellIterator = getCells(grid)
-    val myTowerPositionIterator = getTowerPositions(myTowerPosition, false)
+    val cellIterator               = getCells(grid)
+    val myTowerPositionIterator    = getTowerPositions(myTowerPosition, false)
     val enemyTowerPositionIterator = getTowerPositions(enemyTowerPosition, true)
     val allIterators = cellIterator ++ myTowerPositionIterator ++ enemyTowerPositionIterator
 
     Theory.fromPrologList(Struct.list(allIterators.asJava))
 
   private def getCells(grid: Grid): Iterator[Term] =
-    val cells = grid.cells.iterator.map { case (pos, cell) =>
-      Struct.of("cell", Struct.tuple(pos._1, pos._2), cell)
-    }.toSeq.iterator
+    val cells = grid.cells.iterator
+      .map { case (pos, cell) =>
+        Struct.of("cell", Struct.tuple(pos._1, pos._2), cell)
+      }
+      .toSeq
+      .iterator
 
     val tokens = grid.tokens.iterator.map { case (pos, token) =>
       Struct.of("token", Struct.tuple(pos._1, pos._2), token)
@@ -44,11 +47,14 @@ object AttackDefenseTheory:
     cells ++ tokens ++ numRows ++ numCols
 
   private def getTowerPositions(towerPosition: Set[Position], isOpponent: Boolean): Iterator[Term] =
-    val towerPositionsIterator = towerPosition.iterator.map { pos =>
-      Struct.of(
-        if isOpponent then "enemyTowerPosition" else "towerPosition",
-        Struct.tuple(pos.row, pos.col)
-      )
-    }.toSeq.iterator
+    val towerPositionsIterator = towerPosition.iterator
+      .map { pos =>
+        Struct.of(
+          if isOpponent then "enemyTowerPosition" else "towerPosition",
+          Struct.tuple(pos.row, pos.col)
+        )
+      }
+      .toSeq
+      .iterator
 
     towerPositionsIterator

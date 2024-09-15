@@ -8,5 +8,5 @@ enum Direction(id: String, delta: Position):
   case East extends Direction("east", Position(0, 1))
   case West extends Direction("west", Position(0, -1))
 
-  def getId: String = id
+  def getId: String      = id
   def getDelta: Position = delta

@@ -32,10 +32,10 @@ object PrologUtils:
 
   private def extractPair(struct: Struct): (Int, Int) =
     val tuple = struct.getArg(0).asInstanceOf[Struct]
-    val x = tuple.getArg(0).toString.toInt
-    val y = tuple.getArg(1).toString.toInt
+    val x     = tuple.getArg(0).toString.toInt
+    val y     = tuple.getArg(1).toString.toInt
     (x, y)
-    
+
   def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] = solution.getSolution match
     case solutionAsStruct: Struct => extractMapPositionTokenFromStruct(solutionAsStruct, 0)
     case _                        => Map.empty

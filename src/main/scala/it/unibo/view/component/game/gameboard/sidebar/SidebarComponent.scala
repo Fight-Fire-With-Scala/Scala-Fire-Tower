@@ -1,7 +1,7 @@
 package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
-import it.unibo.view.{GUIType, logger}
+import it.unibo.view.{ logger, GUIType }
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import javafx.fxml.FXML
@@ -10,7 +10,8 @@ import javafx.scene.layout.VBox
 
 //noinspection VarCouldBeVal
 final class SidebarComponent(val components: List[ISidebarComponent])
-    extends ISidebarComponent with IUpdateView:
+    extends ISidebarComponent
+    with IUpdateView:
 
   override val fxmlPath: String = GUIType.Sidebar.fxmlPath
 

@@ -10,7 +10,7 @@ import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{DecisionPhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
+import it.unibo.model.gameboard.GamePhase.{ DecisionPhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase }
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.gameboard.grid.Position
@@ -27,10 +27,11 @@ class GridClickHandler(
   def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit =
     val position = Position(row, col)
     gamePhase match
-      case WindPhase             => if (gridState.hoveredCells.contains(position))
+      case WindPhase =>
+        if (gridState.hoveredCells.contains(position))
           placePattern(gridState.availablePatterns.find(_.contains(position)).get, WaitingPhase)
       case PlayStandardCardPhase | PlaySpecialCardPhase => handleCardPlay(position)
-      case _                     =>
+      case _                                            =>
 
   private def handleCardPlay(position: Position): Unit =
     if gridState.hoveredCells.contains(position) then
@@ -46,22 +47,26 @@ class GridClickHandler(
 
   private def isSinglePatternAvailable: Boolean = gridState.effectCode ==
     WindEffect.North.effectId || gridState.effectCode == WindEffect.South.effectId ||
-    gridState.effectCode == WindEffect.East.effectId ||
-    gridState.effectCode == WindEffect.West.effectId ||
-    gridState.effectCode == FirebreakEffect.DeReforest.effectId
+    gridState.effectCode                              == WindEffect.East.effectId ||
+    gridState.effectCode                              == WindEffect.West.effectId ||
+    gridState.effectCode                              == FirebreakEffect.DeReforest.effectId
 
   private def placeExplosionPattern(position: Position): Unit = gridState.effectCode match
-    case FireEffect.Explosion.effectId    => placePattern(
+    case FireEffect.Explosion.effectId =>
+      placePattern(
         gridState.availablePatterns
-          .find(_.exists((pos, tkn) => pos == position && tkn == Firebreak)).get,
-        DecisionPhase
-      )
-    case WaterEffect.SmokeJumper.effectId => placePattern(
-        gridState.availablePatterns.find(_.exists((pos, tkn) => pos == position && tkn == Fire))
+          .find(_.exists((pos, tkn) => pos == position && tkn == Firebreak))
           .get,
         DecisionPhase
       )
-    case _                                => logger.error("Error in explosion pattern")
+    case WaterEffect.SmokeJumper.effectId =>
+      placePattern(
+        gridState.availablePatterns
+          .find(_.exists((pos, tkn) => pos == position && tkn == Fire))
+          .get,
+        DecisionPhase
+      )
+    case _ => logger.error("Error in explosion pattern")
 
   private def placeSinglePattern(position: Position): Unit =
     val pattern = gridState.availablePatterns.find(_.contains(position)).get

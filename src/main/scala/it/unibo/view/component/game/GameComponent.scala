@@ -29,9 +29,9 @@ final class GameComponent extends IViewComponent with IUpdateView:
   @FXML
   var hand: Pane = uninitialized
 
-  var gridComponent: GridComponent = uninitialized
+  var gridComponent: GridComponent       = uninitialized
   var sidebarComponent: SidebarComponent = uninitialized
-  var handComponent: HandComponent = uninitialized
+  var handComponent: HandComponent       = uninitialized
 
   override def onEnableView(): Unit =
     super.onEnableView()
@@ -84,10 +84,10 @@ final class GameComponent extends IViewComponent with IUpdateView:
         handComponent = hc
         hc
     )
-  
+
   def updateGrid(gameBoard: GameBoard, gamePhase: GamePhase): Unit =
-    val grid = gameBoard.board.grid
-    val currentPlayer = gameBoard.getCurrentPlayer
+    val grid                  = gameBoard.board.grid
+    val currentPlayer         = gameBoard.getCurrentPlayer
     val currentTowerPositions = grid.getTowerCells(currentPlayer.towerPositions)
     gridComponent.updateGrid(grid, currentTowerPositions, gamePhase)
 

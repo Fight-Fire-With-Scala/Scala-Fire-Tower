@@ -19,7 +19,7 @@ trait HandManager:
           case Some(c) =>
             val newPlayer = player.drawCardFromDeck(c)
             (newDeck, newPlayer)
-          case None    => (newDeck, player)
+          case None => (newDeck, player)
     (gb.copy(deck = finalDeck), finalPlayer)
 
   def drawCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =

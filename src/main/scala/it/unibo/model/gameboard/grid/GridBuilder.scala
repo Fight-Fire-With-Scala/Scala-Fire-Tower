@@ -9,7 +9,7 @@ import GivenExtension.within
 
 /** Builder of a grid. */
 final class GridBuilder:
-  private var grid: Grid = Grid.empty
+  private var grid: Grid      = Grid.empty
   private var indexOfNextCell = GridBuilder.MinIndex
 
   private def setNextCell(cell: Cell): this.type =

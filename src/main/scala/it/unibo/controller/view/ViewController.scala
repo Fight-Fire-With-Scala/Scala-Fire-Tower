@@ -11,13 +11,15 @@ final case class ViewController(
     view: View,
     internalObservable: InternalViewSubject,
     observable: ViewSubject
-) extends DiscardCardController with PlayCardController with RefreshController:
+) extends DiscardCardController
+    with PlayCardController
+    with RefreshController:
 
   def startMenu(): Unit = view.startMenu(observable)
 
   def startGame(gb: GameBoard): Unit =
     given intObservable: InternalViewSubject = internalObservable
-    given viewObservable: ViewSubject = observable
+    given viewObservable: ViewSubject        = observable
     view.startGame(gb, this)
 
   def refreshView(gb: GameBoard, refreshType: RefreshType): Unit = gameComponent match

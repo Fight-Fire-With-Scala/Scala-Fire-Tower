@@ -16,16 +16,17 @@ import javafx.scene.Node
 import javafx.scene.layout.StackPane
 
 final class GridComponent(using
-                          observableSubject: ViewSubject
-) extends IGridComponent with IUpdateView:
+    observableSubject: ViewSubject
+) extends IGridComponent
+    with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath
 
   private val cellNumber = 16
-  private val cellSize = 42
+  private val cellSize   = 42
 
   @FXML
-  private var container: StackPane = uninitialized
+  private var container: StackPane     = uninitialized
   private var gridManager: GridManager = uninitialized
 
   @FXML

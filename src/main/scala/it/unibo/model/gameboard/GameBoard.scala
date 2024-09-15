@@ -42,15 +42,19 @@ object GameBoard:
   def apply(player1: Player, player2: Player): GameBoard =
     val b = Board.withRandomWindAndStandardGrid
     val updatedPlayer1 = player1 match
-      case p: Person => p
+      case p: Person =>
+        p
           .copy(towerPositions = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT))
-      case b: Bot    => b
+      case b: Bot =>
+        b
           .copy(towerPositions = Set(TowerPosition.TOP_RIGHT, TowerPosition.BOTTOM_LEFT))
 
     val updatedPlayer2 = player2 match
-      case p: Person => p
+      case p: Person =>
+        p
           .copy(towerPositions = Set(TowerPosition.TOP_LEFT, TowerPosition.BOTTOM_RIGHT))
-      case b: Bot    => b
+      case b: Bot =>
+        b
           .copy(towerPositions = Set(TowerPosition.TOP_LEFT, TowerPosition.BOTTOM_RIGHT))
 
     val deck = Deck("cards.yaml")

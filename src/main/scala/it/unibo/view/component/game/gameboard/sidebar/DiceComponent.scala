@@ -11,7 +11,7 @@ import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
-import it.unibo.view.{GUIType, logger}
+import it.unibo.view.{ logger, GUIType }
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import it.unibo.view.component.game.gameboard.sidebar.svg.DiceFace

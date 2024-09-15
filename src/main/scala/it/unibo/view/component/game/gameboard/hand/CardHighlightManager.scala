@@ -4,7 +4,7 @@ import it.unibo.view.component.Switchable
 import javafx.scene.layout.Pane
 
 final class CardHighlightManager extends Switchable[Option[CardHighlightState]]:
-  var cardPane: Option[Pane] = None
+  var cardPane: Option[Pane]     = None
   def initialize(cp: Pane): Unit = cardPane = Some(cp)
 
   private var highlightState: CardHighlightState = CardHighlightState.Unhighlighted

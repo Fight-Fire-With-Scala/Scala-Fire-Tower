@@ -15,29 +15,32 @@ import it.unibo.model.logger
 trait PhaseManager:
   @tailrec
   final def updateGamePhase(gb: GameBoard, choice: GamePhase): GameBoard = choice match
-    case WindPhase             => gb.getCurrentPlayer match
+    case WindPhase =>
+      gb.getCurrentPlayer match
         case p: Person => handleWindPhase(gb)
         case _         => gb
     case WaitingPhase          => gb.copy(gamePhase = WaitingPhase)
     case PlayStandardCardPhase => gb.copy(gamePhase = PlayStandardCardPhase)
     case RedrawCardsPhase      => gb.copy(gamePhase = RedrawCardsPhase)
-    case DecisionPhase         => gb.getCurrentPlayer match
+    case DecisionPhase =>
+      gb.getCurrentPlayer match
         case p: Person => updateGamePhase(gb, getNextPhaseAfterDecisionPhase(gb))
         case _         => gb.copy(gamePhase = DecisionPhase)
-    case PlaySpecialCardPhase  => gb.copy(gamePhase = PlaySpecialCardPhase)
-    case EndTurnPhase          => updateGamePhase(handleTurnEnd(gb), WindPhase)
+    case PlaySpecialCardPhase => gb.copy(gamePhase = PlaySpecialCardPhase)
+    case EndTurnPhase         => updateGamePhase(handleTurnEnd(gb), WindPhase)
 
   private def handleTurnEnd(gb: GameBoard) = gb
-    .copy(gamePhase = WindPhase, turnNumber = gb.turnNumber + 1).changePlayer()
+    .copy(gamePhase = WindPhase, turnNumber = gb.turnNumber + 1)
+    .changePlayer()
 
   private def getNextPhaseAfterDecisionPhase(gb: GameBoard) = gb.getCurrentPlayer.extraCard match
     case Some(_) => PlaySpecialCardPhase
     case None    => EndTurnPhase
 
   private def handleWindPhase(gb: GameBoard) =
-    val direction = gb.board.windDirection
-    val logicEffect = WindEffect.windEffectSolver.solve(direction)
+    val direction          = gb.board.windDirection
+    val logicEffect        = WindEffect.windEffectSolver.solve(direction)
     val patternComputation = PatternEffect.PatternComputation(logicEffect)
-    val gbEffectSolver = PatternEffect.patternEffectSolver.solve(patternComputation)
-    val newGb = gbEffectSolver.solve(GameBoardEffect(gb)).gameBoard
+    val gbEffectSolver     = PatternEffect.patternEffectSolver.solve(patternComputation)
+    val newGb              = gbEffectSolver.solve(GameBoardEffect(gb)).gameBoard
     newGb

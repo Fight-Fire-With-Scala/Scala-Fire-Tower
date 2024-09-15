@@ -23,15 +23,15 @@ object ControllerModule:
 
     class ControllerImpl extends Controller:
       private val modelObservable = PublishSubject[ModelMessage]()
-      private val viewObservable = PublishSubject[ViewMessage]()
-      private val intObservable = PublishSubject[InternalViewMessage]()
+      private val viewObservable  = PublishSubject[ViewMessage]()
+      private val intObservable   = PublishSubject[InternalViewMessage]()
 
       override def notifyStartGame(): Unit =
         val modelController = ModelController(context.model, modelObservable)
-        val viewController = ViewController(context.view, intObservable, viewObservable)
+        val viewController  = ViewController(context.view, intObservable, viewObservable)
 
         val modelSubscriber = ModelSubscriber(viewController)
-        val viewSubscriber = ViewSubscriber(modelController)
+        val viewSubscriber  = ViewSubscriber(modelController)
 
         modelObservable.subscribe(modelSubscriber)
         viewObservable.subscribe(viewSubscriber)

@@ -25,7 +25,9 @@ trait LogicSolverManager:
     theory.append(SolverType.CardSolver)
     theory.append(SolverType.BaseSolver)
     val engine = PrologEngine(theory)
-    logicEffect.computations.head.goals.map(g => engine.solveAsPatterns(g(cardId))).reduce((a, b) => a.union(b))
+    logicEffect.computations.head.goals
+      .map(g => engine.solveAsPatterns(g(cardId)))
+      .reduce((a, b) => a.union(b))
 
   protected def computePatterns(
       gb: GameBoard,

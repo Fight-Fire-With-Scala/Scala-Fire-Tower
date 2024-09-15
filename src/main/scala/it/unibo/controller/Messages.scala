@@ -11,9 +11,9 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
 import monix.reactive.subjects.PublishSubject
 
-type ModelSubject = PublishSubject[ModelMessage]
-type ViewSubject = PublishSubject[ViewMessage]
-type BotSubject = PublishSubject[BotMessage]
+type ModelSubject        = PublishSubject[ModelMessage]
+type ViewSubject         = PublishSubject[ViewMessage]
+type BotSubject          = PublishSubject[BotMessage]
 type InternalViewSubject = PublishSubject[InternalViewMessage]
 
 sealed trait Message

@@ -13,28 +13,29 @@ import it.unibo.model.gameboard.player.Person
 
 trait PatternManager:
   protected def updateDeckAndHand(gb: GameBoard, move: Move): GameBoardEffect =
-    val deck = gb.deck
+    val deck          = gb.deck
     val currentPlayer = gb.getCurrentPlayer
     move.effect match
-      case MoveEffect.CardChosen(card, _) => card.effect match
+      case MoveEffect.CardChosen(card, _) =>
+        card.effect match
           case _: CanBePlayedAsExtra => gb
-          case _                     =>
+          case _ =>
             val playedCards = card :: deck.playedCards
             val (player, _) = currentPlayer.playCard(card.id)
-            val newDeck = deck.copy(playedCards = playedCards)
+            val newDeck     = deck.copy(playedCards = playedCards)
             gb.updateCurrentPlayer(player).copy(deck = newDeck)
-      case _                              => gb
+      case _ => gb
 
   protected def updatePlayer(gb: GameBoard, move: Move): GameBoardEffect =
     val updatedPlayerMoves = gb.getCurrentPlayer.moves.filter(m => m != move)
     gb.getCurrentPlayer match
-      case b: Bot    =>
+      case b: Bot =>
         val updatedPlayer = b.updatePlayer(moves = updatedPlayerMoves)
         gb.updateCurrentPlayer(updatedPlayer)
       case p: Person =>
         val updatedPlayer = p.updatePlayer(moves = updatedPlayerMoves)
         gb.updateCurrentPlayer(updatedPlayer)
-      case _         => gb
+      case _ => gb
 
   protected def runIfLastCardChosenFound(
       gb: GameBoard,

@@ -23,18 +23,18 @@ final case class Deck(
   def shuffle(): Deck = copy(standardCards = Random.shuffle(standardCards))
   @tailrec
   def drawCard(): (Option[Card], Deck) = standardCards.headOption match
-    case Some(card)                  => (Some(card), copy(standardCards = standardCards.tail))
+    case Some(card) => (Some(card), copy(standardCards = standardCards.tail))
     case None if playedCards.isEmpty =>
       logger.warn("[DECK] Could not find a standard card in deck")
       (None, this)
-    case None                        =>
+    case None =>
       logger.info("[DECK] Regenerating deck")
       val newDeck = regenerate()
       newDeck.drawCard()
 
   def drawSpecialCard(): (Option[Card], Deck) = specialCards.headOption match
     case Some(card) => (Some(card), copy(specialCards = specialCards.tail))
-    case None       =>
+    case None =>
       logger.warn("[DECK] Could not find a special card in deck")
       (None, this)
 
@@ -48,14 +48,16 @@ object Deck:
       case Some(cards) =>
         val (sc, c) = createCards(cards)
         new Deck(c, sc).shuffle()
-      case None        => Deck(List.empty)
+      case None => Deck(List.empty)
 
   private def parseCardTypes(cardsResourcePath: String): Option[CardSet] =
     val deckYaml = Source.fromResource(cardsResourcePath).mkString
     parser.parse(deckYaml).flatMap(_.as[CardSet]).toOption
 
   private def createCards(cardTypes: CardSet): (List[Card], List[Card]) =
-    val allCards = cardTypes.cardSets.flatMap(c => List.fill(c.amount)(c)).zipWithIndex
+    val allCards = cardTypes.cardSets
+      .flatMap(c => List.fill(c.amount)(c))
+      .zipWithIndex
       .map { case (c, index) => Card(index + 1, c.title, c.description, c.effect) }
 
     allCards.partition(_.effect match

@@ -19,4 +19,4 @@ trait IHaveSVGView[T]:
 
 object IHaveSVGView:
   private val scaleFactor = 3.0
-  private val color = Color.web("#1b2b4c")
+  private val color       = Color.web("#1b2b4c")
