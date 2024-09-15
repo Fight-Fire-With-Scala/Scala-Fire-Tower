@@ -34,9 +34,9 @@ trait Player:
       case effect: MoveEffect.CardChosen => m
   }.lastOption
 
-  val lastCardsChosen: Option[Move] = moves.collect { m =>
+  val lastBotChoice: Option[Move] = moves.collect { m =>
     m.effect match
-      case effect: MoveEffect.CardsChosen => m
+      case effect: MoveEffect.BotChoice => m
   }.lastOption
 
   val lastPatternChosen: Option[Move] = moves.collect { m =>

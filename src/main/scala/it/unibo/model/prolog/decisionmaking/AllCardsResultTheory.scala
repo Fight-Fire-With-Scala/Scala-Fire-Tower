@@ -14,12 +14,12 @@ object AllCardsResultTheory:
           val term = goal(cardId).term
           val firstVar = term.toString.split("[(),]").find(_.startsWith("_")).getOrElse("Coords")
           val updatedTerm = term.toString.replaceFirst("Coords", firstVar)
-          s"findall(($firstVar, $cardId), $updatedTerm, R$cardId)"
+          s"findall(($firstVar, $cardId), $updatedTerm, R${cardId.abs})"
         }.mkString(",\n    ")
       }
     }.mkString(",\n    ")
 
-    val resultVars = cards.keys.map(cardId => s"R$cardId").mkString(", ")
+    val resultVars = cards.keys.map(cardId => s"R${cardId.abs}").mkString(", ")
     val concatClause = s"concat_lists([$resultVars], R)"
 
     val theoryString = s"""

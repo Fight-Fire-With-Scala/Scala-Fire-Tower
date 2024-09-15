@@ -3,7 +3,7 @@ package it.unibo.model.effect.pattern
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.MoveEffect.logCardChosen
-import it.unibo.model.effect.MoveEffect.logCardsChosen
+import it.unibo.model.effect.MoveEffect.logBotChoice
 import it.unibo.model.effect.MoveEffect.logPatternApplied
 import it.unibo.model.effect.MoveEffect.logPatternChosen
 import it.unibo.model.effect.core._
@@ -15,7 +15,7 @@ import it.unibo.model.logger
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)
   case CardComputation(cardId: Int, logicEffect: ILogicEffect)
-  case CardsComputation(cards: Map[Int, List[ILogicEffect]])
+  case BotComputation(cards: Map[Int, List[ILogicEffect]])
   case PatternApplication(pattern: Map[Position, Token])
   case ResetPatternComputation
 
@@ -29,8 +29,8 @@ object PatternEffect extends PatternManager with LogicSolverManager:
   private def solveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb = gbe.gameBoard
-      val availablePatterns = computePatterns(gb, cards)
-      logCardsChosen(gb, availablePatterns)
+      val chosenPattern = computePatterns(gb, cards)
+      logBotChoice(gb, chosenPattern)
 
   private def solveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
@@ -56,7 +56,7 @@ object PatternEffect extends PatternManager with LogicSolverManager:
   val patternEffectSolver: GameEffectSolver[PatternEffect, GameBoardEffectSolver] =
     GameEffectSolver:
       case CardComputation(id, logicEffect) => solveCardComputation(id, logicEffect)
-      case CardsComputation(cards)          => solveCardsComputation(cards)
+      case BotComputation(cards)          => solveCardsComputation(cards)
       case PatternComputation(logicEffect)  => solvePatternComputation(logicEffect)
       case PatternApplication(pattern)      => solvePatternApplication(pattern)
       case ResetPatternComputation          => solvePatternReset()
