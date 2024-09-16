@@ -27,7 +27,7 @@ object ViewModule:
       private var gui: GameUIManager = uninitialized
 
       override def startMenu(viewObservable: ViewSubject): Unit =
-        gui = GameUIManager(1280, 1280, viewObservable)
+        gui = GameUIManager(1366, 1080, viewObservable)
         gui.main(Array.empty)
 
       override def startGame(gb: GameBoard, gameController: ViewController)(using

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="basePane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane hgap="50">
+        <StackPane fx:id="rightPane" GridPane.columnIndex="0">
+        </StackPane>
+        <StackPane fx:id="leftPane" GridPane.columnIndex="1">
+        </StackPane>
+    </GridPane>
+</StackPane>

@@ -2,9 +2,9 @@
 <?import javafx.scene.layout.*?>
 
 <StackPane styleClass="sidebarPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <StackPane style="-fx-padding: 21 21 21 21;">
+    <StackPane style="-fx-padding: 10 30 10 30;">
         <Pane>
-            <StackPane styleClass="sidebarPane" fx:id="dicePane" layoutX="125.0" prefHeight="75" prefWidth="75" />
+            <StackPane styleClass="sidebarPane" fx:id="dicePane" prefHeight="100" prefWidth="100" />
         </Pane>
     </StackPane>
 </StackPane>

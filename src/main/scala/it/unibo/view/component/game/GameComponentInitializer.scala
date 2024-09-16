@@ -6,11 +6,7 @@ import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.game.gameboard.grid.GridComponent
 import it.unibo.view.component.game.gameboard.hand.CardComponent
 import it.unibo.view.component.game.gameboard.hand.HandComponent
-import it.unibo.view.component.game.gameboard.sidebar.DeckComponent
-import it.unibo.view.component.game.gameboard.sidebar.DiceComponent
-import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
-import it.unibo.view.component.game.gameboard.sidebar.SidebarComponent
-import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
+import it.unibo.view.component.game.gameboard.sidebar.{ BicolumnPaneComponent, DeckComponent, DiceComponent, GameInfoComponent, SidebarComponent, WindRoseComponent }
 import monix.eval.Task
 
 trait GameComponentInitializer:
@@ -26,14 +22,12 @@ trait GameComponentInitializer:
       viewObservable: ViewSubject,
       internalViewObservable: InternalViewSubject
   ): SidebarComponent =
+    val bicolumnPane = BicolumnPaneComponent(DeckComponent(), DiceComponent())
     val subComponents: List[ISidebarComponent] =
-      List(WindRoseComponent(), DeckComponent(), GameInfoComponent(), DiceComponent())
+      List(WindRoseComponent(), GameInfoComponent(), bicolumnPane)
     SidebarComponent(subComponents)
 
-  private def loadGrid(using
-      viewObservable: ViewSubject,
-      internalViewObservable: InternalViewSubject
-  ): GridComponent = new GridComponent()
+  private def loadGrid(using viewObservable: ViewSubject): GridComponent = new GridComponent()
 
   protected def loadGame(gc: GameComponent)(using
       viewObservable: ViewSubject,
