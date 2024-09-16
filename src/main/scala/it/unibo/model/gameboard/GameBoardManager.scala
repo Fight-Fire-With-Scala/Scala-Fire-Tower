@@ -21,10 +21,8 @@ trait GameBoardManager:
     logger.debug(s"Effect to solve $effect")
 
     val gameBoardEffect = effect match
-      case ef: PhaseEffect => phaseEffectSolver.solve(ef)
-      case ef: HandEffect =>
-        val handEffect = handEffectSolver.solve(ef)
-        handleHandEffect(gb, handEffect)
+      case ef: PhaseEffect           => phaseEffectSolver.solve(ef)
+      case ef: HandEffect            => handleHandEffect(gb, ef)
       case ef: PatternEffect         => patternEffectSolver.solve(ef)
       case ef: GameBoardEffectSolver => ef
       case ef: WindUpdateEffect      => windChoiceSolver.solve(ef)
@@ -32,7 +30,8 @@ trait GameBoardManager:
     gameBoardEffect.solve(gb).gameBoard
 
   private def handleHandEffect(gb: GameBoard, effect: IGameEffect): GameBoardEffectSolver =
-    effect match
+    val handEffect = handEffectSolver.solve(effect)
+    handEffect match
       case e: PatternEffectSolver =>
         val effect = e.solve(gb)
         effect match

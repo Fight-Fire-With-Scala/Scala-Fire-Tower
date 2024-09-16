@@ -28,9 +28,9 @@ object PatternEffect extends PatternManager with LogicSolverManager:
 
   private def solveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
-      val gb            = gbe.gameBoard
-      val chosenPattern = computePatterns(gb, cards)
-      logBotChoice(gb, chosenPattern)
+      val gb                      = gbe.gameBoard
+      val (cardId, chosenPattern) = computePatterns(gb, cards)
+      logBotChoice(gb, cardId, chosenPattern)
 
   private def solveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>

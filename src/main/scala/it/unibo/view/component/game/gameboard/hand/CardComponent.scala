@@ -6,15 +6,8 @@ import it.unibo.controller.CandidateCardToPlayMessage
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ToggleCardInListMessage
 import it.unibo.model.card.Card
-import it.unibo.model.effect.card.BucketEffect
-import it.unibo.model.effect.card.FireEffect
-import it.unibo.model.effect.card.FirebreakEffect
-import it.unibo.model.effect.card.WaterEffect
-import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.core.CanBeDiscarded
 import it.unibo.model.effect.core.ICardEffect
-import it.unibo.model.effect.core.ISpecialCardEffect
-import it.unibo.model.effect.core.IStandardCardEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
 import it.unibo.view.component.ICanBeDisabled
@@ -28,7 +21,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import scalafx.Includes._
-import it.unibo.model.effect.core.given_Conversion_ICardEffect_String
+import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_String
 
 enum CardHighlightState:
   case Highlighted, Unhighlighted

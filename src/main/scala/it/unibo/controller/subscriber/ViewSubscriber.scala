@@ -1,18 +1,7 @@
 package it.unibo.controller.subscriber
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.BotMessage
-import it.unibo.controller.ChoseCardToPlay
-import it.unibo.controller.ConfirmCardPlayMessage
-import it.unibo.controller.DiscardCardMessage
-import it.unibo.controller.DrawCardMessage
-import it.unibo.controller.GameBoardInitialization
-import it.unibo.controller.ResolveCardReset
-import it.unibo.controller.ResolvePatternChoice
-import it.unibo.controller.StartGameMessage
-import it.unibo.controller.UpdateGamePhase
-import it.unibo.controller.UpdateWindDirection
-import it.unibo.controller.ViewMessage
+import it.unibo.controller.{BotMessage, ChoseCardToPlay, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, RefreshMessage, ResolveCardReset, ResolvePatternChoice, StartGameMessage, UpdateGamePhase, UpdateWindDirection, ViewMessage}
 import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType
 import it.unibo.controller.view.RefreshType.CardDeselected
@@ -36,6 +25,7 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
 import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsBot
 import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsHuman
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.model.gameboard.player.Bot
 import monix.reactive.subjects.PublishSubject
 
@@ -61,7 +51,8 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
 
     case ResolvePatternChoice(ef: PatternApplication) =>
       controller.applyEffect(ef, RefreshType.PatternChosen)
-      controller.applyEffect(ResetPatternComputation, CardDeselected)
+      controller.modelObserver.onNext(RefreshMessage(controller.model.getGameBoard, CardDeselected))
+//      controller.applyEffect(ResetPatternComputation, CardDeselected)
       controller.modelObserver.onNext(ConfirmCardPlayMessage())
 
     case ResolveCardReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)
