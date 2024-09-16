@@ -2,7 +2,7 @@
 
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="basePane" styleClass="sidebarPane" prefHeight="380.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="basePane" styleClass="sidebarPane" prefHeight="380.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane prefHeight="380.0" prefWidth="380.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,4 +50,4 @@
             </center>
         </BorderPane>
     </GridPane>
-</Pane>
+</StackPane>

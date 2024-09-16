@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class BicolumnPaneComponent(val leftComponent: IHaveView, val rightComponent: IHaveView)
+final class BicolumnPaneComponent(val leftComponent: ISidebarComponent, val rightComponent: ISidebarComponent)
     extends ISidebarComponent:
   override val fxmlPath: String = GUIType.BicolumnPane.fxmlPath
 
@@ -27,8 +27,12 @@ final class BicolumnPaneComponent(val leftComponent: IHaveView, val rightCompone
     leftPane.getChildren.add(leftComponent.getView)
     rightPane.getChildren.add(rightComponent.getView)
 
-  override protected def onEnableView(): Unit = ()
+  override protected def onEnableView(): Unit =
+    leftComponent.enableView()
+    rightComponent.enableView()
 
-  override protected def onDisableView(): Unit = ()
+  override protected def onDisableView(): Unit =
+    leftComponent.disableView()
+    rightComponent.disableView()
 
   override protected def getPane: Node = basePane
