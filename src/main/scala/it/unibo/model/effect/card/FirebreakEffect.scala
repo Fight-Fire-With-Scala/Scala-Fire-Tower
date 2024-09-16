@@ -1,13 +1,13 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{DefensiveEffect, ILogicEffect, IStandardCardEffect, LogicEffectSolver}
-import it.unibo.model.effect.core.ILogicEffect.given_Conversion_ILogicComputation_ILogicEffect
-import it.unibo.model.effect.core.ILogicEffect.given_Conversion_List_ILogicEffect
+import it.unibo.model.effect.core.{ DefensiveEffect, IStandardCardEffect, LogicEffectSolver }
+import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_List_SingleStepEffect
+import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
 import it.unibo.model.gameboard.PatternType.MediumAltEffect
 import it.unibo.model.gameboard.PatternType.SmallEffect
 import it.unibo.model.gameboard.PatternType.VerySmallEffect
 import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Map
-import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Firebreak, Reforest}
+import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Firebreak, Reforest }
 import it.unibo.model.prolog.Rule
 
 enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect:

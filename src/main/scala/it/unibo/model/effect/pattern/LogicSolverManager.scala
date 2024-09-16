@@ -24,6 +24,7 @@ trait LogicSolverManager:
     val theory = GridTheory(gb.board.grid, Map(cardId -> List(logicEffect)))
     theory.append(SolverType.CardSolver)
     theory.append(SolverType.BaseSolver)
+
     val engine = PrologEngine(theory)
     logicEffect.computations.zipWithIndex
       .map((c, idx) => engine.solveAsPatterns(c.goal(cardId, idx)))
@@ -32,12 +33,12 @@ trait LogicSolverManager:
   protected def computePatterns(
       gb: GameBoard,
       cards: Map[Int, List[ILogicEffect]]
-  ): Map[Int, Map[Position, Token]] =
+  ): (Int, Map[Position, Token]) =
 
-    val grid = gb.board.grid
-
+    val grid          = gb.board.grid
     val dynamicTheory = AllCardsResultTheory(cards)
     val theory        = GridTheory(grid, cards)
+
     DecisionMaker.getObjectiveTower.foreach(tower =>
       theory.append(
         Theory.parseWithStandardOperators(s"tower_position((${tower.row}, ${tower.col})).")
@@ -52,12 +53,8 @@ trait LogicSolverManager:
 
     val engine = PrologEngine(theory)
     val goal   = "main(R)"
-
-    println(engine.isSolvedWithSuccess(goal))
-
     val result = engine.solve(goal).headOption
-    println(theory)
+
     result match
-      case Some(solution) =>
-        PrologUtils.parseAllCardsResult(solution)
-      case None => Map.empty
+      case Some(solution) => PrologUtils.parseAllCardsResult(solution)
+      case None           => (-1, Map.empty)

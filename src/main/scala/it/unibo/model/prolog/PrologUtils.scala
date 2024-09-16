@@ -48,13 +48,13 @@ object PrologUtils:
         Set(Position(x, y))
       case _ => Set.empty
 
-  def parseAllCardsResult(solution: SolveInfo): Map[Int, Map[Position, Token]] =
+  def parseAllCardsResult(solution: SolveInfo): (Int, Map[Position, Token]) =
     solution.getTerm("R") match
       case solutionAsStruct: Struct =>
         val cardId                = solutionAsStruct.getArg(1).toString.toInt
         val positionsAndTokensMap = extractMapPositionTokenFromStruct(solutionAsStruct, 0)
-        Map(cardId -> positionsAndTokensMap)
-      case _ => Map.empty
+        cardId -> positionsAndTokensMap
+      case _ => (-1, Map.empty)
 
   private def extractMapPositionTokenFromStruct(struct: Struct, argId: Int): Map[Position, Token] =
     struct.getArg(argId) match

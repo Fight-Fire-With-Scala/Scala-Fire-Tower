@@ -9,17 +9,19 @@ import it.unibo.controller.view.RefreshType.CardSelected
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.{DefensiveEffect, ICardEffect, IDefensiveEffect, ILogicEffect, IOffensiveEffect, ISpecialCardEffect, IStandardCardEffect, OffensiveEffect, convert, given_Conversion_GameBoard_GameBoardEffect, given_Conversion_ICardEffect_ILogicEffect, given_Conversion_List_List}
+import it.unibo.model.effect.core.{ given_Conversion_GameBoard_GameBoardEffect, DefensiveEffect, ICardEffect, ILogicEffect, OffensiveEffect }
+import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_ILogicEffect
+import it.unibo.model.effect.hand.HandEffect
 import it.unibo.model.effect.pattern.PatternEffect
-import it.unibo.model.effect.pattern.PatternEffect.{BotComputation, PatternApplication}
+import it.unibo.model.effect.pattern.PatternEffect.{ patternEffectSolver, BotComputation, PatternApplication }
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.grid.{ConcreteToken, Position, Token}
-import it.unibo.model.gameboard.player.ThinkingPlayer.{filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea}
+import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token }
+import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea }
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
@@ -40,12 +42,12 @@ trait ThinkingPlayer extends Player:
     val logicEffect = WindEffect.windEffectSolver.solve(direction)
     val effect      = BotComputation(Map(-1 -> List(logicEffect)))
     DecisionMaker.setObjectiveTower(gb.getOpponent.towerPositions.map(_.position))
-    val gbAfterChoice = PatternEffect.patternEffectSolver.solve(effect).solve(gb).gameBoard
-    val lastBotChoice = gbAfterChoice.getCurrentPlayer.lastBotChoice
-    val chosenPattern = handleMove(gb, lastBotChoice)
+    val newGb              = gb.solveEffect(effect)
+    val lastBotChoice      = newGb.getCurrentPlayer.lastBotChoice
+    val (_, chosenPattern) = handleMove(newGb, lastBotChoice)
     logger.info(s"[PATTERN] $chosenPattern")
 
-    val appEffect = PatternApplication(chosenPattern.values.head)
+    val appEffect = PatternApplication(chosenPattern)
     controller.applyEffect(appEffect, RefreshType.PatternChosen)
 
     // val gbAfterApplication = PatternEffect.patternEffectSolver.solve(appEffect).solve(gb).gameBoard
@@ -64,31 +66,42 @@ trait ThinkingPlayer extends Player:
     val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
 
     if filteredCards.isEmpty then
-      controller.applyEffect(PhaseEffect(RedrawCardsPhase), CardDiscard)
+//      controller.applyEffect(PhaseEffect(RedrawCardsPhase), CardDiscard)
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(RedrawCardsPhase)))
     else
-      controller.applyEffect(PhaseEffect(PlayStandardCardPhase), CardSelected)
+//      controller.applyEffect(PhaseEffect(PlayStandardCardPhase), CardSelected)
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
 
   protected def thinkForRedrawCardPhase(using controller: ModelController): Unit =
     logger.info("[BOT] thinkForRedrawCardPhase")
+    logger.info(s"[BOT] My hand is: $hand")
+    val numberOfCardsToDraw = hand.length
+    val discardCardEffect   = HandEffect.DiscardCard(hand.map(_.id))
+    val drawCardEffect      = HandEffect.DrawCard(numberOfCardsToDraw)
+    val gb                  = controller.model.getGameBoard
+    val newGb               = gb.solveEffect(discardCardEffect).solveEffect(drawCardEffect)
+    controller.model.setGameBoard(newGb)
+    logger.info(s"[BOT] My hand is: ${newGb.getCurrentPlayer.hand}")
+
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
   protected def thinkForPlayStandardCardPhase(using controller: ModelController): Unit =
     logger.info(s"[BOT] My hand is: $hand")
     logger.info("[BOT] thinkForPlayStandardCardPhase")
-    val filteredCards  = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
-    val gb             = controller.model.getGameBoard
-    val effects        = filteredCards.map(card => card.id -> List(convert(card.effect))).toMap
+    val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
+    val effects = filteredCards.map(card => card.id -> List(ICardEffect.convert(card.effect))).toMap
     val botComputation = BotComputation(effects)
-    val gbAfterChoice  = PatternEffect.patternEffectSolver.solve(botComputation).solve(gb).gameBoard
-    val lastBotChoice  = gbAfterChoice.getCurrentPlayer.lastBotChoice
-    val chosenPattern  = handleMove(gb, lastBotChoice)
+    val gb             = controller.model.getGameBoard
+    val newGb          = gb.solveEffect(botComputation)
+    val lastBotChoice  = newGb.getCurrentPlayer.lastBotChoice
+    logger.info(s"[BOT] My move is: $lastBotChoice")
+    val (_, chosenPattern) = handleMove(newGb, lastBotChoice)
     logger.info(s"[PATTERN] $chosenPattern")
-    logger.info(s"[BOT] My hand is: $hand")
 
-    val appEffect = PatternApplication(chosenPattern.values.head)
+    val appEffect = PatternApplication(chosenPattern)
     controller.applyEffect(appEffect, RefreshType.PatternChosen)
+    logger.info(s"[BOT] My hand is: ${controller.model.getGameBoard.getCurrentPlayer.hand}")
+
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
   protected def thinkForDecisionPhase(using controller: ModelController): Unit =
@@ -106,13 +119,13 @@ object ThinkingPlayer:
   private def handleMove(
       gb: GameBoard,
       lastMove: Option[Move]
-  ): Map[Int, Map[Position, Token]] = lastMove match
+  ): (Int, Map[Position, Token]) = lastMove match
     case Some(move) =>
       move.effect match
-        case MoveEffect.BotChoice(cards)               => cards
-        case MoveEffect.PatternApplied(appliedPattern) => Map(-1 -> appliedPattern)
-        case _                                         => Map.empty
-    case None => Map.empty
+        case MoveEffect.BotChoice(cardId, patternChosen) => cardId -> patternChosen
+        case MoveEffect.PatternApplied(appliedPattern)   => -1     -> appliedPattern
+        case _                                           => -1     -> Map.empty
+    case None => -1 -> Map.empty
 
   private def filterCardsBasedOnDecision(hand: List[Card], decision: AttackDefense): List[Card] =
     decision match
@@ -120,14 +133,14 @@ object ThinkingPlayer:
         hand.collect:
           case card if card.effect.computations.exists {
                 case _: OffensiveEffect => true
-                case _                   => false
+                case _                  => false
               } =>
             card
       case AttackDefense.Defense =>
         hand.collect:
           case card if card.effect.computations.exists {
                 case _: DefensiveEffect => true
-                case _                   => false
+                case _                  => false
               } =>
             card
 

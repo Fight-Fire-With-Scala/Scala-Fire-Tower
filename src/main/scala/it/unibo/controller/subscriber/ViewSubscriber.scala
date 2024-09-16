@@ -19,6 +19,7 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
 import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsBot
 import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsHuman
+import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.model.gameboard.GamePhase.{DecisionPhase, EndGamePhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
 import it.unibo.model.gameboard.player.Bot
 import monix.reactive.subjects.PublishSubject
@@ -45,7 +46,8 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
 
     case ResolvePatternChoice(ef: PatternApplication) =>
       controller.applyEffect(ef, RefreshType.PatternChosen)
-      controller.applyEffect(ResetPatternComputation, CardDeselected)
+      controller.modelObserver.onNext(RefreshMessage(controller.model.getGameBoard, CardDeselected))
+//      controller.applyEffect(ResetPatternComputation, CardDeselected)
       controller.modelObserver.onNext(ConfirmCardPlayMessage())
       controller.model.getGameBoard.isGameEnded match
         case Some(_) =>

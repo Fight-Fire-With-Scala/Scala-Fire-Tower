@@ -9,7 +9,7 @@ import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.effect.pattern.PatternEffect.CardComputation
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.effect.core.given_Conversion_ICardEffect_ILogicEffect
+import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_ILogicEffect
 
 enum HandEffect extends IGameEffect:
   case PlayCard(cardId: Int)
