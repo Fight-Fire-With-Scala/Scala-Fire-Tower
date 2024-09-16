@@ -42,9 +42,9 @@ trait ThinkingPlayer extends Player:
     val logicEffect = WindEffect.windEffectSolver.solve(direction)
     val effect      = BotComputation(Map(-1 -> List(logicEffect)))
     DecisionMaker.setObjectiveTower(gb.getOpponent.towerPositions.map(_.position))
-    val gbAfterChoice       = PatternEffect.patternEffectSolver.solve(effect).solve(gb).gameBoard
-    val lastBotChoice       = gbAfterChoice.getCurrentPlayer.lastBotChoice
-    val (_, chosenPattern) = handleMove(gb, lastBotChoice)
+    val newGb              = gb.solveEffect(effect)
+    val lastBotChoice      = newGb.getCurrentPlayer.lastBotChoice
+    val (_, chosenPattern) = handleMove(newGb, lastBotChoice)
     logger.info(s"[PATTERN] $chosenPattern")
 
     val appEffect = PatternApplication(chosenPattern)
@@ -95,7 +95,7 @@ trait ThinkingPlayer extends Player:
     val newGb          = gb.solveEffect(botComputation)
     val lastBotChoice  = newGb.getCurrentPlayer.lastBotChoice
     logger.info(s"[BOT] My move is: $lastBotChoice")
-    val (_, chosenPattern)  = handleMove(gb, lastBotChoice)
+    val (_, chosenPattern) = handleMove(newGb, lastBotChoice)
     logger.info(s"[PATTERN] $chosenPattern")
 
     val appEffect = PatternApplication(chosenPattern)
