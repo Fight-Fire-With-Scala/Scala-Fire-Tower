@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <Pane stylesheets="@style/game.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <VBox spacing="50" style="-fx-padding: 42;">
+    <VBox spacing="50" style="-fx-padding: 20;">
         <HBox VBox.vgrow="ALWAYS" spacing="135">
             <Pane fx:id="grid" VBox.vgrow="ALWAYS">
             </Pane>

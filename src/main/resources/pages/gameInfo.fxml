@@ -4,8 +4,8 @@
 <?import javafx.scene.control.*?>
 
 <StackPane styleClass="sidebarPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <StackPane fx:id="gameInfoPane" prefHeight="75" prefWidth="75">
-        <VBox alignment="CENTER" spacing="5" prefHeight="138.0" prefWidth="80.0" style="-fx-padding: 42 42 42 42;">
+    <StackPane fx:id="gameInfoPane" prefHeight="65" prefWidth="75">
+        <VBox alignment="CENTER" spacing="5" prefHeight="65.0" prefWidth="80.0" style="-fx-padding: 32 32 32 32;">
             <TextField fx:id="turnNumber" prefWidth="80" text="Turn Number"/>
             <TextField fx:id="turnPlayer" prefWidth="80" text="Turn Player"/>
             <TextField fx:id="turnPhase" prefWidth="80" text="Turn Phase"/>
