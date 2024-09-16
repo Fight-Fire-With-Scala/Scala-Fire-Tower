@@ -12,7 +12,7 @@ trait Grid:
   def getCell(position: Position): Option[Cell]
 
   def getToken(position: Position): Option[Token]
-  
+
   def setCell(position: Position, cell: Cell): Grid
 
   def setToken(position: Position, token: Token): Grid
@@ -25,7 +25,7 @@ trait Grid:
 
   def getTowerCells(towerPosition: Set[TowerPosition]): Set[Position] =
     TowerPositionManager.getTowerCells(cells, towerPosition)
-  
+
   override def toString: String
 
 object Grid:
@@ -42,7 +42,7 @@ object Grid:
 
   // noinspection DuplicatedCode
   def standard: Grid = GridDefinitions.standard
-  
+
   def endGame: Grid = GridDefinitions.endGame
 
 final case class BasicGrid(
@@ -52,25 +52,32 @@ final case class BasicGrid(
   override def cells: Map[Position, Cell]   = this._cells
   override def tokens: Map[Position, Token] = this._tokens
 
-  override def setToken(position: Position, token: Token): Grid = getCell(position) match
+  override def setToken(position: Position, token: Token): Grid = 
+    require(isValidPosition(position), s"Invalid position: $position")
+    getCell(position) match
     case Some(_: EternalFire.type) => this
     case Some(_: Woods.type)       => handleTokenForWoodsAndTower(position, token)
     case Some(_: Tower.type)       => handleTokenForWoodsAndTower(position, token)
     case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
-  private def handleTokenForWoodsAndTower(position: Position, token: Token): Grid = getToken(position) match
+  private def isValidPosition(position: Position): Boolean =
+    position.row >= 0 && position.row < Grid.Size && position.col >= 0 && position.col < Grid.Size
+  
+  private def handleTokenForWoodsAndTower(position: Position, token: Token): Grid = getToken(
+    position
+  ) match
     case Some(Fire) =>
       token match
-        case Water => BasicGrid(this._cells, this._tokens - position)
-        case _     => BasicGrid(this._cells, this._tokens + (position -> token))
+        case Water    => BasicGrid(this._cells, this._tokens - position)
+        case Reforest => this
+        case _        => BasicGrid(this._cells, this._tokens + (position -> token))
     case Some(Firebreak) =>
       token match
         case Reforest => BasicGrid(this._cells, this._tokens - position)
         case _        => this
-    case Some(Water) | Some(Reforest) | Some(Empty) =>
-      BasicGrid(this._cells, this._tokens + (position -> token))
+    case Some(Water) | Some(Reforest) | Some(Empty) => this
     case _ =>
-      if token == Water || token == Empty then this
+      if token == Water || token == Empty || token == Reforest then this
       else BasicGrid(this._cells, this._tokens + (position -> token))
 
   override def getToken(position: Position): Option[Token] = this._tokens.get(position)

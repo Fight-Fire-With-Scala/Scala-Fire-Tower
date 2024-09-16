@@ -1,5 +1,7 @@
 package it.unibo.model.effect.phase
 
+import it.unibo.controller.model.PlayerController
+
 import scala.annotation.tailrec
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.card.WindEffect
@@ -12,13 +14,16 @@ import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
 import it.unibo.model.logger
 
-trait PhaseManager:
+trait PhaseManager extends PlayerController:
   @tailrec
   final def updateGamePhase(gb: GameBoard, choice: GamePhase): GameBoard = choice match
     case WindPhase =>
-      gb.getCurrentPlayer match
-        case p: Person => handleWindPhase(gb)
-        case _         => gb
+      val currentPlayer  = gb.getCurrentPlayer
+      val (newGb, newPl) = fillPlayerHand(gb, currentPlayer)
+      val finalGb        = newGb.updateCurrentPlayer(newPl)
+      newPl match
+        case p: Person => handleWindPhase(finalGb)
+        case _         => finalGb
     case WaitingPhase          => gb.copy(gamePhase = WaitingPhase)
     case PlayStandardCardPhase => gb.copy(gamePhase = PlayStandardCardPhase)
     case RedrawCardsPhase      => gb.copy(gamePhase = RedrawCardsPhase)
@@ -28,7 +33,7 @@ trait PhaseManager:
         case _         => gb.copy(gamePhase = DecisionPhase)
     case PlaySpecialCardPhase => gb.copy(gamePhase = PlaySpecialCardPhase)
     case EndTurnPhase         => updateGamePhase(handleTurnEnd(gb), WindPhase)
-    case EndGamePhase         =>
+    case EndGamePhase =>
       gb.copy(gamePhase = EndGamePhase)
 
   private def handleTurnEnd(gb: GameBoard) = gb

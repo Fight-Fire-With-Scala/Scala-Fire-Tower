@@ -20,7 +20,10 @@ trait Player:
 
   def playCard(cardId: Int): (Player, Option[Card]) = hand.find(_.id == cardId) match
     case Some(card) => (updatePlayer(hand = hand.filterNot(_.id == cardId)), Some(card))
-    case None       => (this, None)
+    case None =>
+      extraCard match
+        case Some(card) if card.id == cardId => (updatePlayer(extraCard = None), Some(card))
+        case _ => (this, None)
 
   def logMove(move: Move): Player = updatePlayer(moves = moves :+ move)
 
