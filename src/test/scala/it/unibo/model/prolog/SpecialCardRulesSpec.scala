@@ -1,8 +1,8 @@
 package it.unibo.model.prolog
 
 import it.unibo.model.effect.card.BucketEffect
-import it.unibo.model.effect.core.given_Conversion_ICardEffect_ILogicEffect
 import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Water }
+import it.unibo.model.prolog.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
 import it.unibo.model.gameboard.grid.{ Position, Token }
 
 class SpecialCardRulesSpec extends AbstractCardSolverSpec:

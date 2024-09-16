@@ -10,7 +10,6 @@ import it.unibo.model.gameboard.grid.{ BasicGrid, Cell, Position }
 import it.unibo.model.prolog.PrologUtils.given
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import it.unibo.model.effect.core.given_Conversion_ICardEffect_ILogicEffect
 
 class GridTheorySpec extends AnyWordSpecLike with Matchers:
   val defaultDirections: List[String] = Direction.values.map(_.getId).toList
@@ -18,7 +17,8 @@ class GridTheorySpec extends AnyWordSpecLike with Matchers:
     .map(_.getDelta)
     .map(d => Struct.tuple(d.row, d.col))
     .toList
-  val dummyCardId: Int = 1
+  val dummyCardId: Int   = 1
+  val dummyEffectId: Int = 0
 
   val dummyGrid: (List[String], List[Struct]) => Theory = (directions, deltas) =>
     Theory.fromPrologList(
@@ -59,11 +59,11 @@ class GridTheorySpec extends AnyWordSpecLike with Matchers:
         Struct.of("numCols", 5),
 
         // Patterns
-        Struct.of("pattern", Struct.tuple(0, 0), Fire, dummyCardId),
-        Struct.of("pattern", Struct.tuple(0, 1), Fire, dummyCardId),
-        Struct.of("pattern", Struct.tuple(0, 2), Fire, dummyCardId),
-        Struct.of("directions", directions, dummyCardId),
-        Struct.of("deltas", deltas, dummyCardId)
+        Struct.of("pattern", Struct.tuple(0, 0), Fire, dummyCardId, dummyEffectId),
+        Struct.of("pattern", Struct.tuple(0, 1), Fire, dummyCardId, dummyEffectId),
+        Struct.of("pattern", Struct.tuple(0, 2), Fire, dummyCardId, dummyEffectId),
+        Struct.of("directions", directions, dummyCardId, dummyEffectId),
+        Struct.of("deltas", deltas, dummyCardId, dummyEffectId)
       )
     )
   val expectedBoard: Theory = dummyGrid(defaultDirections, defaultDeltas)
