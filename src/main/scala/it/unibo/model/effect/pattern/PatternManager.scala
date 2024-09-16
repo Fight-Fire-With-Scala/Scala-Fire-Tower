@@ -13,13 +13,20 @@ trait PatternManager:
   protected def updateDeckAndHand(gb: GameBoard, move: Move): GameBoardEffect =
     move.effect match
       case BotChoice(cardId, patternChosen) =>
-        val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId)
-        cardOpt
-          .map { card =>
-            val gbUpdatedHand = updateHand(gb, card)
-            updateDeck(gbUpdatedHand, card)
-          }
-          .getOrElse(gb)
+        val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId) match
+          case Some(card) => Some(card)
+          case None =>
+            gb.getCurrentPlayer.extraCard match
+              case Some(card) if card.id == cardId => Some(card)
+              case _ => None
+        cardOpt match
+          case Some(card) =>
+            card.effect match
+              case _: CanBePlayedAsExtra => updateHand(gb, card)
+              case _ =>
+                val gbUpdatedHand = updateHand(gb, card)
+                updateDeck(gbUpdatedHand, card)
+          case None => gb
       case MoveEffect.CardChosen(card, _) =>
         card.effect match
           case _: CanBePlayedAsExtra => updateHand(gb, card)

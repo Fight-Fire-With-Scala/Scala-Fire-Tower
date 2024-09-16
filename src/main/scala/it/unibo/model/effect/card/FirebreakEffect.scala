@@ -1,6 +1,6 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{ DefensiveEffect, IStandardCardEffect, LogicEffectSolver }
+import it.unibo.model.effect.core.{ DefensiveEffect, IStandardCardEffect, LogicEffectSolver, OffensiveEffect }
 import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_List_SingleStepEffect
 import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
 import it.unibo.model.gameboard.PatternType.MediumAltEffect
@@ -20,7 +20,7 @@ object FirebreakEffect:
     case DeReforest =>
       List(
         DefensiveEffect(VerySmallEffect(Map("a" -> Firebreak)), Rule("deforest")),
-        DefensiveEffect(VerySmallEffect(Map("a" -> Reforest)), Rule("reforest"))
+        OffensiveEffect(VerySmallEffect(Map("a" -> Reforest)), Rule("reforest"))
       )
     case ScratchLine =>
       DefensiveEffect(
