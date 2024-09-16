@@ -2,7 +2,6 @@ package it.unibo.model.effect.hand
 
 import it.unibo.model.card.Card
 import it.unibo.model.effect.GameBoardEffect
-import it.unibo.model.effect.card._
 import it.unibo.model.effect.core._
 import it.unibo.model.effect.core.PatternEffectSolver
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
@@ -34,16 +33,10 @@ object HandEffect extends HandManager:
   private def solveCardEffect(cardId: Int) = PatternEffectSolver: (gbe: GameBoardEffect) =>
     val gb      = gbe.gameBoard
     val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId)
-    cardOpt.map(card => solveCard(gb, card)).getOrElse(gb)
+    cardOpt.map(card => solveCard(card)).getOrElse(gb)
 
-  private def solveCard(gb: GameBoard, card: Card): GameBoardEffect | PatternEffect =
-    card.effect match
-      case effect: FireEffect        => CardComputation(card.id, effect)
-      case effect: FirebreakEffect   => CardComputation(card.id, effect)
-      case effect: WaterEffect       => CardComputation(card.id, effect)
-      case effect: WindEffect        => CardComputation(card.id, effect)
-      case effect: BucketEffect.type => CardComputation(card.id, effect)
-      case _                         => gb
+  private def solveCard(card: Card): GameBoardEffect | PatternEffect =
+    CardComputation(card.id, card.effect)
 
   val handEffectSolver: GameEffectSolver[IGameEffect, IGameEffect] = GameEffectSolver:
     case DrawCard(nCards)   => solveDrawCard(nCards)
