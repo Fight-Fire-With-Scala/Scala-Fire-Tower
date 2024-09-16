@@ -2,8 +2,8 @@ package it.unibo.model.prolog
 
 import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
+import it.unibo.model.prolog.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.effect.core.given_Conversion_ICardEffect_ILogicEffect
 
 class WindCardRulesSpec extends AbstractCardSolverSpec:
   "A wind card" should:

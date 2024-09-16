@@ -1,9 +1,10 @@
 package it.unibo.model.prolog
 
 import it.unibo.model.effect.card.FirebreakEffect
-import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Firebreak }
+import it.unibo.model.effect.core.{ILogicComputation, ILogicEffect}
+import it.unibo.model.gameboard.grid.ConcreteToken.{Empty, Firebreak}
+import it.unibo.model.prolog.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation 
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.effect.core.given_Conversion_ICardEffect_ILogicEffect
 
 class FirebreakCardRulesSpec extends AbstractCardSolverSpec:
   "A firebreak card" should:
@@ -36,7 +37,7 @@ class FirebreakCardRulesSpec extends AbstractCardSolverSpec:
 //      val engine = buildEngine(Map(dummyCardId -> List(FirebreakEffect.DeReforest)))
 //      val sol = engine.solveAsPatterns(FirebreakEffect.ScratchLine.goals.head(dummyCardId))
 //      sol shouldEqual Set(Map(Position(1, 2) -> Empty))
-
+    
     "provide the correct choices to solve the dozer line card" in:
       val sol = getAvailablePatterns(FirebreakEffect.DozerLine)
       sol shouldEqual Set(
