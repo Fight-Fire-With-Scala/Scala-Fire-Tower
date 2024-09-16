@@ -1,13 +1,11 @@
 package it.unibo.view.component.game.gameboard.grid.handler
 
 import scala.collection.mutable
-
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.effect.card.FireEffect
 import it.unibo.model.effect.card.WaterEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
-import it.unibo.model.gameboard.GamePhase.WindPhase
+import it.unibo.model.gameboard.GamePhase.{PlaySpecialCardPhase, PlayStandardCardPhase, WindPhase}
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.gameboard.grid.Position
@@ -26,11 +24,10 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
   ): Unit =
     val position: Position = Position(row, col)
     gamePhase match
-      case WindPhase => hoverForAvailablePatterns(position)
-      case PlayStandardCardPhase =>
+      case PlayStandardCardPhase | PlaySpecialCardPhase =>
         if gridState.fixedCell.nonEmpty then hoverForFixedCell(position, hoverDirection)
         else hoverForAvailablePatterns(position)
-      case _ =>
+      case _ => hoverForAvailablePatterns(position)
   private def hoverForFixedCell(position: Position, hoverDirection: HoverDirection): Unit =
     gridState.resetHoverColors()
     val neighbourPosition = getNeighbor(position, hoverDirection)

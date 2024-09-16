@@ -31,9 +31,15 @@ object HandEffect extends HandManager:
       discardCards(gb, cards).copy(deck = newDeck)
 
   private def solveCardEffect(cardId: Int) = PatternEffectSolver: (gbe: GameBoardEffect) =>
-    val gb      = gbe.gameBoard
-    val cardOpt = gb.getCurrentPlayer.hand.find(_.id == cardId)
-    cardOpt.map(card => solveCard(card)).getOrElse(gb)
+    val gb            = gbe.gameBoard
+    val currentPlayer = gb.getCurrentPlayer
+    val cardOpt       = currentPlayer.hand.find(_.id == cardId)
+    cardOpt match
+      case Some(card) => solveCard(card)
+      case None =>
+        currentPlayer.extraCard match
+          case Some(card) => solveCard(card)
+          case None       => gb
 
   private def solveCard(card: Card): GameBoardEffect | PatternEffect =
     CardComputation(card.id, card.effect)

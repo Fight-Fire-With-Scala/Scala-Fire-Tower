@@ -54,10 +54,11 @@ final case class BasicGrid(
 
   override def setToken(position: Position, token: Token): Grid = getCell(position) match
     case Some(_: EternalFire.type) => this
-    case Some(_: Woods.type)       => handleTokenForWoods(position, token)
+    case Some(_: Woods.type)       => handleTokenForWoodsAndTower(position, token)
+    case Some(_: Tower.type)       => handleTokenForWoodsAndTower(position, token)
     case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
-  private def handleTokenForWoods(position: Position, token: Token): Grid = getToken(position) match
+  private def handleTokenForWoodsAndTower(position: Position, token: Token): Grid = getToken(position) match
     case Some(Fire) =>
       token match
         case Water => BasicGrid(this._cells, this._tokens - position)

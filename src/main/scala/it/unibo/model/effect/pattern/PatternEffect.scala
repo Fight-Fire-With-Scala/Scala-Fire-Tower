@@ -35,13 +35,19 @@ object PatternEffect extends PatternManager with LogicSolverManager:
   private def solveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                = gbe.gameBoard
+      val currentPlayer     = gb.getCurrentPlayer
       val availablePatterns = computePatterns(gb, cardId, logicEffect)
-      val cardOpt           = gb.getCurrentPlayer.hand.find(_.id == cardId)
-      cardOpt
-        .map(card => logCardChosen(gb, card, availablePatterns))
-        .getOrElse:
-          logger.warn(s"Could not find a card with id $cardId in hand")
-          gb
+      val cardOpt           = currentPlayer.hand.find(_.id == cardId)
+      cardOpt match
+        case Some(card) =>
+          logCardChosen(gb, card, availablePatterns)
+        case None =>
+          currentPlayer.extraCard match
+            case Some(card) =>
+              logCardChosen(gb, card, availablePatterns)
+            case None =>
+              logger.warn(s"Could not find a card with id $cardId in hand")
+              gb
 
   private def solvePatternApplication(pattern: Map[Position, Token]) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
