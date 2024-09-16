@@ -8,7 +8,7 @@ import it.unibo.controller.view.RefreshType.CardDiscard
 import it.unibo.controller.view.RefreshType.CardSelected
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.card.WindEffect
+import it.unibo.model.effect.card.{ FirebreakEffect, WindEffect }
 import it.unibo.model.effect.core.{ given_Conversion_GameBoard_GameBoardEffect, DefensiveEffect, ICardEffect, ILogicEffect, OffensiveEffect, SingleStepEffect }
 import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_ILogicEffect
 import it.unibo.model.effect.hand.HandEffect
@@ -21,7 +21,7 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token }
-import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireTokenInTowerArea }
+import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireBreakTokenInBoard, isFireTokenInTowerArea }
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
@@ -66,14 +66,15 @@ trait ThinkingPlayer extends Player:
     logger.info(s"[BOT] Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
     logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower.head}")
 
-    // bot does redraw cards only if attacking and not having attack cards
     val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
 
-    if filteredCards.isEmpty then
-//      controller.applyEffect(PhaseEffect(RedrawCardsPhase), CardDiscard)
+    val containsDeReforest =
+      filteredCards.exists(card => card.effect.effectId == FirebreakEffect.DeReforest.effectId)
+
+    if filteredCards.isEmpty || (containsDeReforest && !isFireBreakTokenInBoard(gb)) then
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(RedrawCardsPhase)))
     else
-//      controller.applyEffect(PhaseEffect(PlayStandardCardPhase), CardSelected)
+
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
 
   protected def thinkForRedrawCardPhase(using controller: ModelController): Unit =
@@ -93,20 +94,6 @@ trait ThinkingPlayer extends Player:
     logger.info(s"[BOT] My hand is: $hand")
     logger.info("[BOT] thinkForPlayStandardCardPhase")
     val decision = DecisionMaker.getAttackOrDefense
-
-//    val offensiveEffects = effects.flatMap(_.computations).filter {
-//      case _: OffensiveEffect => true
-//      case _ => false
-//    }.map {
-//      case oe: OffensiveEffect => oe
-//    }
-//
-//    val defensiveEffects = effects.flatMap(_.computations).filter {
-//      case _: DefensiveEffect => true
-//      case _ => false
-//    }.map {
-//      case de: DefensiveEffect => de
-//    }
 
     val effects = filterCardsBasedOnDecision(hand, decision)
       .map { card =>
@@ -208,3 +195,10 @@ object ThinkingPlayer:
         case _                    => false
       }
     )
+
+  private def isFireBreakTokenInBoard(gb: GameBoard): Boolean =
+    val res = gb.board.grid.tokens.exists { case (_, token) =>
+      token == ConcreteToken.Firebreak
+    }
+    logger.info(s"[BOT] Firebreak token in board: $res")
+    res
