@@ -1,19 +1,13 @@
 package it.unibo.controller.view
 
 import it.unibo.controller.logger
-import it.unibo.controller.view.RefreshType.CardDeselected
-import it.unibo.controller.view.RefreshType.CardDiscard
-import it.unibo.controller.view.RefreshType.CardDraw
-import it.unibo.controller.view.RefreshType.CardSelected
-import it.unibo.controller.view.RefreshType.PatternChosen
-import it.unibo.controller.view.RefreshType.PhaseUpdate
-import it.unibo.controller.view.RefreshType.WindUpdate
+import it.unibo.controller.view.RefreshType.{CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate}
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.MoveEffect.CardChosen
 import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.{ ISpecialCardEffect, IStandardCardEffect }
-import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.effect.core.{ISpecialCardEffect, IStandardCardEffect}
+import it.unibo.model.gameboard.{Board, GameBoard}
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Move
@@ -44,6 +38,11 @@ trait RefreshController extends ActivationController:
       case CardDeselected => updateHand
       case WindUpdate     => updateWind
       case PhaseUpdate    => updatePhase
+      case EndGameUpdate => updateGridForEndGame
+
+  private def updateGridForEndGame(using c: GameComponent, gb: GameBoard): Unit =
+    val newGb = gb.copy(board = Board.withRandomWindAndEndgameGrid)
+    c.updateGrid(newGb, newGb.gamePhase)
 
   private def updateHand(using c: GameComponent, gb: GameBoard): Unit = c
     .updatePlayer(gb.getCurrentPlayer)(gb.gamePhase)

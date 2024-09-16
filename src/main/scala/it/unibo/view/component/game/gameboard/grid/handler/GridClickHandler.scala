@@ -29,7 +29,7 @@ class GridClickHandler(
     gamePhase match
       case WindPhase =>
         if (gridState.hoveredCells.contains(position))
-          placePattern(gridState.availablePatterns.find(_.contains(position)).get, WaitingPhase)
+          placePattern(gridState.availablePatterns.find(_.contains(position)).get)
       case PlayStandardCardPhase | PlaySpecialCardPhase => handleCardPlay(position)
       case _                                            =>
 
@@ -57,26 +57,24 @@ class GridClickHandler(
       placePattern(
         gridState.availablePatterns
           .find(_.exists((pos, tkn) => pos == position && tkn == Firebreak))
-          .get,
-        DecisionPhase
+          .get
       )
     case WaterEffect.SmokeJumper.effectId =>
       placePattern(
         gridState.availablePatterns
           .find(_.exists((pos, tkn) => pos == position && tkn == Fire))
-          .get,
-        DecisionPhase
+          .get
       )
     case _ => logger.error("Error in explosion pattern")
 
   private def placeSinglePattern(position: Position): Unit =
     val pattern = gridState.availablePatterns.find(_.contains(position)).get
-    placePattern(pattern, DecisionPhase)
+    placePattern(pattern)
 
   private def placeFixedPattern(position: Position): Unit =
     gridState.fixedCell.clear()
     val pattern = gridState.availablePatternsClickFixed.find(_.contains(position)).get
-    placePattern(pattern, DecisionPhase)
+    placePattern(pattern)
 
   private def activateFixedCellMode(position: Position): Unit =
     val pattern = gridState.availablePatterns.find(_.contains(position)).get
@@ -93,7 +91,6 @@ class GridClickHandler(
     gridState.resetHoverColors()
     gridState.availablePatternsClickFixed = gridState.availablePatterns
 
-  private def placePattern(pattern: Map[Position, Token], newPhase: GamePhase): Unit =
+  private def placePattern(pattern: Map[Position, Token]): Unit =
     observableSubject.onNext(ResolvePatternChoice(PatternApplication(pattern)))
-    observableSubject.onNext(UpdateGamePhase(PhaseEffect(newPhase)))
     gridState.hoveredCells.clear()

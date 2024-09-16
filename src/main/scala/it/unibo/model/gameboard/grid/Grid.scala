@@ -4,12 +4,6 @@ import it.unibo.model.gameboard.grid.Cell._
 import it.unibo.model.gameboard.grid.ConcreteToken._
 import it.unibo.model.gameboard.grid.Grid.Size
 
-enum TowerPosition(val position: Position):
-  case TOP_LEFT extends TowerPosition(Position(0, 0))
-  case BOTTOM_RIGHT extends TowerPosition(Position(Grid.Size - 1, Grid.Size - 1))
-  case TOP_RIGHT extends TowerPosition(Position(0, Grid.Size - 1))
-  case BOTTOM_LEFT extends TowerPosition(Position(Grid.Size - 1, 0))
-
 trait Grid:
   def cells: Map[Position, Cell]
 
@@ -18,9 +12,7 @@ trait Grid:
   def getCell(position: Position): Option[Cell]
 
   def getToken(position: Position): Option[Token]
-
-  def getTowerCells(towerPositions: Set[TowerPosition]): Set[Position]
-
+  
   def setCell(position: Position, cell: Cell): Grid
 
   def setToken(position: Position, token: Token): Grid
@@ -31,10 +23,12 @@ trait Grid:
   def update(updates: (Position, Cell)*): Grid = updates
     .foldLeft(this) { case (grid, (position, cell)) => grid.setCell(position, cell) }
 
+  def getTowerCells(towerPosition: Set[TowerPosition]): Set[Position] =
+    TowerPositionManager.getTowerCells(cells, towerPosition)
+  
   override def toString: String
 
 object Grid:
-  export GridBuilder.*
   val Size: Int           = 16
   val positionNumber: Int = Grid.Size * Grid.Size
 
@@ -47,23 +41,9 @@ object Grid:
   def empty: Grid = BasicGrid()
 
   // noinspection DuplicatedCode
-  def standard: Grid = Grid:
-    T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
-    T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
-    T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | E | E | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | E | E | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
-    T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
-    T | T | T | F | F | F | F | F | F | F | F | F | F | T | T | T
+  def standard: Grid = GridDefinitions.standard
+  
+  def endGame: Grid = GridDefinitions.endGame
 
 final case class BasicGrid(
     private val _cells: Map[Position, Cell] = Map.empty,
@@ -98,21 +78,6 @@ final case class BasicGrid(
     BasicGrid(this._cells + (position -> cell), this._tokens)
 
   override def getCell(position: Position): Option[Cell] = this._cells.get(position)
-
-  override def getTowerCells(towerPositions: Set[TowerPosition]): Set[Position] =
-    val halfSize = Grid.Size / 2
-
-    def isInDiagonal(position: Position, towerPosition: TowerPosition): Boolean =
-      towerPosition match
-        case TowerPosition.TOP_LEFT     => position.row < halfSize && position.col < halfSize
-        case TowerPosition.BOTTOM_RIGHT => position.row >= halfSize && position.col >= halfSize
-        case TowerPosition.TOP_RIGHT    => position.row < halfSize && position.col >= halfSize
-        case TowerPosition.BOTTOM_LEFT  => position.row >= halfSize && position.col < halfSize
-
-    _cells.collect {
-      case (position, cell: Tower.type) if towerPositions.exists(isInDiagonal(position, _)) =>
-        position
-    }.toSet
 
   override def toString: String =
     val gridRepresentation = (for

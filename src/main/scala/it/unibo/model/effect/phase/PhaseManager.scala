@@ -28,6 +28,8 @@ trait PhaseManager:
         case _         => gb.copy(gamePhase = DecisionPhase)
     case PlaySpecialCardPhase => gb.copy(gamePhase = PlaySpecialCardPhase)
     case EndTurnPhase         => updateGamePhase(handleTurnEnd(gb), WindPhase)
+    case EndGamePhase         =>
+      gb.copy(gamePhase = EndGamePhase)
 
   private def handleTurnEnd(gb: GameBoard) = gb
     .copy(gamePhase = WindPhase, turnNumber = gb.turnNumber + 1)

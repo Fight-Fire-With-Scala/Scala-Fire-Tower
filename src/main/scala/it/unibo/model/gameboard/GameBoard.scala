@@ -20,6 +20,13 @@ case class GameBoard(
     gamePhase: GamePhase = WindPhase
 ) extends GameBoardManager:
 
+  def isGameEnded: Option[Player] =
+    val player1TowersOnFire = player1.towerPositions.exists(board.isOnFire)
+    val player2TowersOnFire = player2.towerPositions.exists(board.isOnFire)
+    if player1TowersOnFire then Some(player2)
+    else if player2TowersOnFire then Some(player1)
+    else None
+
   def getCurrentPlayer: Player = playerManager.getCurrentState match
     case PlayerInstance.Player1 => player1
     case PlayerInstance.Player2 => player2
