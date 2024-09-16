@@ -3,12 +3,10 @@ package it.unibo.view.component.game.gameboard.sidebar
 import scala.compiletime.uninitialized
 import it.unibo.controller.CancelDiscardMessage
 import it.unibo.controller.ConfirmDiscardMessage
-import it.unibo.controller.DrawCardMessage
 import it.unibo.controller.InitializeDiscardProcedureMessage
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.ViewSubject
-import it.unibo.model.effect.hand.HandEffect.DrawCard
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.{ logger, GUIType }
@@ -17,8 +15,6 @@ import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.Spinner
-import javafx.scene.control.SpinnerValueFactory
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 
