@@ -4,24 +4,12 @@ import com.typesafe.scalalogging.Logger
 import it.unibo.controller.BotMessage
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.model.ModelController
-import it.unibo.controller.view.RefreshType.PhaseUpdate
-import it.unibo.model.ModelModule.Model
 import it.unibo.model.effect.phase.PhaseEffect
-import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.player.Bot
 
 /** This class is subscribed to the Bot updates and changes the Model accordingly */
-final class BotSubscriber(controller: ModelController) extends BaseSubscriber[BotMessage]:
-
-  given Conversion[Model, GameBoard] = _.getGameBoard
-  given Model                        = controller.model
+final class BotSubscriber(val controller: ModelController) extends BaseSubscriber[BotMessage] with UpdateGamePhaseHandler:
 
   override val logger: Logger = Logger("Bot -> BotSubscriber")
 
   override def onMessageReceived(msg: BotMessage): Unit = msg match
-    case UpdateGamePhase(ef: PhaseEffect) =>
-      val gb = controller.model.getGameBoard
-      controller.applyEffect(ef, PhaseUpdate)
-      gb.getCurrentPlayer match
-        case b: Bot => b.think
-        case _      =>
+    case UpdateGamePhase(ef: PhaseEffect) => handleUpdateGamePhase(ef)

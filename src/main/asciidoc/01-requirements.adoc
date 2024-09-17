@@ -1,0 +1,50 @@
+= Requisiti
+https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
+https://docs.asciidoctor.org/asciidoc/latest/
+
+== Requisiti di business
+
+link:https://[Regolamento ufficiale]
+
+* Il gioco deve permettere lo svolgimento di una partita, interagendo con le entità del gioco e in accordo con il regolamento ufficiale del gioco.
+** Possibilità di piazzare dei token fuoco o tagliafuoco sulla griglia.
+** Possibilità di pescare e scartare carte e di scartare una carta dopo che è stata giocata.
+** Possibilità di applicare pattern di diverso tipo a seconda del tipo di carta giocata.
+** Possibilità di modificare la direzione del vento casualmente o in base alla carta giocata.
+** Possibilità di utilizzare carte normali e carte speciali per interagire col gioco
+
+== Requisiti funzionali
+
+* Utente
+** L’utente deve visualizzare un menu iniziale dalla quale è possibile iniziare una partita settandone i parametri.
+** L’utente deve poter visualizzare la schermata del gioco comprensiva di tutte le sue parti.
+** L'utente deve poter interagire con la griglia per piazzare i pattern.
+** L'utente deve poter cliccare su una carta ottenendo i pattern possibili sulla griglia.
+** L'utente deve poter compiere una scelta nel caso di carte multi-scelta.
+** L'utente deve poter interagire con la griglia per piazzare i pattern.
+** L'utente deve poter scartare le carte.
+** L'utente deve poter scegliere di finire il turno senza giocare una carta speciale.
+** L'utente deve poter vincere quando piazza il fuoco sulla posizione di una torre nemica.
+
+* Sistema
+** Il sistema deve gestire le schermate di menu e di gioco.
+** Il sistema deve visualizzare la scena del gioco, composta di griglia, mano, direzione del vento, informazioni sulla partita, dado
+e scarta carte.
+** Il sistema deve calcolare i pattern disponibili sulla griglia per ogni tipo di effetto di carta disponibile.
+** Il sistema deve offrire un sistema di aggiornamento legato alle azioni compiute dal giocatore.
+** Il sistema deve gestire il comportamento del nemico (bot).
+
+== Requisiti non funzionali
+** Grafica: il gioco deve risultare simile a quello originale visivamente.
+** Usabilità: il gioco deve far sì che l'utilizzo delle carte sia il più facile possibile.
+
+// image::start-screen.png[]
+//
+// image::start-game.png[]
+
+== Requisiti di implementazione
+* Utilizziamo:
+** Scala 3.4.2
+** ScalaTest X.X.X
+** JDK 17+
+

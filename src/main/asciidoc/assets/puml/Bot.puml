@@ -1,0 +1,21 @@
+@startuml
+
+autonumber
+
+ViewSubscriber -> Bot: Think.thinkForWindPhase
+Bot -> Model: WindEffect of type CardEffect
+Bot -> Model: BotComputation of type PatternEffect with ref to ILogicEffect
+Bot -> Model: BotChoice of type MoveEffect
+Bot -> Model: PatternApplication of type PatternEffect
+Bot -> BotSubscriber: UpdateGamePhase(WaitingPhase)
+
+BotSubscriber -> Bot: Think.thinkForWaitingPhase
+alt filtered cards is empty
+    Bot -> BotSubscriber: UpdateGamePhase(RedrawCardsPhase)
+    BotSubscriber -> Bot: Think.thinkForRedrawCardPhase
+else
+    Bot -> BotSubscriber: UpdateGamePhase(PlayStandardCardPhase)
+    BotSubscriber -> Bot: Think.thinkForPlayStandardCardPhase
+end
+
+@enduml
