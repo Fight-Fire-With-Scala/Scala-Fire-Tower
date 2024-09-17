@@ -1,5 +1,6 @@
 package it.unibo.model.gameboard
 
+import it.unibo.model.GameBoardInitializer
 import it.unibo.model.effect.card.FirebreakEffect.*
 import it.unibo.model.effect.card.WindUpdateEffect.UpdateWind
 import it.unibo.model.effect.pattern.PatternEffect.{CardComputation, PatternApplication, PatternComputation}
@@ -14,22 +15,15 @@ import org.scalatest.BeforeAndAfterAll
 
 import scala.compiletime.uninitialized
 
-class GameBoardSpec extends AnyWordSpec with Matchers with PlayerManager with BeforeAndAfterAll:
+
+
+class GameBoardSpec extends AnyWordSpec with Matchers with GameBoardInitializer with BeforeAndAfterAll:
 
   var gameBoard: GameBoard = uninitialized
 
   override def beforeAll(): Unit =
-    initialiseGameBoard()
+    gameBoard = initialiseGameBoard(Person("Player1", List.empty, List.empty), Person("Player2", List.empty, List.empty))
 
-  def initialiseGameBoard(): Unit =
-    val initialGameBoard = GameBoard(Person("Player1", List.empty, List.empty), Person("Player2", List.empty, List.empty))
-    // Initialize both players
-    val (updatedGameBoard, updatedPlayer1) = initializePlayer(initialGameBoard, initialGameBoard.getCurrentPlayer)
-    val (finalGameBoard, updatedPlayer2) = initializePlayer(updatedGameBoard, updatedGameBoard.getOpponent)
-    val completeGameBoard = finalGameBoard
-      .copy(player1 = updatedPlayer1, player2 = updatedPlayer2)
-    gameBoard = completeGameBoard
-      .solveEffect(PhaseEffect(completeGameBoard.gamePhase))
 
   "A GameBoard" should:
 
