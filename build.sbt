@@ -50,12 +50,9 @@ scalacOptions ++= Seq(
 
 scalafmtOnCompile := true
 
-coverageDataDir := target.value / "site" / "scoverage-report"
 coverageExcludedPackages := "<empty>;it.unibo.view.*;it.unibo.controller.*"
 
 coverageEnabled := true
-
-makeSite := makeSite.dependsOn(Test / test).value
 
 enablePlugins(SitePreviewPlugin, AsciidoctorPlugin)
 enablePlugins(SiteScaladocPlugin)

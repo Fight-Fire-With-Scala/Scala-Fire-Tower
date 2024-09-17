@@ -7,7 +7,7 @@ import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Player
 
 trait PlayerController extends HandManager:
-  private def fillPlayerHand(gb: GameBoard, player: Player): (GameBoard, Player) =
+  protected def fillPlayerHand(gb: GameBoard, player: Player): (GameBoard, Player) =
     val cardToDraw = 5 - player.hand.size
     drawCards(gb, cardToDraw)(player)
 

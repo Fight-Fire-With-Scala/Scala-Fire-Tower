@@ -30,7 +30,8 @@ object PatternEffect extends PatternManager with LogicSolverManager:
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                      = gbe.gameBoard
       val (cardId, chosenPattern) = computePatterns(gb, cards)
-      logBotChoice(gb, cardId, chosenPattern)
+      if chosenPattern.nonEmpty then logBotChoice(gb, cardId, chosenPattern)
+      else gb
 
   private def solveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
@@ -55,7 +56,7 @@ object PatternEffect extends PatternManager with LogicSolverManager:
       val b       = gb.board
       val newGrid = b.grid.setTokens(pattern.toSeq*)
       val newGb   = runIfLastCardChosenFound(gb, updateDeckAndHand).gameBoard
-      logPatternApplied(newGb.copy(board = b.copy(grid = newGrid)), pattern)
+      logPatternApplied(newGb.copy(board = newGb.board.copy(grid = newGrid)), pattern)
 
   private def solvePatternReset() = GameBoardEffectSolver: (gbe: GameBoardEffect) =>
     val gb = gbe.gameBoard
