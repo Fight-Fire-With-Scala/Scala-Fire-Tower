@@ -1,8 +1,7 @@
-package it.unibo.model.effect.hand
+package it.unibo.model.effect
 
 import it.unibo.model.card.Card
-import it.unibo.model.gameboard.Deck
-import it.unibo.model.gameboard.GameBoard
+import it.unibo.model.gameboard.{ Deck, GameBoard }
 import it.unibo.model.gameboard.player.Player
 
 trait HandManager:
@@ -22,12 +21,16 @@ trait HandManager:
           case None => (newDeck, player)
     (gb.copy(deck = finalDeck), finalPlayer)
 
-  def drawCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =
+  protected def drawCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =
     drawCardsFromDeck(gb, nCards, _.drawCard())(player)
 
-  def drawSpecialCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =
+  protected def drawSpecialCards(gb: GameBoard, nCards: Int)(player: Player): (GameBoard, Player) =
     drawCardsFromDeck(gb, nCards, _.drawSpecialCard())(player)
 
-  def discardCards(gb: GameBoard, cards: List[Int]): GameBoard =
+  protected def discardCards(gb: GameBoard, cards: List[Int]): GameBoard =
     val player = gb.getCurrentPlayer
     gb.updateCurrentPlayer(player.discardCards(cards))
+
+  protected def playCard(gb: GameBoard, card: Card): GameBoard =
+    val (player, _) = gb.getCurrentPlayer.playCard(card.id)
+    gb.updateCurrentPlayer(player)

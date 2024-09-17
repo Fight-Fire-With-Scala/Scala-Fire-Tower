@@ -1,7 +1,7 @@
 package it.unibo.model.gameboard
 
-import it.unibo.model.gameboard.GameBoardConfig.{BotBehaviour, CardSet, GameMode}
-import it.unibo.model.gameboard.player.{Bot, Person}
+import it.unibo.model.gameboard.GameBoardConfig.{ BotBehaviour, CardSet, GameMode }
+import it.unibo.model.gameboard.player.{ Bot, Person }
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

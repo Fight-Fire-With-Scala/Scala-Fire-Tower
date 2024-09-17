@@ -1,8 +1,8 @@
 package it.unibo.model.effect.hand
 
 import it.unibo.model.card.Card
-import it.unibo.model.effect.GameBoardEffect
-import it.unibo.model.effect.core._
+import it.unibo.model.effect.{ GameBoardEffect, HandManager }
+import it.unibo.model.effect.core.*
 import it.unibo.model.effect.core.PatternEffectSolver
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.effect.pattern.PatternEffect
@@ -41,8 +41,7 @@ object HandEffect extends HandManager:
           case Some(card) => solveCard(card)
           case None       => gb
 
-  private def solveCard(card: Card): GameBoardEffect | PatternEffect =
-    CardComputation(card.id, card.effect)
+  private def solveCard(card: Card): PatternEffect = CardComputation(card.id, card.effect)
 
   val handEffectSolver: GameEffectSolver[IGameEffect, IGameEffect] = GameEffectSolver:
     case DrawCard(nCards)   => solveDrawCard(nCards)

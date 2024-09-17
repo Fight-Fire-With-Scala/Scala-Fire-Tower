@@ -1,7 +1,5 @@
 package it.unibo.model.effect.phase
 
-import it.unibo.controller.model.PlayerController
-
 import scala.annotation.tailrec
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.card.WindEffect
@@ -10,11 +8,10 @@ import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.player.Person
+import it.unibo.model.gameboard.player.{Person, PlayerManager}
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.logger
 
-trait PhaseManager extends PlayerController:
+trait PhaseManager extends PlayerManager:
   @tailrec
   final def updateGamePhase(gb: GameBoard, choice: GamePhase): GameBoard = choice match
     case WindPhase =>
@@ -33,8 +30,7 @@ trait PhaseManager extends PlayerController:
         case _         => gb.copy(gamePhase = DecisionPhase)
     case PlaySpecialCardPhase => gb.copy(gamePhase = PlaySpecialCardPhase)
     case EndTurnPhase         => updateGamePhase(handleTurnEnd(gb), WindPhase)
-    case EndGamePhase =>
-      gb.copy(gamePhase = EndGamePhase)
+    case EndGamePhase         => gb.copy(gamePhase = EndGamePhase)
 
   private def handleTurnEnd(gb: GameBoard) = gb
     .copy(gamePhase = WindPhase, turnNumber = gb.turnNumber + 1)

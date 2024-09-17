@@ -1,15 +1,13 @@
 package it.unibo.model.effect.pattern
 
-import it.unibo.model.effect.GameBoardEffect
-import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.MoveEffect.logCardChosen
-import it.unibo.model.effect.MoveEffect.logBotChoice
-import it.unibo.model.effect.MoveEffect.logPatternApplied
-import it.unibo.model.effect.MoveEffect.logPatternChosen
-import it.unibo.model.effect.core._
+import it.unibo.model.effect.{CardManager, GameBoardEffect, MoveEffect}
+import it.unibo.model.effect.MoveEffect.{logBotChoice, logCardChosen, logPatternApplied, logPatternChosen, runIfLastMoveFound}
+import it.unibo.model.effect.core.*
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
+import it.unibo.model.effect.phase.PhaseEffect.updatePlayer
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.gameboard.player.PlayerManager
 import it.unibo.model.logger
 
 enum PatternEffect extends IGameEffect:
@@ -19,7 +17,7 @@ enum PatternEffect extends IGameEffect:
   case PatternApplication(pattern: Map[Position, Token])
   case ResetPatternComputation
 
-object PatternEffect extends PatternManager with LogicSolverManager:
+object PatternEffect extends CardManager with PlayerManager with LogicSolverManager:
   private def solvePatternComputation(logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                = gbe.gameBoard
@@ -55,12 +53,12 @@ object PatternEffect extends PatternManager with LogicSolverManager:
       val gb      = gbe.gameBoard
       val b       = gb.board
       val newGrid = b.grid.setTokens(pattern.toSeq*)
-      val newGb   = runIfLastCardChosenFound(gb, updateDeckAndHand).gameBoard
+      val newGb   = runIfLastMoveFound(gb, updateDeckAndHand).gameBoard
       logPatternApplied(newGb.copy(board = newGb.board.copy(grid = newGrid)), pattern)
 
   private def solvePatternReset() = GameBoardEffectSolver: (gbe: GameBoardEffect) =>
     val gb = gbe.gameBoard
-    runIfLastCardChosenFound(gb, updatePlayer)
+    runIfLastMoveFound(gb, updatePlayer)
 
   val patternEffectSolver: GameEffectSolver[PatternEffect, GameBoardEffectSolver] =
     GameEffectSolver:

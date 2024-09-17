@@ -5,7 +5,6 @@ import scala.compiletime.uninitialized
 import it.unibo.controller.ChoseCardToPlay
 import it.unibo.controller.DiscardCardMessage
 import it.unibo.controller.DrawCardMessage
-import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ResolveCardReset
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.ViewSubject
@@ -21,15 +20,12 @@ import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.view.GUIType
 import it.unibo.view.component.IHandComponent
 import it.unibo.view.component.IUpdateView
-import it.unibo.view.logger
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.Pane
 
-final class HandComponent(val cardComponents: List[CardComponent])(using
-    observable: ViewSubject,
-    internalObservable: InternalViewSubject
-) extends IHandComponent
+final class HandComponent(val cardComponents: List[CardComponent])(using observable: ViewSubject)
+    extends IHandComponent
     with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath

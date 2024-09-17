@@ -8,14 +8,14 @@ import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
 import it.unibo.model.gameboard.player.PlayerInstance
-import it.unibo.model.gameboard.player.PlayerManager
+import it.unibo.model.gameboard.player.PlayerToggle
 
 case class GameBoard(
     board: Board,
     deck: Deck,
     player1: Player,
     player2: Player,
-    private val playerManager: PlayerManager = PlayerManager(),
+    private val playerManager: PlayerToggle = PlayerToggle(),
     turnNumber: Int = 0,
     gamePhase: GamePhase = WindPhase
 ) extends GameBoardManager:

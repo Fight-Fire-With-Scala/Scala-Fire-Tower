@@ -6,7 +6,7 @@ import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
-import it.unibo.model.gameboard.player.Move
+import it.unibo.model.gameboard.player.{ Bot, Move, Person }
 
 enum MoveEffect extends IGameEffect:
   case CardsRedrawn(cards: List[Int])
@@ -48,3 +48,12 @@ object MoveEffect:
   def logPatternApplied(gb: GameBoard, pattern: Map[Position, Token]): GameBoardEffect =
     val move = PatternApplied(pattern)
     MoveEffect.solveMove(move, gb)
+
+  def runIfLastMoveFound(
+      gb: GameBoard,
+      run: (GameBoard, Move) => GameBoardEffect
+  ): GameBoardEffect =
+    gb.getCurrentPlayer match
+      case p: Person => p.lastCardChosen.map(move => run(gb, move)).getOrElse(gb)
+      case b: Bot    => b.lastBotChoice.map(move => run(gb, move)).getOrElse(gb)
+      case _         => gb
