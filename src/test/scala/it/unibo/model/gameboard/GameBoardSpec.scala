@@ -15,16 +15,13 @@ import org.scalatest.BeforeAndAfterAll
 
 import scala.compiletime.uninitialized
 
-
-
 class GameBoardSpec extends AnyWordSpec with Matchers with GameBoardInitializer with BeforeAndAfterAll:
 
   var gameBoard: GameBoard = uninitialized
 
   override def beforeAll(): Unit =
     gameBoard = initialiseGameBoard(Person("Player1", List.empty, List.empty), Person("Player2", List.empty, List.empty))
-
-
+  
   "A GameBoard" should:
 
     "initialize correctly with random wind and standard grid" in:
