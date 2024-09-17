@@ -69,6 +69,10 @@ class GameBoardSpec extends AnyWordSpec with Matchers with PlayerController with
       val updatedGameBoard = gameBoard.solveEffect(PhaseEffect(WaitingPhase))
       updatedGameBoard.gamePhase shouldBe WaitingPhase
 
+//    "solve hand effects correctly" in:
+//      val updatedGameBoard = gameBoard.solveEffect(PlayCard(12))
+//      updatedGameBoard.player1. should not be None
+
     "solve pattern application correctly" in:
       val position: Position = Position(10, 10)
       val map: Map[Position, Token] = Map(position -> Fire)
