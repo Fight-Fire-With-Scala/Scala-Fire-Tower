@@ -1,0 +1,97 @@
+= Scaletta
+
+== Introduzione (INSIEME)
+
+== Requisiti (INSIEME)
+
+=== Business
+
+=== Utente
+
+=== Funzionali
+
+=== Non funzionali
+
+=== Implementazione
+
+== Design architetturale (INSIEME)
+
+Descrizione del pattern architetturale utilizzato (MVC + Cake)
+
+== Design di dettaglio
+
+diagramma degli stati
+
+diagramma di sequenza
+
+diagramma delle classi
+
+=== Model
+
+divisione del turno in fasi - TONE
+effetti/carte - RICK
+gameboard, grid, DSL - ALE
+player (bot) - ALE, TONE
+
+prolog
+attacco e difesa - ALE
+carte (availablePattern) - RICK
+scelta pattern - TONE
+
+=== View
+
+inizializzazione della view - RICK
+componente GameComponent - RICK
+griglia (hover, click) - ALE
+mano - TONE
+deck - TONE
+sidebar RICK
+vista menu - TONE
+
+=== Controller
+
+observable e subscriber
+Bot - ALE
+Internal - TONE
+Model - ALE
+View - RICK
+
+protocolli di scambio dei messaggi
+
+Activation ALE
+Discard / PlayCardController / TONE
+Refresh RICK
+
+=== Organizzazione del codice/Struttura dei package
+
+diagramma dei package
+
+== Retrospettiva
+
+=== Processo di sviluppo
+
+==== Meeting e interazioni pianificate
+
+==== Modalità di divisione dei task
+
+==== Modalità di revisione dei task
+
+==== Strumenti di test
+
+==== Workflow Git
+
+==== Strumenti di qualità del codice
+
+==== Strumenti di CI/CD
+
+=== Suddivisione del lavoro
+
+==== Alessandro Becci
+
+==== Luca Tonelli
+
+==== Riccardo Battistini
+
+== Sviluppi futuri (INSIEME)
+
+== Guida Utente (INSIEME)
