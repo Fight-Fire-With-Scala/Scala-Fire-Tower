@@ -1,23 +1,20 @@
 package it.unibo.model.gameboard
 
-import it.unibo.controller.model.PlayerController
-import it.unibo.model.effect.card.FireEffect.Explosion
 import it.unibo.model.effect.card.FirebreakEffect.*
-import it.unibo.model.effect.card.WindUpdateEffect.{RandomUpdateWind, UpdateWind}
-import it.unibo.model.effect.hand.HandEffect.PlayCard
+import it.unibo.model.effect.card.WindUpdateEffect.UpdateWind
 import it.unibo.model.effect.pattern.PatternEffect.{CardComputation, PatternApplication, PatternComputation}
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.{ConcreteToken, Grid, Position, Token, TowerPosition}
-import it.unibo.model.gameboard.player.{Person, Player}
+import it.unibo.model.gameboard.player.{Person, Player, PlayerManager}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.BeforeAndAfterAll
 
 import scala.compiletime.uninitialized
 
-class GameBoardSpec extends AnyWordSpec with Matchers with PlayerController with BeforeAndAfterAll:
+class GameBoardSpec extends AnyWordSpec with Matchers with PlayerManager with BeforeAndAfterAll:
 
   var gameBoard: GameBoard = uninitialized
 

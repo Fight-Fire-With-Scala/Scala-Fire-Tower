@@ -1,19 +1,16 @@
 package it.unibo.model.prolog.decisionmaking
 
-import it.unibo.controller.model.PlayerController
-import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.{GameBoard, GameBoardConfig, grid}
-import it.unibo.model.gameboard.player.{Bot, Person, Player}
-import it.unibo.model.logger
+import it.unibo.model.gameboard.player.{Person, Player, PlayerManager}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import scala.compiletime.uninitialized
 
-class DecisionMakerSpec extends AnyWordSpec with Matchers with PlayerController:
+class DecisionMakerSpec extends AnyWordSpec with Matchers with PlayerManager:
 
   var gameBoard: GameBoard = uninitialized
 
