@@ -3,17 +3,15 @@ package it.unibo.model.gameboard.player
 import it.unibo.controller.BotSubject
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.model.ModelController
-import it.unibo.controller.view.RefreshType
-import it.unibo.controller.view.RefreshType.CardDiscard
-import it.unibo.controller.view.RefreshType.CardSelected
+import it.unibo.model.ModelModule.Model
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.card.{ FirebreakEffect, WindEffect }
-import it.unibo.model.effect.core.{ given_Conversion_GameBoard_GameBoardEffect, DefensiveEffect, ICardEffect, ILogicEffect, OffensiveEffect, SingleStepEffect }
+import it.unibo.model.effect.core.{ DefensiveEffect, ICardEffect, IGameEffect, ILogicEffect, OffensiveEffect, SingleStepEffect }
 import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_ILogicEffect
 import it.unibo.model.effect.hand.HandEffect
 import it.unibo.model.effect.pattern.PatternEffect
-import it.unibo.model.effect.pattern.PatternEffect.{ patternEffectSolver, BotComputation, PatternApplication }
+import it.unibo.model.effect.pattern.PatternEffect.{ BotComputation, PatternApplication }
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoard
@@ -32,36 +30,40 @@ trait ThinkingPlayer extends Player:
   val botObservable: Option[BotSubject]
   def think(controller: ModelController): Unit
 
-  protected def thinkForWindPhase(using controller: ModelController): Unit =
+  def applyEffect(model: Model, ef: IGameEffect): Unit =
+    val newGb = model.getGameBoard.solveEffect(ef)
+    model.setGameBoard(newGb)
+
+  protected def thinkForWindPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForWindPhase")
 
     // In WindPhase the bot has just to decide from the available patterns
     // the one that gets closer to one tower of the opponent
-    val gb          = controller.model.getGameBoard
+    val gb          = model.getGameBoard
     val direction   = gb.board.windDirection
     val logicEffect = WindEffect.windEffectSolver.solve(direction)
     val effect      = BotComputation(Map(-1 -> List(logicEffect)))
     DecisionMaker.setObjectiveTower(gb.getOpponent.towerPositions.map(_.position))
-    val tmpGb = controller.model.getGameBoard
+    val tmpGb = model.getGameBoard
     val newGb = tmpGb.solveEffect(effect)
     logger.info(s"[BOT] Thinking Player Gameboard ${newGb.getCurrentPlayer.moves}")
-    controller.model.setGameBoard(newGb)
+    model.setGameBoard(newGb)
     val lastBotChoice = newGb.getCurrentPlayer.lastBotChoice
     logger.info(s"[BOT] Last Bot Choice $lastBotChoice")
 
     val (_, chosenPattern) = handleMove(lastBotChoice)
     logger.info(s"[PATTERN] $chosenPattern")
     val appEffect = PatternApplication(chosenPattern)
-    controller.applyEffect(appEffect, RefreshType.PatternChosen)
+    applyEffect(model, appEffect)
 
     // val gbAfterApplication = PatternEffect.patternEffectSolver.solve(appEffect).solve(gb).gameBoard
     // controller.model.setGameBoard(gbAfterApplication)
 
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
 
-  protected def thinkForWaitingPhase(using controller: ModelController): Unit =
+  protected def thinkForWaitingPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForWaitingPhase")
-    val gb = controller.model.getGameBoard
+    val gb = model.getGameBoard
     computeAttackOrDefense(gb, botBehaviour)
     logger.info(s"[BOT] Attack or Defense: ${DecisionMaker.getAttackOrDefense}")
     logger.info(s"[BOT] Objective tower: ${DecisionMaker.getObjectiveTower.head}")
@@ -73,24 +75,22 @@ trait ThinkingPlayer extends Player:
 
     if filteredCards.isEmpty || (containsDeReforest && !isFireBreakTokenInBoard(gb)) then
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(RedrawCardsPhase)))
-    else
+    else botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
 
-      botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
-
-  protected def thinkForRedrawCardPhase(using controller: ModelController): Unit =
+  protected def thinkForRedrawCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForRedrawCardPhase")
     logger.info(s"[BOT] My hand is: $hand")
     val numberOfCardsToDraw = hand.length
     val discardCardEffect   = HandEffect.DiscardCard(hand.map(_.id))
     val drawCardEffect      = HandEffect.DrawCard(numberOfCardsToDraw)
-    val gb                  = controller.model.getGameBoard
+    val gb                  = model.getGameBoard
     val newGb               = gb.solveEffect(discardCardEffect).solveEffect(drawCardEffect)
-    controller.model.setGameBoard(newGb)
+    model.setGameBoard(newGb)
     logger.info(s"[BOT] My hand is: ${newGb.getCurrentPlayer.hand}")
 
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
-  protected def thinkForPlayStandardCardPhase(using controller: ModelController): Unit =
+  protected def thinkForPlayStandardCardPhase(using model: Model): Unit =
     logger.info(s"[BOT] My hand is: $hand")
     logger.info("[BOT] thinkForPlayStandardCardPhase")
     val decision = DecisionMaker.getAttackOrDefense
@@ -119,46 +119,47 @@ trait ThinkingPlayer extends Player:
     logger.info(s"[BOT] Effects: $effectsPrev")
     logger.info("[BOT] Effects: " + effects)
     val botComputation = BotComputation(effects)
-    val gb             = controller.model.getGameBoard
+    val gb             = model.getGameBoard
     val newGb          = gb.solveEffect(botComputation)
-    controller.model.setGameBoard(newGb)
+    model.setGameBoard(newGb)
     val lastBotChoice = newGb.getCurrentPlayer.lastBotChoice
     logger.info(s"[BOT] My move is: $lastBotChoice")
     val (_, chosenPattern) = handleMove(lastBotChoice)
     logger.info(s"[PATTERN] $chosenPattern")
 
     val appEffect = PatternApplication(chosenPattern)
-    controller.applyEffect(appEffect, RefreshType.PatternChosen)
-    logger.info(s"[BOT] My hand is: ${controller.model.getGameBoard.getCurrentPlayer.hand}")
+    applyEffect(model, appEffect)
+    logger.info(s"[BOT] My hand is: ${model.getGameBoard.getCurrentPlayer.hand}")
 
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
 
-  protected def thinkForDecisionPhase(using controller: ModelController): Unit =
+  protected def thinkForDecisionPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForDecisionPhase")
-    if isFireTokenInTowerArea(controller.model.getGameBoard) then
+    if isFireTokenInTowerArea(model.getGameBoard) then
       botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
     else botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
 
-  protected def thinkForPlaySpecialCardPhase(using controller: ModelController): Unit =
+  protected def thinkForPlaySpecialCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForPlaySpecialCardPhase")
     extraCard match
       case Some(card) =>
-        val gb      = controller.model.getGameBoard
+        val gb      = model.getGameBoard
         val effects = Map(card.id -> List(ICardEffect.convert(card.effect)))
         DecisionMaker.setObjectiveTower(gb.getCurrentPlayer.towerPositions.map(_.position))
         val botComputation = BotComputation(effects)
         val newGb          = gb.solveEffect(botComputation)
-        controller.model.setGameBoard(newGb)
+        model.setGameBoard(newGb)
         val lastBotChoice = newGb.getCurrentPlayer.lastBotChoice
         logger.info(s"[BOT] My move is: $lastBotChoice")
         val (_, chosenPattern) = handleMove(lastBotChoice)
         logger.info(s"[PATTERN] $chosenPattern")
 
         val appEffect = PatternApplication(chosenPattern)
-        controller.applyEffect(appEffect, RefreshType.PatternChosen)
+        applyEffect(model, appEffect)
         logger.info(
-          s"[BOT] My extra hand is: ${controller.model.getGameBoard.getCurrentPlayer.extraCard.isEmpty}"
+          s"[BOT] My extra hand is: ${model.getGameBoard.getCurrentPlayer.extraCard.isEmpty}"
         )
+      case None =>
     botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
 
 object ThinkingPlayer:

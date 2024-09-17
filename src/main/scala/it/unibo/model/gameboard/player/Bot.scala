@@ -2,11 +2,12 @@ package it.unibo.model.gameboard.player
 
 import it.unibo.controller.BotSubject
 import it.unibo.controller.model.ModelController
+import it.unibo.model.ModelModule.Model
 import it.unibo.model.card.Card
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase._
+import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.logger
 
@@ -25,7 +26,7 @@ final case class Bot(
 
   override def think(controller: ModelController): Unit =
     logger.info("[BOT] Starting to think")
-    given c: ModelController = controller
+    given m: Model = controller.model
 
     controller.model.getGameBoard.gamePhase match
       case WindPhase             => thinkForWindPhase
