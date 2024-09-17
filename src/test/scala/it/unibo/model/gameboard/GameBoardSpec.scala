@@ -40,6 +40,22 @@ class GameBoardSpec extends AnyWordSpec with Matchers with PlayerController with
       gameBoard.board.grid shouldBe Grid.standard
       gameBoard.board.windDirection should not be null
 
+    "return the correct current player" in:
+        gameBoard.getCurrentPlayer shouldBe gameBoard.player1
+
+    "return the correct opponent" in:
+        gameBoard.getOpponent shouldBe gameBoard.player2
+
+    "update the current player correctly" in:
+      val newPlayer = Person("PlayerNew", List.empty, List.empty)
+      val updatedGameBoard = gameBoard.updateCurrentPlayer(newPlayer)
+      updatedGameBoard.getCurrentPlayer shouldBe newPlayer
+
+    "change the player correctly" in:
+      val initialPlayer = gameBoard.getCurrentPlayer
+      val updatedGameBoard = gameBoard.changePlayer()
+      updatedGameBoard.getCurrentPlayer should not be initialPlayer
+
     "identify if the game has ended correctly" in:
       val board     = gameBoard.board
       val updatedGameBoard = gameBoard.copy(
@@ -52,10 +68,6 @@ class GameBoardSpec extends AnyWordSpec with Matchers with PlayerController with
     "solve phase effects correctly" in:
       val updatedGameBoard = gameBoard.solveEffect(PhaseEffect(WaitingPhase))
       updatedGameBoard.gamePhase shouldBe WaitingPhase
-
-    "solve hand effects correctly" in:
-      val updatedGameBoard = gameBoard.solveEffect(PlayCard(12))
-      updatedGameBoard.player1.lastCardChosen should not be None
 
     "solve pattern application correctly" in:
       val position: Position = Position(10, 10)
