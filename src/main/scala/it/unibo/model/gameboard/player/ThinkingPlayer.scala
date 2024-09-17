@@ -25,7 +25,10 @@ import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 
-trait ThinkingPlayer extends Player:
+trait ISendMessages:
+  protected def onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit
+
+trait ThinkingPlayer extends Player with ISendMessages:
   val botBehaviour: BotBehaviour
   val botObservable: Option[BotSubject]
   def think(model: Model): Unit
@@ -59,7 +62,7 @@ trait ThinkingPlayer extends Player:
     // val gbAfterApplication = PatternEffect.patternEffectSolver.solve(appEffect).solve(gb).gameBoard
     // controller.model.setGameBoard(gbAfterApplication)
 
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
+    onUpdateGamePhaseRequest(PhaseEffect(WaitingPhase))
 
   protected def thinkForWaitingPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForWaitingPhase")
@@ -136,8 +139,8 @@ trait ThinkingPlayer extends Player:
   protected def thinkForDecisionPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForDecisionPhase")
     if isFireTokenInTowerArea(model.getGameBoard) then
-      botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
-    else botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
+      onUpdateGamePhaseRequest(PhaseEffect(PlaySpecialCardPhase))
+    else onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
 
   protected def thinkForPlaySpecialCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForPlaySpecialCardPhase")
@@ -160,7 +163,7 @@ trait ThinkingPlayer extends Player:
           s"[BOT] My extra hand is: ${model.getGameBoard.getCurrentPlayer.extraCard.isEmpty}"
         )
       case None =>
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
+    onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
 
 object ThinkingPlayer:
   private def handleMove(lastMove: Option[Move]): (Int, Map[Position, Token]) = lastMove match
