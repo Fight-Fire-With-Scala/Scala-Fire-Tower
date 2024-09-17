@@ -4,7 +4,7 @@ import it.unibo.launcher.Launcher.ModelImpl
 import it.unibo.model.GameBoardInitializer
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.card.Card
-import it.unibo.model.effect.card.{ BucketEffect, FireEffect }
+import it.unibo.model.effect.card.{ BucketEffect, FireEffect, WaterEffect }
 import it.unibo.model.gameboard.{ Deck, GameBoard, GamePhase }
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase.*
@@ -28,18 +28,23 @@ class BotThinkSpec
   val dummyCardList: List[Card] = List(
     Card(0, FireEffect.Explosion),
     Card(1, FireEffect.Flare),
-    Card(2, FireEffect.Flare),
-    Card(3, FireEffect.Flare),
+    Card(2, WaterEffect.AirDrop),
+    Card(3, WaterEffect.FireEngine),
     Card(4, FireEffect.BurningSnag),
     Card(5, FireEffect.Explosion),
     Card(6, FireEffect.Flare),
     Card(7, FireEffect.Flare),
     Card(8, FireEffect.Flare),
-    Card(9, FireEffect.BurningSnag)
+    Card(9, FireEffect.BurningSnag),
+    Card(10, FireEffect.Explosion),
+    Card(11, FireEffect.Flare),
+    Card(12, FireEffect.Flare),
+    Card(13, FireEffect.Flare),
+    Card(14, FireEffect.BurningSnag)
   )
   val dummySpecialCardList: List[Card] = List(
-    Card(10, BucketEffect),
-    Card(11, BucketEffect)
+    Card(15, BucketEffect),
+    Card(16, BucketEffect)
   )
 
   override def beforeAll(): Unit =
