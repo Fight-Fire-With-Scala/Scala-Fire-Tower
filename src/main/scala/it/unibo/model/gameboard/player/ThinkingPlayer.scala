@@ -19,7 +19,7 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.{ ConcreteToken, Position, Token }
-import it.unibo.model.gameboard.player.ThinkingPlayer.{ filterCardsBasedOnDecision, handleMove, isFireBreakTokenInBoard, isFireTokenInTowerArea }
+import it.unibo.model.gameboard.player.ThinkingPlayer.handleMove
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
@@ -28,7 +28,7 @@ import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 trait ISendMessages:
   protected def onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit
 
-trait ThinkingPlayer extends Player with ISendMessages:
+trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
   val botBehaviour: BotBehaviour
   val botObservable: Option[BotSubject]
   def think(model: Model): Unit
@@ -115,11 +115,6 @@ trait ThinkingPlayer extends Player with ISendMessages:
       .filter(_._2.nonEmpty)
       .toMap
 
-    val filteredCards = filterCardsBasedOnDecision(hand, DecisionMaker.getAttackOrDefense)
-    val effectsPrev =
-      filteredCards.map(card => card.id -> List(ICardEffect.convert(card.effect))).toMap
-
-    logger.info(s"[BOT] Effects: $effectsPrev")
     logger.info("[BOT] Effects: " + effects)
     val botComputation = BotComputation(effects)
     val gb             = model.getGameBoard
@@ -159,9 +154,7 @@ trait ThinkingPlayer extends Player with ISendMessages:
 
         val appEffect = PatternApplication(chosenPattern)
         applyEffect(model, appEffect)
-        logger.info(
-          s"[BOT] My extra hand is: ${model.getGameBoard.getCurrentPlayer.extraCard.isEmpty}"
-        )
+
       case None =>
     onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
 
@@ -173,36 +166,3 @@ object ThinkingPlayer:
         case MoveEffect.PatternApplied(appliedPattern)   => -1     -> appliedPattern
         case _                                           => -1     -> Map.empty
     case None => -1 -> Map.empty
-
-  private def filterCardsBasedOnDecision(hand: List[Card], decision: AttackDefense): List[Card] =
-    decision match
-      case AttackDefense.Attack =>
-        hand.collect:
-          case card if card.effect.computations.exists {
-                case _: OffensiveEffect => true
-                case _                  => false
-              } =>
-            card
-      case AttackDefense.Defense =>
-        hand.collect:
-          case card if card.effect.computations.exists {
-                case _: DefensiveEffect => true
-                case _                  => false
-              } =>
-            card
-
-  private def isFireTokenInTowerArea(gb: GameBoard): Boolean =
-    val towerPositions = gb.board.grid.getTowerCells(gb.getCurrentPlayer.towerPositions)
-    towerPositions.exists(pos =>
-      gb.board.grid.getToken(pos).exists {
-        case token: ConcreteToken => token == ConcreteToken.Fire
-        case _                    => false
-      }
-    )
-
-  private def isFireBreakTokenInBoard(gb: GameBoard): Boolean =
-    val res = gb.board.grid.tokens.exists { case (_, token) =>
-      token == ConcreteToken.Firebreak
-    }
-    logger.info(s"[BOT] Firebreak token in board: $res")
-    res
