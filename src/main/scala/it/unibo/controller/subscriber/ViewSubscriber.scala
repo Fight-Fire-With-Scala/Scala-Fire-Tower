@@ -1,6 +1,7 @@
 package it.unibo.controller.subscriber
 
 import com.typesafe.scalalogging.Logger
+import it.unibo.controller.{ BotMessage, ChoseCardToPlay, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, RefreshMessage, ResolveCardReset, ResolvePatternChoice, StartGameMessage, UpdateGamePhase, UpdateWindDirection, ViewMessage }
 import it.unibo.controller.{ ChoseCardToPlay, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, RefreshMessage, ResolveCardReset, ResolvePatternChoice, StartGameMessage, UpdateGamePhase, UpdateWindDirection, ViewMessage }
 import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType
@@ -18,13 +19,14 @@ import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
-import it.unibo.model.gameboard.GamePhase.{ DecisionPhase, EndGamePhase, PlaySpecialCardPhase, PlayStandardCardPhase, WindPhase }
+import it.unibo.model.gameboard.GamePhase.{ DecisionPhase, EndGamePhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase }
 import it.unibo.model.gameboard.player.Bot
 
 /** This class is subscribed to the View updates and changes the Model accordingly */
 final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[ViewMessage]:
 
   given Conversion[Model, GameBoard] = _.getGameBoard
+  given Model                        = controller.model
 
   override val logger: Logger = Logger("View -> ViewSubscriber")
 
@@ -34,7 +36,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
       val gb = controller.model.getGameBoard
       controller.applyEffect(ef, PhaseUpdate)
       gb.getCurrentPlayer match
-        case b: Bot => b.think(controller)
+        case b: Bot => b.think
         case _      =>
 
     case UpdateWindDirection(ef: WindUpdateEffect) =>

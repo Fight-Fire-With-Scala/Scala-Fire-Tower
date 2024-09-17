@@ -56,7 +56,7 @@ If the build fails due to classes not found, try to run `sbt clean` to rebuild t
 
 * *Starting the Game*
 ** Select the gamemode, Human vs Human or Human vs Bot.
-** Player 1 has the towers X, Y, while player 2 has towers I and J.
+** Player 1 has the towers (15,0), (0,15), while player 2 has towers (0,0) and (15,15).
 ** Each player is dealt 5 cards, plus a special bucket card.
 ** The wind's starting direction is determined randomly.
 * *Objective*

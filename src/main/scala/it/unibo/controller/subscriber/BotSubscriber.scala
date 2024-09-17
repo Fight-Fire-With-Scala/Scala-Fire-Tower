@@ -14,6 +14,7 @@ import it.unibo.model.gameboard.player.Bot
 final class BotSubscriber(controller: ModelController) extends BaseSubscriber[BotMessage]:
 
   given Conversion[Model, GameBoard] = _.getGameBoard
+  given Model                        = controller.model
 
   override val logger: Logger = Logger("Bot -> BotSubscriber")
 
@@ -22,5 +23,5 @@ final class BotSubscriber(controller: ModelController) extends BaseSubscriber[Bo
       val gb = controller.model.getGameBoard
       controller.applyEffect(ef, PhaseUpdate)
       gb.getCurrentPlayer match
-        case b: Bot => b.think(controller)
+        case b: Bot => b.think
         case _      =>

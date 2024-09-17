@@ -25,10 +25,13 @@ import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 
-trait ThinkingPlayer extends Player:
+trait ISendMessages:
+  protected def onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit
+
+trait ThinkingPlayer extends Player with ISendMessages:
   val botBehaviour: BotBehaviour
   val botObservable: Option[BotSubject]
-  def think(controller: ModelController): Unit
+  def think(model: Model): Unit
 
   def applyEffect(model: Model, ef: IGameEffect): Unit =
     val newGb = model.getGameBoard.solveEffect(ef)
@@ -59,7 +62,7 @@ trait ThinkingPlayer extends Player:
     // val gbAfterApplication = PatternEffect.patternEffectSolver.solve(appEffect).solve(gb).gameBoard
     // controller.model.setGameBoard(gbAfterApplication)
 
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
+    onUpdateGamePhaseRequest(PhaseEffect(WaitingPhase))
 
   protected def thinkForWaitingPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForWaitingPhase")
@@ -74,8 +77,8 @@ trait ThinkingPlayer extends Player:
       filteredCards.exists(card => card.effect.effectId == FirebreakEffect.DeReforest.effectId)
 
     if filteredCards.isEmpty || (containsDeReforest && !isFireBreakTokenInBoard(gb)) then
-      botObservable.get.onNext(UpdateGamePhase(PhaseEffect(RedrawCardsPhase)))
-    else botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
+      onUpdateGamePhaseRequest(PhaseEffect(RedrawCardsPhase))
+    else onUpdateGamePhaseRequest(PhaseEffect(PlayStandardCardPhase))
 
   protected def thinkForRedrawCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForRedrawCardPhase")
@@ -88,7 +91,7 @@ trait ThinkingPlayer extends Player:
     model.setGameBoard(newGb)
     logger.info(s"[BOT] My hand is: ${newGb.getCurrentPlayer.hand}")
 
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
+    onUpdateGamePhaseRequest(PhaseEffect(DecisionPhase))
 
   protected def thinkForPlayStandardCardPhase(using model: Model): Unit =
     logger.info(s"[BOT] My hand is: $hand")
@@ -131,13 +134,13 @@ trait ThinkingPlayer extends Player:
     applyEffect(model, appEffect)
     logger.info(s"[BOT] My hand is: ${model.getGameBoard.getCurrentPlayer.hand}")
 
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
+    onUpdateGamePhaseRequest(PhaseEffect(DecisionPhase))
 
   protected def thinkForDecisionPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForDecisionPhase")
     if isFireTokenInTowerArea(model.getGameBoard) then
-      botObservable.get.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
-    else botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
+      onUpdateGamePhaseRequest(PhaseEffect(PlaySpecialCardPhase))
+    else onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
 
   protected def thinkForPlaySpecialCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForPlaySpecialCardPhase")
@@ -160,7 +163,7 @@ trait ThinkingPlayer extends Player:
           s"[BOT] My extra hand is: ${model.getGameBoard.getCurrentPlayer.extraCard.isEmpty}"
         )
       case None =>
-    botObservable.get.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
+    onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
 
 object ThinkingPlayer:
   private def handleMove(lastMove: Option[Move]): (Int, Map[Position, Token]) = lastMove match
