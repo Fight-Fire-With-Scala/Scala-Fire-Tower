@@ -1,10 +1,10 @@
 package it.unibo.controller.subscriber
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.{BotMessage, ChoseCardToPlay, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, RefreshMessage, ResolveCardReset, ResolvePatternChoice, StartGameMessage, UpdateGamePhase, UpdateWindDirection, ViewMessage}
+import it.unibo.controller.{ BotMessage, ChoseCardToPlay, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, RefreshMessage, ResolveCardReset, ResolvePatternChoice, StartGameMessage, UpdateGamePhase, UpdateWindDirection, ViewMessage }
 import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType
-import it.unibo.controller.view.RefreshType.{CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate}
+import it.unibo.controller.view.RefreshType.{ CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate }
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.effect.card.WindUpdateEffect
 import it.unibo.model.effect.hand.HandEffect
@@ -20,7 +20,7 @@ import it.unibo.model.gameboard.GameBoardConfig
 import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsBot
 import it.unibo.model.gameboard.GameBoardConfig.GameMode.HumanVsHuman
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
-import it.unibo.model.gameboard.GamePhase.{DecisionPhase, EndGamePhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase}
+import it.unibo.model.gameboard.GamePhase.{ DecisionPhase, EndGamePhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase }
 import it.unibo.model.gameboard.player.Bot
 import monix.reactive.subjects.PublishSubject
 
@@ -28,6 +28,7 @@ import monix.reactive.subjects.PublishSubject
 final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[ViewMessage]:
 
   given Conversion[Model, GameBoard] = _.getGameBoard
+  given Model                        = controller.model
 
   override val logger: Logger = Logger("View -> ViewSubscriber")
 
@@ -37,7 +38,7 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
       val gb = controller.model.getGameBoard
       controller.applyEffect(ef, PhaseUpdate)
       gb.getCurrentPlayer match
-        case b: Bot => b.think(controller)
+        case b: Bot => b.think
         case _      =>
 
     case UpdateWindDirection(ef: WindUpdateEffect) => controller.applyEffect(ef, WindUpdate)
@@ -52,14 +53,16 @@ final class ViewSubscriber(controller: ModelController) extends BaseSubscriber[V
       controller.model.getGameBoard.isGameEnded match
         case Some(_) =>
           controller.applyEffect(PhaseEffect(EndGamePhase), PhaseUpdate)
-          controller.modelObserver.onNext(RefreshMessage(controller.model.getGameBoard, EndGameUpdate))
+          controller.modelObserver.onNext(
+            RefreshMessage(controller.model.getGameBoard, EndGameUpdate)
+          )
         case None =>
           controller.model.getGameBoard.gamePhase match
-          case WindPhase =>
-            controller.applyEffect(PhaseEffect(WaitingPhase), PhaseUpdate)
-          case PlayStandardCardPhase | PlaySpecialCardPhase =>
-            controller.applyEffect(PhaseEffect(DecisionPhase), PhaseUpdate)
-          case _ =>
+            case WindPhase =>
+              controller.applyEffect(PhaseEffect(WaitingPhase), PhaseUpdate)
+            case PlayStandardCardPhase | PlaySpecialCardPhase =>
+              controller.applyEffect(PhaseEffect(DecisionPhase), PhaseUpdate)
+            case _ =>
 
     case ResolveCardReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)
 
