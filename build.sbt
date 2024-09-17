@@ -64,7 +64,7 @@ Asciidoctor / siteSubdirName := "asciidoc"
 
 enablePlugins(GhpagesPlugin)
 
-git.remoteRepo := "git@github.com:Fight-Fire-With-Scala/Scala-Fire-Tower.git"
+//git.remoteRepo := "git@github.com:Fight-Fire-With-Scala/Scala-Fire-Tower.git"
 
 assembly / assemblyMergeStrategy := {
   case PathList("META-INF", _*) => MergeStrategy.discard
