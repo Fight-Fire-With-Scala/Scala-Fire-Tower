@@ -6,7 +6,9 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-image:https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=[link=https://scala-steward.org]
+image:https://img.shields.io/badge/Scala_Steward-helping-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAMAAAARSr4IAAAAVFBMVEUAAACHjojlOy5NWlrKzcYRKjGFjIbp293YycuLa3pYY2LSqql4f3pCUFTgSjNodYRmcXUsPD/NTTbjRS+2jomhgnzNc223cGvZS0HaSD0XLjbaSjElhIr+AAAAAXRSTlMAQObYZgAAAHlJREFUCNdNyosOwyAIhWHAQS1Vt7a77/3fcxxdmv0xwmckutAR1nkm4ggbyEcg/wWmlGLDAA3oL50xi6fk5ffZ3E2E3QfZDCcCN2YtbEWZt+Drc6u6rlqv7Uk0LdKqqr5rk2UCRXOk0vmQKGfc94nOJyQjouF9H/wCc9gECEYfONoAAAAASUVORK5CYII=[link=https://scala-steward.org] image:https://github.com/Fight-Fire-With-Scala/Scala-Fire-Tower/actions/workflows/scala-steward.yml/badge.svg[Test] image:https://github.com/Fight-Fire-With-Scala/Scala-Fire-Tower/actions/workflows/test-main.yml/badge.svg[Test] image:https://github.com/Fight-Fire-With-Scala/Scala-Fire-Tower/actions/workflows/tagged-release.yml/badge.svg[Release]
+
+
 
 Scala Fire Tower is a competitive board game where players manage fire watchtowers, attempting to protect their tower from spreading forest fires while directing the flames toward their opponents' towers. Players utilize resources like firefighters, water, and firebreaks to control the fire's spread. The fire's direction is influenced by the wind, and players can change the wind direction using action cards. The goal is to eliminate opponents by burning down their towers. The game can be played by 1-2 players and typically lasts 15 minutes.
 
