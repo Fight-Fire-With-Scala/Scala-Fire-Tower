@@ -3,7 +3,6 @@ package it.unibo.view.component.game.gameboard.grid
 import scala.collection.mutable
 import scala.compiletime.uninitialized
 
-import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ViewSubject
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase

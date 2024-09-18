@@ -8,7 +8,7 @@ import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.player.{Person, PlayerManager}
+import it.unibo.model.gameboard.player.{ Person, PlayerManager }
 import it.unibo.model.gameboard.player.Player
 
 trait PhaseManager extends PlayerManager:

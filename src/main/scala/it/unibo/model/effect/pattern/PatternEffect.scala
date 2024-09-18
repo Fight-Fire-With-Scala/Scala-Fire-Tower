@@ -13,7 +13,7 @@ import it.unibo.model.logger
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)
   case CardComputation(cardId: Int, logicEffect: ILogicEffect)
-  case BotComputation(cards: Map[Int, List[ILogicEffect]])
+  case BotComputation(cards: Map[Option[Int], List[ILogicEffect]])
   case PatternApplication(pattern: Map[Position, Token])
   case ResetPatternComputation
 
@@ -21,10 +21,10 @@ object PatternEffect extends CardManager with PlayerManager with LogicSolverMana
   private def solvePatternComputation(logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                = gbe.gameBoard
-      val availablePatterns = computePatterns(gb, -1, logicEffect)
+      val availablePatterns = computePatterns(gb, None, logicEffect)
       logPatternChosen(gb, availablePatterns)
 
-  private def solveCardsComputation(cards: Map[Int, List[ILogicEffect]]) =
+  private def solveCardsComputation(cards: Map[Option[Int], List[ILogicEffect]]) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                      = gbe.gameBoard
       val (cardId, chosenPattern) = computePatterns(gb, cards)
@@ -36,7 +36,7 @@ object PatternEffect extends CardManager with PlayerManager with LogicSolverMana
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                = gbe.gameBoard
       val currentPlayer     = gb.getCurrentPlayer
-      val availablePatterns = computePatterns(gb, cardId, logicEffect)
+      val availablePatterns = computePatterns(gb, Some(cardId), logicEffect)
       val cardOpt           = currentPlayer.hand.find(_.id == cardId)
       cardOpt match
         case Some(card) =>

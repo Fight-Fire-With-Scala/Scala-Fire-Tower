@@ -5,7 +5,7 @@ import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.effect.card.FireEffect
 import it.unibo.model.effect.card.WaterEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{DecisionPhase, PlaySpecialCardPhase, PlayStandardCardPhase, WindPhase}
+import it.unibo.model.gameboard.GamePhase.{ PlaySpecialCardPhase, PlayStandardCardPhase, WindPhase }
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.gameboard.grid.Position

@@ -11,7 +11,7 @@ sealed trait PatternType:
   val tokens: Map[String, Token]
   val template: Map[Position, Token]
 
-  def compilePattern: Map[Position, Token] = PatternType.fillPattern(template, tokens)
+  private def compilePattern: Map[Position, Token] = PatternType.fillPattern(template, tokens)
 
 object PatternType:
   given Conversion[PatternType, Map[Position, Token]] = _.compilePattern

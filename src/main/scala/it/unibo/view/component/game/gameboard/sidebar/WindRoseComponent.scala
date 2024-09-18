@@ -23,7 +23,6 @@ import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
-import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class WindRoseComponent(using observable: ViewSubject)
@@ -62,7 +61,7 @@ final class WindRoseComponent(using observable: ViewSubject)
     runOnUIThread(windRoseArrow.updateDirection(direction))
 
   def onWindDirectionRequest(direction: Direction): Unit = windRosePanes
-    .filter((dir, pane) => dir == direction)
+    .filter((dir, _) => dir == direction)
     .foreach((dir, pane) =>
       pane.addEventHandler(MouseEvent.MOUSE_CLICKED, windRoseEventHandler(dir))
     )
@@ -82,12 +81,10 @@ final class WindRoseComponent(using observable: ViewSubject)
 
   override def onEnableView(): Unit =
     super.onEnableView()
-    logger.info(s"[ACTIVATION] Enabled ${this.getClass.getSimpleName}")
     windRoseArrow.enableView()
-    windRosePanes.foreach((dir, pane) => windRoseDirections(dir).enableView())
+    windRosePanes.foreach((dir, _) => windRoseDirections(dir).enableView())
 
   override def onDisableView(): Unit =
-    logger.info(s"[ACTIVATION] Disabled ${this.getClass.getSimpleName}")
     super.onDisableView()
     windRoseArrow.disableView()
     windRosePanes.foreach((dir, pane) =>

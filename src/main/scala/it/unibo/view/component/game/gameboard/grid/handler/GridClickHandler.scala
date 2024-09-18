@@ -8,9 +8,8 @@ import it.unibo.model.effect.card.FirebreakEffect
 import it.unibo.model.effect.card.WaterEffect
 import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
-import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.model.gameboard.GamePhase.{ DecisionPhase, PlaySpecialCardPhase, PlayStandardCardPhase, WaitingPhase, WindPhase }
+import it.unibo.model.gameboard.GamePhase.{ PlaySpecialCardPhase, PlayStandardCardPhase, WindPhase }
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.gameboard.grid.Position

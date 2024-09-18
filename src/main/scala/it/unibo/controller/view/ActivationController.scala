@@ -39,6 +39,15 @@ trait ActivationController extends GameController:
       case c: WindRoseComponent => c.disableView()
       case c: GameInfoComponent => c.enableView()
 
+  private def disableBicolumnComponent(component: GameComponent): Unit =
+    component.sidebarComponent.components.foreach:
+      case c: BicolumnPaneComponent =>
+        c.rightComponent match
+          case c: DiceComponent => c.disableView()
+        c.leftComponent match
+          case c: DeckComponent => c.disableView()
+      case _ =>
+
   def updateGamePhaseActivation(choice: GamePhase): Unit = choice match
     case WaitingPhase | RedrawCardsPhase =>
       gameComponent.foreach: component =>
@@ -68,6 +77,7 @@ trait ActivationController extends GameController:
 
     case WindPhase =>
       gameComponent.foreach: component =>
+        disableBicolumnComponent(component)
         component.gridComponent.enableView()
         component.handComponent.disableView()
         component.sidebarComponent.components
@@ -75,13 +85,10 @@ trait ActivationController extends GameController:
             case c: GameInfoComponent => c.disableView()
             case c: WindRoseComponent => c.disableView()
             case c: BicolumnPaneComponent =>
-              c.rightComponent match
-                case c: DiceComponent => c.disableView()
-              c.leftComponent match
-                case c: DeckComponent => c.disableView()
 
     case PlaySpecialCardPhase =>
       gameComponent.foreach: component =>
+        disableBicolumnComponent(component)
         component.gridComponent.enableView()
         component.handComponent.enableView()
         component.handComponent.handleSpecialCardComponents(choice)
@@ -90,20 +97,13 @@ trait ActivationController extends GameController:
             case c: WindRoseComponent => c.disableView()
             case c: GameInfoComponent => c.enableView()
             case c: BicolumnPaneComponent =>
-              c.rightComponent match
-                case c: DiceComponent => c.disableView()
-              c.leftComponent match
-                case c: DeckComponent => c.disableView()
 
     case _ =>
       gameComponent.foreach: component =>
+        disableBicolumnComponent(component)
         component.gridComponent.disableView()
         component.handComponent.disableView()
         component.sidebarComponent.components.foreach:
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
           case c: BicolumnPaneComponent =>
-            c.rightComponent match
-              case c: DiceComponent => c.disableView()
-            c.leftComponent match
-              case c: DeckComponent => c.disableView()

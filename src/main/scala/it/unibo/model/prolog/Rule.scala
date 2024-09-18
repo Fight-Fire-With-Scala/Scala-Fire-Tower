@@ -8,5 +8,11 @@ import it.unibo.model.prolog.PrologUtils.given_Conversion_Int_Term
 final case class Rule(term: Struct)
 
 object Rule:
-  def apply(ruleName: String): (Int, Int) => Rule =
-    (cardId, compId) => Rule(Struct.of(ruleName, Var.anonymous(), cardId, compId))
+  def apply(ruleName: String): (Option[Int], Option[Int]) => Rule =
+    (cardId, compId) =>
+      cardId match
+        case Some(id) =>
+          compId match
+            case Some(cId) => Rule(Struct.of(ruleName, Var.anonymous(), id, cId))
+            case None      => Rule(Struct.of(ruleName, Var.anonymous(), id, Var.anonymous()))
+        case None => Rule(Struct.of(ruleName, Var.anonymous(), Var.underscore(), Var.underscore()))

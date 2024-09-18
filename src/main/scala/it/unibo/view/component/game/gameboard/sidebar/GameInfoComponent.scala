@@ -1,13 +1,12 @@
 package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
-import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.EndTurnPhase
-import it.unibo.view.{ logger, GUIType }
+import it.unibo.view.GUIType
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import javafx.event.EventHandler
@@ -19,10 +18,8 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 
 //noinspection VarCouldBeVal
-final class GameInfoComponent(using
-    observable: ViewSubject,
-    internalObservable: InternalViewSubject
-) extends ISidebarComponent
+final class GameInfoComponent(using observable: ViewSubject)
+    extends ISidebarComponent
     with IUpdateView:
   override val fxmlPath: String = GUIType.GameInfo.fxmlPath
 
@@ -55,10 +52,8 @@ final class GameInfoComponent(using
 
   override def onEnableView(): Unit =
     super.onEnableView()
-    logger.info(s"[ACTIVATION] Enabled ${this.getClass.getSimpleName}")
     endTurnButton.addEventHandler(MouseEvent.MOUSE_CLICKED, endTurnButtonEventHandler)
 
   override def onDisableView(): Unit =
     super.onDisableView()
-    logger.info(s"[ACTIVATION] Disabled ${this.getClass.getSimpleName}")
     endTurnButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, endTurnButtonEventHandler)

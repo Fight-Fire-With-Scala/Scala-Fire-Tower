@@ -2,7 +2,6 @@ package it.unibo.view.component.game.gameboard.grid.handler
 
 import scala.collection.mutable
 
-import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.grid.Position

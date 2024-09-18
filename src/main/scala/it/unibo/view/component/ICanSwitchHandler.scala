@@ -51,7 +51,7 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
     val handlers      = eventHandlers.getOrElse(eventType, List())
     stateHandlers += (state -> (eventHandlers + (eventType -> (handler :: handlers))))
 
-  def removeHandler(
+  private def removeHandler(
       state: T,
       eventType: EventType[MouseEvent],
       handler: EventHandler[MouseEvent]

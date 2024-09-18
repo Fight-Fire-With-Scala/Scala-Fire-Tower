@@ -47,7 +47,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     val direction   = gb.board.windDirection
     val logicEffect = WindEffect.windEffectSolver.solve(direction)
     DecisionMaker.setObjectiveTower(gb.getOpponent.towerPositions.map(_.position))
-    val effect = BotComputation(Map(-1 -> List(logicEffect)))
+    val effect = BotComputation(Map(None -> List(logicEffect)))
     handleMoveAndApplyEffect(model, effect)
     onUpdateGamePhaseRequest(PhaseEffect(WaitingPhase))
 
@@ -64,12 +64,14 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
 
   protected def thinkForRedrawCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForRedrawCardPhase")
+    logger.info(s"[BOT] hand before: $hand")
     val numberOfCardsToDraw = hand.length
     val discardCardEffect   = HandEffect.DiscardCard(hand.map(_.id))
     val drawCardEffect      = HandEffect.DrawCard(numberOfCardsToDraw)
     val gb                  = model.getGameBoard
     val newGb               = gb.solveEffect(discardCardEffect).solveEffect(drawCardEffect)
     model.setGameBoard(newGb)
+    logger.info(s"[BOT] hand after: $hand")
     onUpdateGamePhaseRequest(PhaseEffect(DecisionPhase))
 
   protected def thinkForPlayStandardCardPhase(using model: Model): Unit =
@@ -87,7 +89,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
               SingleStepEffect(List(e)).asInstanceOf[ILogicEffect]
             }
         }
-        card.id -> filteredComputations
+        Option(card.id) -> filteredComputations
       }
       .filter(_._2.nonEmpty)
       .toMap
@@ -106,7 +108,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     extraCard match
       case Some(card) =>
         val gb      = model.getGameBoard
-        val effects = Map(card.id -> List(ICardEffect.convert(card.effect)))
+        val effects = Map(Option(card.id) -> List(ICardEffect.convert(card.effect)))
         DecisionMaker.setObjectiveTower(gb.getCurrentPlayer.towerPositions.map(_.position))
         val botComputation = BotComputation(effects)
         handleMoveAndApplyEffect(model, botComputation)

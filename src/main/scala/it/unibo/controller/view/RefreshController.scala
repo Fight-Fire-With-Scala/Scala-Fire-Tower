@@ -26,7 +26,7 @@ trait RefreshController extends ActivationController:
     given c: GameComponent = component
     given gb: GameBoard    = gameBoard
 
-    logger.info(s"[REFRESH] Type: $refreshType")
+    logger.debug(s"[REFRESH] Type: $refreshType")
 
     refreshType match
       case RefreshType.PatternChosen => // updateMove(_.lastPatternChosen)
@@ -53,10 +53,10 @@ trait RefreshController extends ActivationController:
       case _                    =>
 
   private def updatePhase(using c: GameComponent, gb: GameBoard): Unit =
-    logger.info(s"[REFRESH] New Phase: ${gb.gamePhase}")
+    logger.debug(s"[REFRESH] New Phase: ${gb.gamePhase}")
     val currentGamePhase = gb.gamePhase
     gb.getCurrentPlayer match
-      case b: Bot    => c.disableView() // TODO why not everything is disabled?
+      case b: Bot    => //c.disableView()
       case p: Person => updateGamePhaseActivation(currentGamePhase)
       case _         =>
 

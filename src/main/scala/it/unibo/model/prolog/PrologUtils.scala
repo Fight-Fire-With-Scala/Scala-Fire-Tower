@@ -22,6 +22,9 @@ object PrologUtils:
   given Conversion[Token, Term]        = (token: Token) => Term.createTerm(token.id)
   given Conversion[SolverType, Theory] = t => t.getTheory(t.prologSourcePath)
 
+  
+  val defaultId = "1"
+  
   extension (g: Grid) def size: Int = math.sqrt(g.cells.size).toInt
 
   given Ordering[Struct] with
@@ -55,7 +58,6 @@ object PrologUtils:
         if positionsAndTokensMap.isEmpty then None -> positionsAndTokensMap
         else
           val cardId = solutionAsStruct.getArg(1).toString.toInt
-
           Some(cardId) -> positionsAndTokensMap
       case _ => None -> Map.empty
 

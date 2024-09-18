@@ -9,7 +9,7 @@ import it.unibo.controller.UpdateGamePhase
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
-import it.unibo.view.{ logger, GUIType }
+import it.unibo.view.GUIType
 import it.unibo.view.component.ISidebarComponent
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -75,12 +75,10 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
 
   override protected def onEnableView(): Unit =
     super.onEnableView()
-    logger.info(s"[ACTIVATION] Enabled ${this.getClass.getSimpleName}")
     addHandlers()
 
   override protected def onDisableView(): Unit =
     super.onDisableView()
-    logger.info(s"[ACTIVATION] Disabled ${this.getClass.getSimpleName}")
     okButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, okButtonEventHandler)
     cancelButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, cancelButtonEventHandler)
     discardButton.removeEventHandler(MouseEvent.MOUSE_CLICKED, discardButtonEventHandler)

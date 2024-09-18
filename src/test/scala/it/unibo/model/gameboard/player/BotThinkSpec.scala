@@ -91,7 +91,6 @@ class BotThinkSpec
       val prevHand = bot.hand
       val newGb    = prevGb.copy(board = boardWithTokens)
       m.setGameBoard(newGb)
-      println(bot.hand)
       bot.think
 
       m.getGameBoard.getCurrentPlayer.hand should not be prevHand

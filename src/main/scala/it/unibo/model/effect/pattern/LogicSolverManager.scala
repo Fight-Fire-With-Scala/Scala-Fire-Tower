@@ -18,7 +18,7 @@ import it.unibo.model.prolog.decisionmaking.{ AllCardsResultTheory, DecisionMake
 trait LogicSolverManager:
   protected def computePatterns(
       gb: GameBoard,
-      cardId: Int,
+      cardId: Option[Int],
       logicEffect: ILogicEffect
   ): Set[Map[Position, Token]] =
     val theory = GridTheory(gb.board.grid, Map(cardId -> List(logicEffect)))
@@ -27,12 +27,12 @@ trait LogicSolverManager:
 
     val engine = PrologEngine(theory)
     logicEffect.computations.zipWithIndex
-      .map((c, idx) => engine.solveAsPatterns(c.goal(cardId, idx)))
+      .map((c, idx) => engine.solveAsPatterns(c.goal(cardId, Some(idx))))
       .reduce((a, b) => a.union(b))
 
   protected def computePatterns(
       gb: GameBoard,
-      cards: Map[Int, List[ILogicEffect]]
+      cards: Map[Option[Int], List[ILogicEffect]]
   ): (Option[Int], Map[Position, Token]) =
 
     val grid          = gb.board.grid

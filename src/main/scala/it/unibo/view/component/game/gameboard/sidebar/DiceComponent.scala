@@ -11,7 +11,7 @@ import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
-import it.unibo.view.{ logger, GUIType }
+import it.unibo.view.GUIType
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import it.unibo.view.component.game.gameboard.sidebar.svg.DiceFace
@@ -45,13 +45,11 @@ final class DiceComponent(using observable: ViewSubject) extends ISidebarCompone
 
   override def onEnableView(): Unit =
     super.onEnableView()
-    logger.info(s"[ACTIVATION] Enabled ${this.getClass.getSimpleName}")
     diceFace.svgPath.setOpacity(0.9)
     dicePane.addEventHandler(MouseEvent.MOUSE_CLICKED, diceEventHandler)
 
   override def onDisableView(): Unit =
     super.onDisableView()
-    logger.info(s"[ACTIVATION] Disabled ${this.getClass.getSimpleName}")
     diceFace.svgPath.setOpacity(0.7)
     dicePane.removeEventHandler(MouseEvent.MOUSE_CLICKED, diceEventHandler)
 

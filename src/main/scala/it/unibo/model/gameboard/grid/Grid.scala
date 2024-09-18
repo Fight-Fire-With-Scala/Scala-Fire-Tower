@@ -52,17 +52,17 @@ final case class BasicGrid(
   override def cells: Map[Position, Cell]   = this._cells
   override def tokens: Map[Position, Token] = this._tokens
 
-  override def setToken(position: Position, token: Token): Grid = 
+  override def setToken(position: Position, token: Token): Grid =
     require(isValidPosition(position), s"Invalid position: $position")
     getCell(position) match
-    case Some(_: EternalFire.type) => this
-    case Some(_: Woods.type)       => handleTokenForWoodsAndTower(position, token)
-    case Some(_: Tower.type)       => handleTokenForWoodsAndTower(position, token)
-    case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
+      case Some(_: EternalFire.type) => this
+      case Some(_: Woods.type)       => handleTokenForWoodsAndTower(position, token)
+      case Some(_: Tower.type)       => handleTokenForWoodsAndTower(position, token)
+      case _                         => BasicGrid(this._cells, this._tokens + (position -> token))
 
   private def isValidPosition(position: Position): Boolean =
     position.row >= 0 && position.row < Grid.Size && position.col >= 0 && position.col < Grid.Size
-  
+
   private def handleTokenForWoodsAndTower(position: Position, token: Token): Grid = getToken(
     position
   ) match

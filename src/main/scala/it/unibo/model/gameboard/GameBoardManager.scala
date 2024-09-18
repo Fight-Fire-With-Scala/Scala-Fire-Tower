@@ -2,7 +2,7 @@ package it.unibo.model.gameboard
 
 import it.unibo.model.effect.{ card, GameBoardEffect }
 import it.unibo.model.effect.card.WindUpdateEffect
-import it.unibo.model.effect.card.WindUpdateEffect.{ windChoiceSolver, RandomUpdateWind, UpdateWind }
+import it.unibo.model.effect.card.WindUpdateEffect.windChoiceSolver
 import it.unibo.model.effect.core.GameBoardEffectSolver
 import it.unibo.model.effect.core.IGameEffect
 import it.unibo.model.effect.core.PatternEffectSolver

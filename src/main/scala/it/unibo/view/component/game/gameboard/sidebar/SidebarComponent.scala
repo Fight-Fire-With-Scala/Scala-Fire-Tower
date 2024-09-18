@@ -1,7 +1,7 @@
 package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
-import it.unibo.view.{ logger, GUIType }
+import it.unibo.view.GUIType
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import javafx.fxml.FXML
@@ -27,11 +27,9 @@ final class SidebarComponent(val components: List[ISidebarComponent])
     enableView()
 
   override def onEnableView(): Unit =
-    logger.info(s"[ACTIVATION] Enabled ${this.getClass.getSimpleName}")
     components.foreach(c => c.enableView())
 
   override def onDisableView(): Unit =
-    logger.info(s"[ACTIVATION] Disabled ${this.getClass.getSimpleName}")
     components.foreach(c => c.disableView())
 
   override protected def getPane: Node = sidebarPane
