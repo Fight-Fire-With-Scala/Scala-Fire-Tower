@@ -26,14 +26,7 @@ class GridHoverHandler(using _squareMap: mutable.Map[Position, GridSquare], grid
 
     gamePhase match
       case WindPhase => hoverForAvailablePatterns(position)
-      case PlayStandardCardPhase =>
-        if gridState.fixedCell.nonEmpty then hoverForFixedCell(position, hoverDirection)
-        else hoverForAvailablePatterns(position)
-      case PlaySpecialCardPhase =>
-        gridState.availablePatterns = Set.empty
-        gridState.availablePatternsClickFixed = Set.empty
-        gridState.availablePatternsClickHovered = Set.empty
-
+      case PlayStandardCardPhase | PlaySpecialCardPhase =>
         if gridState.fixedCell.nonEmpty then hoverForFixedCell(position, hoverDirection)
         else hoverForAvailablePatterns(position)
       case _ =>

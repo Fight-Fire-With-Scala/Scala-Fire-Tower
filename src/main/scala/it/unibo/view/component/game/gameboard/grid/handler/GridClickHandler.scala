@@ -21,6 +21,7 @@ import it.unibo.view.logger
 class GridClickHandler(
     observableSubject: ViewSubject
 )(using _squareMap: mutable.Map[Position, GridSquare], gridState: GridState):
+
   def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit =
     val position = Position(row, col)
     gamePhase match
@@ -89,5 +90,6 @@ class GridClickHandler(
     gridState.availablePatternsClickFixed = gridState.availablePatterns
 
   private def placePattern(pattern: Map[Position, Token]): Unit =
-    observableSubject.onNext(ResolvePatternChoiceMessage(PatternApplication(pattern)))
     gridState.hoveredCells.clear()
+    gridState.availablePatterns = Set.empty
+    observableSubject.onNext(ResolvePatternChoiceMessage(PatternApplication(pattern)))
