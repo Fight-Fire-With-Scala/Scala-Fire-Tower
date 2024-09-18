@@ -1,0 +1,6 @@
+La classe MenuComponent è un componente della View che gestisca l'interfaccia utente
+del menu di gioco.
+
+È responsabile di inizializzare e gestire i vari elementi dell'interfaccia utente.
+Raccoglie i dati dell'utente mandando poi un messaggio di inizializzazione al tabellone di gioco
+tramite l'observable collegato alla View.

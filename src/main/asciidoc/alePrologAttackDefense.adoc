@@ -3,6 +3,16 @@ per determinare quale sia la strategia migliore per il bot da adottare in base a
 della griglia di gioco.
 A questo scopo, trova la torre più vicina al fuoco, utilizzando la distanza di Manhattan.
 
+La teoria prolog che viene costruita su Scala è la AttackDefenseTheory e contiene i seguenti elementi:
+- la griglia di gioco
+- il set delle posizioni torre del giocatore
+- il set delle posizioni torre dell'avversario
+- il botBehaviour, cioè un oggetto che rappresenta il comportamento del bot tramite il Bias
+
+Allo scopo di ottenere le celle della griglia di gioco, viene utilizzato il trait GridCellsProvider.
+La teoria ottiene gli iteratori delle celle di gioco e gli iteratori delle posizioni delle torri, combinandoli poi in un iteratore unico.
+Dopo di chè viene aggiunta anche la variabile di bias e i solver necessari al calcolo.
+
 L'algoritmo è integrato con Scala per delineare poi la strategia.
 Definirò ora le parti cruciali del codice prolog che consentono di eseguire questo calcolo:
 
