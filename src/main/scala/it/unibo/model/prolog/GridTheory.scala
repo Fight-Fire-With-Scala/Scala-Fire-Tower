@@ -16,7 +16,7 @@ final case class GridTheory(
     private val patternsToCompute: Map[Int, List[ILogicEffect]]
 )
 
-object GridTheory:
+object GridTheory extends GridCellsProvider:
   given Conversion[ILogicEffect, List[ILogicEffect]] = List(_)
 
   def apply(grid: Grid, patternsToCompute: Map[Int, List[ILogicEffect]]): Theory =
@@ -27,24 +27,6 @@ object GridTheory:
     val allIterators      = cellIterator ++ patternIterator ++ directionIterator ++ deltaIterator
 
     Theory.fromPrologList(Struct.list(allIterators.toList.asJava))
-
-  private def getCells(grid: Grid): Iterator[Term] =
-    val cells = grid.cells.iterator
-      .map { case (pos, cell) =>
-        Struct.of("cell", Struct.tuple(pos._1, pos._2), cell)
-      }
-      .toSeq
-      .sorted
-      .iterator
-
-    val tokens = grid.tokens.iterator.map { case (pos, token) =>
-      Struct.of("token", Struct.tuple(pos._1, pos._2), token)
-    }
-
-    val numRows = Iterator.single(Struct.of("numRows", grid.size))
-    val numCols = Iterator.single(Struct.of("numCols", grid.size))
-
-    cells ++ tokens ++ numRows ++ numCols
 
   private def getPatterns(patternsToCompute: Map[Int, List[ILogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
