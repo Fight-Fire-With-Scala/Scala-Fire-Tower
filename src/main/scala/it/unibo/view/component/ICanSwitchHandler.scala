@@ -14,8 +14,6 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
   private var stateHandlers: Map[T, Map[EventType[MouseEvent], List[EventHandler[MouseEvent]]]] =
     Map()
 
-  protected def applyState(state: T): Unit
-
   private def updateHandlers(
       state: T,
       action: (EventType[MouseEvent], EventHandler[MouseEvent]) => Unit
@@ -66,7 +64,6 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
   override def switch(toState: T): Unit =
     stateHandlers.find(_._1 == toState) match
       case Some((state, _)) =>
-        applyState(state)
         onSwitch(state)
         currentState = state
       case None =>

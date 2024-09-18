@@ -52,7 +52,6 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
         cardComponent.setCard(card)
         cardComponent.switch(gamePhase)
       }
-      cardToPlay.foreach(_.highlightManager.switch(Some(CardHighlightState.Highlighted)))
 
   def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 
@@ -78,22 +77,32 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
 
   def cardToPlay_=(cardId: Int): Unit =
     val cardComponent = cardComponents.find(_.cardId == cardId.toString)
-    cardComponent.get.highlightManager.switch()
-    if cardToPlay == cardComponent then
-      cardToPlay = None
-      observable.onNext(ResolveCardResetMessage())
-      if !cardComponent.get.containSpecialCard then
-        observable.onNext(UpdateGamePhaseMessage(PhaseEffect(WaitingPhase)))
-    else
-      cardToPlay match
-        case Some(component) =>
-          component.highlightManager
-            .switch(Some(CardHighlightState.Unhighlighted))
-        case None =>
-      cardToPlay = cardComponent
-      observable.onNext(ChoseCardToPlayMessage(PlayCard(cardId)))
-      if !cardComponent.get.containSpecialCard then
-        observable.onNext(UpdateGamePhaseMessage(PhaseEffect(PlayStandardCardPhase)))
+    cardComponent match
+      case Some(component) =>
+        cardToPlay match
+          case Some(card) =>
+            if card == component then
+              cardToPlay = None
+              component.highlightManager.switch(Some(CardHighlightState.Unhighlighted))
+              observable.onNext(ResolveCardResetMessage())
+              if !component.containSpecialCard then
+                observable.onNext(UpdateGamePhaseMessage(PhaseEffect(WaitingPhase)))
+            else
+              card.iWasSelected = false
+              component.highlightManager.switch(Some(CardHighlightState.Highlighted))
+              card.highlightManager.switch(Some(CardHighlightState.Unhighlighted))
+              observable.onNext(ResolveCardResetMessage())
+              cardToPlay = Some(component)
+              observable.onNext(ChoseCardToPlayMessage(PlayCard(cardId)))
+              if !component.containSpecialCard then
+                observable.onNext(UpdateGamePhaseMessage(PhaseEffect(PlayStandardCardPhase)))
+          case None =>
+            cardToPlay = Some(component)
+            component.highlightManager.switch(Some(CardHighlightState.Highlighted))
+            observable.onNext(ChoseCardToPlayMessage(PlayCard(cardId)))
+            if !component.containSpecialCard then
+              observable.onNext(UpdateGamePhaseMessage(PhaseEffect(PlayStandardCardPhase)))
+      case None =>
 
   override def onEnableView(): Unit =
     super.onEnableView()
