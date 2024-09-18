@@ -8,10 +8,10 @@ import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_List_SingleS
 import it.unibo.model.prolog.Rule
 
 enum FireEffect(override val effectId: Int) extends IStandardCardEffect:
-  case Explosion extends FireEffect(0)
-  case Flare extends FireEffect(1)
-  case BurningSnag extends FireEffect(2)
-  case Ember extends FireEffect(3)
+  case Explosion extends FireEffect(1)
+  case Flare extends FireEffect(2)
+  case BurningSnag extends FireEffect(3)
+  case Ember extends FireEffect(4)
 
 object FireEffect:
   val fireEffectSolver: LogicEffectSolver[FireEffect] = LogicEffectSolver:

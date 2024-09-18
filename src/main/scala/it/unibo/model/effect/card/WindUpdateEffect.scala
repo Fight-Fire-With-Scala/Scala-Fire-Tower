@@ -5,6 +5,7 @@ import it.unibo.model.effect.MoveEffect.runIfLastMoveFound
 import it.unibo.model.effect.core.GameBoardEffectSolver
 import it.unibo.model.effect.core.GameEffectSolver
 import it.unibo.model.effect.core.IGameChoiceEffect
+import it.unibo.model.effect.hand.HandManager
 import it.unibo.model.effect.pattern.PatternEffect.updateDeckAndHand
 import it.unibo.model.gameboard.Direction
 

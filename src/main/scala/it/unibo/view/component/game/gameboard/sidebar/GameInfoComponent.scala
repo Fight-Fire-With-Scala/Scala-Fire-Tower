@@ -1,7 +1,7 @@
 package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
-import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.UpdateGamePhaseMessage
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
@@ -33,7 +33,7 @@ final class GameInfoComponent(using observable: ViewSubject)
   private var endTurnButton: Button = uninitialized
 
   private val endTurnButtonEventHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) => observable.onNext(UpdateGamePhase(PhaseEffect(EndTurnPhase)))
+    (_: MouseEvent) => observable.onNext(UpdateGamePhaseMessage(PhaseEffect(EndTurnPhase)))
 
   @FXML
   def initialize(): Unit =

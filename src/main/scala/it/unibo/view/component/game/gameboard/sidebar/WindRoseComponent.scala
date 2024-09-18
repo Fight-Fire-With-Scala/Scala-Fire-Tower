@@ -1,8 +1,8 @@
 package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
-import it.unibo.controller.UpdateGamePhase
-import it.unibo.controller.UpdateWindDirection
+import it.unibo.controller.UpdateGamePhaseMessage
+import it.unibo.controller.UpdateWindDirectionMessage
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.card.WindUpdateEffect
 import it.unibo.model.effect.phase.PhaseEffect
@@ -44,8 +44,8 @@ final class WindRoseComponent(using observable: ViewSubject)
 
   private val windRoseEventHandler: Direction => EventHandler[MouseEvent] = dir =>
     ev =>
-      observable.onNext(UpdateWindDirection(WindUpdateEffect.UpdateWind(dir)))
-      observable.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
+      observable.onNext(UpdateWindDirectionMessage(WindUpdateEffect.UpdateWind(dir)))
+      observable.onNext(UpdateGamePhaseMessage(PhaseEffect(PlaySpecialCardPhase)))
 
   private var windRosePanes: Map[Direction, Pane] = Map.empty
 

@@ -1,13 +1,14 @@
-package it.unibo.model.effect
+package it.unibo.model.effect.card
 
 import it.unibo.model.card.Card
-import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.MoveEffect.{ BotChoice, CardChosen }
+import it.unibo.model.effect.MoveEffect.{BotChoice, CardChosen}
 import it.unibo.model.effect.core.*
+import it.unibo.model.effect.hand.HandEffect.playCard
+import it.unibo.model.effect.hand.HandManager
+import it.unibo.model.effect.{GameBoardEffect, MoveEffect}
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Move
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
-import it.unibo.model.effect.hand.HandEffect.playCard
 
 trait CardManager extends HandManager:
   protected def updateDeckAndHand(gb: GameBoard, move: Move): GameBoardEffect =
@@ -30,7 +31,7 @@ trait CardManager extends HandManager:
 
   private def handleCardEffect(gb: GameBoard, card: Card): GameBoard =
     card.effect match
-      case _: CanBePlayedAsExtra => playCard(gb, card)
+      case _: ICanBePlayedAsExtra => playCard(gb, card)
       case _ =>
         val gbUpdatedHand = playCard(gb, card)
         updateDeck(gbUpdatedHand, card)

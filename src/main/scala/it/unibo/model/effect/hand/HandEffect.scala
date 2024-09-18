@@ -1,7 +1,7 @@
 package it.unibo.model.effect.hand
 
 import it.unibo.model.card.Card
-import it.unibo.model.effect.{ GameBoardEffect, HandManager }
+import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.core.*
 import it.unibo.model.effect.core.PatternEffectSolver
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect

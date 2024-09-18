@@ -2,7 +2,7 @@ package it.unibo.view.component.menu
 
 import scala.compiletime.uninitialized
 
-import it.unibo.controller.GameBoardInitialization
+import it.unibo.controller.GameBoardInitializationMessage
 import it.unibo.controller.ViewSubject
 import it.unibo.model.gameboard.GameBoardConfig
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
@@ -78,7 +78,7 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
     val playerTwoNameInput = Option(player2Input.getText).filterNot(_.trim.isEmpty)
 
     observableSubject.onNext(
-      GameBoardInitialization(
+      GameBoardInitializationMessage(
         GameBoardConfig(
           gameMode = selectedGameMode,
           cardSet = selectedCardSet,

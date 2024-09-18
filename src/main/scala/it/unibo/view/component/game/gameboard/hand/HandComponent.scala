@@ -2,11 +2,11 @@ package it.unibo.view.component.game.gameboard.hand
 
 import scala.compiletime.uninitialized
 
-import it.unibo.controller.ChoseCardToPlay
+import it.unibo.controller.ChoseCardToPlayMessage
 import it.unibo.controller.DiscardCardMessage
 import it.unibo.controller.DrawCardMessage
-import it.unibo.controller.ResolveCardReset
-import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.ResolveCardResetMessage
+import it.unibo.controller.UpdateGamePhaseMessage
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.hand.HandEffect.DiscardCard
 import it.unibo.model.effect.hand.HandEffect.DrawCard
@@ -57,7 +57,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
   def initDiscardProcedure(): Unit = cardComponents.foreach(cardComponent => cardToPlay = None)
 
   def cancelDiscardProcedure(): Unit =
-    observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
+    observable.onNext(UpdateGamePhaseMessage(PhaseEffect(WaitingPhase)))
     endDiscardProcedure()
 
   private def endDiscardProcedure(): Unit = cardToRemove = List.empty
@@ -69,7 +69,7 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
   def discardCards(): Unit =
     observable.onNext(DiscardCardMessage(DiscardCard(cardToRemove)))
     observable.onNext(DrawCardMessage(DrawCard(cardToRemove.size)))
-    observable.onNext(UpdateGamePhase(PhaseEffect(DecisionPhase)))
+    observable.onNext(UpdateGamePhaseMessage(PhaseEffect(DecisionPhase)))
     endDiscardProcedure()
 
   def confirmCardPlay(): Unit =
@@ -81,9 +81,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
     cardComponent.get.highlightManager.switch()
     if cardToPlay == cardComponent then
       cardToPlay = None
-      observable.onNext(ResolveCardReset())
+      observable.onNext(ResolveCardResetMessage())
       if !cardComponent.get.containSpecialCard then
-        observable.onNext(UpdateGamePhase(PhaseEffect(WaitingPhase)))
+        observable.onNext(UpdateGamePhaseMessage(PhaseEffect(WaitingPhase)))
     else
       cardToPlay match
         case Some(component) =>
@@ -91,9 +91,9 @@ final class HandComponent(val cardComponents: List[CardComponent])(using observa
             .switch(Some(CardHighlightState.Unhighlighted))
         case None =>
       cardToPlay = cardComponent
-      observable.onNext(ChoseCardToPlay(PlayCard(cardId)))
+      observable.onNext(ChoseCardToPlayMessage(PlayCard(cardId)))
       if !cardComponent.get.containSpecialCard then
-        observable.onNext(UpdateGamePhase(PhaseEffect(PlayStandardCardPhase)))
+        observable.onNext(UpdateGamePhaseMessage(PhaseEffect(PlayStandardCardPhase)))
 
   override def onEnableView(): Unit =
     super.onEnableView()

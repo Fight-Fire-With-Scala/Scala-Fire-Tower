@@ -7,7 +7,7 @@ import it.unibo.model.gameboard.grid.ConcreteToken.Water
 import it.unibo.model.prolog.Rule
 
 case object BucketEffect extends ISpecialCardEffect:
-  override val effectId: Int = 14
+  override val effectId: Int = 15
 
   val bucketEffect: ILogicComputation =
     OffensiveEffect(MediumEffect(Map("a" -> Water)), Rule("bucket"))

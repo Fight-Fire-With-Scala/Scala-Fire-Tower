@@ -100,8 +100,8 @@ class GridTheorySpec extends AnyWordSpecLike with Matchers:
       val tokens = Map(Position(0, 0) -> Fire, Position(0, 1) -> Fire)
       val grid   = BasicGrid(cells, tokens)
 
-      val patternsToCompute: Map[Int, List[ILogicEffect]] =
-        Map(dummyCardId -> List(FireEffect.Flare))
+      val patternsToCompute: Map[Option[Int], List[ILogicEffect]] =
+        Map(Some(dummyCardId) -> List(FireEffect.Flare))
 
       val board: Theory = GridTheory(grid, patternsToCompute)
 

@@ -25,34 +25,34 @@ sealed trait BotMessage extends Message
  */
 sealed trait ViewMessage extends Message
 
-case class GameBoardInitialization(settings: GameBoardConfig) extends ViewMessage
+final case class GameBoardInitializationMessage(settings: GameBoardConfig) extends ViewMessage
 
-case class UpdateWindDirection(ef: WindUpdateEffect) extends ViewMessage
-case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage with BotMessage
+final case class UpdateWindDirectionMessage(ef: WindUpdateEffect) extends ViewMessage
+final case class UpdateGamePhaseMessage(ef: PhaseEffect) extends ViewMessage with BotMessage
 
-case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage
-case class ResolveCardReset() extends ViewMessage
-case class ResolvePatternChoice(ef: PatternApplication) extends ViewMessage
+final case class ChoseCardToPlayMessage(ef: PlayCard) extends ViewMessage
+final case class ResolveCardResetMessage() extends ViewMessage
+final case class ResolvePatternChoiceMessage(ef: PatternApplication) extends ViewMessage
 
-case class DrawCardMessage(ef: DrawCard) extends ViewMessage
-case class DiscardCardMessage(ef: DiscardCard) extends ViewMessage
+final case class DrawCardMessage(ef: DrawCard) extends ViewMessage
+final case class DiscardCardMessage(ef: DiscardCard) extends ViewMessage
 
 /*
  * This refers to messages sent to the view from the model
  */
 sealed trait ModelMessage extends Message
 
-case class StartGameMessage(gb: GameBoard) extends ModelMessage
-case class RefreshMessage(gb: GameBoard, refreshType: RefreshType) extends ModelMessage
-case class ConfirmCardPlayMessage() extends ModelMessage
+final case class StartGameMessage(gb: GameBoard) extends ModelMessage
+final case class RefreshMessage(gb: GameBoard, refreshType: RefreshType) extends ModelMessage
+final case class ConfirmCardPlayMessage() extends ModelMessage
 
 /*
  * This refers to messages sent to the view from the view
  */
 sealed trait InternalViewMessage extends Message
 
-case class InitializeDiscardProcedureMessage() extends InternalViewMessage
-case class ToggleCardInListMessage(cardId: Int) extends InternalViewMessage
-case class ConfirmDiscardMessage() extends InternalViewMessage
-case class CancelDiscardMessage() extends InternalViewMessage
-case class CandidateCardToPlayMessage(cardId: Int) extends InternalViewMessage
+final case class InitializeDiscardProcedureMessage() extends InternalViewMessage
+final case class ToggleCardInListMessage(cardId: Int) extends InternalViewMessage
+final case class ConfirmDiscardMessage() extends InternalViewMessage
+final case class CancelDiscardMessage() extends InternalViewMessage
+final case class CandidateCardToPlayMessage(cardId: Int) extends InternalViewMessage

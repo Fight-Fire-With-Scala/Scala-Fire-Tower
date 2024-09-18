@@ -1,10 +1,10 @@
 package it.unibo.model.effect.core
 
-trait CanBeDiscarded
+trait ICanBeDiscarded
 
-trait CanBePlayedAsExtra
+trait ICanBePlayedAsExtra
 
-trait CannotBeDiscarded
+trait ICannotBeDiscarded
 
 trait IGameCard[CardEffect <: ICardEffect]:
   val id: Int

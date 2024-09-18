@@ -3,9 +3,9 @@ package it.unibo.model.effect.core
 import it.unibo.model.effect.card.{ BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect }
 import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
 
-trait IStandardCardEffect extends ICardEffect with CanBeDiscarded
+trait IStandardCardEffect extends ICardEffect with ICanBeDiscarded
 
-trait ISpecialCardEffect extends ICardEffect with CanBePlayedAsExtra with CannotBeDiscarded
+trait ISpecialCardEffect extends ICardEffect with ICanBePlayedAsExtra with ICannotBeDiscarded
 
 sealed trait ICardEffect extends IGameEffect:
   val effectId: Int

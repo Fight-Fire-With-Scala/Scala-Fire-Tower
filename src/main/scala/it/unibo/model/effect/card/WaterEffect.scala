@@ -11,9 +11,9 @@ import it.unibo.model.gameboard.grid.ConcreteToken.Water
 import it.unibo.model.prolog.Rule
 
 enum WaterEffect(override val effectId: Int) extends IStandardCardEffect:
-  case SmokeJumper extends WaterEffect(11)
-  case AirDrop extends WaterEffect(12)
-  case FireEngine extends WaterEffect(13)
+  case SmokeJumper extends WaterEffect(12)
+  case AirDrop extends WaterEffect(13)
+  case FireEngine extends WaterEffect(14)
 
 object WaterEffect:
   val waterEffectSolver: LogicEffectSolver[WaterEffect] = LogicEffectSolver:

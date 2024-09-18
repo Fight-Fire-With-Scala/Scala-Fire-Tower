@@ -1,7 +1,8 @@
 package it.unibo.model.effect.pattern
 
-import it.unibo.model.effect.{ CardManager, GameBoardEffect, MoveEffect }
+import it.unibo.model.effect.{ GameBoardEffect, MoveEffect }
 import it.unibo.model.effect.MoveEffect.{ logBotChoice, logCardChosen, logPatternApplied, logPatternChosen, runIfLastMoveFound }
+import it.unibo.model.effect.card.CardManager
 import it.unibo.model.effect.core.*
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.effect.phase.PhaseEffect.updatePlayer

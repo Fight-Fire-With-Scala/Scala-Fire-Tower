@@ -71,7 +71,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     val gb                  = model.getGameBoard
     val newGb               = gb.solveEffect(discardCardEffect).solveEffect(drawCardEffect)
     model.setGameBoard(newGb)
-    logger.info(s"[BOT] hand after: $hand")
+    logger.info(s"[BOT] hand after: ${newGb.getCurrentPlayer.hand}")
     onUpdateGamePhaseRequest(PhaseEffect(DecisionPhase))
 
   protected def thinkForPlayStandardCardPhase(using model: Model): Unit =

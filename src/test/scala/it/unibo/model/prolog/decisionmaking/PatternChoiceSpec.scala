@@ -2,19 +2,20 @@ package it.unibo.model.prolog.decisionmaking
 
 import it.unibo.model.GameBoardInitializer
 import it.unibo.model.card.Card
-import it.unibo.model.effect.card.{ BucketEffect, FireEffect, WaterEffect, WindEffect }
+import it.unibo.model.effect.card.{BucketEffect, FireEffect, WaterEffect, WindEffect}
 import it.unibo.model.effect.core.ICardEffect
 import it.unibo.model.effect.pattern.LogicSolverManager
 import it.unibo.model.effect.pattern.PatternEffect.BotComputation
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
-import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Water }
-import it.unibo.model.gameboard.{ Deck, GameBoard, GameBoardConfig }
+import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Water}
+import it.unibo.model.gameboard.{Deck, GameBoard, GameBoardConfig}
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.player.{ Bot, IMakeDecision, Person, Player }
-import it.unibo.model.prolog.decisionmaking.{ AttackDefense, DecisionMaker }
+import it.unibo.model.gameboard.player.{Bot, IMakeDecision, Person, Player}
+import it.unibo.model.prolog.PrologUtils.defaultId
+import it.unibo.model.prolog.decisionmaking.{AttackDefense, DecisionMaker}
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.{ color, BeforeAndAfterAll }
+import org.scalatest.{BeforeAndAfterAll, color}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -60,7 +61,7 @@ class PatternChoiceSpec
     "compute all the right expected PatternCalculated pattern to play" in:
       val direction          = gameBoard.board.windDirection
       val logicEffect        = WindEffect.windEffectSolver.solve(direction)
-      val allPossiblePattern = computePatterns(gameBoard, 1, logicEffect)
+      val allPossiblePattern = computePatterns(gameBoard, Some(defaultId.toInt), logicEffect)
       allPossiblePattern should not be empty
 
     "compute the right pattern to play to perform an attack attack" in:
@@ -72,7 +73,7 @@ class PatternChoiceSpec
       val filteredHandBasedOnDecision =
         filterCardsBasedOnDecision(playerHand, DecisionMaker.getAttackOrDefense)
       val effects = filteredHandBasedOnDecision
-        .map(card => card.id -> List(ICardEffect.convert(card.effect)))
+        .map(card => Option(card.id) -> List(ICardEffect.convert(card.effect)))
         .toMap
       val (cardId, patternToPlay) = computePatterns(newGb, effects)
       patternToPlay should not be empty
@@ -88,7 +89,7 @@ class PatternChoiceSpec
       val filteredHandBasedOnDecision =
         filterCardsBasedOnDecision(playerHand, DecisionMaker.getAttackOrDefense)
       val effects = filteredHandBasedOnDecision
-        .map(card => card.id -> List(ICardEffect.convert(card.effect)))
+        .map(card => Option(card.id) -> List(ICardEffect.convert(card.effect)))
         .toMap
       val (cardId, patternToPlay) = computePatterns(newGb, effects)
       patternToPlay should not be empty
