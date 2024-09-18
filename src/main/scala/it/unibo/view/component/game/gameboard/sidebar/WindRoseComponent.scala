@@ -74,7 +74,7 @@ final class WindRoseComponent(using observable: ViewSubject)
     )
 
   def disallowInteraction(): Unit =
-    basePane.addEventHandler(
+    basePane.removeEventHandler(
       MouseEvent.MOUSE_CLICKED,
       windRoseEventHandler(currentAllowedDirection)
     )
