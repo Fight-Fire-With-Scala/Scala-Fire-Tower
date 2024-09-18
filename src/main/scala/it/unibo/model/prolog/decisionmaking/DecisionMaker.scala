@@ -28,12 +28,8 @@ object DecisionMaker:
     logger.info(myTowerPositions.toString())
     val opponentPositions = gameBoard.getOpponent.towerPositions.map(_.position)
     logger.info(opponentPositions.toString())
-    val theory = AttackDefenseTheory(gameBoard.board.grid, myTowerPositions, opponentPositions)
-    val biasVariable = Struct.of("biasFactor", botBehaviour.biasFactor)
-    val biasTheory   = Theory.fromPrologList(Struct.list(Iterator.single(biasVariable).asJava))
-    theory.append(biasTheory)
-    theory.append(SolverType.DistanceSolver)
-    theory.append(SolverType.ManhattanSolver)
+    val theory =
+      AttackDefenseTheory(gameBoard.board.grid, myTowerPositions, opponentPositions, botBehaviour)
 
     val engine = PrologEngine(theory)
     val goal   = "closest_tower_to_fire(ClosestTower)"

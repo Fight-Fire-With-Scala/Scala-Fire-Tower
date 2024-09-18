@@ -1,0 +1,59 @@
+:pumldir: ./assets/puml
+
+[plantuml, format="svg"]
+----
+include::{pumldir}/GameBoard.puml[]
+----
+
+La *GameBoard* è la parte cruciale del model dell'applicazione.
+Parlerò delle classi principali che lo compongono e del loro ruolo.
+
+- GameBoard: Contiene un riferimento alla Board, che a sua volta contiene la Grid e la direzione del
+vento, insieme al mazzo di carte (Deck) e ai due giocatori. C'è anche un riferimento al PlayerManager,
+che consente di gestire il turno dei giocatori.
+Infine, contiene il numero del turno e la fase di gioco corrente.
+Offre la possibilità di ottenere i giocatori, di gestirli (cambio turno), di determinare se qualche giocatore
+ha vinto sull'altro, e di poter risolvere gli effetti di gioco (IGameEffect) tramite il metodo solveEffect racchiuso
+nel trait GameBoardManager.
+- Board: Rappresenta la griglia di gioco e la direzione del vento. Offre metodi per verificare se una torre è in
+fiamme e per generare configurazioni standard e di fine gioco della griglia.
+- Deck: Gestisce il mazzo di carte, inclusa la miscelazione, la pesca di carte standard e speciali,
+e la rigenerazione del mazzo.
+- Player: Rappresenta un giocatore nel gioco, con il suo nome, le mosse effettuate, le carte in mano,
+una carta extra opzionale e le posizioni delle torri.
+- PlayerToggle: Gestisce il turno dei giocatori. Ad esempio per cambiare il turno verrà usato il metodo toggle.
+- GamePhase: Enumera le diverse fasi del gioco, come la fase del vento, la fase di ridistribuzione delle carte,
+la fase di gioco delle carte standard, ecc.
+
+Componente fondamentale della GameBoard è la Grid, che gestisce la griglia di gioco.
+
+[plantuml, format="svg"]
+----
+include::{pumldir}/Grid.puml[]
+----
+
+La Grid è composta da tre parti fondamentali:
+
+- Il trait Grid, che definisce l'interfaccia base per la griglia. Contiene i metodi per ottenere e impostare le celle
+e i token.
+- L'object Grid, che implementa il trait Grid e offre metodi per creare le istanze, come quella vuota, standard o di fine gioco.
+Contiene anche la costante per la dimensione della griglia. Le istanze sono definite per comodità in GridDefinitions, che contiene
+le configurazioni.
+- La classe BasicGrid è l'implementazione concreta del trait Grid e ne definisce i metodi.
+
+Allo scopo di essere creata la Grid utilizza la classe GridBuilder che permette di costruire la griglia in modo incrementale.
+
+Attraverso i suoi metodi setNextCell e nextRow (poi utilizzati tramite alias + e -) è possibile procedere alla creazione.
+Nell'object GridBuilder vengono forniti dei metodi di configurazione e un DSL per facilitarne la costruzione.
+Il DSL tiene conto dei simboli T,F,E per rappresentare i vari tipi di cella (Torre, Foresta e Eternal Fire).
+
+La Grid contiene anche la classe TowerPositionManager, che permette di ottenere le posizioni delle celle torri basate sulla loro
+posizione. Questo è utile per determinare se una torre è in fiamme e per effettuare i calcoli per il Bot.
+
+Le Enumerazioni Cell e ConcreteToken definiscono rispettivamente :
+
+- Cell: Le celle che possono essere posizionate sulla griglia, come la torre, la foresta e il fuoco eterno.
+- ConcreteToken: I token che possono essere posizionati su una cella, come tagliafuoco, fuoco, acqua, reforest e empty.
+
+I Token vengono definiti in un trait con un identificativo ed un colore (per la rappresentazione grafica), ma poi utilizzano
+la enumerazione che ne estende il trait per definire i token concreti.
