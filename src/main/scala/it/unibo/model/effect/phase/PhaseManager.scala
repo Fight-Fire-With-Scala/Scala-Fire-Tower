@@ -15,12 +15,10 @@ trait PhaseManager extends PlayerManager:
   @tailrec
   final def updateGamePhase(gb: GameBoard, choice: GamePhase): GameBoard = choice match
     case WindPhase =>
-      val currentPlayer  = gb.getCurrentPlayer
-      val (newGb, newPl) = fillPlayerHand(gb, currentPlayer)
-      val finalGb        = newGb.updateCurrentPlayer(newPl)
-      newPl match
-        case p: Person => handleWindPhase(finalGb)
-        case _         => finalGb
+      val currentPlayer = gb.getCurrentPlayer
+      currentPlayer match
+        case p: Person => handleWindPhase(gb)
+        case _         => gb
     case WaitingPhase          => gb.copy(gamePhase = WaitingPhase)
     case PlayStandardCardPhase => gb.copy(gamePhase = PlayStandardCardPhase)
     case RedrawCardsPhase      => gb.copy(gamePhase = RedrawCardsPhase)
@@ -32,9 +30,13 @@ trait PhaseManager extends PlayerManager:
     case EndTurnPhase         => updateGamePhase(handleTurnEnd(gb), WindPhase)
     case EndGamePhase         => gb.copy(gamePhase = EndGamePhase)
 
-  private def handleTurnEnd(gb: GameBoard) = gb
-    .copy(gamePhase = WindPhase, turnNumber = gb.turnNumber + 1)
-    .changePlayer()
+  private def handleTurnEnd(gb: GameBoard) =
+    val currentPlayer  = gb.getCurrentPlayer
+    val (newGb, newPl) = fillPlayerHand(gb, currentPlayer)
+    val finalGb        = newGb.updateCurrentPlayer(newPl)
+    finalGb
+      .copy(gamePhase = WindPhase, turnNumber = finalGb.turnNumber + 1)
+      .changePlayer()
 
   private def getNextPhaseAfterDecisionPhase(gb: GameBoard) = gb.getCurrentPlayer.extraCard match
     case Some(_) => PlaySpecialCardPhase
