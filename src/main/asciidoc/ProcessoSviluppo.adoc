@@ -1,55 +1,8 @@
-= Scala Fire Tower
-:figure-caption: Figura
-:section-refsig: Sezione
-:table-caption: Tabella
-:xrefstyle: short
-:imagesdir: ./assets/images
-:sectnums:
-:note-caption: Nota
-:pumldir: ./assets/puml
-:srcdir: ../
-:xrefstyle: short
-:listing-caption: Listato
-
-Università di Bologna · Campus di Cesena
-
-Corso di Laurea Magistrale in Ingegneria e Scienze Informatiche
-
-'''
-
-|=======
-|[.normalize]#Alessandro Becci# |[.normalize]#0001125114#
-|[.normalize]#Luca Tonelli# |[.normalize]#0001126379#
-|[.normalize]#Riccardo Battistini# |[.normalize]#0001034968#
-|=======
-
-<<<
-
-<<<
-
-include::00-introduction.adoc[]
-
-include::01-requirements.adoc[]
-
-
-include::02-architectural-design.adoc[]
-
-== Design di dettaglio
-
-include::03-detailed-design.adoc[]
-
-=== Organizzazione del codice/Struttura dei package
-
-diagramma dei package
-
-== Retrospettiva
-
-include::04-retrospective.adoc[]
-
 === Processo di sviluppo
 
 Il gruppo ha adottato una metodologia agile per lo sviluppo del progetto,
-seguendo una forma di scrum meno stringente per adattarsi alle difficoltà e agli imprevisti, senza compromettere l’organizzazione del lavoro.
+seguendo una forma di scrum meno stringente per adattarsi alle difficoltà e agli imprevisti,
+senza compromettere l’organizzazione del lavoro.
 
 Gli strumenti utilizzati per agevolare lo sviluppo includono:
 
@@ -60,17 +13,21 @@ Gli strumenti utilizzati per agevolare lo sviluppo includono:
 ** *GitHub Projects* e *GitHub Issues*.
 
 ==== Divisione in sprint
-Abbiamo deciso di dividere lo sviluppo dell'applicazione in sprint di 2 settimane ciascuno.
+
+Abbiamo deciso di dividere lo sviluppo dell'applicazione in sprint di circa due settimane ciascuno, ad
+eccezione dell'ultimo
+
 Ad ogni sprint era associata una riunione di inizio e una di fine per discutere del lavoro svolto e di quello futuro.
 Abbiamo utilizzato come strumento il backlog di GitHub per tenere traccia dei task da svolgere e di quelli completati.
 
 ==== Pianificazione dei task negli sprint
+
 Abbiamo utilizzato i concetti di Feature, User Story e Sprint Task per organizzare il lavoro.
 Le Feature venivano utilizzate per delineare una implementazione di una grossa parte di lavoro (come poteva essere la View del gioco).
 Le User Story venivano utilizzate per delineare una parte più piccola di lavoro, vista dal punto di vista dell'utente.
 Gli Sprint Task erano task della stessa dimensione della User Story, ma visti dal punto di vista
 
-Le issue permettono di tracciare e gestire in modo dettagliato task, bug e nuove funzionalità direttamente nei repository Git. Inoltre permettono di descrivere chiaramente le attività, di assegnare responsabili, assegnare tag e monitorare lo stato di avanzamento. La possibilità di collegare le issue ai commit facilita la tracciabilità delle modifiche e garantisce una maggiore trasparenza nel processo di sviluppo, fornendo accesso a un _issue log_ che riporta preziose informazioni storiche sull'andamento del progetto.
+Le issue permettono hanno permesso di tracciare e gestire in modo dettagliato task, bug e nuove funzionalità direttamente nei repository Git. Inoltre permettono di descrivere chiaramente le attività, di assegnare responsabili, assegnare tag e monitorare lo stato di avanzamento. La possibilità di collegare le issue ai commit facilita la tracciabilità delle modifiche e garantisce una maggiore trasparenza nel processo di sviluppo, fornendo accesso a un _issue log_ che riporta preziose informazioni storiche sull'andamento del progetto.
 
 Dato che le issue da sole non permettono di implementare in modo ottimale la metodologia Scrum è stato impiegato https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects[GitHub Projects]. Questo servizio permette di pianificare gli sprint e di creare una _Scrum board_, tenendo traccia sia del product backlog che dello sprint backlog, oltre che dei compiti che si stanno svolgendo o che devono essere vagliati durante la sprint review o che sono stati completati.
 
@@ -207,24 +164,6 @@ volta terminato.
 
 === Sprints
 
-[#sprint1]
-.Backlog dello Sprint1
-image::sprint1.png[align=center]
-
-[#sprint2]
-.Backlog dello Sprint2
-image::sprint2.png[align=center]
-
-[#sprint3]
-.Backlog dello Sprint3
-image::sprint3.png[align=center]
-
-[#sprint4]
-.Backlog dello Sprint4
-image::sprint4.png[align=center]
-
-Si nota che nel secondo sprint i contenuti sono davvero pochi: questo è dovuto al fatto che molti dei task non sono stati
-completati e sono slittati allo sprint successivo.
 
 ==== Meeting
 All'inizio dello sviluppo, abbiamo deciso di fissare delle riunioni settimanali per discutere del backlog. Allo scopo
@@ -247,65 +186,3 @@ L'adozione dei commit convenzionali ha permesso di definire in modo univoco e st
 
 ==== Scelta degli strumenti di test/build/continuos integration
 
-
-
-==== Strumenti di qualità del codice
-
-==== Strumenti di CI/CD
-
-=== Retrospettiva
-
-==== Alessandro Becci
-Questo progetto è stata per me una sfida importante,
-ma sicuramente molto formativa per la mia crescita.
-Ho affrontato con determinazione l'inizio dello sviluppo,
-e grazie alla divisione dei task tramite l'assegnazione nel backlog,
-ho potuto mettere il focus sulle mie parti.Sono fiero di come abbiamo gestito
-gli imprevisti e incuriosito dalla metodologia di lavoro SCRUM, che continuerò
-ad adottare nei progetti futuri, spero in maniear ancora migliore.
-Vorrei ringraziare i miei compagni che mi
-hanno sempre sostenuto nelle difficoltà che questo progetto ci ha posto davanti.
-
-===== Lavoro svolto
-- View della griglia di gioco
-- Model della gameboard
-- DSL per creare la gameboard
-- Implementazione di hover e click sulla griglia per tutte le fasi di gioco
-- Gioco della carta da una mano
-- Implementazione dell'IA del bot
-- Risoluzione degli effetti delle carte sulla GameBoard
-
-==== Luca Tonelli
-Per quanto riguarda la mia esperienza personale, posso ritenere questo progetto estremamente formativo e interessante.
-L'utilizzo di SCRUM e la suddivisione dei task in maniera chiara e precisa, mi ha permesso di lavorare in maniera più efficiente e di avere una visione più chiara del lavoro da svolgere.
-
-===== Lavoro svolto
-- View del Menu
-- View della Mano
-- View delle Carte
-- Model del Player
-- Model del Bot
-- Model del Menu
-- Implementazione di Scarta e Pesca carte
-- Implementazione della carta Secchio
-- Implementazione IA Bot
-
-===== Conclusioni
-Mi ritengo pienamente soddisfatto del risultato ottenuto ma soprattutto per l'organizzazione adottata.
-
-==== Riccardo Battistini
-Lo svolgimento di questo progetto mi ha permesso di approfondire la conoscenza dei paradigmi
-di programmazione funzionale e logica, tramite lo sviluppo di software in Scala e in Prolog. In particolare ho potuto sperimentare l'utilizzo del currying, delle higher order function e delle given per la programmazione contestuale.
-
-Inoltre ho potuto cimentarmi nell'applicazione di tecniche per la gestione di progetti basati su Scrum.
-
-===== Lavoro svolto
-Nel progetto mi sono occupato delle seguenti aree:
-
-- Sviluppo del modello delle carte
-- Sviluppo del sistema degli effetti e dei risolutori
-- Integrazione iniziale di tuprolog in Scala e generazione procedurale della teoria Prolog della griglia
-- Sviluppo della sidebar e dei suoi sottocomponenti, ad eccezione del deck
-- Sviluppo del protocollo di scambio di messaggi tra model e view
-
-include::05-user-guide.adoc[]
