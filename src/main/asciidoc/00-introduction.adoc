@@ -1,3 +1,3 @@
-= Introduzione
+== Introduzione
 
 Scala Fire Tower è un gioco da tavolo competitivo in cui i giocatori gestiscono torri di avvistamento antincendio, cercando di proteggere la loro torre dagli incendi forestali che si diffondono, mentre cercano di dirigere le fiamme verso le torri degli avversari. I giocatori utilizzano risorse come vigili del fuoco, acqua e linee tagliafuoco per controllare la diffusione del fuoco. La direzione del fuoco è influenzata dal vento e i giocatori possono cambiare la direzione del vento usando le carte azione. L'obiettivo è eliminare gli avversari bruciando le loro torri. Il gioco può essere giocato da 1 a 2 giocatori e di solito dura 15 minuti.

@@ -1,8 +1,8 @@
-= Requisiti
+== Requisiti
 https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
 https://docs.asciidoctor.org/asciidoc/latest/
 
-== Requisiti di business
+=== Requisiti di business
 
 link:https://[Regolamento ufficiale]
 
@@ -13,7 +13,7 @@ link:https://[Regolamento ufficiale]
 ** Possibilità di modificare la direzione del vento casualmente o in base alla carta giocata.
 ** Possibilità di utilizzare carte normali e carte speciali per interagire col gioco
 
-== Requisiti funzionali
+=== Requisiti funzionali
 
 * Utente
 ** L’utente deve visualizzare un menu iniziale dalla quale è possibile iniziare una partita settandone i parametri.
@@ -34,7 +34,7 @@ e scarta carte.
 ** Il sistema deve offrire un sistema di aggiornamento legato alle azioni compiute dal giocatore.
 ** Il sistema deve gestire il comportamento del nemico (bot).
 
-== Requisiti non funzionali
+=== Requisiti non funzionali
 ** Grafica: il gioco deve risultare simile a quello originale visivamente.
 ** Usabilità: il gioco deve far sì che l'utilizzo delle carte sia il più facile possibile.
 
@@ -42,7 +42,7 @@ e scarta carte.
 //
 // image::start-game.png[]
 
-== Requisiti di implementazione
+=== Requisiti di implementazione
 * Utilizziamo:
 ** Scala 3.4.2
 ** ScalaTest X.X.X
