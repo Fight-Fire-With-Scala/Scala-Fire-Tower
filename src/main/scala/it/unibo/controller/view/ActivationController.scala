@@ -7,13 +7,13 @@ import it.unibo.model.gameboard.GamePhase.RedrawCardsPhase
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.view.component.game.GameComponent
-import it.unibo.view.component.game.gameboard.sidebar.{ BicolumnPaneComponent, DeckComponent, DiceComponent, GameInfoComponent, WindRoseComponent }
+import it.unibo.view.component.game.gameboard.sidebar.{ BicolumnComponent, DeckComponent, DiceComponent, GameInfoComponent, WindRoseComponent }
 
 trait ActivationController extends GameController:
   protected def hideWindChoices(component: Option[GameComponent]): Unit =
     component.foreach: c =>
       c.sidebarComponent.components.foreach:
-        case c: BicolumnPaneComponent =>
+        case c: BicolumnComponent =>
           c.rightComponent match
             case c: DiceComponent => c.disableView()
         case c: WindRoseComponent =>
@@ -24,7 +24,7 @@ trait ActivationController extends GameController:
   protected def showWindChoices(component: Option[GameComponent], direction: Direction): Unit =
     component.foreach: c =>
       c.sidebarComponent.components.foreach:
-        case c: BicolumnPaneComponent =>
+        case c: BicolumnComponent =>
           c.rightComponent match
             case c: DiceComponent => c.enableView()
         case c: WindRoseComponent =>
@@ -41,7 +41,7 @@ trait ActivationController extends GameController:
 
   private def disableBicolumnComponent(component: GameComponent): Unit =
     component.sidebarComponent.components.foreach:
-      case c: BicolumnPaneComponent =>
+      case c: BicolumnComponent =>
         c.rightComponent match
           case c: DiceComponent => c.disableView()
         c.leftComponent match
@@ -56,7 +56,7 @@ trait ActivationController extends GameController:
         component.sidebarComponent.components.foreach:
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
-          case c: BicolumnPaneComponent =>
+          case c: BicolumnComponent =>
             c.rightComponent match
               case c: DiceComponent => c.disableView()
             c.leftComponent match
@@ -71,7 +71,7 @@ trait ActivationController extends GameController:
           .foreach:
             case c: WindRoseComponent =>
             case c: GameInfoComponent => c.disableView()
-            case c: BicolumnPaneComponent =>
+            case c: BicolumnComponent =>
               c.leftComponent match
                 case c: DeckComponent => c.disableView()
 
@@ -84,7 +84,7 @@ trait ActivationController extends GameController:
           .foreach:
             case c: GameInfoComponent => c.disableView()
             case c: WindRoseComponent => c.disableView()
-            case c: BicolumnPaneComponent =>
+            case c: BicolumnComponent =>
 
     case PlaySpecialCardPhase =>
       gameComponent.foreach: component =>
@@ -96,7 +96,7 @@ trait ActivationController extends GameController:
           .foreach:
             case c: WindRoseComponent => c.disableView()
             case c: GameInfoComponent => c.enableView()
-            case c: BicolumnPaneComponent =>
+            case c: BicolumnComponent =>
 
     case _ =>
       gameComponent.foreach: component =>
@@ -106,4 +106,4 @@ trait ActivationController extends GameController:
         component.sidebarComponent.components.foreach:
           case c: WindRoseComponent => c.disableView()
           case c: GameInfoComponent => c.disableView()
-          case c: BicolumnPaneComponent =>
+          case c: BicolumnComponent =>

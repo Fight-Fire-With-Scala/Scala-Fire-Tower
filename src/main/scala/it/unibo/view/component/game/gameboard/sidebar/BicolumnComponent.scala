@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane
 import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
-final class BicolumnPaneComponent(
+final class BicolumnComponent(
     val leftComponent: ISidebarComponent,
     val rightComponent: ISidebarComponent
 ) extends ISidebarComponent:
