@@ -16,7 +16,4 @@ final class BotSubscriber(val controller: ModelController)
   override val logger: Logger = Logger("Bot -> BotSubscriber")
 
   override def onMessageReceived(msg: BotMessage): Unit = msg match
-    case UpdateGamePhaseMessage(ef: PhaseEffect) =>
-      controller.model.getGameBoard.isGameEnded match
-        case Some(_) => controller.applyEffect(PhaseEffect(EndGamePhase), EndGameUpdate)
-        case None    => handleUpdateGamePhase(ef)
+    case UpdateGamePhaseMessage(ef: PhaseEffect) => handleUpdateGamePhase(ef)
