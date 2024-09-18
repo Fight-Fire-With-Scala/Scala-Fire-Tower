@@ -1,0 +1,45 @@
+=== ViewSubscriber
+:pumldir: ./assets/puml
+:srcdir: ../
+:xrefstyle: short
+:figure-caption: Figura
+:listing-caption: Listato
+
+Il View Subscriber funge da interfaccia del Model e consente di gestire i messaggi ricevuti dalla View. Esistono diversi gruppi di messaggi che possono essere inviati dalla View nelle diverse fasi di gioco.
+Di seguito saranno mostrati i protocolli di scambio di messaggi di alcune di queste fasi tramite dei diagrammi di sequenza.
+
+In <<start-game-sequence-diagram>> è mostrato il protocollo utilizzato durante l'avvio della partita.
+
+[#start-game-sequence-diagram]
+.Diagramma di sequenza che mostra lo scambio di messaggi durante l'avvio del gioco.
+[plantuml, card, format="svg"]
+----
+include::{pumldir}/start.game.protocol.puml
+----
+
+In <<wind-phase-sequence-diagram>> è mostrato il protocollo utilizzato durante la `WindPhase`.
+
+[#wind-phase-sequence-diagram]
+.Diagramma di sequenza che mostra lo scambio di messaggi durante la `WindPhase`.
+[plantuml, card, format="svg"]
+----
+include::{pumldir}/wind.phase.protocol.puml
+----
+
+In <<waiting-phase-sequence-diagram>> è mostrato il protocollo utilizzato durante la `WaitingPhase`.
+
+[#waiting-phase-sequence-diagram]
+.Diagramma di sequenza che mostra lo scambio di messaggi durante la `WaitingPhase`.
+[plantuml, card, format="svg"]
+----
+include::{pumldir}/waiting.phase.protocol.puml
+----
+
+In <<play-standard-sequence-diagram>> è mostrato il protocollo utilizzato durante la `PlayStandardCardPhase`.
+
+[#play-standard-sequence-diagram]
+.Diagramma di sequenza che mostra lo scambio di messaggi durante la `PlayStandardCardPhase`.
+[plantuml, card, format="svg"]
+----
+include::{pumldir}/play.standard.card.protocol.puml
+----
