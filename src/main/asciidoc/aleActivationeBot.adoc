@@ -1,8 +1,19 @@
-L'ActivationController gestisce l'attivazione e disattivazione delle varie componenti di View in base
-alla fase di gioco. E' quindi il responsabile di aggiornare lo stato visivo del gioco.
-Garantisce che le componenti rilevanti siano attive in tutte le fasi di gioco.
+Il RefreshController e l'ActivationController sono due componenti chiave del sistema che gestiscono
+l'aggiornamento e quindi l'attivazione/disattivazioni delle varie componenti grafiche in base alla fase di gioco
+e agli eventi che si verificano durante la partita.
+
+In particolare, il RefreshController è responsabile di aggiornare la vista in base a diversi tipi di
+aggiornamenti (RefreshType). Attraverso il metodo updateAccordingToRefreshType, si decide quale parte grafica
+necessita di un aggiornamento.
+
+Allo scopo di modificare le parti di View in una maniera veloce e unica per tutti i componenti grafici
+è stato creato l'ActivationController, il RefreshController lo estende, in modo da poterlo utilizzare.
+Esso gestisce l'attivazione e disattivazione delle varie componenti di View in base
+alla fase di gioco. E' quindi il responsabile di aggiornare lo stato visivo del gioco, e di garantire che
+le componenti rilevanti siano attive o non attive durante tutte le fasi di gioco.
 Sfrutta tutti i componenti che implementano il tratto ICanBeDisabled permettendo un cambio del loro stato.
+Ad esempio, solo quando è possibile il piazzamento di un pattern la griglia è attiva.
 
 Il BotSubscriber è registrato agli aggiornamenti del Bot e in base ai suoi aggiornamenti aggiorna il modello.
-Quando riceve un messaggio aggiorna la fase di gioco e permette al Bot di entrare in metodo di think, e
-quindi di pensare a quale azione compiere in quella determinata fase.
+Quando riceve un messaggio aggiorna la fase di gioco e permette all'applicazione di mantenersi aggiornata coi suoi
+aggiornamenti.

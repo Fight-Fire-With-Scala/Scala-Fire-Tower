@@ -1,21 +1,31 @@
-La parte di prolog relativa alla decisione di Attacco/Difesa è stata implementata
+La parte di Prolog relativa alla decisione di Attacco/Difesa è stata implementata
 per determinare quale sia la strategia migliore per il bot da adottare in base alla situazione
 della griglia di gioco.
 A questo scopo, trova la torre più vicina al fuoco, utilizzando la distanza di Manhattan.
 
-L'algoritmo è integrato con Scala per delineare poi la strategia.
-Definirò ora le parti cruciali del codice prolog che consentono di eseguire questo calcolo:
+La teoria Prolog che viene costruita su Scala è la `AttackDefenseTheory` e contiene i seguenti elementi:
+- la griglia di gioco
+- il set delle posizioni torre del giocatore
+- il set delle posizioni torre dell'avversario
+- il `botBehaviour`, cioè un oggetto che rappresenta il comportamento del bot tramite il `Bias`
 
-- closest_tower_to_fire/1: torva la torre più vicina al fuoco calcolando le distanze per
+Allo scopo di ottenere le celle della griglia di gioco, viene utilizzato il Trait `GridCellsProvider`.
+La teoria ottiene gli iteratori delle celle di gioco e gli iteratori delle posizioni delle torri, combinandoli poi in un iteratore unico.
+Dopo di chè viene aggiunta anche la variabile di bias e i solver necessari al calcolo.
+
+L'algoritmo è integrato con Scala per delineare poi la strategia.
+Definirò ora le parti cruciali del codice Prolog che consentono di eseguire questo calcolo:
+
+- `closest_tower_to_fire/1`: torva la torre più vicina al fuoco calcolando le distanze per
 le proprie torri e per le torri avversarie. A questo scopo viene utilizzata min_distance_to_fire/3.
 Allo scopo di influenzare la decisione strategica del bot viene introdotto un *Bias* che permette di dare più peso alle torri avversarie
 rispetto a quelle proprie o viceversa. Questo bias viene
 aggiunto alla distanza delle torri del giocatore e influenza la sua decisione.
 
-- min_distance_to_fire/3: trova la distanza minima tra un insieme di posizioni delle torri e qualsiasi cella fuoco, restituendo
+- `min_distance_to_fire/3`: trova la distanza minima tra un insieme di posizioni delle torri e qualsiasi cella fuoco, restituendo
 la posizione della torre più vicina.
 Le distanze vengono calcolate tramite la funzione manhattan_distance/2.
 Allo scopo di trovare le distanze minime vengono utilizzate le funzioni min_member che data una tupla
 restituiscono le distanze minime in una lista di tuple.
 
-La closest_tower_to_fire ritorna la torre più vicina, che poi Scala, determinandone il propretario, utilizzerà per decidere la strategia da adottare.
+La `closest_tower_to_fire` ritorna la torre più vicina, che poi Scala, determinandone il proprietario, utilizzerà per decidere la strategia da adottare.
