@@ -14,6 +14,23 @@ La composizione di questa teoria in modo dinamico in base alle carte passate per
 
 A seguito verrà descritto il codice prolog che permette di risolvere la scelta del pattern da giocare.
 
+== CardSolver e BaseSolver
+Permettono la risoluzione degli effetti delle carte in base alla griglia di gioco e di ottenere tutti i pattern disponibili per una carta.
+BaseSolver implementa una serie di metodi prolog che permettono di avere i pattern disponibili basandosi sulla griglia e i token presenti ricreando le forme geometriche dei pattern presenti sulle carte originali poi composti da ogni effetto specifico.
+
+Un esempio di risoluzione degli effetti delle carte è il seguente:
+Presupponendo di dover risolvere una carta di tipo *SmokeJumper*, il predicato *smoke_jumper/3* permette di ottenere tutti i pattern disponibili per la carta.
+
+=== `smoke_jumper/3`
+Return all the available application points of the given pattern that are computed from the set of points that are fire tokens on woods or tower cells, checking the central point of the 3x3 pattern, computed with the offset (-1, -1).
+[source,prolog]
+----
+smoke_jumper(R, CardId, EffectId) :- match_if_both_token_and_cell(Coords, [w, t], [f]), compute_pattern_with_offset((-1, -1), Coords, R, _, CardId, EffectId).
+----
+Questa regola identifica i punti di applicazione disponibili per un pattern che rappresenta Smoke Jumper. Il pattern viene applicato se il punto centrale del pattern 3x3, calcolato con l'offset (-1, -1), è un token di fuoco su celle di tipo bosco o torre.
+
+*CardSolver*, *BaseSolver* e *GridTheory* sono quindi utilizzati combinati come unica teoria per il calcolo dei pattern disponibili per ogni carta in fase di piazzamento, permettendo quindi un highlight delle possibili posizioni sulla griglia di gioco.
+
 == CardChoserSolver
 
 === `main/1`
@@ -79,7 +96,7 @@ find_min_distance([(X1,Y1,T1), (X2,Y2,T2) | Rest], TowerPos, MinDist) :-
 ----
 Esplora tutta la lista di pattern e per ognuno esplora tutte le posizioni contenute nel pattern per identificare quale sia il piu vicino alla torre definita.
 
-Per far si che  *get_all_cards_result(AllResults)* potesse essere eseguito per un numero variabile di carte è stata implementata la classe *AllCardResultTheory* che permette di concatenare in modo ricorsivo i risultati di tutti i pattern disponibili per ogni carta passata in una lista unica utilizzando a supporto *ConcatListTheory*.
+Per far si che  *get_all_cards_result(AllResults)* potesse essere eseguito per un numero variabile di carte è stata implementata la classe *AllCardResultTheory* che permette di concatenare i risultati di tutti i pattern disponibili per ogni carta realizzando una lista unica tramite *ConcatListTheory*.
 
 === `concat_lists/2`
 [source,prolog]

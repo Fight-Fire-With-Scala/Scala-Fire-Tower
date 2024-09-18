@@ -1,0 +1,7 @@
+=== InternalViewSubscriber
+Permette di ricevere i messaggi interni di view e agire di conseguenza ocn il relativo controller specifico.
+è risultato necessario integrare la view con un subscriber interno per permettere comunicazioni interne tra le varie componenti.
+Nello specifico viene principalmente utilizzato per le comunicazioni tra Deck e Hand per gestire la procedura di scarto delle carte, e per la comunicazione tra Card ed Hand per gestire la procedura di giocata delle carte.
+
+A supporto del subscriber sono stati realizzati i trait DiscardCardController e PlayCardController.
+
