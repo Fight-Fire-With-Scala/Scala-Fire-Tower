@@ -27,65 +27,19 @@ Corso di Laurea Magistrale in Ingegneria e Scienze Informatiche
 
 <<<
 
-== Introduzione (INSIEME)
-
 include::00-introduction.adoc[]
-
-== Requisiti (INSIEME)
 
 include::01-requirements.adoc[]
 
-== Design architetturale (INSIEME)
+== Design architetturale
 
-Descrizione del pattern architetturale utilizzato (MVC + Cake)
+
 
 include::02-architectural-design.adoc[]
 
 == Design di dettaglio
 
 include::03-detailed-design.adoc[]
-
-diagramma degli stati
-
-diagramma di sequenza
-
-diagramma delle classi
-
-=== Model
-
-divisione del turno in fasi - TONE
-effetti/carte - RICK
-gameboard, grid, DSL - ALE
-player (bot) - ALE, TONE
-
-prolog
-attacco e difesa - ALE
-carte (availablePattern) - RICK
-scelta pattern - TONE
-
-=== View
-
-inizializzazione della view - RICK
-componente GameComponent - RICK
-griglia (hover, click) - ALE
-mano - TONE
-deck - TONE
-sidebar RICK
-vista menu - TONE
-
-=== Controller
-
-observable e subscriber
-Bot - ALE
-Internal - TONE
-Model - ALE
-View - RICK
-
-protocolli di scambio dei messaggi
-
-Activation ALE
-Discard / PlayCardController / TONE
-Refresh ALE
 
 === Organizzazione del codice/Struttura dei package
 
