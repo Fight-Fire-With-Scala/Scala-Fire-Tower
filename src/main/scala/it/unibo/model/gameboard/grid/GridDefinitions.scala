@@ -23,18 +23,18 @@ object GridDefinitions:
 
   def endGame: Grid = Grid:
     F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | E | F | E | E | F | F | F | F | E | E | F | F
-    F | F | F | F | E | F | F | E | F | F | F | F | E | F | E | F
-    F | F | F | F | E | F | E | E | F | F | F | F | E | E | F | F
-    F | F | F | F | E | F | F | F | F | F | F | F | E | E | F | F
-    F | F | F | F | E | F | E | E | F | F | F | F | E | E | E | F
+    F | F | F | E | E | E | E | F | F | E | E | E | E | F | F | F
+    F | F | F | F | F | F | E | F | F | F | E | F | F | F | F | F
+    F | F | F | F | F | F | E | F | F | F | F | E | F | F | F | F
+    F | F | F | E | E | E | E | F | F | E | E | E | E | F | F | F
     F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
+    F | F | F | E | E | E | E | F | F | E | E | E | E | F | F | F
+    F | F | F | E | F | F | E | F | F | E | F | F | E | F | F | F
+    F | F | F | E | E | E | E | F | F | E | E | E | E | F | F | F
     F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
-    F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
+    F | F | F | E | F | F | F | F | F | E | E | E | F | F | F | F
+    F | F | F | F | E | F | F | F | F | F | F | F | E | F | F | F
+    F | F | F | F | F | E | E | F | F | E | E | E | F | F | F | F
+    F | F | F | F | E | F | F | F | F | F | F | F | E | F | F | F
+    F | F | F | E | F | F | F | F | F | E | E | E | F | F | F | F
     F | F | F | F | F | F | F | F | F | F | F | F | F | F | F | F
