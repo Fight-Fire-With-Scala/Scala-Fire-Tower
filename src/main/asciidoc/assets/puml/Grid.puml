@@ -43,7 +43,7 @@ package model.gameboard.grid {
   class Grid {
   }
 
-  enum Token << (E, orange) >> {
+  class Token << (T,lightblue) >> {
     +String id
     +Color color
   }

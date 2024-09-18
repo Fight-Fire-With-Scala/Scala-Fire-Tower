@@ -32,6 +32,28 @@ Componente fondamentale della GameBoard è la Grid, che gestisce la griglia di g
 include::{pumldir}/Grid.puml[]
 ----
 
-La Grid si compone di due parti:
+La Grid è composta da tre parti fondamentali:
+
 - Il trait Grid, che definisce l'interfaccia base per la griglia. Contiene i metodi per ottenere e impostare le celle
-e i token. Per aggiornarla
+e i token.
+- L'object Grid, che implementa il trait Grid e offre metodi per creare le istanze, come quella vuota, standard o di fine gioco.
+Contiene anche la costante per la dimensione della griglia. Le istanze sono definite per comodità in GridDefinitions, che contiene
+le configurazioni.
+- La classe BasicGrid è l'implementazione concreta del trait Grid e ne definisce i metodi.
+
+Allo scopo di essere creata la Grid utilizza la classe GridBuilder che permette di costruire la griglia in modo incrementale.
+
+Attraverso i suoi metodi setNextCell e nextRow (poi utilizzati tramite alias + e -) è possibile procedere alla creazione.
+Nell'object GridBuilder vengono forniti dei metodi di configurazione e un DSL per facilitarne la costruzione.
+Il DSL tiene conto dei simboli T,F,E per rappresentare i vari tipi di cella (Torre, Foresta e Eternal Fire).
+
+La Grid contiene anche la classe TowerPositionManager, che permette di ottenere le posizioni delle celle torri basate sulla loro
+posizione. Questo è utile per determinare se una torre è in fiamme e per effettuare i calcoli per il Bot.
+
+Le Enumerazioni Cell e ConcreteToken definiscono rispettivamente :
+
+- Cell: Le celle che possono essere posizionate sulla griglia, come la torre, la foresta e il fuoco eterno.
+- ConcreteToken: I token che possono essere posizionati su una cella, come tagliafuoco, fuoco, acqua, reforest e empty.
+
+I Token vengono definiti in un trait con un identificativo ed un colore (per la rappresentazione grafica), ma poi utilizzano
+la enumerazione che ne estende il trait per definire i token concreti.
