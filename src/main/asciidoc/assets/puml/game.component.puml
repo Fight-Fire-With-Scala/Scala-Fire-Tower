@@ -1,0 +1,50 @@
+@startuml
+left to right direction
+hide empty members
+skinparam shadowing false
+
+class GameComponent
+
+class BicolumnComponent
+
+class DeckComponent
+
+class DiceComponent
+
+class GridComponent
+
+class HandComponent
+
+class GameInfoComponent
+
+class SidebarComponent
+
+class WindRoseComponent
+
+class IViewComponent << (T, lightblue) >>
+
+class IGridComponent << (T, lightblue) >>
+
+class ISidebarComponent << (T, lightblue) >>
+
+class IHandComponent << (T, lightblue) >>
+
+IGridComponent --> IViewComponent: extends
+ISidebarComponent --> IViewComponent: extends
+IHandComponent --> IViewComponent: extends
+
+GridComponent --> IGridComponent: extends
+HandComponent --> IHandComponent: extends
+SidebarComponent --> ISidebarComponent: extends
+BicolumnComponent --> ISidebarComponent: extends
+BicolumnComponent *-- DiceComponent
+BicolumnComponent *-- GameInfoComponent
+DiceComponent --> ISidebarComponent: extends
+DeckComponent --> ISidebarComponent: extends
+WindRoseComponent --> ISidebarComponent: extends
+GameInfoComponent --> ISidebarComponent: extends
+
+GameComponent *-- HandComponent
+GameComponent *-- GridComponent
+GameComponent *-- SidebarComponent
+@enduml

@@ -1,0 +1,23 @@
+=== Struttura dei componenti della View
+:pumldir: ./assets/puml
+:xrefstyle: short
+:figure-caption: Figura
+:listing-caption: Listato
+
+Il game component rappresenta la radice della gerarchia di componenti JavaFX che forma la GUI mostrata all'utente durante le fasi di gioco.
+
+[#game-component-class-diagram]
+.Diagramma delle classi dei componenti che formano la GUI durante le fasi di gioco.
+[plantuml, game-component, format="svg"]
+----
+include::{pumldir}/game.component.puml[]
+----
+
+In <<game-component-class-diagram>> è mostrata l'organizzazione dei componenti di gioco. Si osserva che i tre principali componenti sono la barra laterale, la griglia e la mano del giocatore.
+
+La barra laterale è composta da diversi sotto-componenti, ovvero:
+
+- *GameInfoComponent*: riporta le informazioni sul numero del turno, sul giocatore corrente e sullo stato di gioco.
+- *DeckComponent*: permette di ripescare le carte ed eventualmente di annullare la procedura se necessario.
+- *WindRoseComponent*: mostra la direzione del vento corrente e permette di cambiarla se si gioca una carta vento.
+- *DiceComponent*: permette di aggiornare in modo pseudocasuale la direzione del vento.
