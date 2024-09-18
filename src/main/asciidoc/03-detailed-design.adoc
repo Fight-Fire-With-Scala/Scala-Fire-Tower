@@ -642,6 +642,9 @@ get_all_cards_result(R) :-
 ----
 
 == View
+[#game]
+.Immagine del gioco
+image::start-game.png[align=center]
 
 === Inizializzazione e GameComponent
 
@@ -732,6 +735,10 @@ Inoltre viene gestito il suo stato di highlight tramite il CardHighlightManager,
 
 
 ==== MenuComponent
+[#menu]
+.Immagine del menu
+image::start-screen.png[align=center]
+
 Il MenuComponent è un componente della View che gestisca l'interfaccia utente
 del menu di gioco.
 
