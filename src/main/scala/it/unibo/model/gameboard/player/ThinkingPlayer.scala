@@ -13,7 +13,7 @@ import it.unibo.model.effect.pattern.PatternEffect.{ BotComputation, PatternAppl
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
-import it.unibo.model.gameboard.GamePhase
+import it.unibo.model.gameboard.{ GameBoard, GamePhase }
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.{ Position, Token }
 import it.unibo.model.gameboard.player.ThinkingPlayer.handleMove
@@ -23,7 +23,7 @@ import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
 
 trait ISendMessages:
-  protected def onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit
+  protected def onUpdateGamePhaseRequest(model: Model, phaseEffect: PhaseEffect): Unit
 
 trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
   val botBehaviour: BotBehaviour
@@ -49,7 +49,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     DecisionMaker.setObjectiveTower(gb.getOpponent.towerPositions.map(_.position))
     val effect = BotComputation(Map(None -> List(logicEffect)))
     handleMoveAndApplyEffect(model, effect)
-    onUpdateGamePhaseRequest(PhaseEffect(WaitingPhase))
+    onUpdateGamePhaseRequest(model, PhaseEffect(WaitingPhase))
 
   protected def thinkForWaitingPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForWaitingPhase")
@@ -59,8 +59,8 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     val containsDeReforest =
       filteredCards.exists(card => card.effect.effectId == FirebreakEffect.DeReforest.effectId)
     if filteredCards.isEmpty || (containsDeReforest && !isFireBreakTokenInBoard(gb)) then
-      onUpdateGamePhaseRequest(PhaseEffect(RedrawCardsPhase))
-    else onUpdateGamePhaseRequest(PhaseEffect(PlayStandardCardPhase))
+      onUpdateGamePhaseRequest(model, PhaseEffect(RedrawCardsPhase))
+    else onUpdateGamePhaseRequest(model, PhaseEffect(PlayStandardCardPhase))
 
   protected def thinkForRedrawCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForRedrawCardPhase")
@@ -72,7 +72,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     val newGb               = gb.solveEffect(discardCardEffect).solveEffect(drawCardEffect)
     model.setGameBoard(newGb)
     logger.info(s"[BOT] hand after: ${newGb.getCurrentPlayer.hand}")
-    onUpdateGamePhaseRequest(PhaseEffect(DecisionPhase))
+    onUpdateGamePhaseRequest(model, PhaseEffect(DecisionPhase))
 
   protected def thinkForPlayStandardCardPhase(using model: Model): Unit =
     val decision = DecisionMaker.getAttackOrDefense
@@ -95,13 +95,13 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
       .toMap
     val botComputation = BotComputation(effects)
     handleMoveAndApplyEffect(model, botComputation)
-    onUpdateGamePhaseRequest(PhaseEffect(DecisionPhase))
+    onUpdateGamePhaseRequest(model, PhaseEffect(DecisionPhase))
 
   protected def thinkForDecisionPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForDecisionPhase")
     if isFireTokenInTowerArea(model.getGameBoard) then
-      onUpdateGamePhaseRequest(PhaseEffect(PlaySpecialCardPhase))
-    else onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
+      onUpdateGamePhaseRequest(model, PhaseEffect(PlaySpecialCardPhase))
+    else onUpdateGamePhaseRequest(model, PhaseEffect(EndTurnPhase))
 
   protected def thinkForPlaySpecialCardPhase(using model: Model): Unit =
     logger.info("[BOT] thinkForPlaySpecialCardPhase")
@@ -114,7 +114,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
         handleMoveAndApplyEffect(model, botComputation)
 
       case None =>
-    onUpdateGamePhaseRequest(PhaseEffect(EndTurnPhase))
+    onUpdateGamePhaseRequest(model, PhaseEffect(EndTurnPhase))
 
 object ThinkingPlayer:
   private def handleMove(lastMove: Option[Move]): (Option[Int], Map[Position, Token]) =

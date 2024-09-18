@@ -22,7 +22,8 @@ final class ViewSubscriber(val controller: ModelController)
   override val logger: Logger = Logger("View -> ViewSubscriber")
 
   override def onMessageReceived(msg: ViewMessage): Unit = msg match
-    case UpdateGamePhaseMessage(ef: PhaseEffect) => handleUpdateGamePhase(ef)
+    case UpdateGamePhaseMessage(ef: PhaseEffect) =>
+      handleUpdateGamePhase(ef)
 
     case UpdateWindDirectionMessage(ef: WindUpdateEffect) =>
       controller.applyEffect(ef, WindUpdate)

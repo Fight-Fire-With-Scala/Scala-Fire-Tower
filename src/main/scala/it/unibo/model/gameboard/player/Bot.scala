@@ -1,7 +1,6 @@
 package it.unibo.model.gameboard.player
 
 import it.unibo.controller.BotSubject
-import it.unibo.controller.model.ModelController
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.card.Card
 import it.unibo.model.effect.phase.PhaseEffect
@@ -26,10 +25,13 @@ final case class Bot(
   override def updatePlayer(moves: List[Move], hand: List[Card], extraCard: Option[Card]): Player =
     copy(moves = moves, hand = hand, extraCard = extraCard)
 
-  override def onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit =
+  override def onUpdateGamePhaseRequest(model: Model, phaseEffect: PhaseEffect): Unit =
     botObservable match
-      case Some(observable) => observable.onNext(UpdateGamePhaseMessage(phaseEffect))
-      case None             =>
+      case Some(observable) =>
+        model.getGameBoard.isGameEnded match
+          case Some(_) => observable.onNext(UpdateGamePhaseMessage(PhaseEffect(EndGamePhase)))
+          case None    => observable.onNext(UpdateGamePhaseMessage(phaseEffect))
+      case None =>
 
   override def think(using model: Model): Unit =
     logger.info("[BOT] Starting to think")

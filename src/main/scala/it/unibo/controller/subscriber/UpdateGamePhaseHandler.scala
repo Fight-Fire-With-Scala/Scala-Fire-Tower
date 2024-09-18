@@ -5,7 +5,7 @@ import it.unibo.model.ModelModule.Model
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Bot
-import it.unibo.controller.view.RefreshType.PhaseUpdate
+import it.unibo.controller.view.RefreshType.{EndGameUpdate, PhaseUpdate}
 
 trait UpdateGamePhaseHandler:
 
@@ -19,4 +19,10 @@ trait UpdateGamePhaseHandler:
     controller.applyEffect(ef, PhaseUpdate)
     gb.getCurrentPlayer match
       case b: Bot => b.think
-      case _      =>
+      case _ =>
+
+    controller.model.getGameBoard.isGameEnded match
+      case Some(_) => controller.applyEffect(ef, EndGameUpdate)
+      case None =>
+
+
