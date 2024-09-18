@@ -1,90 +1,75 @@
 cardSets:
   - title: "Explosion"
-    typeName: "Fire"
     description: "Choose an existing fire token and replace it 
     with a firebreak token. Place fire tokens on the surrounding spaces."
     effectCode: 1
     amount: 4
   - title: "Flare Up"
-    typeName: "Fire"
     description: "Place up to three adjacent and aligned fire tokens. 
     At least one of them must touch an existing fire token orthogonally."
     effectCode: 2
     amount: 3
   - title: "Burning Snag"
-    typeName: "Fire"
     description: "Place up to four fire tokens in the shape of a square. 
     At least one of them must touch an existing fire token orthogonally."
     effectCode: 3
     amount: 4
   - title: "Ember"
-    typeName: "Fire"
     description: "Move a fire token on the board to any space adjacent to
      another fire token orthogonally. You cannot move a fire token that is
      in one of the fire tower areas."
     effectCode: 4
     amount: 3
   - title: "North"
-    typeName: "Wind"
     description: "Change the wind direction to North. 
     OR Roll the die to choose a new wind direction. 
     OR Place a fire token to the North of another fire token."
     effectCode: 5
     amount: 4
   - title: "South"
-    typeName: "Wind"
     description: "Change the wind direction to South. 
     OR Roll the die to choose a new wind direction. 
     OR Place a fire token to the South of another fire token."
     effectCode: 6
     amount: 4
   - title: "East"
-    typeName: "Wind"
     description: "Change the wind direction to East. 
     OR Roll the die to choose a new wind direction. 
     OR Place a fire token to the East of another fire token."
     effectCode: 7
     amount: 4
   - title: "West"
-    typeName: "Wind"
     description: "Change the wind direction to West. 
     OR Roll the die to choose a new wind direction. 
     OR Place a fire token to the West of another fire token."
     effectCode: 8
     amount: 4
   - title: "Dozer Line"
-    typeName: "Firebreak"
     description: "Place two adjacent firebreak tokens on the board."
     effectCode: 9
     amount: 3
   - title: "Scratch Line"
-    typeName: "Firebreak"
     description: "Place two firebreak tokens on the board, with one space of distance between them."
     effectCode: 10
     amount: 3
   - title: "De/Reforest"
-    typeName: "Firebreak"
     description: "Add a firebreak token on the board. OR Remove a firebreak token from the board."
     effectCode: 11
     amount: 4
   - title: "Smokejumper"
-    typeName: "Water"
     description: "Choose a fire token on the board and remove the surrounding fire tokens.
      The fire token in the center must remain on the board."
     effectCode: 12
     amount: 4
   - title: "Air Drop"
-    typeName: "Water"
     description: "Remove up to three adjacent and aligned fire tokens from the board."
     effectCode: 13
     amount: 4
   - title: "Fire Engine"
-    typeName: "Water"
     description: "Remove up to four fire tokens that form a square on the board."
     effectCode: 14
     amount: 4
   - title: "Bucket"
-    typeName: "Water"
     description: "Remove up to three adjacent and aligned fire tokens from the board. 
     At least one of them must be in the area of your fire tower."
     effectCode: 15
