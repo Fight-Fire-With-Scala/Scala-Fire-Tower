@@ -18,5 +18,5 @@ trait IHaveSVGView[T]:
     svgPath
 
 object IHaveSVGView:
-  private val scaleFactor = 3.0
+  private val scaleFactor = 25.0
   private val color       = Color.web("#1b2b4c")
