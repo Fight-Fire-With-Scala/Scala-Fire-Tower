@@ -59,6 +59,9 @@ package view.gameboard.grid {
     + getGraphicPane: Pane
   }
 
+  class ICanBeDisabled << (T,lightblue)>>{
+    }
+
 }
 
 GridComponent --> GridEventHandler
@@ -68,5 +71,6 @@ GridEventHandler --> GridHoverHandler
 GridComponent --> GridSquare
 GridClickHandler --> GridSquare
 GridHoverHandler --> GridSquare
+GridSquare ..|> ICanBeDisabled
 
 @enduml
