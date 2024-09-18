@@ -1,0 +1,13 @@
+@startuml
+autonumber
+
+'PlayCardPhase - grid (compass and dice) enabled - click - switch to ExtraActionPhase
+alt (grid clicked)
+    View -> Model: ResolvePatternChoice
+else (dice or compass clicked)
+    View -> Model: UpdateWindDirection
+end
+Model --> View: RefreshMessage
+View -> Model: UpdateGamePhase(ExtraActionPhase)
+Model --> View: RefreshMessage
+@enduml

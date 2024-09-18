@@ -1,0 +1,8 @@
+@startuml
+autonumber
+'WindPhase - only grid enabled - click on grid - switch to WaitingPhase
+View -> Model: ResolvePatternChoice
+Model --> View: RefreshMessage
+View -> Model: UpdateGamePhase(WaitingPhase)
+Model --> View: RefreshMessage
+@enduml

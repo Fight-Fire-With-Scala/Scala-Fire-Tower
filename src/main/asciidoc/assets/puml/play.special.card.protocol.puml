@@ -1,0 +1,15 @@
+@startuml
+autonumber
+
+'Toggle highlight on special card - grid enabled - can only be done to play it, not to discard
+alt (same card clicked)
+    View -> Model: ResetPatternComputation
+else (another card clicked)
+    View -> Model: ResolvePatternComputation
+end
+View -> Model: ResolvePatternChoice
+
+'If no special card in hand or playable, skip ExtraActionPhase and switch to WindPhase automatically
+'ExtraActionPhase - end turn button and special cards enabled only - switch to WindPhase
+View -> Model: UpdateGamePhase(WindPhase)
+@enduml

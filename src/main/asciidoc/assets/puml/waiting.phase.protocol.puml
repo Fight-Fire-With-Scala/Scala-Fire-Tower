@@ -1,0 +1,36 @@
+@startuml
+autonumber
+
+'Toggle discard cards on deck - requires pressing a button - WaitingPhase ↔ RedrawCardsPhase
+    alt (discard button pressed)
+        View -> InternalView: InitializeDiscardProcedureMessage
+        View -> Model: UpdateGamePhase(RedrawCardsPhase)
+
+        'RedrawCardsPhase - hand and deck enabled
+        'Toggle highlight on standard card
+        View -> InternalView: ToggleCardInListMessage
+
+        alt (discard button confirmation pressed)
+            View -> InternalView: ConfirmDiscardMessage
+            View -> Model: DiscardCardMessage
+            View -> Model: DrawCardMessage
+            View -> Model: UpdateGamePhase(ExtraActionPhase)
+        else (discard button cancellation pressed)
+            View -> InternalView: CancelDiscardMessage
+            View -> Model: UpdateGamePhase(WaitingPhase)
+        end
+    else (card clicked)
+        'WaitingPhase - hand and deck enabled
+        'Toggle highlight on standard card - WaitingPhase ↔ PlayCardPhase
+        View -> InternalView: CandidateCardToPlayMessage
+        alt (same card clicked)
+            View -> Model: ResetPatternComputation
+            View -> Model: UpdateGamePhase(WaitingPhase)
+            Model --> View: RefreshMessage
+        else (another card clicked)
+            View -> Model: ResolvePatternComputation
+            View -> Model: UpdateGamePhase(PlayCardPhase)
+            Model --> View: RefreshMessage
+        end
+    end
+@enduml

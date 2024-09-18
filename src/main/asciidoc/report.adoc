@@ -1,24 +1,45 @@
-= Scaletta
+= Scala Fire Tower
+:figure-caption: Figura
+:section-refsig: Sezione
+:table-caption: Tabella
+:xrefstyle: short
+:imagesdir: ../../assets/images
+:sectnums:
+:note-caption: Nota
+
+Università di Bologna · Campus di Cesena
+
+Corso di Laurea Magistrale in Ingegneria e Scienze Informatiche
+
+'''
+
+|=======
+|[.normalize]#Alessandro Becci# |[.normalize]#0001034968#
+|[.normalize]#Luca Tonelli# |[.normalize]#0001034968#
+|[.normalize]#Riccardo Battistini# |[.normalize]#0001034968#
+|=======
+
+<<<
+
+<<<
 
 == Introduzione (INSIEME)
 
+include::00-introduction.adoc[]
+
 == Requisiti (INSIEME)
 
-=== Business
-
-=== Utente
-
-=== Funzionali
-
-=== Non funzionali
-
-=== Implementazione
+include::01-requirements.adoc[]
 
 == Design architetturale (INSIEME)
 
 Descrizione del pattern architetturale utilizzato (MVC + Cake)
 
+include::02-architectural-design.adoc[]
+
 == Design di dettaglio
+
+include::03-detailed-design.adoc[]
 
 diagramma degli stati
 
@@ -68,6 +89,8 @@ diagramma dei package
 
 == Retrospettiva
 
+include::04-retrospective.adoc[]
+
 === Processo di sviluppo
 
 ==== Meeting e interazioni pianificate
@@ -95,3 +118,5 @@ diagramma dei package
 == Sviluppi futuri (INSIEME)
 
 == Guida Utente (INSIEME)
+
+include::05-user-guide.adoc[]
