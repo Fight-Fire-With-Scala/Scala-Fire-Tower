@@ -1,7 +1,8 @@
 package it.unibo.model.effect.core
 
-import it.unibo.model.effect.card.{ BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect }
-import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
+import it.unibo.model.card.{ICanBeDiscarded, ICanBePlayedAsExtra, ICannotBeDiscarded}
+import it.unibo.model.effect.card.{BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect}
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
 
 trait IStandardCardEffect extends ICardEffect with ICanBeDiscarded
 
@@ -11,6 +12,7 @@ sealed trait ICardEffect extends IGameEffect:
   val effectId: Int
 
 object ICardEffect:
+  // tag::contextualLogicEffect[]
   given Conversion[ICardEffect, ILogicEffect] = convert(_)
 
   def convert(effect: ICardEffect): ILogicEffect = effect match
@@ -25,6 +27,7 @@ object ICardEffect:
       e match
         case BucketEffect => BucketEffect.bucketEffect
         case _            => ILogicEffect()
+  // end::contextualLogicEffect[]
 
   given Conversion[List[ICardEffect], List[ILogicEffect]] = _.map(e => convert(e))
 

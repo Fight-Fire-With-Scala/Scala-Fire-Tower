@@ -1,6 +1,6 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.card.Card
+import it.unibo.model.card.{Card, ICanBePlayedAsExtra}
 import it.unibo.model.effect.MoveEffect.{BotChoice, CardChosen}
 import it.unibo.model.effect.core.*
 import it.unibo.model.effect.hand.HandEffect.playCard

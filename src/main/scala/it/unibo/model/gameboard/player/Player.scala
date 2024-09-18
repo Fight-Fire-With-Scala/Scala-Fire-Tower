@@ -1,8 +1,7 @@
 package it.unibo.model.gameboard.player
 
-import it.unibo.model.card.Card
+import it.unibo.model.card.{Card, ICanBePlayedAsExtra}
 import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.core.ICanBePlayedAsExtra
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.grid.TowerPosition
 

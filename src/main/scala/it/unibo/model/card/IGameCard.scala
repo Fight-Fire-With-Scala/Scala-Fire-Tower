@@ -1,4 +1,6 @@
-package it.unibo.model.effect.core
+package it.unibo.model.card
+
+import it.unibo.model.effect.core.ICardEffect
 
 trait ICanBeDiscarded
 
@@ -6,8 +8,8 @@ trait ICanBePlayedAsExtra
 
 trait ICannotBeDiscarded
 
-trait IGameCard[CardEffect <: ICardEffect]:
+trait IGameCard:
   val id: Int
   val title: String
   val description: String
-  val effect: CardEffect
+  val effect: ICardEffect

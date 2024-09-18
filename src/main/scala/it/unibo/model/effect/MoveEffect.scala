@@ -7,13 +7,14 @@ import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.player.{ Bot, Move, Person }
+import it.unibo.model.gameboard.Pattern
 
 enum MoveEffect extends IGameEffect:
   case CardsRedrawn(cards: List[Int])
-  case CardChosen(card: Card, computedPatterns: Set[Map[Position, Token]])
-  case BotChoice(cardId: Int, patternChosen: Map[Position, Token])
-  case PatternChosen(computedPatterns: Set[Map[Position, Token]])
-  case PatternApplied(chosenPattern: Map[Position, Token])
+  case CardChosen(card: Card, computedPatterns: Set[Pattern])
+  case BotChoice(cardId: Int, patternChosen: Pattern)
+  case PatternChosen(computedPatterns: Set[Pattern])
+  case PatternApplied(chosenPattern: Pattern)
 
 object MoveEffect:
   private def solveMove(effect: MoveEffect, gb: GameBoard): GameBoardEffect =
@@ -24,7 +25,7 @@ object MoveEffect:
 
   def logPatternChosen(
       gb: GameBoard,
-      availablePatterns: Set[Map[Position, Token]]
+      availablePatterns: Set[Pattern]
   ): GameBoardEffect =
     val move = PatternChosen(availablePatterns)
     MoveEffect.solveMove(move, gb)
@@ -32,7 +33,7 @@ object MoveEffect:
   def logBotChoice(
       gb: GameBoard,
       cardId: Int,
-      patternChosen: Map[Position, Token]
+      patternChosen: Pattern
   ): GameBoardEffect =
     val move = MoveEffect.BotChoice(cardId, patternChosen)
     MoveEffect.solveMove(move, gb)
@@ -40,12 +41,12 @@ object MoveEffect:
   def logCardChosen(
       gb: GameBoard,
       card: Card,
-      availablePatterns: Set[Map[Position, Token]]
+      availablePatterns: Set[Pattern]
   ): GameBoardEffect =
     val move = MoveEffect.CardChosen(card, availablePatterns)
     MoveEffect.solveMove(move, gb)
 
-  def logPatternApplied(gb: GameBoard, pattern: Map[Position, Token]): GameBoardEffect =
+  def logPatternApplied(gb: GameBoard, pattern: Pattern): GameBoardEffect =
     val move = PatternApplied(pattern)
     MoveEffect.solveMove(move, gb)
 

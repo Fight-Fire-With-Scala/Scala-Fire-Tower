@@ -1,11 +1,11 @@
 package it.unibo.model.effect.card
 
 import it.unibo.model.effect.core.{ DefensiveEffect, IStandardCardEffect, LogicEffectSolver }
-import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
-import it.unibo.model.gameboard.PatternType.LargeEffect
-import it.unibo.model.gameboard.PatternType.MediumEffect
-import it.unibo.model.gameboard.PatternType.VeryLargeEffect
-import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Map
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
+import it.unibo.model.gameboard.PatternType.LargePattern
+import it.unibo.model.gameboard.PatternType.MediumPattern
+import it.unibo.model.gameboard.PatternType.VeryLargePattern
+import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Pattern
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Water
 import it.unibo.model.prolog.Rule
@@ -19,9 +19,9 @@ object WaterEffect:
   val waterEffectSolver: LogicEffectSolver[WaterEffect] = LogicEffectSolver:
     case SmokeJumper =>
       DefensiveEffect(
-        VeryLargeEffect(Map("a" -> Water, "b" -> Fire)),
+        VeryLargePattern(Map("a" -> Water, "b" -> Fire)),
         Rule("smoke_jumper")
       )
-    case AirDrop => DefensiveEffect(MediumEffect(Map("a" -> Water)), Rule("water"))
+    case AirDrop => DefensiveEffect(MediumPattern(Map("a" -> Water)), Rule("water"))
     case FireEngine =>
-      DefensiveEffect(LargeEffect(Map("a" -> Water)), Rule("water"))
+      DefensiveEffect(LargePattern(Map("a" -> Water)), Rule("water"))

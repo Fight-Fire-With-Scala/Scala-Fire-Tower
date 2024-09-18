@@ -7,7 +7,7 @@ import it.unibo.model.gameboard.grid.{ Position, Token }
 
 class FireCardRulesSpec extends AbstractCardSolverSpec:
 
-  override val defaultTokens: Map[Position, Token] = Map(Position(1, 2) -> Fire)
+  override val defaultTokens: Pattern = Map(Position(1, 2) -> Fire)
 
   "A fire card" should:
     "provide the correct choices to solve the explosion card" in:
