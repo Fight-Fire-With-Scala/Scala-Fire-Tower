@@ -17,9 +17,3 @@ final case class SingleStepEffect(computations: List[ILogicComputation]) extends
 object SingleStepEffect:
   given Conversion[ILogicComputation, SingleStepEffect]       = SingleStepEffect(_)
   given Conversion[List[ILogicComputation], SingleStepEffect] = SingleStepEffect(_)
-
-final case class MultiStepEffect(computations: List[ILogicComputation]) extends ILogicEffect
-
-object MultiStepEffect:
-  given Conversion[ILogicComputation, MultiStepEffect]       = MultiStepEffect(_)
-  given Conversion[List[ILogicComputation], MultiStepEffect] = MultiStepEffect(_)
