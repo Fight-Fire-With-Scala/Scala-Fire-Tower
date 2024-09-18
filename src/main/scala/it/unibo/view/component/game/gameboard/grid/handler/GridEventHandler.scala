@@ -14,12 +14,12 @@ class GridEventHandler(
     observableSubject: ViewSubject,
     squareMap: mutable.Map[Position, GridSquare]
 ):
-  private val gridState = new GridState(squareMap)
-
+  private given gridState : GridState = new GridState(squareMap)
+  private given _squareMap: mutable.Map[Position, GridSquare] = squareMap
   private val clickHandler =
-    new GridClickHandler(observableSubject, squareMap, gridState)
+    new GridClickHandler(observableSubject)
 
-  private val hoverHandler = new GridHoverHandler(squareMap, gridState)
+  private val hoverHandler = new GridHoverHandler()
 
   def updateGamePhase(gamePhase: GamePhase): Unit = gridState.currentGamePhase = gamePhase
 
