@@ -1,0 +1,74 @@
+@startuml
+hide empty members
+skinparam shadowing false
+
+package model.gameboard.grid {
+  class Grid << (T,lightblue) companion object >> {
+    +Map[Position, Cell] cells
+    +Map[Position, Token] tokens
+    +Option[Cell] getCell(Position position)
+    +Option[Token] getToken(Position position)
+    +Grid setCell(Position position, Cell cell)
+    +Grid setTokens((Position, Token)... tokens)
+    +Grid update((Position, Cell)... updates)
+  }
+
+  class BasicGrid {
+    -Map[Position, Cell] _cells
+    -Map[Position, Token] _tokens
+    +Map[Position, Cell] cells
+    +Map[Position, Token] tokens
+    +Boolean isValidPosition(Position position)
+  }
+
+  class GridBuilder {
+      -Grid grid
+      -Int indexOfNextCell
+      +GridBuilder setNextCell(Cell cell)
+      +GridBuilder nextRow(Int repeats)
+      +Position nextPosition()
+      +Grid build()
+      {static} +GridBuilder configure(GridBuilder builderConfiguration)
+    }
+
+  class GridDefinitions {
+    {static} +Grid standard
+    {static} +Grid endGame
+  }
+
+  class TowerPositionManager {
+    {static} +Set[Position] getTowerCells(Map[Position, Cell] cells, Set[TowerPosition] towerPosition)
+  }
+
+  class Grid {
+  }
+
+  enum Token << (E, orange) >> {
+    +String id
+    +Color color
+  }
+
+  enum ConcreteToken << (E, orange) >> {
+    Firebreak
+    Fire
+    Water
+    Reforest
+    Empty
+  }
+
+  enum Cell << (E, orange) >> {
+    EternalFire
+    Woods
+    Tower
+  }
+
+  Grid --|> BasicGrid
+  Grid --> GridBuilder
+  Grid --> GridDefinitions
+  Grid --> TowerPositionManager
+  Grid --> Token
+  Grid --> Cell
+  Token <|-- ConcreteToken
+}
+
+@enduml

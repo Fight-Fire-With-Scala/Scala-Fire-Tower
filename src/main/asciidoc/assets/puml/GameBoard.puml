@@ -1,0 +1,84 @@
+@startuml
+
+package model.gameboard {
+  class GameBoard {
+    - Board board
+    - Deck deck
+    - Player player1
+    - Player player2
+    - PlayerToggle playerManager
+    - int turnNumber
+    - GamePhase gamePhase
+    + isGameEnded(): Option[Player]
+    + getCurrentPlayer(): Player
+    + getOpponent(): Player
+    + updateCurrentPlayer(player: Player): GameBoard
+    + changePlayer(): GameBoard
+    + solveEffect(effect: IGameEffect): GameBoard
+  }
+
+  class Board {
+    - Grid grid
+    - Direction windDirection
+    + isOnFire(towerPosition: TowerPosition): Boolean
+    + withRandomWindAndStandardGrid(): Board
+    + withRandomWindAndEndgameGrid(): Board
+  }
+
+  class Deck {
+    - List[Card] standardCards
+    - List[Card] specialCards
+    - List[Card] playedCards
+    + shuffle(): Deck
+    + drawCard(): (Option[Card], Deck)
+    + drawSpecialCard(): (Option[Card], Deck)
+    - regenerate(): Deck
+  }
+
+  class Player {
+  }
+
+  class PlayerToggle {
+    + getCurrentState(): Player
+    + toggle(): Unit
+  }
+
+  enum GamePhase << (E, orange) >> {
+    WindPhase
+    RedrawCardsPhase
+    PlayStandardCardPhase
+    WaitingPhase
+    PlaySpecialCardPhase
+    EndTurnPhase
+    DecisionPhase
+    EndGamePhase
+  }
+
+  class IGameEffect
+  class Card
+  class Move
+  class TowerPosition
+  class Grid
+  class Direction
+  class GameBoardManager << (T, lightblue) >> {
+    + gameBoardEffectSolver(gb: GameBoard, effect: IGameEffect): GameBoard
+  }
+}
+
+GameBoard --> Board
+GameBoard --> Deck
+GameBoard --> Player : player1
+GameBoard --> Player : player2
+GameBoard --> PlayerToggle
+GameBoard --> GamePhase
+GameBoard --> IGameEffect
+Board --> Grid
+Board --> Direction
+Deck --> Card
+Player --> Move
+Player --> Card
+Player --> TowerPosition
+PlayerToggle --> Player
+GameBoard -up-|> GameBoardManager
+
+@enduml

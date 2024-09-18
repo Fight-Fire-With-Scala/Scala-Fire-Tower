@@ -1,0 +1,37 @@
+:pumldir: ./assets/puml
+
+[plantuml, format="svg"]
+----
+include::{pumldir}/GameBoard.puml[]
+----
+
+La *GameBoard* è la parte cruciale del model dell'applicazione.
+Parlerò delle classi principali che lo compongono e del loro ruolo.
+
+- GameBoard: Contiene un riferimento alla Board, che a sua volta contiene la Grid e la direzione del
+vento, insieme al mazzo di carte (Deck) e ai due giocatori. C'è anche un riferimento al PlayerManager,
+che consente di gestire il turno dei giocatori.
+Infine, contiene il numero del turno e la fase di gioco corrente.
+Offre la possibilità di ottenere i giocatori, di gestirli (cambio turno), di determinare se qualche giocatore
+ha vinto sull'altro, e di poter risolvere gli effetti di gioco (IGameEffect) tramite il metodo solveEffect racchiuso
+nel trait GameBoardManager.
+- Board: Rappresenta la griglia di gioco e la direzione del vento. Offre metodi per verificare se una torre è in
+fiamme e per generare configurazioni standard e di fine gioco della griglia.
+- Deck: Gestisce il mazzo di carte, inclusa la miscelazione, la pesca di carte standard e speciali,
+e la rigenerazione del mazzo.
+- Player: Rappresenta un giocatore nel gioco, con il suo nome, le mosse effettuate, le carte in mano,
+una carta extra opzionale e le posizioni delle torri.
+- PlayerToggle: Gestisce il turno dei giocatori. Ad esempio per cambiare il turno verrà usato il metodo toggle.
+- GamePhase: Enumera le diverse fasi del gioco, come la fase del vento, la fase di ridistribuzione delle carte,
+la fase di gioco delle carte standard, ecc.
+
+Componente fondamentale della GameBoard è la Grid, che gestisce la griglia di gioco.
+
+[plantuml, format="svg"]
+----
+include::{pumldir}/Grid.puml[]
+----
+
+La Grid si compone di due parti:
+- Il trait Grid, che definisce l'interfaccia base per la griglia. Contiene i metodi per ottenere e impostare le celle
+e i token. Per aggiornarla
