@@ -329,7 +329,7 @@ In <<pattern-types>> sono mostrati i possibili pattern riportati dalle carte, ch
 
 [#pattern-types]
 .Rappresentazione delle tipologie di pattern della griglia.
-image::assets/images/pattern-types.svg[align=center]
+image::img.png[align=center]
 
 Gli effetti di applicazione dei pattern delle carte possono essere suddivisi in due categorie principali: effetti difensivi ed effetti offensivi.
 Come si osserva in <<logic-effect-types-class-diagram>>, entrambe le tipologie di effetti estendono `ILogicComputation`, dato che incapsulano i parametri richiesti per il calcolo in Prolog.
@@ -518,8 +518,7 @@ teorie che codificano lo stato della board.
 partendo dalla teoria di calcolo dei pattern disponibili per una carta
 integrandola con la posizione delle torri da bersagliare e teorie di utility che permettono di eseguire una
 ricorsione tra torri e pattern per definire la posizione migliore su cui piazzare il pattern.
-viene quindi infine composta da
-TODO
+
 La teoria è formata dai seguenti componenti:
 
 * *GridTheory*: che ricostruisce la griglia di gioco in prolog
@@ -778,7 +777,7 @@ In <<start-game-sequence-diagram>> è mostrato il protocollo utilizzato durante 
 .Diagramma di sequenza che mostra lo scambio di messaggi durante l'avvio del gioco.
 [plantuml, start-game-protocol, format="svg"]
 ----
-include::{pumldir}/start.game.protocol.puml
+include::./assets/puml/start.game.protocol.puml
 ----
 
 In <<wind-phase-sequence-diagram>> è mostrato il protocollo utilizzato durante la `WindPhase`.
