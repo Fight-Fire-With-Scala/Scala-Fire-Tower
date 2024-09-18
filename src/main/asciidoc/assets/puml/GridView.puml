@@ -1,0 +1,72 @@
+@startuml
+
+package view.gameboard.grid {
+  class GridComponent {
+    - container: StackPane
+    - gamePhase: GamePhase
+    - squareMap: mutable.Map[Position, GridSquare]
+    - gridEventHandler: GridEventHandler
+    + setAvailablePatterns(patterns: Set[Map[Position, Token]], cardEffect: Int): Unit
+    + onEnableView(): Unit
+    + onDisableView(): Unit
+    + updateGrid(grid: Grid, currentTowerPositions: Set[Position], gamePhase: GamePhase): Unit
+  }
+
+  class GridEventHandler {
+    - gridState: GridState
+    - clickHandler: GridClickHandler
+    - hoverHandler: GridHoverHandler
+    + updateGamePhase(gamePhase: GamePhase): Unit
+    + updateAvailablePatterns(ap: Set[Map[Position, Token]]): Unit
+    + setEffectCode(cardEffect: Int): Unit
+    + handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit
+    + handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection, gamePhase: GamePhase): Unit
+  }
+
+  class GridState {
+    - squareMap: mutable.Map[Position, GridSquare]
+    - hoveredCells: mutable.Map[Position, Color]
+    - availablePatterns: Set[Map[Position, Token]]
+    - effectCode: Int
+    - currentGamePhase: GamePhase
+    + resetHoverColors(): Unit
+  }
+
+  class GridClickHandler {
+    - observableSubject: ViewSubject
+    - squareMap: mutable.Map[Position, GridSquare]
+    - gridState: GridState
+    + handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit
+  }
+
+  class GridHoverHandler {
+    - squareMap: mutable.Map[Position, GridSquare]
+    - gridState: GridState
+    + handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection, gamePhase: GamePhase): Unit
+  }
+
+  class GridSquare {
+    - row: Int
+    - col: Int
+    - size: Double
+    - squareColor: Color
+    - onHover: (Int, Int, HoverDirection) => Unit
+    - onClick: (Int, Int) => Unit
+    + enableView(): Unit
+    + disableView(): Unit
+    + updateColor(color: Color): Unit
+    + getColor: Color
+    + getGraphicPane: Pane
+  }
+
+}
+
+GridComponent --> GridEventHandler
+GridEventHandler --> GridState
+GridEventHandler --> GridClickHandler
+GridEventHandler --> GridHoverHandler
+GridComponent --> GridSquare
+GridClickHandler --> GridSquare
+GridHoverHandler --> GridSquare
+
+@enduml

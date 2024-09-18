@@ -1,0 +1,28 @@
+:pumldir: ./assets/puml
+
+[plantuml, format="svg"]
+----
+include::{pumldir}/GridView.puml[]
+----
+
+I componenti fondamentali della parte di view che gestisce la griglia sono:
+
+- GridComponent: è il componente principale che gestisce la griglia di gioco. In particolare, ne gestisce
+l'inizializzazione tramite GridInitializer che crea l'insieme delle celle GridSquare associandole agli handler
+gestiti da GridEventHandler. Inoltre, si occupa di aggiornare la griglia in base alla fase di gioco e alle posizioni
+attuali delle torri.
+
+- GridEventHandler: è il componente che coordina gli eventi di click e hover sulla griglia. Utilizza altre due classi:
+GridClickHandler e GridHoverHandler per gestire rispettivamente gli eventi di click e hover, a cui passa tramite given
+la squareMap, cioè la mappa delle celle della griglia, e gridState, che mantiene lo stato della griglia.
+
+- GridClickHandler: si focalizza sulla gestione dei click sulla griglia, eseguendo azioni specifiche in base alla fase
+di gioco e alla posizione cliccata.
+
+- GridHoverHandler: si occupa della gestione degli eventi di hover sulla griglia, aggiornando lo stato della griglia in
+relazione alle celle in hover.
+
+- GridSquare: rappresenta una singola cella della griglia di gioco. Gestisce gli eventi di hover e click su di esse, permettendo
+anche la sua disabilitazione/attivazione tramite il tratto ICanBeDisabled.
+
+- GridState: mantiene lo stato corrente della griglia, permettendo di adattarsi a tutte le situazioni richieste.
