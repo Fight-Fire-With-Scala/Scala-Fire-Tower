@@ -4,8 +4,6 @@ https://docs.asciidoctor.org/asciidoc/latest/
 
 === Requisiti di business
 
-link:https://[Regolamento ufficiale]
-
 * Il gioco deve permettere lo svolgimento di una partita, interagendo con le entità del gioco e in accordo con il regolamento ufficiale del gioco.
 ** Possibilità di piazzare dei token fuoco o tagliafuoco sulla griglia.
 ** Possibilità di pescare e scartare carte e di scartare una carta dopo che è stata giocata.

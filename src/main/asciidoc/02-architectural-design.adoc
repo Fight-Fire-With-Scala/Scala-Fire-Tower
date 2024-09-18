@@ -1,0 +1,34 @@
+== Design architetturale
+
+Si è deciso di utilizzare il pattern architetturale Model View Controller
+con CAKE pattern. Successivamente questa scelta architetturale è stata
+sviluppata con l'introduzione del paradigma basato sullo scambio di
+messaggi, rispettando comunque i vincoli relativi all'interazione
+tra i singoli componenti definiti nell'architettura originale.
+
+Abbiamo scelto di utilizzare il CAKE pattern poiché ci ha garantito:
+
+- Separazione delle Responsabilità
+- Modularità e Composizione
+
+[#architecture-class-diagram]
+.Diagramma delle classi dei principali componenti dell'architettura.
+[plantuml, format="svg"]
+----
+class ModelModule
+
+class ControllerModule
+
+class ViewModule
+
+ViewModule --> ControllerModule: send user input notification
+ModelModule <-- ControllerModule: forward user input notification from view
+ModelModule --> ControllerModule: refresh the view
+ControllerModule --> ViewModule: forward refresh view request from model
+----
+
+La View comunica con il Model tramite il Controller per inviare notifiche sulle
+interazioni dell'utente con la GUI, ad esempio per notificare il gioco di una carta.
+Il Model comunica con la View tramite il Controller per aggiornare la sua rappresentazione
+grafica, ad esempio per inviare gli aggiornamenti sulla griglia di gioco. Il Controller
+inoltra i messaggi di ciascuno dei due componenti all'altro e funge da ponte.

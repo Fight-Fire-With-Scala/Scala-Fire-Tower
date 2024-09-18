@@ -1,55 +1,8 @@
-= Scala Fire Tower
-:figure-caption: Figura
-:section-refsig: Sezione
-:table-caption: Tabella
-:xrefstyle: short
-:imagesdir: ./assets/images
-:sectnums:
-:note-caption: Nota
-:pumldir: ./assets/puml
-:srcdir: ../
-:xrefstyle: short
-:listing-caption: Listato
-
-Università di Bologna · Campus di Cesena
-
-Corso di Laurea Magistrale in Ingegneria e Scienze Informatiche
-
-'''
-
-|=======
-|[.normalize]#Alessandro Becci# |[.normalize]#0001125114#
-|[.normalize]#Luca Tonelli# |[.normalize]#0001034968#
-|[.normalize]#Riccardo Battistini# |[.normalize]#0001034968#
-|=======
-
-<<<
-
-<<<
-
-include::00-introduction.adoc[]
-
-include::01-requirements.adoc[]
-
-
-include::02-architectural-design.adoc[]
-
-== Design di dettaglio
-
-include::03-detailed-design.adoc[]
-
-=== Organizzazione del codice/Struttura dei package
-
-diagramma dei package
-
-== Retrospettiva
-
-include::04-retrospective.adoc[]
-
 === Processo di sviluppo
 
 Il gruppo ha adottato una metodologia agile per lo sviluppo del progetto,
-seguendo una forma di scrum meno stringente per adattarsi alle difficoltà e agli imprevisti, senza compromettere l’organizzazione del lavoro.
+seguendo una forma di scrum meno stringente per adattarsi alle difficoltà e agli imprevisti,
+senza compromettere l’organizzazione del lavoro.
 
 Gli strumenti utilizzati per agevolare lo sviluppo includono:
 
@@ -60,17 +13,21 @@ Gli strumenti utilizzati per agevolare lo sviluppo includono:
 ** *GitHub Projects* e *GitHub Issues*.
 
 ==== Divisione in sprint
-Abbiamo deciso di dividere lo sviluppo dell'applicazione in sprint di 2 settimane ciascuno.
+
+Abbiamo deciso di dividere lo sviluppo dell'applicazione in sprint di circa due settimane ciascuno, ad
+eccezione dell'ultimo
+
 Ad ogni sprint era associata una riunione di inizio e una di fine per discutere del lavoro svolto e di quello futuro.
 Abbiamo utilizzato come strumento il backlog di GitHub per tenere traccia dei task da svolgere e di quelli completati.
 
 ==== Pianificazione dei task negli sprint
+
 Abbiamo utilizzato i concetti di Feature, User Story e Sprint Task per organizzare il lavoro.
 Le Feature venivano utilizzate per delineare una implementazione di una grossa parte di lavoro (come poteva essere la View del gioco).
 Le User Story venivano utilizzate per delineare una parte più piccola di lavoro, vista dal punto di vista dell'utente.
 Gli Sprint Task erano task della stessa dimensione della User Story, ma visti dal punto di vista
 
-Le issue permettono di tracciare e gestire in modo dettagliato task, bug e nuove funzionalità direttamente nei repository Git. Inoltre permettono di descrivere chiaramente le attività, di assegnare responsabili, assegnare tag e monitorare lo stato di avanzamento. La possibilità di collegare le issue ai commit facilita la tracciabilità delle modifiche e garantisce una maggiore trasparenza nel processo di sviluppo, fornendo accesso a un _issue log_ che riporta preziose informazioni storiche sull'andamento del progetto.
+Le issue permettono hanno permesso di tracciare e gestire in modo dettagliato task, bug e nuove funzionalità direttamente nei repository Git. Inoltre permettono di descrivere chiaramente le attività, di assegnare responsabili, assegnare tag e monitorare lo stato di avanzamento. La possibilità di collegare le issue ai commit facilita la tracciabilità delle modifiche e garantisce una maggiore trasparenza nel processo di sviluppo, fornendo accesso a un _issue log_ che riporta preziose informazioni storiche sull'andamento del progetto.
 
 Dato che le issue da sole non permettono di implementare in modo ottimale la metodologia Scrum è stato impiegato https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects[GitHub Projects]. Questo servizio permette di pianificare gli sprint e di creare una _Scrum board_, tenendo traccia sia del product backlog che dello sprint backlog, oltre che dei compiti che si stanno svolgendo o che devono essere vagliati durante la sprint review o che sono stati completati.
 
@@ -207,10 +164,6 @@ volta terminato.
 
 === Sprints
 
-[#sprint1]
-.Backlog dello sprint1
-image::sprint1.png[align=center]
-
 
 ==== Meeting
 All'inizio dello sviluppo, abbiamo deciso di fissare delle riunioni settimanali per discutere del backlog. Allo scopo
@@ -233,22 +186,3 @@ L'adozione dei commit convenzionali ha permesso di definire in modo univoco e st
 
 ==== Scelta degli strumenti di test/build/continuos integration
 
-
-
-==== Strumenti di qualità del codice
-
-==== Strumenti di CI/CD
-
-=== Suddivisione del lavoro
-
-==== Alessandro Becci
-
-==== Luca Tonelli
-
-==== Riccardo Battistini
-
-== Sviluppi futuri (INSIEME)
-
-== Guida Utente (INSIEME)
-
-include::05-user-guide.adoc[]

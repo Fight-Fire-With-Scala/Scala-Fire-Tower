@@ -1,4 +1,4 @@
-La GridTheory è una classe che rappresenta la logica per la costruzione
+La `GridTheory` è la classe che rappresenta la logica per la costruzione
 di una teoria Prolog basata sulla griglia di gioco nella sua interezza.
 
 Essa raggruppa vari tipi di iteratori, come quello delle celle, dei pattern, delle direzioni,
@@ -7,6 +7,9 @@ dei delta delle direzioni, e infine li combina tutti in uno unico per poterlo pa
 Essa permette di rappresentare la situazione di gioco nella sua interezza allo scopo
 di compiere vari calcolo, come quello della PatternComputation o delle decisioni del Bot.
 
+[#grid-theory-prolog]
+.Frammento di codice Prolog che mostra come è costruita la teoria relativa alla griglia di gioco.
+[source, prolog]
 ----
 cell((0,0),t).
 cell((0,1),t).
@@ -38,7 +41,6 @@ pattern((0,1),f,1).
 
 directions([north,south,east,west], 1).
 deltas([(-1,0),(1,0),(0,1),(0,-1)], 1).
-
 ----
 
 Qui sopra è raffigurato l'esempio della GridTheory in un caso ridotto, in cui la griglia sarebbe
