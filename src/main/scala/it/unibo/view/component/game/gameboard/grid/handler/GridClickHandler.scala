@@ -19,10 +19,8 @@ import it.unibo.view.component.game.gameboard.grid.GridState
 import it.unibo.view.logger
 
 class GridClickHandler(
-    observableSubject: ViewSubject,
-    squareMap: mutable.Map[Position, GridSquare],
-    gridState: GridState
-):
+    observableSubject: ViewSubject
+)(using _squareMap: mutable.Map[Position, GridSquare], gridState: GridState):
   def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit =
     val position = Position(row, col)
     gamePhase match
@@ -80,12 +78,12 @@ class GridClickHandler(
     gridState.availablePatternsClickFixed = gridState.availablePatterns.filter(_.contains(position))
     runOnUIThread:
       gridState.fixedCell += position -> gridState.hoveredCells(position)
-      squareMap(position).updateColor(pattern(position).color.deriveColor(1, 1, 1, 0.7))
+      _squareMap(position).updateColor(pattern(position).color.deriveColor(1, 1, 1, 0.7))
       gridState.hoveredCells.clear()
 
   private def deactivateFixedCellMode(position: Position): Unit =
     runOnUIThread:
-      squareMap(position).updateColor(gridState.fixedCell(position))
+      _squareMap(position).updateColor(gridState.fixedCell(position))
       gridState.fixedCell.clear()
     gridState.resetHoverColors()
     gridState.availablePatternsClickFixed = gridState.availablePatterns

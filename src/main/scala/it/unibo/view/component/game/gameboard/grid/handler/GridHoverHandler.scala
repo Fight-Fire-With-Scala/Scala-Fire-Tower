@@ -15,7 +15,7 @@ import it.unibo.view.component.game.gameboard.grid.GridState
 import it.unibo.view.component.game.gameboard.grid.HoverDirection
 import it.unibo.view.logger
 
-class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: GridState):
+class GridHoverHandler(using _squareMap: mutable.Map[Position, GridSquare], gridState: GridState):
   def handleCellHover(
       row: Int,
       col: Int,
@@ -48,8 +48,8 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
         pattern.foreach { case (position, token) =>
           if !gridState.fixedCell.contains(position) then
             runOnUIThread:
-              gridState.hoveredCells += position -> squareMap(position).getColor
-              squareMap(position).updateColor(token.color)
+              gridState.hoveredCells += position -> _squareMap(position).getColor
+              _squareMap(position).updateColor(token.color)
         }
       case _ =>
 
@@ -74,8 +74,8 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
       case None          =>
 
   private def updateHoveredCells(position: Position, token: Token): Unit = runOnUIThread:
-    gridState.hoveredCells += position -> squareMap(position).getColor
-    squareMap(position).updateColor(token.color)
+    gridState.hoveredCells += position -> _squareMap(position).getColor
+    _squareMap(position).updateColor(token.color)
 
   private def getNeighbor(startPosition: Position, hoverDirection: HoverDirection): Position =
     hoverDirection.direction match
