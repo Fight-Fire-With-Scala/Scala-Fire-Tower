@@ -9,7 +9,12 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import scalafx.scene.paint.Color
 
-class GridState(val squareMap: mutable.Map[Position, GridSquare]):
+/**
+ * The GridState class maintains the state of the grid, including hovered cells, fixed cells, available patterns, and the current game phase.
+ *
+ * @param squareMap the map of grid positions to GridSquare objects
+ */
+final class GridState(val squareMap: mutable.Map[Position, GridSquare]):
   val hoveredCells: mutable.Map[Position, Color]               = mutable.Map()
   val fixedCell: mutable.Map[Position, Color]                  = mutable.Map()
   var availablePatterns: Set[Map[Position, Token]]             = Set.empty

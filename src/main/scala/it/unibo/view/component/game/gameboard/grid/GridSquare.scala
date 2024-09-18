@@ -15,6 +15,16 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.Font
 import scalafx.scene.text.Text
 
+/**
+ * The GridSquare class represents a single square in the game grid.
+ * It handles mouse events for hover and click, and updates its color based on the game state.
+ *
+ * @param row     the row index of the grid square
+ * @param col     the column index of the grid square
+ * @param size    the size of the grid square
+ * @param onHover the function to call when the square is hovered
+ * @param onClick the function to call when the square is clicked
+ */
 final case class GridSquare(
     row: Int,
     col: Int,
