@@ -6,6 +6,10 @@
 :imagesdir: ../../assets/images
 :sectnums:
 :note-caption: Nota
+:pumldir: ./assets/puml
+:srcdir: ../
+:xrefstyle: short
+:listing-caption: Listato
 
 Università di Bologna · Campus di Cesena
 
@@ -81,7 +85,7 @@ protocolli di scambio dei messaggi
 
 Activation ALE
 Discard / PlayCardController / TONE
-Refresh RICK
+Refresh ALE
 
 === Organizzazione del codice/Struttura dei package
 
