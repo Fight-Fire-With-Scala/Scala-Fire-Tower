@@ -1,0 +1,82 @@
+@startuml
+hide empty members
+skinparam shadowing false
+
+package model.gameboard.player {
+  class Player << (T, lightblue) companion object >> {
+    + String name
+    + List[Move] moves
+    + List[Card] hand
+    + Option[Card] extraCard
+    + Set[TowerPosition] towerPositions
+    + drawCardFromDeck(card: Card): Player
+    + playCard(cardId: Int): (Player, Option[Card])
+    + logMove(move: Move): Player
+    + discardCards(cardIds: List[Int]): Player
+    # updatePlayer(moves: List[Move], hand: List[Card], extraCard: Option[Card]): Player
+    + Option[Move] lastCardsRedrawn
+    + Option[Move] lastCardChosen
+    + Option[Move] lastBotChoice
+    + Option[Move] lastPatternChosen
+    + Option[Move] lastPatternPlayed
+  }
+
+  class Person << (T, lightblue) >> {
+    # updatePlayer(moves: List[Move], hand: List[Card], extraCard: Option[Card]): Player
+  }
+
+  class Bot << (T, lightblue) >> {
+    - BotBehaviour botBehaviour
+    - Option[BotSubject] botObservable
+    # updatePlayer(moves: List[Move], hand: List[Card], extraCard: Option[Card]): Player
+    + onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit
+    + think(using model: Model): Unit
+  }
+
+  class Move << (T, lightblue) >> {
+    - int turnNumber
+    - MoveEffect effect
+  }
+
+  class IMakeDecision << (T, lightblue) >> {
+    # filterCardsBasedOnDecision(hand: List[Card], decision: AttackDefense): List[Card]
+    # isFireTokenInTowerArea(gb: GameBoard): Boolean
+    # isFireBreakTokenInBoard(gb: GameBoard): Boolean
+  }
+
+  class ISendMessages << (T, lightblue) >> {
+    # onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit
+  }
+
+  class ThinkingPlayer << (T, lightblue) >> {
+    - BotBehaviour botBehaviour
+    - Option[BotSubject] botObservable
+    + think(model: Model): Unit
+    - handleMoveAndApplyEffect(model: Model, patternEffect: PatternEffect): Unit
+    # thinkForWindPhase(using model: Model): Unit
+    # thinkForWaitingPhase(using model: Model): Unit
+    # thinkForRedrawCardPhase(using model: Model): Unit
+    # thinkForPlayStandardCardPhase(using model: Model): Unit
+    # thinkForDecisionPhase(using model: Model): Unit
+    # thinkForPlaySpecialCardPhase(using model: Model): Unit
+    - handleMove(lastMove: Option[Move]): (Option[Int], Map[Position, Token])
+  }
+
+
+  enum BotBehaviour << (E, orange) >> {
+    Aggressive
+    Balanced
+    Defensive
+  }
+}
+
+Player <|-- Person
+Player <|-- Bot
+Player <|-- ThinkingPlayer
+Player --> Move
+Bot --> BotBehaviour
+ThinkingPlayer <|-- Bot
+ThinkingPlayer <|.. ISendMessages
+ThinkingPlayer <|.. IMakeDecision
+
+@enduml
