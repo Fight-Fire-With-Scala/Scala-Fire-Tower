@@ -40,7 +40,6 @@ object Grid:
 
   def empty: Grid = BasicGrid()
 
-  // noinspection DuplicatedCode
   def standard: Grid = GridDefinitions.standard
 
   def endGame: Grid = GridDefinitions.endGame

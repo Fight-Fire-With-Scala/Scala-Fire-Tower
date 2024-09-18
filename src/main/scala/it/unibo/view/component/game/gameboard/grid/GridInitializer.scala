@@ -4,6 +4,10 @@ import scala.collection.mutable
 import it.unibo.model.gameboard.grid.Position
 import scalafx.scene.layout.GridPane
 
+/**
+ * The GridInitializer object is responsible for initializing the grid squares in the game grid.
+ * It creates the grid squares, sets their positions, and adds them to the grid pane.
+ */
 object GridInitializer:
   def initializeGridSquares(
       gridSize: Int,

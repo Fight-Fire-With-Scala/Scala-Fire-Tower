@@ -1,0 +1,8 @@
+L'ActivationController gestisce l'attivazione e disattivazione delle varie componenti di View in base
+alla fase di gioco. E' quindi il responsabile di aggiornare lo stato visivo del gioco.
+Garantisce che le componenti rilevanti siano attive in tutte le fasi di gioco.
+Sfrutta tutti i componenti che implementano il tratto ICanBeDisabled permettendo un cambio del loro stato.
+
+Il BotSubscriber è registrato agli aggiornamenti del Bot e in base ai suoi aggiornamenti aggiorna il modello.
+Quando riceve un messaggio aggiorna la fase di gioco e permette al Bot di entrare in metodo di think, e
+quindi di pensare a quale azione compiere in quella determinata fase.

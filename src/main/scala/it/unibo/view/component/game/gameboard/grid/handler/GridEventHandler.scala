@@ -10,6 +10,13 @@ import it.unibo.view.component.game.gameboard.grid.GridSquare
 import it.unibo.view.component.game.gameboard.grid.GridState
 import it.unibo.view.component.game.gameboard.grid.HoverDirection
 
+/**
+ * The GridEventHandler class coordinates the events of click and hover on the grid.
+ * It uses GridClickHandler and GridHoverHandler to manage the click and hover events respectively.
+ *
+ * @param observableSubject the subject to observe for view updates
+ * @param squareMap         the map of grid positions to GridSquare objects
+ */
 class GridEventHandler(
     observableSubject: ViewSubject,
     squareMap: mutable.Map[Position, GridSquare]
@@ -20,9 +27,9 @@ class GridEventHandler(
     new GridClickHandler(observableSubject)
 
   private val hoverHandler = new GridHoverHandler()
-
+  
   def updateGamePhase(gamePhase: GamePhase): Unit = gridState.currentGamePhase = gamePhase
-
+  
   def updateAvailablePatterns(ap: Set[Map[Position, Token]]): Unit =
     gridState.availablePatterns = ap
 
@@ -31,6 +38,14 @@ class GridEventHandler(
   def handleCellClick(row: Int, col: Int, gamePhase: GamePhase): Unit = clickHandler
     .handleCellClick(row, col, gamePhase)
 
+  /**
+   * Handles the cell hover event by delegating to the GridHoverHandler.
+   *
+   * @param row            the row of the hovered cell
+   * @param col            the column of the hovered cell
+   * @param hoverDirection the direction of the hover
+   * @param gamePhase      the current game phase
+   */
   def handleCellHover(
       row: Int,
       col: Int,
