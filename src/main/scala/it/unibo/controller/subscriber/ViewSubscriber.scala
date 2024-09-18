@@ -1,7 +1,7 @@
 package it.unibo.controller.subscriber
 
 import com.typesafe.scalalogging.Logger
-import it.unibo.controller.{ ChoseCardToPlay, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitialization, RefreshMessage, ResolveCardReset, ResolvePatternChoice, StartGameMessage, UpdateGamePhase, UpdateWindDirection, ViewMessage }
+import it.unibo.controller.{ ChoseCardToPlayMessage, ConfirmCardPlayMessage, DiscardCardMessage, DrawCardMessage, GameBoardInitializationMessage, RefreshMessage, ResolveCardResetMessage, ResolvePatternChoiceMessage, StartGameMessage, UpdateGamePhaseMessage, UpdateWindDirectionMessage, ViewMessage }
 import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType
 import it.unibo.controller.view.RefreshType.{ CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate }
@@ -22,15 +22,15 @@ final class ViewSubscriber(val controller: ModelController)
   override val logger: Logger = Logger("View -> ViewSubscriber")
 
   override def onMessageReceived(msg: ViewMessage): Unit = msg match
-    case UpdateGamePhase(ef: PhaseEffect) => handleUpdateGamePhase(ef)
+    case UpdateGamePhaseMessage(ef: PhaseEffect) => handleUpdateGamePhase(ef)
 
-    case UpdateWindDirection(ef: WindUpdateEffect) =>
+    case UpdateWindDirectionMessage(ef: WindUpdateEffect) =>
       controller.applyEffect(ef, WindUpdate)
       controller.modelObserver.onNext(ConfirmCardPlayMessage())
 
-    case ChoseCardToPlay(ef: PlayCard) => controller.applyEffect(ef, CardSelected)
+    case ChoseCardToPlayMessage(ef: PlayCard) => controller.applyEffect(ef, CardSelected)
 
-    case ResolvePatternChoice(ef: PatternApplication) =>
+    case ResolvePatternChoiceMessage(ef: PatternApplication) =>
       controller.applyEffect(ef, RefreshType.PatternChosen)
       controller.modelObserver.onNext(RefreshMessage(controller.model.getGameBoard, CardDeselected))
       controller.applyEffect(ResetPatternComputation, CardDeselected)
@@ -49,13 +49,13 @@ final class ViewSubscriber(val controller: ModelController)
               controller.applyEffect(PhaseEffect(DecisionPhase), PhaseUpdate)
             case _ =>
 
-    case ResolveCardReset() => controller.applyEffect(ResetPatternComputation, CardDeselected)
+    case ResolveCardResetMessage() => controller.applyEffect(ResetPatternComputation, CardDeselected)
 
     case DrawCardMessage(ef: DrawCard) => controller.applyEffect(ef, CardDraw)
 
     case DiscardCardMessage(ef: DiscardCard) => controller.applyEffect(ef, CardDiscard)
 
-    case GameBoardInitialization(settings) =>
+    case GameBoardInitializationMessage(settings) =>
       val initialGameBoard = controller.initializeGameBoard(settings)
       controller.model.setGameBoard(initialGameBoard)
       controller.modelObserver.onNext(StartGameMessage(initialGameBoard))

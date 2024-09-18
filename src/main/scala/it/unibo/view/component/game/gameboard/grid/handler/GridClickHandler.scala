@@ -91,5 +91,5 @@ class GridClickHandler(
     gridState.availablePatternsClickFixed = gridState.availablePatterns
 
   private def placePattern(pattern: Map[Position, Token]): Unit =
-    observableSubject.onNext(ResolvePatternChoice(PatternApplication(pattern)))
+    observableSubject.onNext(ResolvePatternChoiceMessage(PatternApplication(pattern)))
     gridState.hoveredCells.clear()

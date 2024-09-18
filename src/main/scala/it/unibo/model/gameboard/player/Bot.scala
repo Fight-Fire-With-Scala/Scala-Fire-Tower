@@ -11,7 +11,7 @@ import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.logger
-import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.UpdateGamePhaseMessage
 
 final case class Bot(
     moves: List[Move],
@@ -28,7 +28,7 @@ final case class Bot(
 
   override def onUpdateGamePhaseRequest(phaseEffect: PhaseEffect): Unit =
     botObservable match
-      case Some(observable) => observable.onNext(UpdateGamePhase(phaseEffect))
+      case Some(observable) => observable.onNext(UpdateGamePhaseMessage(phaseEffect))
       case None             =>
 
   override def think(using model: Model): Unit =

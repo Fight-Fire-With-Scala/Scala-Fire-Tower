@@ -2,7 +2,7 @@ package it.unibo.controller.subscriber
 
 import com.typesafe.scalalogging.Logger
 import it.unibo.controller.BotMessage
-import it.unibo.controller.UpdateGamePhase
+import it.unibo.controller.UpdateGamePhaseMessage
 import it.unibo.controller.model.ModelController
 import it.unibo.controller.view.RefreshType.EndGameUpdate
 import it.unibo.model.effect.phase.PhaseEffect
@@ -16,7 +16,7 @@ final class BotSubscriber(val controller: ModelController)
   override val logger: Logger = Logger("Bot -> BotSubscriber")
 
   override def onMessageReceived(msg: BotMessage): Unit = msg match
-    case UpdateGamePhase(ef: PhaseEffect) =>
+    case UpdateGamePhaseMessage(ef: PhaseEffect) =>
       controller.model.getGameBoard.isGameEnded match
         case Some(_) => controller.applyEffect(PhaseEffect(EndGamePhase), EndGameUpdate)
         case None    => handleUpdateGamePhase(ef)

@@ -25,14 +25,14 @@ sealed trait BotMessage extends Message
  */
 sealed trait ViewMessage extends Message
 
-final case class GameBoardInitialization(settings: GameBoardConfig) extends ViewMessage
+final case class GameBoardInitializationMessage(settings: GameBoardConfig) extends ViewMessage
 
-final case class UpdateWindDirection(ef: WindUpdateEffect) extends ViewMessage
-final case class UpdateGamePhase(ef: PhaseEffect) extends ViewMessage with BotMessage
+final case class UpdateWindDirectionMessage(ef: WindUpdateEffect) extends ViewMessage
+final case class UpdateGamePhaseMessage(ef: PhaseEffect) extends ViewMessage with BotMessage
 
-final case class ChoseCardToPlay(ef: PlayCard) extends ViewMessage
-final case class ResolveCardReset() extends ViewMessage
-final case class ResolvePatternChoice(ef: PatternApplication) extends ViewMessage
+final case class ChoseCardToPlayMessage(ef: PlayCard) extends ViewMessage
+final case class ResolveCardResetMessage() extends ViewMessage
+final case class ResolvePatternChoiceMessage(ef: PatternApplication) extends ViewMessage
 
 final case class DrawCardMessage(ef: DrawCard) extends ViewMessage
 final case class DiscardCardMessage(ef: DiscardCard) extends ViewMessage

@@ -2,8 +2,8 @@ package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
 import scala.util.Random
-import it.unibo.controller.UpdateGamePhase
-import it.unibo.controller.UpdateWindDirection
+import it.unibo.controller.UpdateGamePhaseMessage
+import it.unibo.controller.UpdateWindDirectionMessage
 import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.card.WindUpdateEffect
 import it.unibo.model.effect.card.WindUpdateEffect.RandomUpdateWind
@@ -40,8 +40,8 @@ final class DiceComponent(using observable: ViewSubject) extends ISidebarCompone
   private def diceClickHandler(): Unit =
     val updatedDirection = Random.shuffle(Direction.values).head
     diceFace.updateDirection(updatedDirection)
-    observable.onNext(UpdateWindDirection(RandomUpdateWind(updatedDirection)))
-    observable.onNext(UpdateGamePhase(PhaseEffect(PlaySpecialCardPhase)))
+    observable.onNext(UpdateWindDirectionMessage(RandomUpdateWind(updatedDirection)))
+    observable.onNext(UpdateGamePhaseMessage(PhaseEffect(PlaySpecialCardPhase)))
 
   override def onEnableView(): Unit =
     super.onEnableView()
