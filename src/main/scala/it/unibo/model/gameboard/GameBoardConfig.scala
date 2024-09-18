@@ -6,7 +6,7 @@ import it.unibo.model.gameboard.GameBoardConfig.GameMode
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
 
-case class GameBoardConfig(
+final case class GameBoardConfig(
     gameMode: GameMode = GameMode.HumanVsHuman,
     cardSet: GameBoardConfig.CardSet = GameBoardConfig.CardSet.Base,
     botBehaviour: Option[BotBehaviour] = None,

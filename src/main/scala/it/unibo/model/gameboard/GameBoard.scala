@@ -10,7 +10,7 @@ import it.unibo.model.gameboard.player.Player
 import it.unibo.model.gameboard.player.PlayerInstance
 import it.unibo.model.gameboard.player.PlayerToggle
 
-case class GameBoard(
+final case class GameBoard(
     board: Board,
     deck: Deck,
     player1: Player,

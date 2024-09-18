@@ -2,7 +2,7 @@ package it.unibo.model.gameboard.player
 
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
-import it.unibo.model.effect.core.CanBePlayedAsExtra
+import it.unibo.model.effect.core.ICanBePlayedAsExtra
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.grid.TowerPosition
 
@@ -14,7 +14,7 @@ trait Player:
   def towerPositions: Set[TowerPosition]
 
   def drawCardFromDeck(card: Card): Player = card.effect match
-    case _: CanBePlayedAsExtra if extraCard.isEmpty => updatePlayer(extraCard = Some(card))
+    case _: ICanBePlayedAsExtra if extraCard.isEmpty => updatePlayer(extraCard = Some(card))
     case _ if hand.size < 5                         => updatePlayer(hand = hand :+ card)
     case _                                          => this
 

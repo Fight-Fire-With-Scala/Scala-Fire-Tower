@@ -6,7 +6,7 @@ import it.unibo.controller.CandidateCardToPlayMessage
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ToggleCardInListMessage
 import it.unibo.model.card.Card
-import it.unibo.model.effect.core.CanBeDiscarded
+import it.unibo.model.effect.core.ICanBeDiscarded
 import it.unibo.model.effect.core.ICardEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
@@ -76,7 +76,7 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardDescription.setText(card.description)
     cardId = card.id.toString
     card.effect match
-      case _: CanBeDiscarded => containSpecialCard = false
+      case _: ICanBeDiscarded => containSpecialCard = false
       case _                 => containSpecialCard = true
     addHandlers()
 

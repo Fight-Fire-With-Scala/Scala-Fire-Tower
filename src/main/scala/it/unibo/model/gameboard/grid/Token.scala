@@ -13,5 +13,5 @@ enum ConcreteToken(override val id: String, val color: Color) extends Token:
   case Reforest extends ConcreteToken("r", Color.Green)
   case Empty extends ConcreteToken("e", Color.Gray)
 
-case class TemplateToken(override val id: String, color: Color = Color.Black) extends Token:
+final case class TemplateToken(override val id: String, color: Color = Color.Black) extends Token:
   override def toString: String = id

@@ -30,7 +30,7 @@ trait CardManager extends HandManager:
 
   private def handleCardEffect(gb: GameBoard, card: Card): GameBoard =
     card.effect match
-      case _: CanBePlayedAsExtra => playCard(gb, card)
+      case _: ICanBePlayedAsExtra => playCard(gb, card)
       case _ =>
         val gbUpdatedHand = playCard(gb, card)
         updateDeck(gbUpdatedHand, card)
