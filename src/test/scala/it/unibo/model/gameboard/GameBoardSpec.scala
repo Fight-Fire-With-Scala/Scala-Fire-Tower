@@ -69,9 +69,9 @@ class GameBoardSpec
 //      updatedGameBoard.player1. should not be None
 
     "solve pattern application correctly" in:
-      val position: Position        = Position(10, 10)
-      val map: Pattern = Map(position -> Fire)
-      val updatedGameBoard          = gameBoard.solveEffect(PatternApplication(map))
+      val position: Position = Position(10, 10)
+      val map: Pattern       = Map(position -> Fire)
+      val updatedGameBoard   = gameBoard.solveEffect(PatternApplication(map))
       updatedGameBoard.board.grid.getToken(position) shouldBe Some(Fire)
 
     "solve pattern computation correctly" in:

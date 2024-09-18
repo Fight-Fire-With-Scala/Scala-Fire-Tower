@@ -1,13 +1,13 @@
 package it.unibo.controller.view
 
 import it.unibo.controller.logger
-import it.unibo.controller.view.RefreshType.{CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate}
+import it.unibo.controller.view.RefreshType.{ CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate }
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.MoveEffect.CardChosen
 import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.{ISpecialCardEffect, IStandardCardEffect}
-import it.unibo.model.gameboard.{Board, GameBoard}
+import it.unibo.model.effect.core.{ ISpecialCardEffect, IStandardCardEffect }
+import it.unibo.model.gameboard.{ Board, GameBoard }
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Move

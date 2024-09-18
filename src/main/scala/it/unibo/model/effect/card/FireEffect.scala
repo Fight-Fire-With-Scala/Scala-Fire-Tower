@@ -1,8 +1,8 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{IStandardCardEffect, LogicEffectSolver, OffensiveEffect}
-import it.unibo.model.gameboard.PatternType.{LargePattern, MediumPattern, VeryLargePattern, VerySmallPattern, given_Conversion_PatternType_Pattern}
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak, Water}
+import it.unibo.model.effect.core.{ IStandardCardEffect, LogicEffectSolver, OffensiveEffect }
+import it.unibo.model.gameboard.PatternType.{ given_Conversion_PatternType_Pattern, LargePattern, MediumPattern, VeryLargePattern, VerySmallPattern }
+import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Firebreak, Water }
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_List_PatternLogicEffect
 import it.unibo.model.prolog.Rule

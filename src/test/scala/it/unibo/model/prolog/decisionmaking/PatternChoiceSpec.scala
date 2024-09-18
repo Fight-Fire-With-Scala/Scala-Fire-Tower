@@ -2,20 +2,20 @@ package it.unibo.model.prolog.decisionmaking
 
 import it.unibo.model.GameBoardInitializer
 import it.unibo.model.card.Card
-import it.unibo.model.effect.card.{BucketEffect, FireEffect, WaterEffect, WindEffect}
+import it.unibo.model.effect.card.{ BucketEffect, FireEffect, WaterEffect, WindEffect }
 import it.unibo.model.effect.core.ICardEffect
 import it.unibo.model.effect.pattern.LogicSolverManager
 import it.unibo.model.effect.pattern.PatternEffect.BotComputation
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced
-import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Water}
-import it.unibo.model.gameboard.{Deck, GameBoard, GameBoardConfig}
+import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Water }
+import it.unibo.model.gameboard.{ Deck, GameBoard, GameBoardConfig }
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.player.{Bot, IMakeDecision, Person, Player}
+import it.unibo.model.gameboard.player.{ Bot, IMakeDecision, Person, Player }
 import it.unibo.model.prolog.PrologUtils.defaultId
-import it.unibo.model.prolog.decisionmaking.{AttackDefense, DecisionMaker}
+import it.unibo.model.prolog.decisionmaking.{ AttackDefense, DecisionMaker }
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.{BeforeAndAfterAll, color}
+import org.scalatest.{ color, BeforeAndAfterAll }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

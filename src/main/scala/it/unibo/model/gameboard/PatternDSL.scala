@@ -10,11 +10,10 @@ import it.unibo.model.gameboard.grid.Token
 final class PatternDSL:
   val tokens              = new ArrayBuffer[Token]
   def add(c: Token): Unit = tokens += c
-  def mapTo(nRows: Int, nCols: Int): Pattern = tokens.zipWithIndex.map {
-    case (token, index) =>
-      val row = index / nCols
-      val col = index % nCols
-      Position(row, col) -> token
+  def mapTo(nRows: Int, nCols: Int): Pattern = tokens.zipWithIndex.map { case (token, index) =>
+    val row = index / nCols
+    val col = index % nCols
+    Position(row, col) -> token
   }.toMap
 
   override def toString: String = tokens.mkString("Pattern(", ", ", ")")

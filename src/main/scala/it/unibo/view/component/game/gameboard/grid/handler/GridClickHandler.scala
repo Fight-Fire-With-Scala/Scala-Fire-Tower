@@ -18,12 +18,12 @@ import it.unibo.view.component.game.gameboard.grid.GridState
 import it.unibo.view.logger
 import it.unibo.model.gameboard.Pattern
 
-/**
- * The GridClickHandler class handles the click events on the grid.
- * It processes the click based on the current game phase and the state of the grid.
- *
- * @param observableSubject the subject to observe for view updates
- */
+/** The GridClickHandler class handles the click events on the grid. It processes the click based on
+  * the current game phase and the state of the grid.
+  *
+  * @param observableSubject
+  *   the subject to observe for view updates
+  */
 class GridClickHandler(
     observableSubject: ViewSubject
 )(using _squareMap: mutable.Map[Position, GridSquare], gridState: GridState):
