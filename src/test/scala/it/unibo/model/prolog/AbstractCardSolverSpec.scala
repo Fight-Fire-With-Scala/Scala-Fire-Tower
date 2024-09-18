@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import alice.tuprolog.{Term, Theory}
 import it.unibo.model.effect.core.{ICardEffect, ILogicComputation, ILogicEffect, PatternLogicEffect}
-import it.unibo.model.gameboard.Direction
+import it.unibo.model.gameboard.{Direction, Pattern}
 import it.unibo.model.gameboard.grid.{BasicGrid, Cell, Grid, Position, Token}
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
@@ -13,8 +13,8 @@ import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
 abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
 
   protected val defaultTokens: Pattern = Map.empty
-  private val dummyCardId                           = 1
-  private val dummyEffectId                         = 0
+  private val dummyCardId              = 1
+  private val dummyEffectId            = 0
 
   private val cells: Map[Position, Cell] = Map(
     Position(0, 0) -> Tower,
@@ -61,7 +61,9 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
   protected def getAvailablePatterns(
       logicComputation: ILogicComputation
   ): Set[Pattern] =
-    val engine = buildEngine(Map(Some(dummyCardId) -> List(PatternLogicEffect(List(logicComputation)))))
+    val engine = buildEngine(
+      Map(Some(dummyCardId) -> List(PatternLogicEffect(List(logicComputation))))
+    )
     engine.solveAsPatterns(logicComputation.goal(Some(dummyCardId), Some(dummyEffectId)))
 
 object AbstractCardSolverSpec:

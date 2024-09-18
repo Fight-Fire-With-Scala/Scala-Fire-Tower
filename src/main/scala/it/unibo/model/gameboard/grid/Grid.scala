@@ -49,8 +49,8 @@ final case class BasicGrid(
     private val _cells: Map[Position, Cell] = Map.empty,
     private val _tokens: Pattern = Map.empty
 ) extends Grid:
-  override def cells: Map[Position, Cell]   = this._cells
-  override def tokens: Pattern = this._tokens
+  override def cells: Map[Position, Cell] = this._cells
+  override def tokens: Pattern            = this._tokens
 
   override def setToken(position: Position, token: Token): Grid =
     require(isValidPosition(position), s"Invalid position: $position")

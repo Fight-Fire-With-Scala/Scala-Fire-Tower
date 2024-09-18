@@ -23,12 +23,12 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.paint.Color
 import it.unibo.model.gameboard.Pattern
 
-/**
- * The GridComponent class represents the game grid component in the UI.
- * It initializes the grid, handles cell click and hover events, and updates the grid state.
- *
- * @param observableSubject the subject to observe for view updates
- */
+/** The GridComponent class represents the game grid component in the UI. It initializes the grid,
+  * handles cell click and hover events, and updates the grid state.
+  *
+  * @param observableSubject
+  *   the subject to observe for view updates
+  */
 final class GridComponent(using
     observableSubject: ViewSubject
 ) extends IGridComponent

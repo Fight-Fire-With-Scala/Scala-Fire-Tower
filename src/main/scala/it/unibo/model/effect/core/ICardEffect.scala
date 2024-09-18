@@ -1,7 +1,7 @@
 package it.unibo.model.effect.core
 
-import it.unibo.model.card.{ICanBeDiscarded, ICanBePlayedAsExtra, ICannotBeDiscarded}
-import it.unibo.model.effect.card.{BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect}
+import it.unibo.model.card.{ ICanBeDiscarded, ICanBePlayedAsExtra, ICannotBeDiscarded }
+import it.unibo.model.effect.card.{ BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect }
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
 
 trait IStandardCardEffect extends ICardEffect with ICanBeDiscarded

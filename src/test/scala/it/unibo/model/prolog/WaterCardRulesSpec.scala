@@ -1,9 +1,10 @@
 package it.unibo.model.prolog
 
 import it.unibo.model.effect.card.WaterEffect
-import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Water }
+import it.unibo.model.gameboard.Pattern
+import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Water}
 import it.unibo.model.prolog.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
-import it.unibo.model.gameboard.grid.{ Position, Token }
+import it.unibo.model.gameboard.grid.{Position, Token}
 
 class WaterCardRulesSpec extends AbstractCardSolverSpec:
 

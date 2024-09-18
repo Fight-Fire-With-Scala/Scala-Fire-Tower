@@ -1,6 +1,6 @@
 package it.unibo.model.prolog
 
-import alice.tuprolog.{Struct, Term}
+import alice.tuprolog.{ Struct, Term }
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Int_Term
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Cell_Term

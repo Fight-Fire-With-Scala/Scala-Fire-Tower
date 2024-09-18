@@ -1,11 +1,11 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.card.{Card, ICanBePlayedAsExtra}
-import it.unibo.model.effect.MoveEffect.{BotChoice, CardChosen}
+import it.unibo.model.card.{ Card, ICanBePlayedAsExtra }
+import it.unibo.model.effect.MoveEffect.{ BotChoice, CardChosen }
 import it.unibo.model.effect.core.*
 import it.unibo.model.effect.hand.HandEffect.playCard
 import it.unibo.model.effect.hand.HandManager
-import it.unibo.model.effect.{GameBoardEffect, MoveEffect}
+import it.unibo.model.effect.{ GameBoardEffect, MoveEffect }
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Move
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect

@@ -4,7 +4,7 @@ import scala.compiletime.uninitialized
 import it.unibo.controller.CandidateCardToPlayMessage
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ToggleCardInListMessage
-import it.unibo.model.card.{Card, ICanBeDiscarded}
+import it.unibo.model.card.{ Card, ICanBeDiscarded }
 import it.unibo.model.effect.core.ICardEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType

@@ -23,7 +23,6 @@ object PrologUtils:
   given Conversion[Token, Term]        = (token: Token) => Term.createTerm(token.id)
   given Conversion[SolverType, Theory] = t => t.getTheory(t.prologSourcePath)
 
-
   val defaultId = "0"
 
   extension (g: Grid) def size: Int = math.sqrt(g.cells.size).toInt

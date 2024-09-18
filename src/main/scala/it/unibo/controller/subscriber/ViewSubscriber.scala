@@ -50,7 +50,8 @@ final class ViewSubscriber(val controller: ModelController)
               controller.applyEffect(PhaseEffect(DecisionPhase), PhaseUpdate)
             case _ =>
 
-    case ResolveCardResetMessage() => controller.applyEffect(ResetPatternComputation, CardDeselected)
+    case ResolveCardResetMessage() =>
+      controller.applyEffect(ResetPatternComputation, CardDeselected)
 
     case DrawCardMessage(ef: DrawCard) => controller.applyEffect(ef, CardDraw)
 

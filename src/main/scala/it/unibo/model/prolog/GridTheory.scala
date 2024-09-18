@@ -9,7 +9,7 @@ import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.prolog.PrologUtils.{defaultId, size, given}
+import it.unibo.model.prolog.PrologUtils.{ defaultId, size, given }
 
 final case class GridTheory(
     private val grid: Grid,
@@ -36,9 +36,12 @@ object GridTheory extends GridCellsProvider:
           m.pattern.map: (pos, token) =>
             cardId match
               case Some(id) => Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, id, compId)
-              case None => Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, defaultId, compId)
+              case None =>
+                Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, defaultId, compId)
 
-  private def getDirections(patternsToCompute: Map[Option[Int], List[ILogicEffect]]): Iterator[Term] =
+  private def getDirections(
+      patternsToCompute: Map[Option[Int], List[ILogicEffect]]
+  ): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
       ef.flatMap(_.computations)
         .zipWithIndex
@@ -49,7 +52,7 @@ object GridTheory extends GridCellsProvider:
           val directionNames = directionsOfApplication.map(_.getId)
           val struct = cardId match
             case Some(id) => Struct.of("directions", directionNames, id, compId)
-            case None => Struct.of("directions", directionNames, defaultId, compId)
+            case None     => Struct.of("directions", directionNames, defaultId, compId)
           Iterator.single(struct)
 
   private def getDeltas(patternsToCompute: Map[Option[Int], List[ILogicEffect]]): Iterator[Term] =
@@ -62,5 +65,5 @@ object GridTheory extends GridCellsProvider:
             .map(d => Struct.tuple(d.row, d.col))
           val struct = cardId match
             case Some(id) => Struct.of("deltas", directionDeltas.toList, id, compId)
-            case None => Struct.of("deltas", directionDeltas.toList, defaultId, compId)
+            case None     => Struct.of("deltas", directionDeltas.toList, defaultId, compId)
           Iterator.single(struct)

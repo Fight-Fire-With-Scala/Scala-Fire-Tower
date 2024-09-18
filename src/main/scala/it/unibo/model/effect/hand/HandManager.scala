@@ -2,7 +2,7 @@ package it.unibo.model.effect.hand
 
 import it.unibo.model.card.Card
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.gameboard.{Deck, GameBoard}
+import it.unibo.model.gameboard.{ Deck, GameBoard }
 
 trait HandManager:
   private def drawCardsFromDeck(
