@@ -1,9 +1,10 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{ IStandardCardEffect, LogicEffectSolver, MultiStepEffect, OffensiveEffect }
-import it.unibo.model.gameboard.PatternType.{ given_Conversion_PatternType_Map, LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect }
-import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Fire, Firebreak }
+import it.unibo.model.effect.core.{IStandardCardEffect, LogicEffectSolver, OffensiveEffect}
+import it.unibo.model.gameboard.PatternType.{LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect, given_Conversion_PatternType_Map}
+import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak, Water}
 import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
+import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_List_SingleStepEffect
 import it.unibo.model.prolog.Rule
 
 enum FireEffect(override val effectId: Int) extends IStandardCardEffect:
@@ -22,15 +23,13 @@ object FireEffect:
     case Flare       => OffensiveEffect(MediumEffect(Map("a" -> Fire)), Rule("fire"))
     case BurningSnag => OffensiveEffect(LargeEffect(Map("a" -> Fire)), Rule("fire"))
     case Ember =>
-      MultiStepEffect(
-        List(
-          OffensiveEffect(
-            VerySmallEffect(Map("a" -> Empty)),
-            Rule("ember_first_phase")
-          ),
-          OffensiveEffect(
-            VerySmallEffect(Map("a" -> Fire)),
-            Rule("ember_second_phase")
-          )
+      List(
+        OffensiveEffect(
+          VerySmallEffect(Map("a" -> Water)),
+          Rule("ember_first_phase")
+        ),
+        OffensiveEffect(
+          VerySmallEffect(Map("a" -> Fire)),
+          Rule("ember_second_phase")
         )
       )
