@@ -3,10 +3,11 @@ package it.unibo.model.effect.card
 import it.unibo.model.effect.core.{IStandardCardEffect, LogicEffectSolver, OffensiveEffect}
 import it.unibo.model.gameboard.PatternType.{LargeEffect, MediumEffect, VeryLargeEffect, VerySmallEffect, given_Conversion_PatternType_Map}
 import it.unibo.model.gameboard.grid.ConcreteToken.{Fire, Firebreak, Water}
-import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
-import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_List_SingleStepEffect
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_List_PatternLogicEffect
 import it.unibo.model.prolog.Rule
 
+// tag::fireEffect[]
 enum FireEffect(override val effectId: Int) extends IStandardCardEffect:
   case Explosion extends FireEffect(1)
   case Flare extends FireEffect(2)
@@ -33,3 +34,4 @@ object FireEffect:
           Rule("ember_second_phase")
         )
       )
+// end::fireEffect[]

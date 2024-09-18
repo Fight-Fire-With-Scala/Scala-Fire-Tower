@@ -10,10 +10,10 @@ object ILogicEffect:
   given Conversion[ILogicComputation, List[ILogicComputation]] = List(_)
 
   def apply(): ILogicEffect =
-    SingleStepEffect(OffensiveEffect(Map.empty, Rule(""), List.empty))
+    PatternLogicEffect(OffensiveEffect(Map.empty, Rule(""), List.empty))
 
-final case class SingleStepEffect(computations: List[ILogicComputation]) extends ILogicEffect
+final case class PatternLogicEffect(computations: List[ILogicComputation]) extends ILogicEffect
 
-object SingleStepEffect:
-  given Conversion[ILogicComputation, SingleStepEffect]       = SingleStepEffect(_)
-  given Conversion[List[ILogicComputation], SingleStepEffect] = SingleStepEffect(_)
+object PatternLogicEffect:
+  given Conversion[ILogicComputation, PatternLogicEffect]       = PatternLogicEffect(_)
+  given Conversion[List[ILogicComputation], PatternLogicEffect] = PatternLogicEffect(_)

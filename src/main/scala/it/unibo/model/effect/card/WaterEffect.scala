@@ -1,7 +1,7 @@
 package it.unibo.model.effect.card
 
 import it.unibo.model.effect.core.{ DefensiveEffect, IStandardCardEffect, LogicEffectSolver }
-import it.unibo.model.effect.core.SingleStepEffect.given_Conversion_ILogicComputation_SingleStepEffect
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
 import it.unibo.model.gameboard.PatternType.LargeEffect
 import it.unibo.model.gameboard.PatternType.MediumEffect
 import it.unibo.model.gameboard.PatternType.VeryLargeEffect
