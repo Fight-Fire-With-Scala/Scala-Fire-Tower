@@ -50,9 +50,11 @@ final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent
       .setItems(
         javafx.collections.FXCollections.observableArrayList(GameBoardConfig.CardSet.values*)
       )
+    setOfCardsDropdown.getSelectionModel.selectFirst()
     botBehaviourDropdown
       .setItems(javafx.collections.FXCollections.observableArrayList(BotBehaviour.values*))
     botBehaviourDropdown.setDisable(true)
+    botBehaviourDropdown.getSelectionModel.selectFirst()
     gameModeToggleGroup.selectedToggleProperty().addListener { (_, _, newToggle) =>
       val isHumanVsHumanSelected = newToggle == humanVsHuman
       player2Input.setDisable(!isHumanVsHumanSelected)

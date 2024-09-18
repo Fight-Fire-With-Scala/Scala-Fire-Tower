@@ -28,10 +28,10 @@
                 <RadioButton fx:id="humanVsBot" text="HUMAN vs BOT" toggleGroup="$gameModeToggleGroup"/>
             </VBox>
             <VBox spacing="10">
-                <Text text="Player1"/>
-                <TextField fx:id="player1Input" promptText="INPUT NAME"/>
-                <Text text="Player2"/>
-                <TextField fx:id="player2Input" promptText="INPUT NAME"/>
+                <Text text="Player 1 Name"/>
+                <TextField fx:id="player1Input" promptText="Player 1"/>
+                <Text text="Player 2 Name"/>
+                <TextField fx:id="player2Input" promptText="Player 2"/>
             </VBox>
             <ComboBox fx:id="setOfCardsDropdown" prefWidth="200" promptText="SET OF CARDS">
                 <items>

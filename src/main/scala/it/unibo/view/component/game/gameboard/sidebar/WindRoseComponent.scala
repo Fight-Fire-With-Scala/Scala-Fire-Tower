@@ -13,7 +13,7 @@ import it.unibo.model.gameboard.Direction.North
 import it.unibo.model.gameboard.Direction.South
 import it.unibo.model.gameboard.Direction.West
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
-import it.unibo.view.{ logger, GUIType }
+import it.unibo.view.GUIType
 import it.unibo.view.component.ISidebarComponent
 import it.unibo.view.component.IUpdateView
 import it.unibo.view.component.game.gameboard.sidebar.svg.WindRoseArrow

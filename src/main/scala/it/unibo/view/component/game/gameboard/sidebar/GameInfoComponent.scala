@@ -38,8 +38,12 @@ final class GameInfoComponent(using observable: ViewSubject)
   @FXML
   def initialize(): Unit =
     turnNumber.setEditable(false)
+    turnNumber.setFocusTraversable(false)
     turnPlayer.setEditable(false)
+    turnPlayer.setFocusTraversable(false)
     turnPhase.setEditable(false)
+    turnPhase.setFocusTraversable(false)
+    endTurnButton.setFocusTraversable(false)
 
   def updateTurnNumber(currentTurnNumber: Int): Unit =
     runOnUIThread(turnNumber.setText(s"Turn Number: $currentTurnNumber"))
