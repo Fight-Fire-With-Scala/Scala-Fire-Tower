@@ -1,7 +1,7 @@
 package it.unibo.model.effect.pattern
 
-import it.unibo.model.effect.{CardManager, GameBoardEffect, MoveEffect}
-import it.unibo.model.effect.MoveEffect.{logBotChoice, logCardChosen, logPatternApplied, logPatternChosen, runIfLastMoveFound}
+import it.unibo.model.effect.{ CardManager, GameBoardEffect, MoveEffect }
+import it.unibo.model.effect.MoveEffect.{ logBotChoice, logCardChosen, logPatternApplied, logPatternChosen, runIfLastMoveFound }
 import it.unibo.model.effect.core.*
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.effect.phase.PhaseEffect.updatePlayer
@@ -28,8 +28,9 @@ object PatternEffect extends CardManager with PlayerManager with LogicSolverMana
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb                      = gbe.gameBoard
       val (cardId, chosenPattern) = computePatterns(gb, cards)
-      if chosenPattern.nonEmpty then logBotChoice(gb, cardId, chosenPattern)
-      else gb
+      cardId match
+        case Some(id) => logBotChoice(gb, id, chosenPattern)
+        case None     => gb
 
   private def solveCardComputation(cardId: Int, logicEffect: ILogicEffect) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>

@@ -33,7 +33,7 @@ trait LogicSolverManager:
   protected def computePatterns(
       gb: GameBoard,
       cards: Map[Int, List[ILogicEffect]]
-  ): (Int, Map[Position, Token]) =
+  ): (Option[Int], Map[Position, Token]) =
 
     val grid          = gb.board.grid
     val dynamicTheory = AllCardsResultTheory(cards)
@@ -50,11 +50,10 @@ trait LogicSolverManager:
     theory.append(SolverType.CardChoserSolver)
     theory.append(SolverType.CardSolver)
     theory.append(SolverType.BaseSolver)
-
     val engine = PrologEngine(theory)
     val goal   = "main(R)"
     val result = engine.solve(goal).headOption
 
     result match
       case Some(solution) => PrologUtils.parseAllCardsResult(solution)
-      case None           => (-1, Map.empty)
+      case None           => (None, Map.empty)
