@@ -1,18 +1,19 @@
 package it.unibo.controller.view
 
 import it.unibo.controller.logger
-import it.unibo.controller.view.RefreshType.{ CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate }
+import it.unibo.controller.view.RefreshType.{CardDeselected, CardDiscard, CardDraw, CardSelected, EndGameUpdate, PatternChosen, PhaseUpdate, WindUpdate}
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.MoveEffect.CardChosen
 import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.{ ISpecialCardEffect, IStandardCardEffect }
-import it.unibo.model.gameboard.{ Board, GameBoard }
+import it.unibo.model.effect.core.{ISpecialCardEffect, IStandardCardEffect}
+import it.unibo.model.gameboard.{Board, GameBoard}
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Move
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
+import it.unibo.model.prolog.PrologUtils.defaultId
 import it.unibo.view.component.game.GameComponent
 import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
 import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
@@ -95,5 +96,5 @@ trait RefreshController extends ActivationController:
           case effect: ISpecialCardEffect =>
       case MoveEffect.PatternChosen(patterns) =>
         logger.debug(s"[REFRESH] ${gb.getCurrentPlayer.name} $patterns")
-        c.gridComponent.setAvailablePatterns(patterns, -1)
+        c.gridComponent.setAvailablePatterns(patterns, defaultId.toInt)
       case _ => // do not update the grid

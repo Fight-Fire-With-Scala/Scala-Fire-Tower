@@ -9,10 +9,10 @@ import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.prolog.Rule
 
 enum WindEffect(override val effectId: Int, val direction: Direction) extends IStandardCardEffect:
-  case North extends WindEffect(4, Direction.North)
-  case South extends WindEffect(5, Direction.South)
-  case East extends WindEffect(6, Direction.East)
-  case West extends WindEffect(7, Direction.West)
+  case North extends WindEffect(5, Direction.North)
+  case South extends WindEffect(6, Direction.South)
+  case East extends WindEffect(7, Direction.East)
+  case West extends WindEffect(8, Direction.West)
 
 object WindEffect:
   given Conversion[Direction, WindEffect] =

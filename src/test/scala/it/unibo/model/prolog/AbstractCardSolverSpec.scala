@@ -45,7 +45,7 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
   )
 
   private def buildTheory(
-      patternsToCompute: Map[Int, List[ILogicEffect]],
+      patternsToCompute: Map[Option[Int], List[ILogicEffect]],
       tokens: Map[Position, Token] = defaultTokens
   ): Theory =
     val b = GridTheory(BasicGrid(cells, tokens), patternsToCompute)
@@ -54,15 +54,15 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
     b
 
   private def buildEngine(
-      patternsToCompute: Map[Int, List[ILogicEffect]],
+      patternsToCompute: Map[Option[Int], List[ILogicEffect]],
       tokens: Map[Position, Token] = defaultTokens
   ): PrologEngine = PrologEngine(buildTheory(patternsToCompute, tokens))
 
   protected def getAvailablePatterns(
       logicComputation: ILogicComputation
   ): Set[Map[Position, Token]] =
-    val engine = buildEngine(Map(dummyCardId -> List(SingleStepEffect(List(logicComputation)))))
-    engine.solveAsPatterns(logicComputation.goal(dummyCardId, dummyEffectId))
+    val engine = buildEngine(Map(Some(dummyCardId) -> List(SingleStepEffect(List(logicComputation)))))
+    engine.solveAsPatterns(logicComputation.goal(Some(dummyCardId), Some(dummyEffectId)))
 
 object AbstractCardSolverSpec:
   given Conversion[ICardEffect, ILogicComputation] = _.computations.head

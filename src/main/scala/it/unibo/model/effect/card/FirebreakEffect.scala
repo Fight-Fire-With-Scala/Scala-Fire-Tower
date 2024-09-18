@@ -11,9 +11,9 @@ import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Firebreak, Reforest 
 import it.unibo.model.prolog.Rule
 
 enum FirebreakEffect(override val effectId: Int) extends IStandardCardEffect:
-  case DozerLine extends FirebreakEffect(8)
-  case ScratchLine extends FirebreakEffect(9)
-  case DeReforest extends FirebreakEffect(10)
+  case DozerLine extends FirebreakEffect(9)
+  case ScratchLine extends FirebreakEffect(10)
+  case DeReforest extends FirebreakEffect(11)
 
 object FirebreakEffect:
   val fireBreakEffectSolver: LogicEffectSolver[FirebreakEffect] = LogicEffectSolver:
