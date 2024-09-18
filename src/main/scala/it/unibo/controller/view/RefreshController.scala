@@ -44,6 +44,7 @@ trait RefreshController extends ActivationController:
   private def updateGridForEndGame(using c: GameComponent, gb: GameBoard): Unit =
     val newGb = gb.copy(board = Board.withRandomWindAndEndgameGrid)
     c.updateGrid(newGb, newGb.gamePhase)
+    c.disableView()
 
   private def updateHand(using c: GameComponent, gb: GameBoard): Unit = c
     .updatePlayer(gb.getCurrentPlayer)(gb.gamePhase)
@@ -57,7 +58,7 @@ trait RefreshController extends ActivationController:
     logger.debug(s"[REFRESH] New Phase: ${gb.gamePhase}")
     val currentGamePhase = gb.gamePhase
     gb.getCurrentPlayer match
-      case b: Bot    => //c.disableView()
+      case b: Bot    => c.disableView()
       case p: Person => updateGamePhaseActivation(currentGamePhase)
       case _         =>
 

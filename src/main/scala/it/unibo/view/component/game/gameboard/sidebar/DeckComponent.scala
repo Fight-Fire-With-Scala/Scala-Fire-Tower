@@ -53,6 +53,9 @@ final class DeckComponent(using observable: ViewSubject, internalObservable: Int
   @FXML
   private def initialize(): Unit =
     setDiscardProcedureButtonsEnabled(false)
+    okButton.setFocusTraversable(false)
+    cancelButton.setFocusTraversable(false)
+    discardButton.setFocusTraversable(false)
     addHandlers()
 
   private def setDiscardProcedureButtonsEnabled(enabled: Boolean): Unit =

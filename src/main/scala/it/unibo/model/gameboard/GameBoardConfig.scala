@@ -26,11 +26,11 @@ final case class GameBoardConfig(
 
 object GameBoardConfig:
   enum CardSet:
-    case Base, Expanded, Full
+    case Base
 
   enum BotBehaviour(val biasFactor: Int):
-    case Aggressive extends BotBehaviour(7)
     case Balanced extends BotBehaviour(0)
+    case Aggressive extends BotBehaviour(7)
     case Defensive extends BotBehaviour(7)
 
   enum GameMode:

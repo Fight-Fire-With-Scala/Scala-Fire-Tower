@@ -31,6 +31,8 @@ class GridHoverHandler(squareMap: mutable.Map[Position, GridSquare], gridState: 
         else hoverForAvailablePatterns(position)
       case PlaySpecialCardPhase =>
         gridState.availablePatterns = Set.empty
+        gridState.availablePatternsClickFixed = Set.empty
+        gridState.availablePatternsClickHovered = Set.empty
 
         if gridState.fixedCell.nonEmpty then hoverForFixedCell(position, hoverDirection)
         else hoverForAvailablePatterns(position)
