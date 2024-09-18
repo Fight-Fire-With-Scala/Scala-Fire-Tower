@@ -1,19 +1,18 @@
 package it.unibo.view.component.game.gameboard.grid
 
 import scala.collection.mutable
-
 import it.unibo.model.gameboard.grid.Position
 import scalafx.scene.layout.GridPane
 
-class GridInitializer(
-    gridSize: Int,
-    squareSize: Double,
-    handleCellHover: (Int, Int, HoverDirection) => Unit,
-    handleCellClick: (Int, Int) => Unit
-):
-  private val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
-
-  def initializeGridSquares(gridPane: GridPane): mutable.Map[Position, GridSquare] =
+object GridInitializer:
+  def initializeGridSquares(
+      gridSize: Int,
+      squareSize: Double,
+      handleCellHover: (Int, Int, HoverDirection) => Unit,
+      handleCellClick: (Int, Int) => Unit,
+      gridPane: GridPane
+  ): mutable.Map[Position, GridSquare] =
+    val squareMap: mutable.Map[Position, GridSquare] = mutable.Map()
     for {
       row <- 0 until gridSize
       col <- 0 until gridSize

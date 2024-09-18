@@ -41,14 +41,14 @@ final class GridComponent(using
 
   @FXML
   def initialize(): Unit =
-    val gridInitializer = new GridInitializer(
+    val gridPane = new GridPane
+    squareMap = GridInitializer.initializeGridSquares(
       cellNumber,
       cellSize,
       handleCellHover,
-      handleCellClick
+      handleCellClick,
+      gridPane
     )
-    val gridPane = new GridPane
-    squareMap = gridInitializer.initializeGridSquares(gridPane)
     gridEventHandler = new GridEventHandler(observableSubject, squareMap)
     container.getChildren.add(gridPane)
 
