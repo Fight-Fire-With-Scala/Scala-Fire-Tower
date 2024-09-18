@@ -516,13 +516,13 @@ della griglia applicare il pattern è stata implementata la generazione procedur
 teorie che codificano lo stato della board.
 
 partendo dalla teoria di calcolo dei pattern disponibili per una carta
-integrandola con la posizione delle torri da bersagliare e di utility che permettono di eseguire una
+integrandola con la posizione delle torri da bersagliare e teorie di utility che permettono di eseguire una
 ricorsione tra torri e pattern per definire la posizione migliore su cui piazzare il pattern.
 viene quindi infine composta da
 TODO
 La teoria è formata dai seguenti componenti:
 
-* *GridTheory*: che contiene ricostruisce la griglia di gioco in prolog
+* *GridTheory*: che ricostruisce la griglia di gioco in prolog
 * *tower_position*: che contiene le posizioni delle torri
 * *ManhattanSolver*: che permette di calcolare la distanza di manatthan tra due punti
 * *ConcatListTheory*: che permette di concatenare liste in modo ricorsivo
@@ -802,7 +802,7 @@ include::{pumldir}/play.standard.card.protocol.puml
 ----
 
 ==== RefreshController e ActivationController
-Il RefreshController e l'ActivationController sono due componenti chiave del sistema che gestiscono
+Il `RefreshController` e l'`ActivationController` sono due componenti chiave del sistema che gestiscono
 l'aggiornamento e quindi l'attivazione/disattivazioni delle varie componenti grafiche in base alla fase di gioco
 e agli eventi che si verificano durante la partita.
 

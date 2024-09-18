@@ -19,7 +19,7 @@ Corso di Laurea Magistrale in Ingegneria e Scienze Informatiche
 
 |=======
 |[.normalize]#Alessandro Becci# |[.normalize]#0001125114#
-|[.normalize]#Luca Tonelli# |[.normalize]#0001034968#
+|[.normalize]#Luca Tonelli# |[.normalize]#0001126379#
 |[.normalize]#Riccardo Battistini# |[.normalize]#0001034968#
 |=======
 
@@ -208,9 +208,23 @@ volta terminato.
 === Sprints
 
 [#sprint1]
-.Backlog dello sprint1
+.Backlog dello Sprint1
 image::sprint1.png[align=center]
 
+[#sprint2]
+.Backlog dello Sprint2
+image::sprint2.png[align=center]
+
+[#sprint3]
+.Backlog dello Sprint3
+image::sprint3.png[align=center]
+
+[#sprint4]
+.Backlog dello Sprint4
+image::sprint4.png[align=center]
+
+Si nota che nel secondo sprint i contenuti sono davvero pochi: questo è dovuto al fatto che molti dei task non sono stati
+completati e sono slittati allo sprint successivo.
 
 ==== Meeting
 All'inizio dello sviluppo, abbiamo deciso di fissare delle riunioni settimanali per discutere del backlog. Allo scopo
