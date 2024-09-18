@@ -43,7 +43,7 @@ object WindRoseArrow extends SVGViewFactory[WindRoseArrow]:
     "M16.646 15.646L19.293 13H3v-1h16.293l-2.647-2.646.707-.707 3.854 3.853-3.854 3.854z"
 
   private def getRotationFromDirection(direction: Direction): Double = direction match
-    case North => 0.0
-    case South => 180.0
-    case East  => 90.0
-    case West  => -90.0
+    case North => -90.0
+    case South => 90.0
+    case East  => 0.0
+    case West  => 180.0
