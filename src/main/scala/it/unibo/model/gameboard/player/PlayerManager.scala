@@ -1,7 +1,7 @@
 package it.unibo.model.gameboard.player
 
 import it.unibo.controller.BotSubject
-import it.unibo.model.effect.HandManager
+import it.unibo.model.effect.hand.HandManager
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.{ Bot, Person, Player }
 
