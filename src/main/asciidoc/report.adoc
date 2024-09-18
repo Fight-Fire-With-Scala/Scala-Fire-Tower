@@ -3,7 +3,7 @@
 :section-refsig: Sezione
 :table-caption: Tabella
 :xrefstyle: short
-:imagesdir: ./assets/images
+:imagesdir: ../../assets/images
 :sectnums:
 :note-caption: Nota
 
