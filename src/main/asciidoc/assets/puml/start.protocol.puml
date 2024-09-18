@@ -1,0 +1,10 @@
+@startuml
+autonumber
+
+'Press start game in MenuComponent - Pass the settings and fill the hand
+View --> Model : GameBoardInitialization
+Model --> View: StartGameBoardMessage
+View -> Model: UpdateGamePhase(WindPhase)
+Model --> View: RefreshMessage
+
+@enduml

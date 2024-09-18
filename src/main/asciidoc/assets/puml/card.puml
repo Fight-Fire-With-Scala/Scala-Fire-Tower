@@ -1,0 +1,34 @@
+@startuml
+hide empty members
+skinparam shadowing false
+
+class BucketEffect << (E, orange) >>
+class FirebreakEffect << (E, orange) >>
+class FireEffect << (E, orange) >>
+class WaterEffect << (E, orange) >>
+class WindEffect << (E, orange) >>
+class WindUpdateEffect << (E, orange) >>
+
+class ISpecialCardEffect << (T, lightblue) >>
+class IStandardCardEffect << (T, lightblue) >>
+class ICanBeDiscarded << (T, lightblue) >>
+class ICannotBeDiscarded << (T, lightblue) >>
+class ICanBePlayedAsExtra << (T, lightblue) >>
+
+class DefensiveEffect
+class OffensiveEffect
+class SingleStepEffect
+
+class GameEffectSolver as "GameEffectSolver[InputEffect <: IGameEffect, OutputEffect <: IGameEffect]" << (T, lightblue) >>
+
+class ICardEffect << (T, lightblue) >>
+class IGameCard << (T, lightblue) >>
+class IGameChoiceEffect << (T, lightblue) >>
+class IGameEffect << (T, lightblue) >>
+class ILogicComputation << (T, lightblue) >>
+class ILogicEffect << (T, lightblue) >>
+class ISolveGameEffect << (T, lightblue) >>
+class LogicEffectSolver
+class PatternEffectSolver
+
+@enduml

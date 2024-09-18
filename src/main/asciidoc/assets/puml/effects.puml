@@ -1,0 +1,19 @@
+@startuml
+hide empty members
+skinparam shadowing false
+
+class HandEffect << (E, orange) >>
+class HandManager << (T, lightblue) >>
+
+class PatternEffect << (E, orange) >>
+class LogicSolverManager << (T, lightblue) >>
+
+class MoveEffect << (E, orange) >>
+
+class PhaseEffect << (E, orange) >>
+class PhaseManager << (T, lightblue) >>
+
+class CardManager << (T, lightblue) >>
+
+class GameBoardEffect
+@enduml
