@@ -38,10 +38,6 @@ include::02-architectural-design.adoc[]
 
 include::03-detailed-design.adoc[]
 
-=== Organizzazione del codice/Struttura dei package
-
-diagramma dei package
-
 == Retrospettiva
 
 include::04-retrospective.adoc[]

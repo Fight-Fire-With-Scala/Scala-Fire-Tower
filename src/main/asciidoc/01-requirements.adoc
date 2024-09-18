@@ -1,6 +1,4 @@
 == Requisiti
-https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/
-https://docs.asciidoctor.org/asciidoc/latest/
 
 === Requisiti di business
 
