@@ -1,3 +1,21 @@
 == Introduzione
 
-Scala Fire Tower è un gioco da tavolo competitivo in cui i giocatori gestiscono torri di avvistamento antincendio, cercando di proteggere la loro torre dagli incendi forestali che si diffondono, mentre cercano di dirigere le fiamme verso le torri degli avversari. I giocatori utilizzano risorse come vigili del fuoco, acqua e linee tagliafuoco per controllare la diffusione del fuoco. La direzione del fuoco è influenzata dal vento e i giocatori possono cambiare la direzione del vento usando le carte azione. L'obiettivo è eliminare gli avversari bruciando le loro torri. Il gioco può essere giocato da 1 a 2 giocatori e di solito dura 15 minuti.
+Scala Fire Tower è un gioco da tavolo competitivo in cui i giocatori gestiscono torri di avvistamento antincendio, cercando
+di proteggere la loro torre dagli incendi forestali che si diffondono, mentre cercano di dirigere le fiamme verso le torri
+degli avversari. I giocatori utilizzano risorse come vigili del fuoco, acqua e linee tagliafuoco per controllare
+la diffusione del fuoco. La direzione del fuoco è influenzata dal vento e i giocatori possono cambiare la direzione
+del vento usando le carte azione.
+
+=== Obiettivo del gioco
+Eliminare gli avversari bruciando una delle loro torri.
+
+=== Requisiti Obbligatori
+- Creare una interfaccia grafica che ricordi il gioco da tavolo originale
+- Implementazione delle carte azione per modificare il tabellone (Vento, Acqua, Fiamme e Tagliafuoco)
+- Definizione delle regole per stabilire in quali celle si può propagare il fuoco in base al vento, ai tagliafuoco e ai pattern riportati sulle carte fuoco
+- Gestire la partita in multiplayer tra due giocatori o contro un bot
+
+=== Requisiti Opzionali
+- Carte azione aggiuntive (Secchio, Abbandono Spericolato, Esplosione e Smokejumper)
+- Carte evento del gioco (Tempesta di Fuoco, Aiuto Reciproco e Ombra del Bosco)
+- DSL per la configurazione delle azioni, delle risposte e del comportamento del bot
