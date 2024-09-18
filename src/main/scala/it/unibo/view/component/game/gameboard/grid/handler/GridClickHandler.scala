@@ -13,10 +13,10 @@ import it.unibo.model.gameboard.GamePhase.{ PlaySpecialCardPhase, PlayStandardCa
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.ConcreteToken.Firebreak
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.grid.Token
 import it.unibo.view.component.game.gameboard.grid.GridSquare
 import it.unibo.view.component.game.gameboard.grid.GridState
 import it.unibo.view.logger
+import it.unibo.model.gameboard.Pattern
 
 /**
  * The GridClickHandler class handles the click events on the grid.
@@ -95,7 +95,7 @@ class GridClickHandler(
     gridState.resetHoverColors()
     gridState.availablePatternsClickFixed = gridState.availablePatterns
 
-  private def placePattern(pattern: Map[Position, Token]): Unit =
+  private def placePattern(pattern: Pattern): Unit =
     gridState.hoveredCells.clear()
     gridState.availablePatterns = Set.empty
     observableSubject.onNext(ResolvePatternChoiceMessage(PatternApplication(pattern)))

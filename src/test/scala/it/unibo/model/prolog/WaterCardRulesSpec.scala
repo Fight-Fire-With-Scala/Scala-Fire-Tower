@@ -7,7 +7,7 @@ import it.unibo.model.gameboard.grid.{ Position, Token }
 
 class WaterCardRulesSpec extends AbstractCardSolverSpec:
 
-  override val defaultTokens: Map[Position, Token] = Map(Position(1, 2) -> Fire)
+  override val defaultTokens: Pattern = Map(Position(1, 2) -> Fire)
 
   "A water card" should:
 

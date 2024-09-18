@@ -12,7 +12,7 @@ import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
 
 abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
 
-  protected val defaultTokens: Map[Position, Token] = Map.empty
+  protected val defaultTokens: Pattern = Map.empty
   private val dummyCardId                           = 1
   private val dummyEffectId                         = 0
 
@@ -46,7 +46,7 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
 
   private def buildTheory(
       patternsToCompute: Map[Option[Int], List[ILogicEffect]],
-      tokens: Map[Position, Token] = defaultTokens
+      tokens: Pattern = defaultTokens
   ): Theory =
     val b = GridTheory(BasicGrid(cells, tokens), patternsToCompute)
     b.append(SolverType.CardSolver)
@@ -55,12 +55,12 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
 
   private def buildEngine(
       patternsToCompute: Map[Option[Int], List[ILogicEffect]],
-      tokens: Map[Position, Token] = defaultTokens
+      tokens: Pattern = defaultTokens
   ): PrologEngine = PrologEngine(buildTheory(patternsToCompute, tokens))
 
   protected def getAvailablePatterns(
       logicComputation: ILogicComputation
-  ): Set[Map[Position, Token]] =
+  ): Set[Pattern] =
     val engine = buildEngine(Map(Some(dummyCardId) -> List(PatternLogicEffect(List(logicComputation)))))
     engine.solveAsPatterns(logicComputation.goal(Some(dummyCardId), Some(dummyEffectId)))
 

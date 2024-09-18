@@ -4,7 +4,7 @@ import it.unibo.model.effect.core.{ IStandardCardEffect, LogicEffectSolver, Offe
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
-import it.unibo.model.gameboard.PatternType.VerySmallEffect
+import it.unibo.model.gameboard.PatternType.VerySmallPattern
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.prolog.Rule
 
@@ -23,7 +23,7 @@ object WindEffect:
 
   private def getPlaceFireEffect(direction: Direction) =
     OffensiveEffect(
-      VerySmallEffect(Map("a" -> Fire)),
+      VerySmallPattern(Map("a" -> Fire)),
       Rule("fire"),
       List(direction)
     )

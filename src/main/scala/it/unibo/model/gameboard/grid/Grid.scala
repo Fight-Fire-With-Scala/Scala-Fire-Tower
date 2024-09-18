@@ -3,11 +3,12 @@ package it.unibo.model.gameboard.grid
 import it.unibo.model.gameboard.grid.Cell._
 import it.unibo.model.gameboard.grid.ConcreteToken._
 import it.unibo.model.gameboard.grid.Grid.Size
+import it.unibo.model.gameboard.Pattern
 
 trait Grid:
   def cells: Map[Position, Cell]
 
-  def tokens: Map[Position, Token]
+  def tokens: Pattern
 
   def getCell(position: Position): Option[Cell]
 
@@ -46,10 +47,10 @@ object Grid:
 
 final case class BasicGrid(
     private val _cells: Map[Position, Cell] = Map.empty,
-    private val _tokens: Map[Position, Token] = Map.empty
+    private val _tokens: Pattern = Map.empty
 ) extends Grid:
   override def cells: Map[Position, Cell]   = this._cells
-  override def tokens: Map[Position, Token] = this._tokens
+  override def tokens: Pattern = this._tokens
 
   override def setToken(position: Position, token: Token): Grid =
     require(isValidPosition(position), s"Invalid position: $position")

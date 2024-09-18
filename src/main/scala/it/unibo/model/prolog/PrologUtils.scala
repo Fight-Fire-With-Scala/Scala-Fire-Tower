@@ -12,6 +12,7 @@ import it.unibo.model.gameboard.grid.ConcreteToken.Empty
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
+import it.unibo.model.gameboard.Pattern
 
 object PrologUtils:
   given Conversion[Rule, Term]         = _.term
@@ -39,7 +40,7 @@ object PrologUtils:
     val y     = tuple.getArg(1).toString.toInt
     (x, y)
 
-  def parseComputedPatterns(solution: SolveInfo): Map[Position, Token] = solution.getSolution match
+  def parseComputedPatterns(solution: SolveInfo): Pattern = solution.getSolution match
     case solutionAsStruct: Struct => extractMapPositionTokenFromStruct(solutionAsStruct, 0)
     case _                        => Map.empty
 
@@ -51,7 +52,7 @@ object PrologUtils:
         Set(Position(x, y))
       case _ => Set.empty
 
-  def parseAllCardsResult(solution: SolveInfo): (Option[Int], Map[Position, Token]) =
+  def parseAllCardsResult(solution: SolveInfo): (Option[Int], Pattern) =
     solution.getTerm("R") match
       case solutionAsStruct: Struct =>
         val positionsAndTokensMap = extractMapPositionTokenFromStruct(solutionAsStruct, 0)
@@ -61,7 +62,7 @@ object PrologUtils:
           Some(cardId) -> positionsAndTokensMap
       case _ => None -> Map.empty
 
-  private def extractMapPositionTokenFromStruct(struct: Struct, argId: Int): Map[Position, Token] =
+  private def extractMapPositionTokenFromStruct(struct: Struct, argId: Int): Pattern =
     struct.getArg(argId) match
       case resultVar: Var =>
         resultVar.getLink match
@@ -89,7 +90,7 @@ object PrologUtils:
     case struct: Struct if s.isTuple => parseStruct(struct, acc)
     case atom                        => atom.toString :: acc
 
-  private def convertToMap(buffer: List[String]): Map[Position, Token] = buffer
+  private def convertToMap(buffer: List[String]): Pattern = buffer
     .grouped(3)
     .collect { case List(s: String, i2: String, i1: String) =>
       (Position(i1.toInt, i2.toInt), ConcreteToken.values.find(_.id == s).getOrElse(Empty))

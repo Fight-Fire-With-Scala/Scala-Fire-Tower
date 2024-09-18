@@ -3,10 +3,10 @@ package it.unibo.model.effect.card
 import it.unibo.model.effect.core.{ DefensiveEffect, IStandardCardEffect, LogicEffectSolver, OffensiveEffect }
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_List_PatternLogicEffect
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
-import it.unibo.model.gameboard.PatternType.MediumAltEffect
-import it.unibo.model.gameboard.PatternType.SmallEffect
-import it.unibo.model.gameboard.PatternType.VerySmallEffect
-import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Map
+import it.unibo.model.gameboard.PatternType.MediumAltPattern
+import it.unibo.model.gameboard.PatternType.SmallPattern
+import it.unibo.model.gameboard.PatternType.VerySmallPattern
+import it.unibo.model.gameboard.PatternType.given_Conversion_PatternType_Pattern
 import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Firebreak, Reforest }
 import it.unibo.model.prolog.Rule
 
@@ -19,13 +19,13 @@ object FirebreakEffect:
   val fireBreakEffectSolver: LogicEffectSolver[FirebreakEffect] = LogicEffectSolver:
     case DeReforest =>
       List(
-        DefensiveEffect(VerySmallEffect(Map("a" -> Firebreak)), Rule("deforest")),
-        OffensiveEffect(VerySmallEffect(Map("a" -> Reforest)), Rule("reforest"))
+        DefensiveEffect(VerySmallPattern(Map("a" -> Firebreak)), Rule("deforest")),
+        OffensiveEffect(VerySmallPattern(Map("a" -> Reforest)), Rule("reforest"))
       )
     case ScratchLine =>
       DefensiveEffect(
-        MediumAltEffect(Map("a" -> Firebreak, "b" -> Empty)),
+        MediumAltPattern(Map("a" -> Firebreak, "b" -> Empty)),
         Rule("scratch_line")
       )
     case DozerLine =>
-      DefensiveEffect(SmallEffect(Map("a" -> Firebreak)), Rule("dozer_line"))
+      DefensiveEffect(SmallPattern(Map("a" -> Firebreak)), Rule("dozer_line"))

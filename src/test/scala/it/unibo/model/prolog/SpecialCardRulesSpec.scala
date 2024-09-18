@@ -7,7 +7,7 @@ import it.unibo.model.gameboard.grid.{ Position, Token }
 
 class SpecialCardRulesSpec extends AbstractCardSolverSpec:
 
-  override val defaultTokens: Map[Position, Token] = Map(Position(0, 0) -> Fire)
+  override val defaultTokens: Pattern = Map(Position(0, 0) -> Fire)
 
   "A special card" should:
     "provide the correct choices to solve the bucket card" in:

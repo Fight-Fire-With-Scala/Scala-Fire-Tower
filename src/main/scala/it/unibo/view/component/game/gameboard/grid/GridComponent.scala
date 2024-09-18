@@ -21,6 +21,7 @@ import javafx.scene.Node
 import javafx.scene.layout.StackPane
 import scalafx.scene.layout.GridPane
 import scalafx.scene.paint.Color
+import it.unibo.model.gameboard.Pattern
 
 /**
  * The GridComponent class represents the game grid component in the UI.
@@ -64,7 +65,7 @@ final class GridComponent(using
   private def handleCellHover(row: Int, col: Int, hoverDirection: HoverDirection): Unit =
     gridEventHandler.handleCellHover(row, col, hoverDirection, gamePhase)
 
-  def setAvailablePatterns(patterns: Set[Map[Position, Token]], cardEffect: Int): Unit =
+  def setAvailablePatterns(patterns: Set[Pattern], cardEffect: Int): Unit =
     gridEventHandler.updateAvailablePatterns(patterns)
     gridEventHandler.setEffectCode(cardEffect)
 

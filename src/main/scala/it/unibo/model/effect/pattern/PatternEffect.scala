@@ -10,12 +10,13 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.player.PlayerManager
 import it.unibo.model.logger
+import it.unibo.model.gameboard.Pattern
 
 enum PatternEffect extends IGameEffect:
   case PatternComputation(logicEffect: ILogicEffect)
   case CardComputation(cardId: Int, logicEffect: ILogicEffect)
   case BotComputation(cards: Map[Option[Int], List[ILogicEffect]])
-  case PatternApplication(pattern: Map[Position, Token])
+  case PatternApplication(pattern: Pattern)
   case ResetPatternComputation
 
 object PatternEffect extends CardManager with PlayerManager with LogicSolverManager:
@@ -50,7 +51,7 @@ object PatternEffect extends CardManager with PlayerManager with LogicSolverMana
               logger.warn(s"Could not find a card with id $cardId in hand")
               gb
 
-  private def solvePatternApplication(pattern: Map[Position, Token]) =
+  private def solvePatternApplication(pattern: Pattern) =
     GameBoardEffectSolver: (gbe: GameBoardEffect) =>
       val gb      = gbe.gameBoard
       val b       = gb.board

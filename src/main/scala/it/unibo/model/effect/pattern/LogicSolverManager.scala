@@ -3,8 +3,6 @@ package it.unibo.model.effect.pattern
 import alice.tuprolog.Theory
 import it.unibo.model.effect.core.ILogicEffect
 import it.unibo.model.gameboard.GameBoard
-import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.prolog.{ GridTheory, PrologEngine, PrologUtils, SolverType }
 import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
 import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
@@ -14,13 +12,14 @@ import it.unibo.model.prolog.SolverType.CardSolver
 import it.unibo.model.prolog.SolverType.ConcatListSolver
 import it.unibo.model.prolog.SolverType.ManhattanSolver
 import it.unibo.model.prolog.decisionmaking.{ AllCardsResultTheory, DecisionMaker }
+import it.unibo.model.gameboard.Pattern
 
 trait LogicSolverManager:
   protected def computePatterns(
       gb: GameBoard,
       cardId: Option[Int],
       logicEffect: ILogicEffect
-  ): Set[Map[Position, Token]] =
+  ): Set[Pattern] =
     val theory = GridTheory(gb.board.grid, Map(cardId -> List(logicEffect)))
     theory.append(SolverType.CardSolver)
     theory.append(SolverType.BaseSolver)
@@ -33,7 +32,7 @@ trait LogicSolverManager:
   protected def computePatterns(
       gb: GameBoard,
       cards: Map[Option[Int], List[ILogicEffect]]
-  ): (Option[Int], Map[Position, Token]) =
+  ): (Option[Int], Pattern) =
 
     val grid          = gb.board.grid
     val dynamicTheory = AllCardsResultTheory(cards)

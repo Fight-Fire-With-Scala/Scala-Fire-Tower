@@ -15,12 +15,12 @@ import it.unibo.model.gameboard
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
-import it.unibo.model.gameboard.grid.{ Position, Token }
 import it.unibo.model.gameboard.player.ThinkingPlayer.handleMove
 import it.unibo.model.logger
 import it.unibo.model.prolog.decisionmaking.AttackDefense
 import it.unibo.model.prolog.decisionmaking.DecisionMaker
 import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
+import it.unibo.model.gameboard.Pattern
 
 trait ISendMessages:
   protected def onUpdateGamePhaseRequest(model: Model, phaseEffect: PhaseEffect): Unit
@@ -117,7 +117,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     onUpdateGamePhaseRequest(model, PhaseEffect(EndTurnPhase))
 
 object ThinkingPlayer:
-  private def handleMove(lastMove: Option[Move]): (Option[Int], Map[Position, Token]) =
+  private def handleMove(lastMove: Option[Move]): (Option[Int], Pattern) =
     lastMove match
       case Some(move) =>
         move.effect match

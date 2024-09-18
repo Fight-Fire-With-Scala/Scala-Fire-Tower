@@ -10,7 +10,7 @@ import it.unibo.model.gameboard.grid.Token
 final class PatternDSL:
   val tokens              = new ArrayBuffer[Token]
   def add(c: Token): Unit = tokens += c
-  def mapTo(nRows: Int, nCols: Int): Map[Position, Token] = tokens.zipWithIndex.map {
+  def mapTo(nRows: Int, nCols: Int): Pattern = tokens.zipWithIndex.map {
     case (token, index) =>
       val row = index / nCols
       val col = index % nCols

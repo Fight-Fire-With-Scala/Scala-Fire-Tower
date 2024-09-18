@@ -70,7 +70,7 @@ class GameBoardSpec
 
     "solve pattern application correctly" in:
       val position: Position        = Position(10, 10)
-      val map: Map[Position, Token] = Map(position -> Fire)
+      val map: Pattern = Map(position -> Fire)
       val updatedGameBoard          = gameBoard.solveEffect(PatternApplication(map))
       updatedGameBoard.board.grid.getToken(position) shouldBe Some(Fire)
 
