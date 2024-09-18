@@ -1,7 +1,6 @@
 package it.unibo.view.component.game.gameboard.hand
 
 import scala.compiletime.uninitialized
-
 import it.unibo.controller.CandidateCardToPlayMessage
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ToggleCardInListMessage
@@ -13,14 +12,14 @@ import it.unibo.view.GUIType
 import it.unibo.view.component.ICanBeDisabled
 import it.unibo.view.component.ICanSwitchHandler
 import it.unibo.view.component.IHandComponent
-import it.unibo.view.component.game.gameboard.hand.CardHighlightState.Unhighlighted
+import it.unibo.view.component.game.gameboard.hand.CardHighlightState.{ Highlighted, Unhighlighted }
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
-import scalafx.Includes._
+import scalafx.Includes.*
 import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_String
 
 enum CardHighlightState:
@@ -47,12 +46,16 @@ final class CardComponent(using internalObservable: InternalViewSubject)
   @FXML
   def initialize(): Unit = highlightManager.initialize(cardPane)
 
-  var highlightManager = CardHighlightManager()
-
+  var highlightManager                  = CardHighlightManager()
+  private var previousId: Option[Int]   = None
+  var iWasSelected                      = false
   protected var currentState: GamePhase = GamePhase.PlayStandardCardPhase
 
   private val playCardHandler: EventHandler[MouseEvent] =
-    (_: MouseEvent) => internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+    (_: MouseEvent) =>
+      internalObservable.onNext(CandidateCardToPlayMessage(cardId.toInt))
+      if iWasSelected then iWasSelected = false
+      else iWasSelected = true
 
   private val discardCardHandler: EventHandler[MouseEvent] = (_: MouseEvent) =>
     internalObservable.onNext(ToggleCardInListMessage(cardId.toInt))
@@ -66,8 +69,6 @@ final class CardComponent(using internalObservable: InternalViewSubject)
       addHandler(GamePhase.WaitingPhase, MouseEvent.MOUSE_CLICKED, playCardHandler)
       addHandler(GamePhase.RedrawCardsPhase, MouseEvent.MOUSE_CLICKED, discardCardHandler)
 
-  protected def applyState(state: GamePhase): Unit = highlightManager.switch(Some(Unhighlighted))
-
   def setCard(card: Card): Unit =
     cardPane.getStyleClass.clear()
     cardPane.getStyleClass.add("card")
@@ -75,9 +76,19 @@ final class CardComponent(using internalObservable: InternalViewSubject)
     cardTitle.setText(card.title)
     cardDescription.setText(card.description)
     cardId = card.id.toString
+    previousId match
+      case Some(id) =>
+        if id != card.id then
+          iWasSelected = false
+          previousId = Some(card.id)
+          highlightManager.switch(Some(Unhighlighted))
+      case None =>
+        previousId = Some(card.id)
+
     card.effect match
       case _: ICanBeDiscarded => containSpecialCard = false
-      case _                 => containSpecialCard = true
+      case _                  => containSpecialCard = true
+    if iWasSelected then highlightManager.switch(Some(Highlighted))
     addHandlers()
 
   def reset(): Unit =
@@ -90,10 +101,10 @@ final class CardComponent(using internalObservable: InternalViewSubject)
 
   override def onEnableView(): Unit =
     super.onEnableView()
-    enableActualHandlers()
+    addHandlers()
 
   override def onDisableView(): Unit =
     super.onDisableView()
-    disableActualHandlers()
+    resetHandlers()
 
   override protected def getPane: Node = cardPane
