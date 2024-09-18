@@ -1,0 +1,131 @@
+=== Carte
+:pumldir: ./assets/puml
+:srcdir: ../
+:xrefstyle: short
+:figure-caption: Figura
+:listing-caption: Listato
+
+Di seguito si discute la rappresentazione e la gestione delle carte e dei relativi effetti.
+
+Il sistema si basa su un’architettura a componenti, visibile in <<card-class-diagram>>, in cui ogni effetto delle carte è modellato come un’entità distinta che interagisce con le altre entità secondo le regole del gioco.
+
+[#card-class-diagram]
+.Diagramma delle classi che rappresenta la modellazione delle carte nel gioco.
+[plantuml, card, format="svg"]
+----
+include::{pumldir}/card.puml[align=center]
+----
+
+Questo approccio permette di ottenere un sistema flessibile, espandibile e modulare, in cui ciascun effetto può essere definito separatamente e gestito da un apposito risolutore di effetti.
+
+Come si può osservare in <<card-types-class-diagram>>, gli effetti delle carte sono state suddivise in due categorie: le carte standard e quelle speciali. Esistono cinque tipologie di effetti, una per ogni tipologia di carta del gioco:
+
+- *Carte secchio*: corrispondo al `BucketEffect` e sono le uniche carte che permettono di rimuovere dei token fuoco che si trovano nell'area di una torre;
+- *Carte tagliafuoco*: corrispondono al `FirebreakEffect` e permettono di aggiungere o rimuovere dei tagliafuoco dal campo di gioco. I tagliafuoco impediscono di piazzare dei token fuoco nella posizione in cui si trovano.
+- *Carte fuoco*: sono utilizzate per piazzare dei token fuoco.
+- *Carte acqua*
+- *Carte vento*
+
+A ciascuna tipologia sono associate delle proprietà specifiche tramite appositi tratti. In particolare le carte standard possono essere scartate, al contrario delle carte speciali. Inoltre le carte speciali possono essere giocate in aggiunta ad altre azioni del turno.
+
+Esistono due tipologie di effetti: quelli che richiedono di scegliere tra quelli possibili un pattern da applicare, che estendono `IPatternEffect`, e quelli che richiedono di effettuare scelte di altro genere, che estendono `IGameChoiceEffect`. Entrambi estendono `IGameEffect`. Un effetto relativo ai pattern estende anche `ILogicEffect`, in quanto il calcolo dei pattern possibili richiede una computazione in prolog.
+
+[#card-types-class-diagram]
+.Diagramma delle classi che rappresenta i risolutori di logica.
+[plantuml, solvers, format="svg"]
+----
+@startuml
+hide empty members
+skinparam shadowing false
+left to right direction
+
+class BucketEffect << (E, orange) >>
+class FirebreakEffect << (E, orange) >>
+class FireEffect << (E, orange) >>
+class WaterEffect << (E, orange) >>
+class WindEffect << (E, orange) >>
+
+class ISpecialCardEffect << (T, lightblue) >>
+class IStandardCardEffect << (T, lightblue) >>
+class ICanBeDiscarded << (T, lightblue) >>
+class ICannotBeDiscarded << (T, lightblue) >>
+class ICanBePlayedAsExtra << (T, lightblue) >>
+
+class ICardEffect << (T, lightblue) >>
+
+IStandardCardEffect --> ICardEffect: extends
+ISpecialCardEffect  --> ICardEffect: extends
+
+IStandardCardEffect --> ICanBeDiscarded: extends
+ISpecialCardEffect  --> ICannotBeDiscarded: extends
+ISpecialCardEffect  --> ICanBePlayedAsExtra: extends
+
+BucketEffect    --> ISpecialCardEffect: extends
+FirebreakEffect --> IStandardCardEffect: extends
+FireEffect      --> IStandardCardEffect: extends
+WaterEffect     --> IStandardCardEffect: extends
+WindEffect      --> IStandardCardEffect: extends
+----
+
+[#card-types-class-diagram]
+.Diagramma delle classi che rappresenta i risolutori di logica.
+[plantuml, solvers, format="svg"]
+----
+@startuml
+hide empty members
+skinparam shadowing false
+
+class ICardEffect << (T, lightblue) >>
+class IGameChoiceEffect << (T, lightblue) >>
+class WindUpdateEffect << (E, orange) >>
+----
+
+Gli effetti delle carte possono essere suddivisi in due categorie principali: effetti difensivi ed effetti offensivi. Questi effetti permettono di applicare diverse modifiche al campo di gioco, come il controllo del fuoco, la gestione del vento e la protezione delle torri.
+
+[#effect-types-class-diagram]
+.Diagramma delle classi che rappresenta i risolutori di logica.
+[plantuml, solvers, format="svg"]
+----
+@startuml
+hide empty members
+skinparam shadowing false
+
+class DefensiveEffect
+class OffensiveEffect
+class SingleStepEffect
+
+class IGameEffect << (T, lightblue) >>
+class ILogicComputation << (T, lightblue) >>
+class ILogicEffect << (T, lightblue) >>
+----
+
+Ad esempio in <<fire-effect-listing>> è riportata la definizione delle carte fuoco. Si osserva l'utilizzo di una enumerazione per associare al tipo di effetto il relativo codice, impiegato in fase di lettura del file delle stringhe in inglese per popolare il titolo e la descrizione di ciascuna carta.
+
+Ciascuna effetto di una carta è poi associato a un ulteriore effetto che definisce i parametri necessari per la sua risoluzione logica, tramite un metodo che funge da risolutore di tipo `LogicEffectSolver`. . In particolare un effetto Per effettuare l'associazione tra l'effetto di una carta e i relativi parametri necessari per il calcolo dei possibili punti di applicazione del relativo pattern si utilizza
+
+
+[#solver-types-class-diagram]
+.Diagramma delle classi che rappresenta i risolutori di logica.
+[plantuml, solvers, format="svg"]
+----
+@startuml
+hide empty members
+skinparam shadowing false
+
+class ISolveGameEffect << (T, lightblue) >>
+
+class GameEffectSolver as "GameEffectSolver[InputEffect <: IGameEffect, OutputEffect <: IGameEffect]" << (T, lightblue) >>
+class LogicEffectSolver
+
+class PatternEffectSolver
+
+@enduml
+----
+
+[#fire-effect-listing]
+.Frammento di codice relativo alla dichiarazione dei tipi di carta fuoco e dei relativi effetti logici.
+[source, scala]
+----
+include::../scala/it/unibo/model/effect/card/FireEffect.scala[tags=fireEffect]
+----
+
