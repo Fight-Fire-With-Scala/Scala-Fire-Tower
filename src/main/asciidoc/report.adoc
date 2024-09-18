@@ -253,16 +253,59 @@ L'adozione dei commit convenzionali ha permesso di definire in modo univoco e st
 
 ==== Strumenti di CI/CD
 
-=== Suddivisione del lavoro
+=== Retrospettiva
 
 ==== Alessandro Becci
+Questo progetto è stata per me una sfida importante,
+ma sicuramente molto formativa per la mia crescita.
+Ho affrontato con determinazione l'inizio dello sviluppo,
+e grazie alla divisione dei task tramite l'assegnazione nel backlog,
+ho potuto mettere il focus sulle mie parti.Sono fiero di come abbiamo gestito
+gli imprevisti e incuriosito dalla metodologia di lavoro SCRUM, che continuerò
+ad adottare nei progetti futuri, spero in maniear ancora migliore.
+Vorrei ringraziare i miei compagni che mi
+hanno sempre sostenuto nelle difficoltà che questo progetto ci ha posto davanti.
+
+===== Lavoro svolto
+- View della griglia di gioco
+- Model della gameboard
+- DSL per creare la gameboard
+- Implementazione di hover e click sulla griglia per tutte le fasi di gioco
+- Gioco della carta da una mano
+- Implementazione dell'IA del bot
+- Risoluzione degli effetti delle carte sulla GameBoard
 
 ==== Luca Tonelli
+Per quanto riguarda la mia esperienza personale, posso ritenere questo progetto estremamente formativo e interessante.
+L'utilizzo di SCRUM e la suddivisione dei task in maniera chiara e precisa, mi ha permesso di lavorare in maniera più efficiente e di avere una visione più chiara del lavoro da svolgere.
+
+===== Lavoro svolto
+- View del Menu
+- View della Mano
+- View delle Carte
+- Model del Player
+- Model del Bot
+- Model del Menu
+- Implementazione di Scarta e Pesca carte
+- Implementazione della carta Secchio
+- Implementazione IA Bot
+
+===== Conclusioni
+Mi ritengo pienamente soddisfatto del risultato ottenuto ma soprattutto per l'organizzazione adottata.
 
 ==== Riccardo Battistini
+Lo svolgimento di questo progetto mi ha permesso di approfondire la conoscenza dei paradigmi
+di programmazione funzionale e logica, tramite lo sviluppo di software in Scala e in Prolog. In particolare ho potuto sperimentare l'utilizzo del currying, delle higher order function e delle given per la programmazione contestuale.
 
-== Sviluppi futuri (INSIEME)
+Inoltre ho potuto cimentarmi nell'applicazione di tecniche per la gestione di progetti basati su Scrum.
 
-== Guida Utente (INSIEME)
+===== Lavoro svolto
+Nel progetto mi sono occupato delle seguenti aree:
+
+- Sviluppo del modello delle carte
+- Sviluppo del sistema degli effetti e dei risolutori
+- Integrazione iniziale di tuprolog in Scala e generazione procedurale della teoria Prolog della griglia
+- Sviluppo della sidebar e dei suoi sottocomponenti, ad eccezione del deck
+- Sviluppo del protocollo di scambio di messaggi tra model e view
 
 include::05-user-guide.adoc[]
