@@ -6,12 +6,12 @@ import javafx.scene.Node
 trait ICanBeDisabled:
   protected var enabled: Boolean = false
 
-  def enableView(): Unit = if !enabled then
+  def enableView(): Unit =
     logger.debug(s"[Activation] Enabled ${this.getClass.getSimpleName}")
     enabled = true
     onEnableView()
 
-  def disableView(): Unit = if enabled then
+  def disableView(): Unit =
     logger.debug(s"[Activation] Disabled ${this.getClass.getSimpleName}")
     enabled = false
     onDisableView()
