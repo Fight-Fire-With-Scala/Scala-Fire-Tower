@@ -1,0 +1,41 @@
+== Turno
+=== Divisione del turno da regolamento ufficiale
+Una partita è composta da una serie di turni, a sua volta il turno viene suddiviso in due parti fondamentali ed una facoltativa che sono:
+
+. Il vento diffonde le fiamme: __Scegli uno spazio vuoto il cui bordo sia adiacente, nella direzione in cui il vento sta soffiando, ad
+una Gemma Fuoco o alla Fiamma Eterna e posiziona una Gemma Fuoco su di esso. Due spazi
+sono adiacenti se si toccano su uno dei 4 lati, mai in diagonale__.
+
+. Esegui un’Azione dalla Torre (solo una delle due seguenti azioni): __Gioca una Carta dalla tua mano ed esegui l’azione indicata su di essa . Una volta che l’Azione è finita, metti la Carta nella pila degli
+scarti e pesca una nuova Carta dal mazzo.
+Oppure scarta e pesca fino a 5 Carte dalla tua mano. Dovresti sempre avere cinque Carte in mano
+una volta che hai finito il tuo turno. Nota: I secchi non fanno parte della tua mano. __
+
+* Azione Addizionale Facoltativa: __In qualsiasi momento durante il tuo turno puoi giocare il tuo
+Secchio in aggiunta al resto del tuo turno __
+
+=== Modellazione della divisione del turno
+Per la gestione delle fasi del turno ed una migliore integrazione con il modello di gioco, si è deciso di modellare il turno come una macchina a stati finiti.
+Nello specifico il turno è composto da 8 stati:
+
+* *WindPhase* (Stato iniziale) : Fase iniziale del turno che permette il piazzamento di un token fuoco sulla griglia in base alla direzione del vento
+
+* *WaitingPhase* : Fase di stallo successiva alla fase iniziale, in attesa che il giocatore scelga se giocare una carta o scartare e pescare
+
+* *PlayStandardCardPhase* : Fase in cui il giocatore gioca una carta dalla propria mano
+
+* *RedrawCardPhase* : Fase in cui il giocatore scarta e pesca fino a 5 carte dalla propria mano
+
+* *DecisionPhase* : Fase prettamente logica utilizzata per determinare il passaggio di fase successivo basandosi sulla presenza o non di carte speciali nella mano del giocatore
+
+* *PlaySpecialCardPhase* : Fase in cui il giocatore gioca una carta speciale dalla propria mano (Bucket card)
+
+* *EndTurnPhase* : Fase finale del turno nella quale viene preparato il turno successivo
+
+* *EndGamePhase* (Stato finale): Fase finale della partita
+
+La transizione da uno stato all'altro è determinata dalle azioni compiute dal giocatore gestite tramite handler specifici che vengono attivati e disattivati a livello di View in base allo stato attuale. A supporto degli handler è stato implementato il Trait *PhaseManager* che permette di automatizzare le azioni a livello di model per le transizioni di stato non dipendenti dal giocatore.
+
+
+
+

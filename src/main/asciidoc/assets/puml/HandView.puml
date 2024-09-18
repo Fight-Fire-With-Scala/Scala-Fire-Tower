@@ -1,0 +1,65 @@
+@startuml
+hide empty members
+skinparam shadowing false
+
+package view.component.game.gameboard.hand {
+  class CardComponent {
+    + String fxmlPath
+    - Pane cardPane
+    - Text cardTitle
+    - Text cardDescription
+    + String cardId
+    + Boolean containSpecialCard
+    + initialize(): Unit
+    - CardHighlightManager highlightManager
+    - GamePhase currentState
+    - playCardHandler: EventHandler[MouseEvent]
+    - discardCardHandler: EventHandler[MouseEvent]
+    - addHandlers(): Unit
+    + setCard(card: Card): Unit
+    + reset(): Unit
+    + onEnableView(): Unit
+    + onDisableView(): Unit
+    + getPane: Node
+  }
+
+  class CardHighlightManager {
+    - Option[Pane] cardPane
+    - CardHighlightState highlightState
+    + initialize(cp: Pane): Unit
+    + switch(toState: Option[CardHighlightState] = None): Unit
+    + getCurrentState: Option[CardHighlightState]
+  }
+
+  enum CardHighlightState {
+    Highlighted
+    Unhighlighted
+  }
+
+  class Switchable << (T,lightblue)>>  {
+    + switch(toState: T): Unit
+    + getCurrentState: T
+  }
+
+  class ICanSwitchHandler << (T,lightblue)>>  {
+    + switch(toState: T): Unit
+    + getCurrentState: T
+    + addHandler(state: T, eventType: EventType[MouseEvent], handler: EventHandler[MouseEvent]): Unit
+    + getHandlers(state: T, eventType: EventType[MouseEvent]): List[EventHandler[MouseEvent]]
+    - disableActualHandlers(): Unit
+    - resetHandlers(): Unit
+    - enableActualHandlers(): Unit
+    - onSwitch(state: T): Unit
+    - removeHandler(state: T, eventType: EventType[MouseEvent], handler: EventHandler[MouseEvent]): Unit
+    - updateHandlers(state: T, action: (EventType[MouseEvent], EventHandler[MouseEvent]) => Unit): Unit
+    # getPane: Node
+  }
+}
+
+ICanSwitchHandler <|-- Switchable
+CardComponent <|-- ICanSwitchHandler
+CardComponent *-- CardHighlightManager
+CardHighlightManager <|-- Switchable
+CardHighlightManager <|.. CardHighlightState
+
+@enduml

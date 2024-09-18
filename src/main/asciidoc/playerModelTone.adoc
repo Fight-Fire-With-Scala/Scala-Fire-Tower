@@ -1,0 +1,78 @@
+= Player
+
+Per quanto riguarda la modellazione dei giocatori, visto la possibilità di avere un giocatore umano e un giocatore bot, si è deciso di modellare il giocatore come un Trait *Player* che contiene i metodi comuni tra i due tipi di giocatori.
+Nello specifico il Trait Player contiene le seguenti informazioni:
+
+- *name*: Il nome del giocatore
+- *moves*: La lista delle mosse effettuate dal giocatore
+- *hand*: La lista delle carte in mano al giocatore
+- *extraCard*: Una carta extra che il giocatore può avere in mano
+- *towerPositions*: Un set di posizioni delle proprie torri
+
+Inoltre sono presenti una serie di Option per memorizzare le ultime azioni effettuate dal giocatore.
+
+Il Trait inoltre implementa i metodi comuni tra i due tipi di giocatori come:
+
+- *drawCardFromDeck*: Metodo che permette di pescare una carta dal mazzo ed inserirla nell'apposito slot della mano del giocatore popolando la hand in caso di carte normali o l'extraCard in caso di carte speciali
+
+- *playCard*: Metodo che permette di giocare una carta dalla mano del giocatore e restituisce il giocatore aggiornato e la carta giocata
+
+- *logMove*: Metodo che permette di loggare una mossa effettuata dal giocatore
+
+- *discardCards*: Metodo che permette di scartare una o più carte dalla mano del giocatore
+
+- *updatePlayer* di aggiornare le informazioni del giocatore in base alle mosse effettuate.
+
+Il Trait Player è esteso da tre classi:
+
+- *Person*: Rappresenta un giocatore umano che non presenta particolari comportamenti aggiuntivi
+
+- *Bot* e *ThinkingPlayer*: Che vanno a rappresentare il giocatore bot.
+
+== Bot
+
+Il Bot oltre a contenere le informazioni del giocatore, contiene un riferimento al *BotBehaviour* che rappresenta il comportamento del bot e un riferimento all'*BotSubject* che rappresenta l'observable del bot utilizzato per interagire con i componenti esterni simulando le azioni gestite tramite gli handler grafici.
+Inoltre per reagire ai cambi stato del gioco, viene usato il metodo *think* che permette al bot di effettuare le azioni necessarie per il proprio turno.
+
+Tramite il trait *ThinkingPlayer* vengono implementati i metodi per la gestione delle fasi del turno e delle azioni da compiere in base alla fase del turno.
+Più nello specifico vengono implementati i metodi:
+
+- *thinkForWindPhase*: Metodo che permette al bot di piazzare un token fuoco sulla griglia in base alla direzione del vento.
+
+- *thinkForWaitingPhase*: Metodo che permette al bot di decidere se giocare una carta o scartare e pescare
+
+- *thinkForRedrawCardPhase*: Metodo che permette al bot di scartare e pescare fino a 5 carte dalla propria mano
+
+- *thinkForPlayStandardCardPhase*: Metodo che permette al bot di giocare una carta dalla propria mano
+
+- *thinkForDecisionPhase*: Metodo che permette al bot di decidere terminare il turno o giocare una carta speciale
+
+- *thinkForPlaySpecialCardPhase*: Metodo che permette al bot di giocare una carta speciale dalla propria mano
+
+A supporto dei metodi di think, è stato implementato il trait *IMakeDecision* che contiene i metodi per filtrare le carte in base alla decisione e per verificare la presenza di token fuoco o fire break sulla griglia.
+
+Ogni metodo di think presenta un'implementazione specifica per il bot che permette di gestire le azioni in modo automatico.
+ Nel dettaglio:
+
+=== thinkForWindPhase
+Per permettere il piazzamento di un token fuoco sulla griglia in base alla direzione del vento, vengono designate come torri target le due torri avversarie e modellata la direzione del vento riproducendo una carta.
+Viene poi lasciata la computazione della posizione del token fuoco alla teoria prolog LogicSolverManager.
+
+=== thinkForWaitingPhase
+Per definire se passare alla fase di PlayStandardCard o RedrawCard, vine utilizzata la teoria Prolog AttackDefenseTheory per determinare se passare in fase di attacco o difesa, in base alla decisione presa vengono analizzate le carte presenti in mano e scelte le azioni da compiere.
+Se non sono presenti carte che possono essere giocate, il bot passa alla fase di RedrawCard.
+
+=== thinkForRedrawCardPhase
+Per scartare e pescare fino a 5 carte dalla propria mano, il bot scarta le carte che non sono utili per la fase di gioco corrente e pesca fino a 5 carte.
+
+=== thinkForPlayStandardCardPhase
+Per giocare una carta dalla propria mano, vengono filtrate le carte in base alla decisione presa in fase di Waiting e scomposte in effetti singoli visto che alcune carte possono avere sia effetti difensivi che offensivi.
+Una volta ottenuta la mappa dei relativi id carta ed effetto, viene utilizzata la teoria Prolog LogicSolverManager per determinare la carta da giocare e la posizione in cui giocarla.
+
+=== thinkForDecisionPhase
+Per decidere se terminare il turno o giocare una carta speciale, il bot verifica la presenza token fuoco nelle porpoise torri.
+
+=== thinkForPlaySpecialCardPhase
+Se presente la carta speciale nella mano del bot viene calcolata la posizione in cui piazzarla tramite la teoria Prolog LogicSolverManager.
+
+Ogni metodo di think chiama a sua volta *onUpdateGamePhaseRequest* per notificare la view del cambio di fase e *handleMoveAndApplyEffect* per applicare gli effetti delle mosse.

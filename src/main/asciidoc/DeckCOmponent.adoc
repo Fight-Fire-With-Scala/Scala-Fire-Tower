@@ -1,0 +1,3 @@
+=== DeckComponent
+DeckComponent è un componente della sidebar che rappresenta graficamente il mazzo di carte.
+Il componente presenta tre bottoni utilizzati per inizializzare, confermare o cancellare la procedura di scarto delle carte, utilizzando l' InternalViewSubject per comunicare con le api di HandComponent.

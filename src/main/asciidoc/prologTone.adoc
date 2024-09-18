@@ -1,0 +1,106 @@
+Per permettere al bot di decidere che carta giocare e in che posizione specifica della griglia applicare il pattern è stata implementata una teoria Prolog composta nel trait LogicSolverManager.
+La teoria viene composta partendo dalla teoria di calcolo dei pattern disponibili per una carta integrandola con la posizione delle torri da bersagliare e di utility che permettono di eseguire una ricorsione tra torri e pattern per definire la posizione migliore su cui piazzare il pattern.
+viene quindi infine composta da:
+
+* GridTheory: che contiene ricostruisce la griglia di gioco in prolog
+* tower_position: che contiene le posizioni delle torri
+* ManhattanSolver: che permette di calcolare la distanza di manatthan tra due punti
+* ConcatListTheory: che permette di concatenare liste in modo ricorsivo
+* AllCardResultTheory: che permette di realizzare una teoria prolog dinamica componendo i risultati di tutti i pattern disponibili per ogni carta passata in una lista unica
+* CardChoserSolver: che permette di effettuare una ricorsione su torri e pattern per definire quale sia il piu vicino alla torre e quindi il migliore da giocare
+* CardSolver e BaseSolver: che permettono di risolvere gli effetti delle carte in base alla griglia di gioco e ottenere tutti i pattern disponibili per una carta
+
+La composizione di questa teoria in modo dinamico in base alle carte passate permette di ottenere una teoria prolog che si adatta alla situazione di gioco e permette di ottenere una soluzione ottimale per il bot.
+
+A seguito verrà descritto il codice prolog che permette di risolvere la scelta del pattern da giocare.
+
+== CardChoserSolver
+
+=== `main/1`
+[source,prolog]
+----
+main(R) :-
+    get_all_cards_result(AllResults),
+    findall(TowerPos, tower_position(TowerPos), TowerPositions),
+    find_closest_to_all_towers(AllResults, TowerPositions, R).
+----
+Identifica il pattern piu vicino alla torre.
+
+=== `find_closest_to_all_towers/3`
+[source,prolog]
+----
+find_closest_to_all_towers([],_,([],_)):- !.
+
+find_closest_to_all_towers(AllResults, [Tower], Closest):-
+    find_closest(AllResults, Tower, Closest, ClosestDist, MinDistTmp).
+
+find_closest_to_all_towers(AllResults, [Tower1, Tower2 | RestTowers], Closest):-
+    find_closest(AllResults, Tower1, Closest1, ClosestDist1, MinDistTmp),
+    find_closest(AllResults, Tower2, Closest2, ClosestDist2, MinDistTmp),
+    (ClosestDist1 < ClosestDist2 ->
+        find_closest_to_all_towers(AllResults, [Tower1 | RestTowers], Closest),
+        Closest = Closest1
+    ;
+        find_closest_to_all_towers(AllResults, [Tower2 | RestTowers], Closest),
+        Closest = Closest2
+    ).
+----
+Esegue una ricorsione per ogni torre identificando il pattern e la distanza minima da ogni torre.
+
+=== `find_closest/5`
+[source,prolog]
+----
+find_closest([(Coords, CardId)], TowerPos, (Coords, CardId),  MinDistTmp, MinDistTmp) :- !.
+
+find_closest([(Coords1, CardId1), (Coords2, CardId2) | Rest], TowerPos, Closest, ClosestDist, MinDistTmp) :-
+    find_min_distance(Coords1, TowerPos, MinDist1),
+    find_min_distance(Coords2, TowerPos, MinDist2),
+    (MinDist1 < MinDist2 ->
+        find_closest([(Coords1, CardId1) | Rest], TowerPos, Closest, ClosestDist, MinDist1)
+    ;
+        find_closest([(Coords2, CardId2) | Rest], TowerPos, Closest, ClosestDist, MinDist2)
+    ).
+
+----
+=== `find_min_distance/3`
+[source,prolog]
+----
+find_min_distance([(X,Y,T)], TowerPos, MinDist) :-
+    manhattan_distance((X,Y), TowerPos, MinDist).
+
+find_min_distance([(X1,Y1,T1), (X2,Y2,T2) | Rest], TowerPos, MinDist) :-
+    manhattan_distance((X1,Y1), TowerPos, Dist1),
+    manhattan_distance((X2,Y2), TowerPos, Dist2),
+    (Dist1 < Dist2 ->
+        find_min_distance([(X1,Y1,T1) | Rest], TowerPos, MinDist)
+    ;
+        find_min_distance([(X2,Y2,T2) | Rest], TowerPos, MinDist)
+    ).
+----
+Esplora tutta la lista di pattern e per ognuno esplora tutte le posizioni contenute nel pattern per identificare quale sia il piu vicino alla torre definita.
+
+Per far si che  *get_all_cards_result(AllResults)* potesse essere eseguito per un numero variabile di carte è stata implementata la classe *AllCardResultTheory* che permette di concatenare in modo ricorsivo i risultati di tutti i pattern disponibili per ogni carta passata in una lista unica utilizzando a supporto *ConcatListTheory*.
+
+=== `concat_lists/2`
+[source,prolog]
+----
+%Base case
+concat_lists([], []).
+
+%Recursive case
+concat_lists([List | Rest], R):-
+    concat_lists(Rest, RestResult),
+    append(List, RestResult, R).
+----
+Il predicato `concat_lists/2` concatena una lista di liste in una singola lista.
+cosi da poter aver un unico risultato per tutte le carte passate.
+
+=== Esempio di composizione della teoria dinamica per 2 carte
+[source,prolog]
+----
+get_all_cards_result(R) :-
+    findall((_2392719, 44), smoke_jumper(_2392719,44,0), R44),
+    findall((_2392720, 41), water(_2392720,41,0), R41),
+    concat_lists([R44, R41], R).
+----
+

@@ -1,0 +1,25 @@
+=== HandComponent
+La view relativa alla mano viene composta passando come parametro alla classe una Lista di CardComponent, ciò permette un' integrazione dinamica dei componenti grafici che verranno inizializzati in fase di initialize dell' FXML.
+
+HandComponent mette a disposizione delle api per la gestione della mano e graficamente e logicamente.
+ Si possono identificare i metodi per gestire al completo la procedura di rimozione delle carte dalla mano per eseguire l'azione di scarto:
+
+- initDiscardProcedure
+- cancelDiscardProcedure
+- toggleCardInDiscardList
+- discardCards
+
+e per giocare una carta:
+
+- cardToPlay_
+- confirmCardPlay
+
+Inoltre tramite il metodo *updateHand* permette di settare una carta in ogni cardComponent al suo interno.
+
+=== CardComponent
+CardComponent è la classe che rappresenta graficamente una carta all'interno della mano del giocatore.
+Una volta inserita in HandComponent viene aggiornata in modo dinamico modificando la carta che va a rappresentare tramite il metodo di setCard.
+Ogni cardComponent tiene traccia dell' id della carta, del titolo e della descrizione della carta stessa.
+E modifica dinamicamente il proprio handler in base al tipo di carta e la fase di gioco, a questo scopo estende il Trait ICanSwitchHandler, che permette di definire quali handler attivare in base alla fase di gioco.
+
+Inoltre viene gestito il suo stato di highlight tramite il CardHighlightManager, che permette di definire lo stato di highlight della carta e di modificarlo in base alla fase di gioco.
