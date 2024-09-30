@@ -1,14 +1,16 @@
 package it.unibo.controller.model
 
 import it.unibo.controller.subscriber.BotSubscriber
-import it.unibo.controller.{ BotMessage, ModelSubject, RefreshMessage }
+import it.unibo.controller.{BotMessage, ModelSubject, RefreshMessage}
 import it.unibo.controller.view.RefreshType
 import it.unibo.model.ModelModule.Model
 import it.unibo.model.effect.core.IGameEffect
 import it.unibo.model.effect.phase.PhaseEffect
-import it.unibo.model.gameboard.{ GameBoard, GameBoardConfig }
+import it.unibo.model.gameboard.{GameBoard, GameBoardConfig}
 import it.unibo.model.gameboard.player.PlayerManager
-import monix.reactive.subjects.PublishSubject
+import monix.reactive.MulticastStrategy
+import monix.reactive.subjects.ConcurrentSubject
+import monix.execution.Scheduler.Implicits.global
 
 final case class ModelController(model: Model, modelObserver: ModelSubject) extends PlayerManager:
 
@@ -28,7 +30,7 @@ final case class ModelController(model: Model, modelObserver: ModelSubject) exte
       case GameBoardConfig.GameMode.HumanVsHuman =>
         initializePlayer(updatedGameBoard, updatedGameBoard.getOpponent)
       case GameBoardConfig.GameMode.HumanVsBot =>
-        val botObservable = PublishSubject[BotMessage]()
+        val botObservable = ConcurrentSubject[BotMessage](MulticastStrategy.replay)
         val botSubscriber = BotSubscriber(this)
         botObservable.subscribe(botSubscriber)
         initializeBot(updatedGameBoard, updatedGameBoard.getOpponent, botObservable)

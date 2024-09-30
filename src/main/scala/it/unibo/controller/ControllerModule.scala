@@ -6,7 +6,9 @@ import it.unibo.controller.subscriber.ViewSubscriber
 import it.unibo.controller.view.ViewController
 import it.unibo.model.ModelModule
 import it.unibo.view.ViewModule
-import monix.reactive.subjects.PublishSubject
+import monix.reactive.MulticastStrategy
+import monix.reactive.subjects.{ ConcurrentSubject, PublishSubject }
+import monix.execution.Scheduler.Implicits.global
 
 object ControllerModule:
 
@@ -22,9 +24,9 @@ object ControllerModule:
     context: Requirements =>
 
     class ControllerImpl extends Controller:
-      private val modelObservable = PublishSubject[ModelMessage]()
-      private val viewObservable  = PublishSubject[ViewMessage]()
-      private val intObservable   = PublishSubject[InternalViewMessage]()
+      private val modelObservable = ConcurrentSubject[ModelMessage](MulticastStrategy.replay)
+      private val viewObservable  = ConcurrentSubject[ViewMessage](MulticastStrategy.replay)
+      private val intObservable   = ConcurrentSubject[InternalViewMessage](MulticastStrategy.replay)
 
       override def notifyStartGame(): Unit =
         val modelController = ModelController(context.model, modelObservable)

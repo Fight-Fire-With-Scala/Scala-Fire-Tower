@@ -3,6 +3,7 @@ package it.unibo.controller.view
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ViewSubject
 import it.unibo.controller.view
+import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.view.ViewModule.View
 import it.unibo.view.component.game.GameComponent
@@ -20,8 +21,11 @@ final case class ViewController(
   def startGame(gb: GameBoard): Unit =
     given intObservable: InternalViewSubject = internalObservable
     given viewObservable: ViewSubject        = observable
-    view.startGame(gb, this)
+    runOnUIThread:
+      view.startGame(gb, this)
 
   def refreshView(gb: GameBoard, refreshType: RefreshType): Unit = gameComponent match
-    case Some(c) => updateAccordingToRefreshType(c, gb, refreshType)
-    case None    => // do not update the view
+    case Some(c) =>
+      runOnUIThread:
+        updateAccordingToRefreshType(c, gb, refreshType)
+    case None => // do not update the view
