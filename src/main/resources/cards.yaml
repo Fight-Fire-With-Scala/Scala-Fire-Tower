@@ -15,9 +15,7 @@ cardSets:
     effectCode: 3
     amount: 4
   - title: "Ember"
-    description: "Move a fire token on the board to any space adjacent to
-     another fire token orthogonally. You cannot move a fire token that is
-     in one of the fire tower areas."
+    description: "Add a fire token on the board. OR Remove a fire token from the board."
     effectCode: 4
     amount: 3
   - title: "North"
