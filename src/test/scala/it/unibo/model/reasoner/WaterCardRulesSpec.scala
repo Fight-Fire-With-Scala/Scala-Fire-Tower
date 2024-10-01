@@ -3,7 +3,7 @@ package it.unibo.model.reasoner
 import it.unibo.model.effect.card.WaterEffect
 import it.unibo.model.gameboard.Pattern
 import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Water }
-import it.unibo.model.reasoner.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
+import it.unibo.model.reasoner.AbstractCardSolverSpec.given_Conversion_CardEffect_LogicComputation
 import it.unibo.model.gameboard.grid.{ Position, Token }
 
 class WaterCardRulesSpec extends AbstractCardSolverSpec:

@@ -2,7 +2,7 @@ package it.unibo.model.reasoner
 
 import it.unibo.model.effect.card.WindEffect
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import it.unibo.model.reasoner.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
+import it.unibo.model.reasoner.AbstractCardSolverSpec.given_Conversion_CardEffect_LogicComputation
 import it.unibo.model.gameboard.grid.Position
 
 class WindCardRulesSpec extends AbstractCardSolverSpec:
