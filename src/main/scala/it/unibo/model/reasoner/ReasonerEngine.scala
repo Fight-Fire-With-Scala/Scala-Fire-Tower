@@ -1,15 +1,15 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import alice.tuprolog.Prolog
 import alice.tuprolog.SolveInfo
 import alice.tuprolog.Term
 import alice.tuprolog.Theory
-import it.unibo.model.prolog.PrologEngine.engineWithSolver
-import it.unibo.model.prolog.PrologEngine.engineWithTheory
-import it.unibo.model.prolog.PrologUtils.parseComputedPatterns
+import it.unibo.model.reasoner.ReasonerEngine.engineWithSolver
+import it.unibo.model.reasoner.ReasonerEngine.engineWithTheory
+import it.unibo.model.reasoner.ReasonerUtils.parseComputedPatterns
 import it.unibo.model.gameboard.Pattern
 
-final case class PrologEngine(theory: Theory):
+final case class ReasonerEngine(theory: Theory):
   private val engine = engineWithSolver(engineWithTheory(theory))
 
   def solve(goal: Term): LazyList[SolveInfo] = engine(goal)
@@ -20,7 +20,7 @@ final case class PrologEngine(theory: Theory):
   def isSolvedWithSuccess(goal: Term): Boolean =
     engine(goal).map(_.isSuccess).headOption.contains(true)
 
-object PrologEngine:
+object ReasonerEngine:
   private val engine: Prolog = Prolog()
 
   private val engineWithTheory: Theory => Prolog = t =>

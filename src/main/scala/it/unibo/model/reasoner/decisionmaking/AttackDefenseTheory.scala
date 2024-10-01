@@ -1,4 +1,4 @@
-package it.unibo.model.prolog.decisionmaking
+package it.unibo.model.reasoner.decisionmaking
 
 import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
@@ -6,10 +6,10 @@ import alice.tuprolog.Term
 import alice.tuprolog.Theory
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.prolog.GridCellsProvider
-import it.unibo.model.prolog.PrologUtils.given
+import it.unibo.model.reasoner.GridCellsProvider
+import it.unibo.model.reasoner.ReasonerUtils.given
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
-import it.unibo.model.prolog.SolverType
+import it.unibo.model.reasoner.SolverType
 
 enum AttackDefense:
   case Attack

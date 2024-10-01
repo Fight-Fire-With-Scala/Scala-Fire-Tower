@@ -1,9 +1,9 @@
-package it.unibo.model.prolog.decisionmaking
+package it.unibo.model.reasoner.decisionmaking
 
 import it.unibo.model.GameBoardInitializer
 import it.unibo.model.card.Card
 import it.unibo.model.effect.card.{ BucketEffect, FireEffect, WaterEffect, WindEffect }
-import it.unibo.model.effect.core.ICardEffect
+import it.unibo.model.effect.core.CardEffect
 import it.unibo.model.effect.pattern.LogicSolverManager
 import it.unibo.model.effect.pattern.PatternEffect.BotComputation
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
@@ -12,8 +12,8 @@ import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Water }
 import it.unibo.model.gameboard.{ Deck, GameBoard, GameBoardConfig }
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.player.{ Bot, IMakeDecision, Person, Player }
-import it.unibo.model.prolog.PrologUtils.defaultId
-import it.unibo.model.prolog.decisionmaking.{ AttackDefense, DecisionMaker }
+import it.unibo.model.reasoner.ReasonerUtils.defaultId
+import it.unibo.model.reasoner.decisionmaking.{ AttackDefense, DecisionMaker }
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.{ color, BeforeAndAfterAll }
 import org.scalatest.matchers.should.Matchers
@@ -73,7 +73,7 @@ class PatternChoiceSpec
       val filteredHandBasedOnDecision =
         filterCardsBasedOnDecision(playerHand, DecisionMaker.getAttackOrDefense)
       val effects = filteredHandBasedOnDecision
-        .map(card => Option(card.id) -> List(ICardEffect.convert(card.effect)))
+        .map(card => Option(card.id) -> List(CardEffect.convert(card.effect)))
         .toMap
       val (cardId, patternToPlay) = computePatterns(newGb, effects)
       patternToPlay should not be empty
@@ -89,7 +89,7 @@ class PatternChoiceSpec
       val filteredHandBasedOnDecision =
         filterCardsBasedOnDecision(playerHand, DecisionMaker.getAttackOrDefense)
       val effects = filteredHandBasedOnDecision
-        .map(card => Option(card.id) -> List(ICardEffect.convert(card.effect)))
+        .map(card => Option(card.id) -> List(CardEffect.convert(card.effect)))
         .toMap
       val (cardId, patternToPlay) = computePatterns(newGb, effects)
       patternToPlay should not be empty

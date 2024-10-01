@@ -1,7 +1,7 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import alice.tuprolog.Theory
-import it.unibo.model.prolog.SolverType.getClass
+import it.unibo.model.reasoner.SolverType.getClass
 
 enum SolverType(val prologSourcePath: String):
   case BaseSolver extends SolverType("/prolog/solver.pl")

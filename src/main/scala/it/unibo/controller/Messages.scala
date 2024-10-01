@@ -9,12 +9,14 @@ import it.unibo.model.effect.pattern.PatternEffect.PatternApplication
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.GameBoardConfig
-import monix.reactive.subjects.PublishSubject
+import monix.reactive.MulticastStrategy
+import monix.reactive.subjects.ConcurrentSubject
+import monix.execution.Scheduler.Implicits.global
 
-type ModelSubject        = PublishSubject[ModelMessage]
-type ViewSubject         = PublishSubject[ViewMessage]
-type BotSubject          = PublishSubject[BotMessage]
-type InternalViewSubject = PublishSubject[InternalViewMessage]
+type ModelSubject        = ConcurrentSubject[ModelMessage, ModelMessage]
+type ViewSubject         = ConcurrentSubject[ViewMessage, ViewMessage]
+type BotSubject          = ConcurrentSubject[BotMessage, BotMessage]
+type InternalViewSubject = ConcurrentSubject[InternalViewMessage, InternalViewMessage]
 
 sealed trait Message
 

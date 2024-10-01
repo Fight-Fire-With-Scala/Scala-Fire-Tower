@@ -4,7 +4,7 @@ import it.unibo.model.effect.{ card, GameBoardEffect }
 import it.unibo.model.effect.card.WindUpdateEffect
 import it.unibo.model.effect.card.WindUpdateEffect.windChoiceSolver
 import it.unibo.model.effect.core.GameBoardEffectSolver
-import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.core.GameEffect
 import it.unibo.model.effect.core.PatternEffectSolver
 import it.unibo.model.effect.core.given_Conversion_GameBoardEffect_GameBoardEffectSolver
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
@@ -17,7 +17,7 @@ import it.unibo.model.effect.phase.PhaseEffect.phaseEffectSolver
 import it.unibo.model.logger
 
 trait GameBoardManager:
-  protected def gameBoardEffectSolver(gb: GameBoard, effect: IGameEffect): GameBoard =
+  protected def gameBoardEffectSolver(gb: GameBoard, effect: GameEffect): GameBoard =
     logger.debug(s"Effect to solve $effect")
 
     val gameBoardEffect = effect match
@@ -29,7 +29,7 @@ trait GameBoardManager:
 
     gameBoardEffect.solve(gb).gameBoard
 
-  private def handleHandEffect(gb: GameBoard, effect: IGameEffect): GameBoardEffectSolver =
+  private def handleHandEffect(gb: GameBoard, effect: GameEffect): GameBoardEffectSolver =
     val handEffect = handEffectSolver.solve(effect)
     handEffect match
       case e: PatternEffectSolver =>

@@ -2,44 +2,44 @@ package it.unibo.model.effect.core
 
 import it.unibo.model.card.{ ICanBeDiscarded, ICanBePlayedAsExtra, ICannotBeDiscarded }
 import it.unibo.model.effect.card.{ BucketEffect, FireEffect, FirebreakEffect, WaterEffect, WindEffect }
-import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_LogicComputation_PatternLogicEffect
 
-trait IStandardCardEffect extends ICardEffect with ICanBeDiscarded
+trait StandardCardEffect extends CardEffect with ICanBeDiscarded
 
-trait ISpecialCardEffect extends ICardEffect with ICanBePlayedAsExtra with ICannotBeDiscarded
+trait SpecialCardEffect extends CardEffect with ICanBePlayedAsExtra with ICannotBeDiscarded
 
-sealed trait ICardEffect extends IGameEffect:
+sealed trait CardEffect extends GameEffect:
   val effectId: Int
 
-object ICardEffect:
+object CardEffect:
   // tag::contextualLogicEffect[]
-  given Conversion[ICardEffect, ILogicEffect] = convert(_)
+  given Conversion[CardEffect, LogicEffect] = convert(_)
 
-  def convert(effect: ICardEffect): ILogicEffect = effect match
-    case e: IStandardCardEffect =>
+  def convert(effect: CardEffect): LogicEffect = effect match
+    case e: StandardCardEffect =>
       e match
         case e: FireEffect      => FireEffect.fireEffectSolver.solve(e)
         case e: FirebreakEffect => FirebreakEffect.fireBreakEffectSolver.solve(e)
         case e: WaterEffect     => WaterEffect.waterEffectSolver.solve(e)
         case e: WindEffect      => WindEffect.windEffectSolver.solve(e)
-        case _                  => ILogicEffect()
-    case e: ISpecialCardEffect =>
+        case _                  => LogicEffect()
+    case e: SpecialCardEffect =>
       e match
         case BucketEffect => BucketEffect.bucketEffect
-        case _            => ILogicEffect()
+        case _            => LogicEffect()
   // end::contextualLogicEffect[]
 
-  given Conversion[List[ICardEffect], List[ILogicEffect]] = _.map(e => convert(e))
+  given Conversion[List[CardEffect], List[LogicEffect]] = _.map(e => convert(e))
 
-  given Conversion[ICardEffect, String] =
-    case effect: IStandardCardEffect =>
+  given Conversion[CardEffect, String] =
+    case effect: StandardCardEffect =>
       effect match
         case effect: FireEffect      => "fire"
         case effect: FirebreakEffect => "firebreak"
         case effect: WaterEffect     => "water"
         case effect: WindEffect      => "wind"
         case _                       => "not-found"
-    case effect: ISpecialCardEffect =>
+    case effect: SpecialCardEffect =>
       effect match
         case BucketEffect => "water"
         case _            => "not-found"

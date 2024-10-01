@@ -4,12 +4,12 @@ import it.unibo.model.effect.*
 import it.unibo.model.effect.MoveEffect.runIfLastMoveFound
 import it.unibo.model.effect.core.GameBoardEffectSolver
 import it.unibo.model.effect.core.GameEffectSolver
-import it.unibo.model.effect.core.IGameChoiceEffect
+import it.unibo.model.effect.core.GameChoiceEffect
 import it.unibo.model.effect.hand.HandManager
 import it.unibo.model.effect.pattern.PatternEffect.updateDeckAndHand
 import it.unibo.model.gameboard.Direction
 
-enum WindUpdateEffect extends IGameChoiceEffect:
+enum WindUpdateEffect extends GameChoiceEffect:
   case UpdateWind(direction: Direction)
   case RandomUpdateWind(direction: Direction)
 

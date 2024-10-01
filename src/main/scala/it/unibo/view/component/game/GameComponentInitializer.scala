@@ -2,7 +2,7 @@ package it.unibo.view.component.game
 
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ViewSubject
-import it.unibo.view.component.ISidebarComponent
+import it.unibo.view.component.ViewComponent
 import it.unibo.view.component.game.gameboard.grid.GridComponent
 import it.unibo.view.component.game.gameboard.hand.CardComponent
 import it.unibo.view.component.game.gameboard.hand.HandComponent
@@ -23,7 +23,7 @@ trait GameComponentInitializer:
       internalViewObservable: InternalViewSubject
   ): SidebarComponent =
     val bicolumnPane = BicolumnComponent(DeckComponent(), DiceComponent())
-    val subComponents: List[ISidebarComponent] =
+    val subComponents: List[ViewComponent] =
       List(WindRoseComponent(), GameInfoComponent(), bicolumnPane)
     SidebarComponent(subComponents)
 

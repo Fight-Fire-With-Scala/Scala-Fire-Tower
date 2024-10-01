@@ -2,7 +2,7 @@ package it.unibo.model.gameboard.player
 
 import it.unibo.model.card.Card
 import it.unibo.model.effect.core.{ DefensiveEffect, OffensiveEffect }
-import it.unibo.model.prolog.decisionmaking.AttackDefense
+import it.unibo.model.reasoner.decisionmaking.AttackDefense
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.grid.ConcreteToken
 

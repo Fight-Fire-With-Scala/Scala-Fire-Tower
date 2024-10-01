@@ -7,13 +7,13 @@ import it.unibo.model.effect.card.FireEffect
 import it.unibo.model.effect.card.FirebreakEffect
 import it.unibo.model.effect.card.WaterEffect
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.ICardEffect
-import it.unibo.model.effect.core.IStandardCardEffect
+import it.unibo.model.effect.core.CardEffect
+import it.unibo.model.effect.core.StandardCardEffect
 
-final case class CardType(title: String, description: String, amount: Int, effect: ICardEffect)
+final case class CardType(title: String, description: String, amount: Int, effect: CardEffect)
 
 object CardType:
-  private val allCards: List[ICardEffect] =
+  private val allCards: List[CardEffect] =
     (FireEffect.values ++ FirebreakEffect.values ++ WaterEffect.values ++ WindEffect.values).toList ++ List(
       BucketEffect
     )

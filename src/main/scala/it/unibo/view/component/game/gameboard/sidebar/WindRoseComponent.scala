@@ -14,8 +14,7 @@ import it.unibo.model.gameboard.Direction.South
 import it.unibo.model.gameboard.Direction.West
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
 import it.unibo.view.GUIType
-import it.unibo.view.component.ISidebarComponent
-import it.unibo.view.component.IUpdateView
+import it.unibo.view.component.{ IUpdateView, ViewComponent }
 import it.unibo.view.component.game.gameboard.sidebar.svg.WindRoseArrow
 import it.unibo.view.component.game.gameboard.sidebar.svg.WindRoseDirection
 import javafx.event.EventHandler
@@ -25,9 +24,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 
 //noinspection VarCouldBeVal
-final class WindRoseComponent(using observable: ViewSubject)
-    extends ISidebarComponent
-    with IUpdateView:
+final class WindRoseComponent(using observable: ViewSubject) extends ViewComponent with IUpdateView:
   override val fxmlPath: String = GUIType.WindRose.fxmlPath
 
   @FXML

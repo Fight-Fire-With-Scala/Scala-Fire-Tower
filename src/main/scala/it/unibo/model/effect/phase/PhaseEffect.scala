@@ -3,11 +3,11 @@ package it.unibo.model.effect.phase
 import it.unibo.model.effect.GameBoardEffect
 import it.unibo.model.effect.core.GameBoardEffectSolver
 import it.unibo.model.effect.core.GameEffectSolver
-import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.core.GameEffect
 import it.unibo.model.effect.core.given_Conversion_GameBoard_GameBoardEffect
 import it.unibo.model.gameboard.GamePhase
 
-final case class PhaseEffect(newPhase: GamePhase) extends IGameEffect
+final case class PhaseEffect(newPhase: GamePhase) extends GameEffect
 
 object PhaseEffect extends PhaseManager:
   private def solvePhase(effect: PhaseEffect) =

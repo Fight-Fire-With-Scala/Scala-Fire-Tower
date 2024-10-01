@@ -2,7 +2,6 @@ package it.unibo.view.component.game.gameboard.grid
 
 import scala.collection.mutable
 import scala.compiletime.uninitialized
-
 import it.unibo.controller.ViewSubject
 import it.unibo.launcher.Launcher.view.runOnUIThread
 import it.unibo.model.gameboard.GamePhase
@@ -13,8 +12,7 @@ import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.view.GUIType
-import it.unibo.view.component.IGridComponent
-import it.unibo.view.component.IUpdateView
+import it.unibo.view.component.{ IUpdateView, ViewComponent }
 import it.unibo.view.component.game.gameboard.grid.handler.GridEventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -31,7 +29,7 @@ import it.unibo.model.gameboard.Pattern
   */
 final class GridComponent(using
     observableSubject: ViewSubject
-) extends IGridComponent
+) extends ViewComponent
     with IUpdateView:
 
   override val fxmlPath: String = GUIType.Grid.fxmlPath

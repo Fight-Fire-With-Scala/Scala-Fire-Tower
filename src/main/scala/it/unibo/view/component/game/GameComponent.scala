@@ -9,7 +9,7 @@ import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.player.Player
 import it.unibo.view.GUIType
 import it.unibo.view.component.IUpdateView
-import it.unibo.view.component.IViewComponent
+import it.unibo.view.component.ViewComponent
 import it.unibo.view.component.game.gameboard.grid.GridComponent
 import it.unibo.view.component.game.gameboard.hand.HandComponent
 import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
@@ -19,7 +19,7 @@ import javafx.scene.Node
 import javafx.scene.layout.Pane
 import monix.eval.Task
 
-final class GameComponent extends IViewComponent with IUpdateView:
+final class GameComponent extends ViewComponent with IUpdateView:
   override val fxmlPath: String = GUIType.Game.fxmlPath
 
   @FXML
@@ -47,15 +47,15 @@ final class GameComponent extends IViewComponent with IUpdateView:
 
   override protected def getPane: Node = grid
 
-  private def setupComponent[T <: IViewComponent](
+  private def setupComponent[T <: ViewComponent](
       pane: Pane,
       componentPane: Node,
-      assignComponent: () => IViewComponent
-  ): Task[IViewComponent] = runTaskOnUIThread:
+      assignComponent: () => ViewComponent
+  ): Task[ViewComponent] = runTaskOnUIThread:
     pane.getChildren.add(componentPane)
     assignComponent()
 
-  def setupGrid(gc: GridComponent): Task[IViewComponent] =
+  def setupGrid(gc: GridComponent): Task[ViewComponent] =
     val gridView: Node = gc.getView
     setupComponent(
       grid,
@@ -65,7 +65,7 @@ final class GameComponent extends IViewComponent with IUpdateView:
         gc
     )
 
-  def setupSidebar(sc: SidebarComponent): Task[IViewComponent] =
+  def setupSidebar(sc: SidebarComponent): Task[ViewComponent] =
     val sidebarView: Node = sc.getView
     setupComponent(
       sidebar,
@@ -75,7 +75,7 @@ final class GameComponent extends IViewComponent with IUpdateView:
         sc
     )
 
-  def setupHand(hc: HandComponent): Task[IViewComponent] =
+  def setupHand(hc: HandComponent): Task[ViewComponent] =
     val handView: Node = hc.getView
     setupComponent(
       hand,

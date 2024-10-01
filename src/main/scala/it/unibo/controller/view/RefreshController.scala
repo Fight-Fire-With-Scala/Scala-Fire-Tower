@@ -6,14 +6,14 @@ import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.MoveEffect.CardChosen
 import it.unibo.model.effect.MoveEffect.PatternChosen
 import it.unibo.model.effect.card.WindEffect
-import it.unibo.model.effect.core.{ ISpecialCardEffect, IStandardCardEffect }
+import it.unibo.model.effect.core.{ SpecialCardEffect, StandardCardEffect }
 import it.unibo.model.gameboard.{ Board, GameBoard }
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.player.Bot
 import it.unibo.model.gameboard.player.Move
 import it.unibo.model.gameboard.player.Person
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.prolog.PrologUtils.defaultId
+import it.unibo.model.reasoner.ReasonerUtils.defaultId
 import it.unibo.view.component.game.GameComponent
 import it.unibo.view.component.game.gameboard.sidebar.GameInfoComponent
 import it.unibo.view.component.game.gameboard.sidebar.WindRoseComponent
@@ -90,11 +90,11 @@ trait RefreshController extends ActivationController:
         logger.debug(s"[REFRESH] ${gb.getCurrentPlayer.name} ${card.title}")
         c.gridComponent.setAvailablePatterns(patterns, card.effect.effectId)
         card.effect match
-          case effect: IStandardCardEffect =>
+          case effect: StandardCardEffect =>
             effect match
               case effect: WindEffect => showWindChoices(gameComponent, effect.direction)
               case _                  => hideWindChoices(gameComponent)
-          case effect: ISpecialCardEffect =>
+          case effect: SpecialCardEffect =>
       case MoveEffect.PatternChosen(patterns) =>
         logger.debug(s"[REFRESH] ${gb.getCurrentPlayer.name} $patterns")
         c.gridComponent.setAvailablePatterns(patterns, defaultId.toInt)

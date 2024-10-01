@@ -1,25 +1,25 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import scala.jdk.CollectionConverters.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Var
 import alice.tuprolog.Theory
-import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.LogicEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Grid
 import it.unibo.model.gameboard.grid.Position
-import it.unibo.model.prolog.PrologUtils.{ defaultId, size, given }
+import it.unibo.model.reasoner.ReasonerUtils.{ defaultId, size, given }
 
 final case class GridTheory(
     private val grid: Grid,
-    private val patternsToCompute: Map[Option[Int], List[ILogicEffect]]
+    private val patternsToCompute: Map[Option[Int], List[LogicEffect]]
 )
 
 object GridTheory extends GridCellsProvider:
-  given Conversion[ILogicEffect, List[ILogicEffect]] = List(_)
+  given Conversion[LogicEffect, List[LogicEffect]] = List(_)
 
-  def apply(grid: Grid, patternsToCompute: Map[Option[Int], List[ILogicEffect]]): Theory =
+  def apply(grid: Grid, patternsToCompute: Map[Option[Int], List[LogicEffect]]): Theory =
     val cellIterator      = getCells(grid)
     val patternIterator   = getPatterns(patternsToCompute)
     val directionIterator = getDirections(patternsToCompute)
@@ -28,7 +28,7 @@ object GridTheory extends GridCellsProvider:
 
     Theory.fromPrologList(Struct.list(allIterators.toList.asJava))
 
-  private def getPatterns(patternsToCompute: Map[Option[Int], List[ILogicEffect]]): Iterator[Term] =
+  private def getPatterns(patternsToCompute: Map[Option[Int], List[LogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
       ef.flatMap(_.computations)
         .zipWithIndex
@@ -40,7 +40,7 @@ object GridTheory extends GridCellsProvider:
                 Struct.of("pattern", Struct.tuple(pos._1, pos._2), token, defaultId, compId)
 
   private def getDirections(
-      patternsToCompute: Map[Option[Int], List[ILogicEffect]]
+      patternsToCompute: Map[Option[Int], List[LogicEffect]]
   ): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
       ef.flatMap(_.computations)
@@ -55,7 +55,7 @@ object GridTheory extends GridCellsProvider:
             case None     => Struct.of("directions", directionNames, defaultId, compId)
           Iterator.single(struct)
 
-  private def getDeltas(patternsToCompute: Map[Option[Int], List[ILogicEffect]]): Iterator[Term] =
+  private def getDeltas(patternsToCompute: Map[Option[Int], List[LogicEffect]]): Iterator[Term] =
     patternsToCompute.iterator.flatMap: (cardId, ef) =>
       ef.flatMap(_.computations)
         .zipWithIndex

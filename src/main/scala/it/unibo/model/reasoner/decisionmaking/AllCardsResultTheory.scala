@@ -1,13 +1,13 @@
-package it.unibo.model.prolog.decisionmaking
+package it.unibo.model.reasoner.decisionmaking
 
 import alice.tuprolog.Theory
-import it.unibo.model.effect.core.ILogicEffect
-import it.unibo.model.prolog.PrologUtils.defaultId
+import it.unibo.model.effect.core.LogicEffect
+import it.unibo.model.reasoner.ReasonerUtils.defaultId
 
-final case class AllCardsResultTheory(cards: Map[Int, List[ILogicEffect]])
+final case class AllCardsResultTheory(cards: Map[Int, List[LogicEffect]])
 
 object AllCardsResultTheory:
-  def apply(cards: Map[Option[Int], List[ILogicEffect]]): Theory =
+  def apply(cards: Map[Option[Int], List[LogicEffect]]): Theory =
     val findallClauses = cards
       .flatMap: (cardId, logicEffects) =>
         logicEffects

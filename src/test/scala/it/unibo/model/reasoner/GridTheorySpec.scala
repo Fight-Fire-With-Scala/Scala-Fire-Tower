@@ -1,13 +1,13 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import alice.tuprolog.{ Struct, Theory }
 import it.unibo.model.effect.card.FireEffect
-import it.unibo.model.effect.core.ILogicEffect
+import it.unibo.model.effect.core.LogicEffect
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.grid.Cell.*
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
 import it.unibo.model.gameboard.grid.{ BasicGrid, Cell, Position }
-import it.unibo.model.prolog.PrologUtils.given
+import it.unibo.model.reasoner.ReasonerUtils.given
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
@@ -100,7 +100,7 @@ class GridTheorySpec extends AnyWordSpecLike with Matchers:
       val tokens = Map(Position(0, 0) -> Fire, Position(0, 1) -> Fire)
       val grid   = BasicGrid(cells, tokens)
 
-      val patternsToCompute: Map[Option[Int], List[ILogicEffect]] =
+      val patternsToCompute: Map[Option[Int], List[LogicEffect]] =
         Map(Some(dummyCardId) -> List(FireEffect.Flare))
 
       val board: Theory = GridTheory(grid, patternsToCompute)

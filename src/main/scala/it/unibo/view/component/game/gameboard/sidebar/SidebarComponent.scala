@@ -2,15 +2,14 @@ package it.unibo.view.component.game.gameboard.sidebar
 
 import scala.compiletime.uninitialized
 import it.unibo.view.GUIType
-import it.unibo.view.component.ISidebarComponent
-import it.unibo.view.component.IUpdateView
+import it.unibo.view.component.{ IUpdateView, ViewComponent }
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.VBox
 
 //noinspection VarCouldBeVal
-final class SidebarComponent(val components: List[ISidebarComponent])
-    extends ISidebarComponent
+final class SidebarComponent(val components: List[ViewComponent])
+    extends ViewComponent
     with IUpdateView:
 
   override val fxmlPath: String = GUIType.Sidebar.fxmlPath
@@ -19,7 +18,7 @@ final class SidebarComponent(val components: List[ISidebarComponent])
   private var sidebarPane: VBox = uninitialized
 
   private val addComponent =
-    (component: ISidebarComponent) => sidebarPane.getChildren.add(component.getView)
+    (component: ViewComponent) => sidebarPane.getChildren.add(component.getView)
 
   @FXML
   def initialize(): Unit =

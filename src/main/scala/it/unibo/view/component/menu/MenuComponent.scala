@@ -9,7 +9,7 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GameBoardConfig.CardSet
 import it.unibo.model.gameboard.GameBoardConfig.GameMode
 import it.unibo.view.GUIType
-import it.unibo.view.component.IViewComponent
+import it.unibo.view.component.ViewComponent
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -22,7 +22,7 @@ import scalafx.Includes._
 import scalafx.application.Platform
 
 //noinspection VarCouldBeVal
-final class MenuComponent(observableSubject: ViewSubject) extends IViewComponent:
+final class MenuComponent(observableSubject: ViewSubject) extends ViewComponent:
   override val fxmlPath: String = GUIType.Menu.fxmlPath
 
   @FXML

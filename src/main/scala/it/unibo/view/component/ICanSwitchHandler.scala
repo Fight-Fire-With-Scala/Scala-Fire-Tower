@@ -23,7 +23,7 @@ trait ICanSwitchHandler[T] extends Switchable[T]:
     }
   }
 
-  protected def disableActualHandlers(): Unit =
+  private def disableActualHandlers(): Unit =
     updateHandlers(currentState, getPane.removeEventHandler)
 
   protected def resetHandlers(): Unit =

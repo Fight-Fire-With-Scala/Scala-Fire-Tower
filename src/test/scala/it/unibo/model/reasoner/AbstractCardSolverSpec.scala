@@ -1,14 +1,14 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import alice.tuprolog.{Term, Theory}
-import it.unibo.model.effect.core.{ICardEffect, ILogicComputation, ILogicEffect, PatternLogicEffect}
-import it.unibo.model.gameboard.{Direction, Pattern}
-import it.unibo.model.gameboard.grid.{BasicGrid, Cell, Grid, Position, Token}
+import alice.tuprolog.{ Term, Theory }
+import it.unibo.model.effect.core.{ CardEffect, LogicComputation, LogicEffect, PatternLogicEffect }
+import it.unibo.model.gameboard.{ Direction, Pattern }
+import it.unibo.model.gameboard.grid.{ BasicGrid, Cell, Grid, Position, Token }
 import it.unibo.model.gameboard.grid.Cell.*
-import it.unibo.model.prolog.PrologUtils.given_Conversion_SolverType_Theory
-import it.unibo.model.prolog.PrologUtils.given_Conversion_Rule_Term
+import it.unibo.model.reasoner.ReasonerUtils.given_Conversion_SolverType_Theory
+import it.unibo.model.reasoner.ReasonerUtils.given_Conversion_Rule_Term
 
 abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
 
@@ -45,8 +45,8 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
   )
 
   private def buildTheory(
-      patternsToCompute: Map[Option[Int], List[ILogicEffect]],
-      tokens: Pattern = defaultTokens
+                           patternsToCompute: Map[Option[Int], List[LogicEffect]],
+                           tokens: Pattern = defaultTokens
   ): Theory =
     val b = GridTheory(BasicGrid(cells, tokens), patternsToCompute)
     b.append(SolverType.CardSolver)
@@ -54,12 +54,12 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
     b
 
   private def buildEngine(
-      patternsToCompute: Map[Option[Int], List[ILogicEffect]],
-      tokens: Pattern = defaultTokens
-  ): PrologEngine = PrologEngine(buildTheory(patternsToCompute, tokens))
+                           patternsToCompute: Map[Option[Int], List[LogicEffect]],
+                           tokens: Pattern = defaultTokens
+  ): ReasonerEngine = ReasonerEngine(buildTheory(patternsToCompute, tokens))
 
   protected def getAvailablePatterns(
-      logicComputation: ILogicComputation
+      logicComputation: LogicComputation
   ): Set[Pattern] =
     val engine = buildEngine(
       Map(Some(dummyCardId) -> List(PatternLogicEffect(List(logicComputation))))
@@ -67,4 +67,4 @@ abstract class AbstractCardSolverSpec extends AnyWordSpecLike with Matchers:
     engine.solveAsPatterns(logicComputation.goal(Some(dummyCardId), Some(dummyEffectId)))
 
 object AbstractCardSolverSpec:
-  given Conversion[ICardEffect, ILogicComputation] = _.computations.head
+  given Conversion[CardEffect, LogicComputation] = _.computations.head

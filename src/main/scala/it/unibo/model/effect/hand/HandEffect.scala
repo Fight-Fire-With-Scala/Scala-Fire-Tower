@@ -9,9 +9,9 @@ import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.effect.pattern.PatternEffect.CardComputation
 import it.unibo.model.gameboard.GameBoard
 import it.unibo.model.gameboard.player.Player
-import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_ILogicEffect
+import it.unibo.model.effect.core.CardEffect.given_Conversion_CardEffect_LogicEffect
 
-enum HandEffect extends IGameEffect:
+enum HandEffect extends GameEffect:
   case PlayCard(cardId: Int)
   case DrawCard(nCards: Int)
   case DiscardCard(cards: List[Int])
@@ -43,7 +43,7 @@ object HandEffect extends HandManager:
 
   private def solveCard(card: Card): PatternEffect = CardComputation(card.id, card.effect)
 
-  val handEffectSolver: GameEffectSolver[IGameEffect, IGameEffect] = GameEffectSolver:
+  val handEffectSolver: GameEffectSolver[GameEffect, GameEffect] = GameEffectSolver:
     case DrawCard(nCards)   => solveDrawCard(nCards)
     case DiscardCard(cards) => solveDiscardCard(cards)
     case PlayCard(cardId)   => solveCardEffect(cardId)

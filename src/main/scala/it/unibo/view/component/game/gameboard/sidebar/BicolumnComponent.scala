@@ -1,7 +1,7 @@
 package it.unibo.view.component.game.gameboard.sidebar
 
 import it.unibo.view.GUIType
-import it.unibo.view.component.ISidebarComponent
+import it.unibo.view.component.ViewComponent
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.Pane
@@ -10,9 +10,9 @@ import scala.compiletime.uninitialized
 
 //noinspection VarCouldBeVal
 final class BicolumnComponent(
-    val leftComponent: ISidebarComponent,
-    val rightComponent: ISidebarComponent
-) extends ISidebarComponent:
+                               val leftComponent: ViewComponent,
+                               val rightComponent: ViewComponent
+) extends ViewComponent:
   override val fxmlPath: String = GUIType.BicolumnPane.fxmlPath
 
   @FXML

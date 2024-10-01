@@ -1,7 +1,6 @@
 package it.unibo.view.component.game.gameboard.hand
 
 import scala.compiletime.uninitialized
-
 import it.unibo.controller.ChoseCardToPlayMessage
 import it.unibo.controller.DiscardCardMessage
 import it.unibo.controller.DrawCardMessage
@@ -18,14 +17,13 @@ import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
 import it.unibo.model.gameboard.GamePhase.PlayStandardCardPhase
 import it.unibo.model.gameboard.GamePhase.WaitingPhase
 import it.unibo.view.GUIType
-import it.unibo.view.component.IHandComponent
-import it.unibo.view.component.IUpdateView
+import it.unibo.view.component.{ IUpdateView, ViewComponent }
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.layout.Pane
 
 final class HandComponent(val cardComponents: List[CardComponent])(using observable: ViewSubject)
-    extends IHandComponent
+    extends ViewComponent
     with IUpdateView:
 
   override val fxmlPath: String = GUIType.Hand.fxmlPath

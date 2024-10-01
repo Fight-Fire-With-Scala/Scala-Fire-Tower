@@ -10,7 +10,7 @@ import it.unibo.controller.ViewSubject
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
-import it.unibo.view.component.ISidebarComponent
+import it.unibo.view.component.ViewComponent
 import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -20,7 +20,7 @@ import javafx.scene.layout.Pane
 
 //noinspection VarCouldBeVal
 final class DeckComponent(using observable: ViewSubject, internalObservable: InternalViewSubject)
-    extends ISidebarComponent:
+    extends ViewComponent:
 
   @FXML
   private var deckPane: Pane = uninitialized

@@ -1,12 +1,12 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import alice.tuprolog.{ Struct, Term }
 import it.unibo.model.gameboard.grid.Grid
-import it.unibo.model.prolog.PrologUtils.given_Conversion_Int_Term
-import it.unibo.model.prolog.PrologUtils.given_Conversion_Cell_Term
-import it.unibo.model.prolog.PrologUtils.given_Ordering_Struct
-import it.unibo.model.prolog.PrologUtils.given_Conversion_Token_Term
-import it.unibo.model.prolog.PrologUtils.size
+import it.unibo.model.reasoner.ReasonerUtils.given_Conversion_Int_Term
+import it.unibo.model.reasoner.ReasonerUtils.given_Conversion_Cell_Term
+import it.unibo.model.reasoner.ReasonerUtils.given_Ordering_Struct
+import it.unibo.model.reasoner.ReasonerUtils.given_Conversion_Token_Term
+import it.unibo.model.reasoner.ReasonerUtils.size
 
 trait GridCellsProvider:
   def getCells(grid: Grid): Iterator[Term] =

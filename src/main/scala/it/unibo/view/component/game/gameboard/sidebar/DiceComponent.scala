@@ -12,8 +12,7 @@ import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.Direction.South
 import it.unibo.model.gameboard.GamePhase.PlaySpecialCardPhase
 import it.unibo.view.GUIType
-import it.unibo.view.component.ISidebarComponent
-import it.unibo.view.component.IUpdateView
+import it.unibo.view.component.{ IUpdateView, ViewComponent }
 import it.unibo.view.component.game.gameboard.sidebar.svg.DiceFace
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -23,7 +22,7 @@ import javafx.scene.layout.Pane
 import scalafx.scene.shape.SVGPath
 
 //noinspection VarCouldBeVal
-final class DiceComponent(using observable: ViewSubject) extends ISidebarComponent with IUpdateView:
+final class DiceComponent(using observable: ViewSubject) extends ViewComponent with IUpdateView:
 
   override val fxmlPath: String = GUIType.Dice.fxmlPath
 

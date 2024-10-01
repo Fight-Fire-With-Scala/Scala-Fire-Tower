@@ -5,8 +5,8 @@ import it.unibo.model.ModelModule.Model
 import it.unibo.model.card.Card
 import it.unibo.model.effect.MoveEffect
 import it.unibo.model.effect.card.{ FirebreakEffect, WindEffect }
-import it.unibo.model.effect.core.{ DefensiveEffect, ICardEffect, ILogicEffect, OffensiveEffect, PatternLogicEffect }
-import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_ILogicEffect
+import it.unibo.model.effect.core.{ DefensiveEffect, CardEffect, LogicEffect, OffensiveEffect, PatternLogicEffect }
+import it.unibo.model.effect.core.CardEffect.given_Conversion_CardEffect_LogicEffect
 import it.unibo.model.effect.hand.HandEffect
 import it.unibo.model.effect.pattern.PatternEffect
 import it.unibo.model.effect.pattern.PatternEffect.{ BotComputation, PatternApplication }
@@ -17,9 +17,9 @@ import it.unibo.model.gameboard.GamePhase
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.player.ThinkingPlayer.handleMove
 import it.unibo.model.logger
-import it.unibo.model.prolog.decisionmaking.AttackDefense
-import it.unibo.model.prolog.decisionmaking.DecisionMaker
-import it.unibo.model.prolog.decisionmaking.DecisionMaker.computeAttackOrDefense
+import it.unibo.model.reasoner.decisionmaking.AttackDefense
+import it.unibo.model.reasoner.decisionmaking.DecisionMaker
+import it.unibo.model.reasoner.decisionmaking.DecisionMaker.computeAttackOrDefense
 import it.unibo.model.gameboard.Pattern
 
 trait ISendMessages:
@@ -82,11 +82,11 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
         val filteredComputations = decision match {
           case AttackDefense.Attack =>
             card.effect.computations.collect { case e: OffensiveEffect =>
-              PatternLogicEffect(List(e)).asInstanceOf[ILogicEffect]
+              PatternLogicEffect(List(e)).asInstanceOf[LogicEffect]
             }
           case AttackDefense.Defense =>
             card.effect.computations.collect { case e: DefensiveEffect =>
-              PatternLogicEffect(List(e)).asInstanceOf[ILogicEffect]
+              PatternLogicEffect(List(e)).asInstanceOf[LogicEffect]
             }
         }
         Option(card.id) -> filteredComputations
@@ -108,7 +108,7 @@ trait ThinkingPlayer extends Player with ISendMessages with IMakeDecision:
     extraCard match
       case Some(card) =>
         val gb      = model.getGameBoard
-        val effects = Map(Option(card.id) -> List(ICardEffect.convert(card.effect)))
+        val effects = Map(Option(card.id) -> List(CardEffect.convert(card.effect)))
         DecisionMaker.setObjectiveTower(gb.getCurrentPlayer.towerPositions.map(_.position))
         val botComputation = BotComputation(effects)
         handleMoveAndApplyEffect(model, botComputation)

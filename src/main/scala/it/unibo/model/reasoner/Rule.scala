@@ -1,9 +1,9 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import alice.tuprolog.Var
-import it.unibo.model.prolog.PrologUtils.given_Conversion_Int_Term
+import it.unibo.model.reasoner.ReasonerUtils.given_Conversion_Int_Term
 
 final case class Rule(term: Struct)
 

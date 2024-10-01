@@ -5,12 +5,10 @@ import it.unibo.controller.CandidateCardToPlayMessage
 import it.unibo.controller.InternalViewSubject
 import it.unibo.controller.ToggleCardInListMessage
 import it.unibo.model.card.{ Card, ICanBeDiscarded }
-import it.unibo.model.effect.core.ICardEffect
+import it.unibo.model.effect.core.CardEffect
 import it.unibo.model.gameboard.GamePhase
 import it.unibo.view.GUIType
-import it.unibo.view.component.ICanBeDisabled
-import it.unibo.view.component.ICanSwitchHandler
-import it.unibo.view.component.IHandComponent
+import it.unibo.view.component.{ ICanBeDisabled, ICanSwitchHandler, ViewComponent }
 import it.unibo.view.component.game.gameboard.hand.CardHighlightState.{ Highlighted, Unhighlighted }
 import javafx.event.EventHandler
 import javafx.fxml.FXML
@@ -19,13 +17,13 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import javafx.scene.text.Text
 import scalafx.Includes.*
-import it.unibo.model.effect.core.ICardEffect.given_Conversion_ICardEffect_String
+import it.unibo.model.effect.core.CardEffect.given_Conversion_CardEffect_String
 
 enum CardHighlightState:
   case Highlighted, Unhighlighted
 
 final class CardComponent(using internalObservable: InternalViewSubject)
-    extends IHandComponent,
+    extends ViewComponent,
       ICanSwitchHandler[GamePhase],
       ICanBeDisabled:
 

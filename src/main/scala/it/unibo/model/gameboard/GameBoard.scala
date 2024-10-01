@@ -1,7 +1,7 @@
 package it.unibo.model.gameboard
 
 import it.unibo.model.card.Card
-import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.core.GameEffect
 import it.unibo.model.gameboard.GamePhase.WindPhase
 import it.unibo.model.gameboard.grid.TowerPosition
 import it.unibo.model.gameboard.player.Bot
@@ -43,7 +43,7 @@ final case class GameBoard(
     playerManager.toggle()
     this
 
-  def solveEffect(effect: IGameEffect): GameBoard = gameBoardEffectSolver(this, effect)
+  def solveEffect(effect: GameEffect): GameBoard = gameBoardEffectSolver(this, effect)
 
 object GameBoard:
   def apply(player1: Player, player2: Player): GameBoard =

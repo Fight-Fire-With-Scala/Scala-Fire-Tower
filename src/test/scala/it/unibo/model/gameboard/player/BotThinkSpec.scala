@@ -10,7 +10,7 @@ import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour
 import it.unibo.model.gameboard.GamePhase.*
 import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Firebreak }
 import it.unibo.model.gameboard.grid.{ ConcreteToken, Position }
-import it.unibo.model.prolog.decisionmaking.DecisionMaker
+import it.unibo.model.reasoner.decisionmaking.DecisionMaker
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.BeforeAndAfterAll

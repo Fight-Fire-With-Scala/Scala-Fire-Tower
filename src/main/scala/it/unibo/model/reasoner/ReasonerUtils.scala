@@ -1,4 +1,4 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import alice.tuprolog
 import alice.tuprolog.SolveInfo
@@ -14,7 +14,7 @@ import it.unibo.model.gameboard.grid.Position
 import it.unibo.model.gameboard.grid.Token
 import it.unibo.model.gameboard.Pattern
 
-object PrologUtils:
+object ReasonerUtils:
   given Conversion[Rule, Term]         = _.term
   given Conversion[String, Term]       = Term.createTerm(_)
   given Conversion[List[?], Term]      = _.mkString("[", ",", "]")

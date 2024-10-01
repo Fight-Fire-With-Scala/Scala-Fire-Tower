@@ -1,14 +1,14 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{ IStandardCardEffect, LogicEffectSolver, OffensiveEffect }
-import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
+import it.unibo.model.effect.core.{ StandardCardEffect, LogicEffectSolver, OffensiveEffect }
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_LogicComputation_PatternLogicEffect
 import it.unibo.model.gameboard
 import it.unibo.model.gameboard.Direction
 import it.unibo.model.gameboard.PatternType.VerySmallPattern
 import it.unibo.model.gameboard.grid.ConcreteToken.Fire
-import it.unibo.model.prolog.Rule
+import it.unibo.model.reasoner.Rule
 
-enum WindEffect(override val effectId: Int, val direction: Direction) extends IStandardCardEffect:
+enum WindEffect(override val effectId: Int, val direction: Direction) extends StandardCardEffect:
   case North extends WindEffect(5, Direction.North)
   case South extends WindEffect(6, Direction.South)
   case East extends WindEffect(7, Direction.East)

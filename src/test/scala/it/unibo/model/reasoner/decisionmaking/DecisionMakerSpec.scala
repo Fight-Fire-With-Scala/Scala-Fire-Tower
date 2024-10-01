@@ -1,4 +1,4 @@
-package it.unibo.model.prolog.decisionmaking
+package it.unibo.model.reasoner.decisionmaking
 
 import it.unibo.model.GameBoardInitializer
 import it.unibo.model.gameboard.GameBoardConfig.BotBehaviour.Balanced

@@ -4,7 +4,7 @@ import it.unibo.controller.subscriber.BotSubscriber
 import it.unibo.controller.{BotMessage, ModelSubject, RefreshMessage}
 import it.unibo.controller.view.RefreshType
 import it.unibo.model.ModelModule.Model
-import it.unibo.model.effect.core.IGameEffect
+import it.unibo.model.effect.core.GameEffect
 import it.unibo.model.effect.phase.PhaseEffect
 import it.unibo.model.gameboard.{GameBoard, GameBoardConfig}
 import it.unibo.model.gameboard.player.PlayerManager
@@ -14,7 +14,7 @@ import monix.execution.Scheduler.Implicits.global
 
 final case class ModelController(model: Model, modelObserver: ModelSubject) extends PlayerManager:
 
-  def applyEffect(ef: IGameEffect, refreshType: RefreshType): Unit =
+  def applyEffect(ef: GameEffect, refreshType: RefreshType): Unit =
     val newGb = model.getGameBoard.solveEffect(ef)
     model.setGameBoard(newGb)
     modelObserver.onNext(RefreshMessage(newGb, refreshType))

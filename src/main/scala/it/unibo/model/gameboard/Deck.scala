@@ -12,7 +12,7 @@ import io.circe.yaml.parser
 import it.unibo.model.card.Card
 import it.unibo.model.card.CardSet
 import it.unibo.model.card.CardType
-import it.unibo.model.effect.core.ISpecialCardEffect
+import it.unibo.model.effect.core.SpecialCardEffect
 import it.unibo.model.logger
 
 final case class Deck(
@@ -61,7 +61,7 @@ object Deck:
       .map { case (c, index) => Card(index + 1, c.title, c.description, c.effect) }
 
     allCards.partition(_.effect match
-      case _: ISpecialCardEffect => true
+      case _: SpecialCardEffect => true
       case _                     => false
     )
 

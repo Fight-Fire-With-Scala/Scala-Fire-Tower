@@ -1,8 +1,8 @@
-package it.unibo.model.prolog
+package it.unibo.model.reasoner
 
 import it.unibo.model.effect.card.FirebreakEffect
 import it.unibo.model.gameboard.grid.ConcreteToken.{ Empty, Firebreak }
-import it.unibo.model.prolog.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
+import it.unibo.model.reasoner.AbstractCardSolverSpec.given_Conversion_ICardEffect_ILogicComputation
 import it.unibo.model.gameboard.grid.Position
 
 class FirebreakCardRulesSpec extends AbstractCardSolverSpec:

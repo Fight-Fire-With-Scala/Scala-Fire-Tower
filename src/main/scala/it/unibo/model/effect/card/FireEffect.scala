@@ -1,14 +1,14 @@
 package it.unibo.model.effect.card
 
-import it.unibo.model.effect.core.{ IStandardCardEffect, LogicEffectSolver, OffensiveEffect }
+import it.unibo.model.effect.core.{ StandardCardEffect, LogicEffectSolver, OffensiveEffect }
 import it.unibo.model.gameboard.PatternType.{ given_Conversion_PatternType_Pattern, LargePattern, MediumPattern, VeryLargePattern, VerySmallPattern }
 import it.unibo.model.gameboard.grid.ConcreteToken.{ Fire, Firebreak, Water }
-import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_ILogicComputation_PatternLogicEffect
+import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_LogicComputation_PatternLogicEffect
 import it.unibo.model.effect.core.PatternLogicEffect.given_Conversion_List_PatternLogicEffect
-import it.unibo.model.prolog.Rule
+import it.unibo.model.reasoner.Rule
 
 // tag::fireEffect[]
-enum FireEffect(override val effectId: Int) extends IStandardCardEffect:
+enum FireEffect(override val effectId: Int) extends StandardCardEffect:
   case Explosion extends FireEffect(1)
   case Flare extends FireEffect(2)
   case BurningSnag extends FireEffect(3)

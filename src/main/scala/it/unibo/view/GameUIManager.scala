@@ -4,7 +4,7 @@ import scala.compiletime.uninitialized
 import scala.jdk.CollectionConverters._
 
 import it.unibo.controller.ViewSubject
-import it.unibo.view.component.IViewComponent
+import it.unibo.view.component.ViewComponent
 import it.unibo.view.component.menu.MenuComponent
 import javafx.concurrent.{ Task => JFXTask }
 import monix.eval.Task
@@ -32,7 +32,7 @@ final class GameUIManager(val w: Int, val h: Int, viewObservable: ViewSubject) e
 
     loadGUIRoot(MenuComponent(viewObservable)).runAsyncAndForget
 
-  def loadGUIRoot(componentInstance: IViewComponent): Task[IViewComponent] =
+  def loadGUIRoot(componentInstance: ViewComponent): Task[ViewComponent] =
     val root = FXMLViewLoader.load(componentInstance)
     wrapInMonixTask: () =>
       pane.children.clear()
